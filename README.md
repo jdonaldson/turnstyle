@@ -30,8 +30,36 @@ A turnstyle is a `LogitsProcessor` that intercepts digit generation. When the mo
 
 ## Turnstyles
 
-- **`ArithmeticTurnstyle`** — `+`, `-`, `*`, `/` (integer division)
-- More coming: dates, unit conversion, lookups, ...
+| Turnstyle | Domain | Example |
+|-----------|--------|---------|
+| `ArithmeticTurnstyle` | `+`, `-`, `*`, `/` | "What is 445 + 152?" |
+| `DateTurnstyle` | Days/weeks between dates | "How many days between 2026-01-01 and 2026-03-20?" |
+| `UnitTurnstyle` | Physical unit conversion | "How many km is 26.2 miles?" |
+| `CurrencyTurnstyle` | Currency conversion | "How much is 100 USD in EUR?" |
+| `PercentageTurnstyle` | Percentages, tips, discounts | "What is 15% of 230?" |
+| `CountingTurnstyle` | Letters, vowels, words | "How many r's in 'strawberry'?" |
+| `BaseConversionTurnstyle` | Binary, hex, octal | "What is 255 in binary?" |
+| `SandboxTurnstyle` | Arbitrary Python via WASM | "What does \`sum(range(101))\` return?" |
+
+Each turnstyle follows the same pattern: `parse()` computes an oracle answer, `make_processor()` sets up digit biasing, `generate()` runs the model with grounded outputs.
+
+## SandboxTurnstyle
+
+Executes arbitrary Python in a WASM sandbox (Deno + Pyodide) and biases digit logits toward the computed result. The model writes the prose; the sandbox guarantees the number.
+
+```python
+from turnstyle import SandboxTurnstyle, DenoPyodideBackend
+
+backend = DenoPyodideBackend()
+t = SandboxTurnstyle(model, tokenizer, device, backend=backend)
+
+text, proof = t.generate("What does `sum(range(101))` return?")
+# proof.answer == 5050
+```
+
+Supports fenced code blocks, inline backtick expressions, and directive prompts. See [docs/sandbox.md](docs/sandbox.md) for full details.
+
+**Requirements:** [Deno](https://deno.land) installed on PATH. No network access or filesystem access from sandboxed code.
 
 ## Install
 
@@ -40,3 +68,8 @@ pip install turnstyle
 ```
 
 Requires `torch` and `transformers`. Works with any HuggingFace causal LM.
+
+For sandbox support, install [Deno](https://deno.land):
+```bash
+curl -fsSL https://deno.land/install.sh | sh
+```
