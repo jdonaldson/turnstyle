@@ -77,7 +77,8 @@ class DigitAudit:
 class CoprocessorDiagnostic:
     """Complete audit trail for a symbolically-assisted generation."""
     expression: str
-    answer: int
+    answer: int | float
+    answer_str: str = ""  # formatted answer; defaults to str(abs(answer))
     expected_digits: int = 0
     digits: list[DigitAudit] = field(default_factory=list)
     extra_digits_after_done: int = 0
@@ -160,20 +161,33 @@ class CoprocessorDiagnostic:
             return ""
         return " | ".join(DIAGNOSTIC_LABELS[d] for d in diags)
 
-    def inline(self) -> str:
-        """⊢ 445+152=5̲97 ∎ — corrected digits underlined, missing digits hatted."""
-        chars = list(str(abs(self.answer)))
+    @property
+    def _display(self) -> str:
+        return self.answer_str or str(abs(self.answer))
+
+    def _mark_digits(self) -> str:
+        """Apply underline/hat marks to digit characters, passing through non-digits."""
+        display = self._display
         audited = len(self.digits)
         parts = []
-        for i, ch in enumerate(chars):
-            audit = next((d for d in self.digits if d.position == i), None)
-            if audit and audit.corrected:
-                parts.append(f"{ch}\u0332")  # underline = changed
-            elif i >= audited:
-                parts.append(f"{ch}\u0302")  # circumflex = missing
+        digit_idx = 0
+        for ch in display:
+            if ch.isdigit():
+                audit = next((d for d in self.digits if d.position == digit_idx), None)
+                if audit and audit.corrected:
+                    parts.append(f"{ch}\u0332")  # underline = changed
+                elif digit_idx >= audited:
+                    parts.append(f"{ch}\u0302")  # circumflex = missing
+                else:
+                    parts.append(ch)
+                digit_idx += 1
             else:
-                parts.append(ch)
-        return f"{SYMBOL} {self.expression}={''.join(parts)} {QED}"
+                parts.append(ch)  # decimal point, comma, minus, etc.
+        return ''.join(parts)
+
+    def inline(self) -> str:
+        """⊢ 445+152=5̲97 ∎ — corrected digits underlined, missing digits hatted."""
+        return f"{SYMBOL} {self.expression}={self._mark_digits()} {QED}"
 
     def summary(self) -> str:
         """One-line audit summary."""
@@ -278,17 +292,6 @@ class Turnstyle:
         """Replace the answer in model text with marked-up digits."""
         if proof is None or not proof.any_corrected:
             return text
-        answer_str = str(abs(proof.answer))
-        chars = list(str(abs(proof.answer)))
-        audited = len(proof.digits)
-        parts = []
-        for i, ch in enumerate(chars):
-            audit = next((d for d in proof.digits if d.position == i), None)
-            if audit and audit.corrected:
-                parts.append(f"{ch}\u0332")
-            elif i >= audited:
-                parts.append(f"{ch}\u0302")
-            else:
-                parts.append(ch)
-        marked = ''.join(parts)
+        answer_str = proof._display
+        marked = proof._mark_digits()
         return text.replace(answer_str, marked, 1)
