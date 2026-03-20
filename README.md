@@ -1,8 +1,46 @@
 # ⊢ Turnstyle
 
-Symbolic coprocessors for LLM generation. Ground model outputs in exact computation via logit biasing.
+Ground LLM generation in real computation. The model writes prose; turnstyles guarantee the facts.
 
-The model handles language. Turnstyles handle facts.
+A turnstyle intercepts generation at the token level, running an oracle (anything from `a + b` to arbitrary Python in a WASM sandbox) and steering the model toward the correct answer. Every intervention is audited.
+
+```python
+from turnstyle import SandboxTurnstyle, DenoPyodideBackend
+
+backend = DenoPyodideBackend()
+t = SandboxTurnstyle(model, tokenizer, device, backend=backend)
+
+# The model writes the explanation. The sandbox computes the answer.
+text, proof = t.generate("""What does this return?
+```python
+primes = [n for n in range(2, 100) if all(n % i != 0 for i in range(2, int(n**0.5)+1))]
+len(primes)
+```""")
+# proof.answer == 25
+```
+
+The code runs in a WASM sandbox (Deno + Pyodide) — no network, no filesystem, no syscalls. The model can't hallucinate a number that the sandbox actually computed.
+
+## Turnstyles
+
+Every turnstyle follows the same pattern: `parse()` runs an oracle, `make_processor()` wires the answer into logit biasing, `generate()` lets the model write freely while the coprocessor enforces correctness.
+
+| Turnstyle | Oracle | Example |
+|-----------|--------|---------|
+| `SandboxTurnstyle` | Arbitrary Python in WASM | `` "What does `sum(range(101))` return?" `` |
+| `ArithmeticTurnstyle` | `+`, `-`, `*`, `/` | "What is 445 + 152?" |
+| `DateTurnstyle` | Date arithmetic | "How many days between Jan 1 and Mar 20?" |
+| `UnitTurnstyle` | Physical unit conversion | "How many km is 26.2 miles?" |
+| `CurrencyTurnstyle` | Currency conversion | "How much is 100 USD in EUR?" |
+| `PercentageTurnstyle` | Percentages, tips, discounts | "What is 15% of 230?" |
+| `CountingTurnstyle` | Letters, vowels, words | "How many r's in 'strawberry'?" |
+| `BaseConversionTurnstyle` | Binary, hex, octal | "What is 255 in binary?" |
+
+The specialized turnstyles (arithmetic, dates, etc.) are fast pattern-matched oracles. `SandboxTurnstyle` is the general case — if you can write Python for it, you can ground generation in it.
+
+## How it works
+
+Under the hood, a turnstyle is a `LogitsProcessor`. After the oracle computes the answer, the processor biases digit logits so the model emits the correct value. If the oracle fails (parse miss, non-numeric result, timeout), the model generates freely — no biasing, no crash.
 
 ```python
 from turnstyle import ArithmeticTurnstyle
@@ -10,7 +48,6 @@ from turnstyle import ArithmeticTurnstyle
 t = ArithmeticTurnstyle(model, tokenizer, device)
 text, proof = t.generate("What is 445 + 152?")
 
-print(text)           # "The sum of 445 and 152 is 597."
 print(proof.inline()) # ⊢ 445+152=5̲97 ∎
 print(proof.detail())
 # ⊢ 445+152=597  1/3 corrected  Δ=0.05
@@ -18,34 +55,15 @@ print(proof.detail())
 #   trigger@step 14/19  state=DONE
 ```
 
-## How it works
-
-A turnstyle is a `LogitsProcessor` that intercepts digit generation. When the model is about to output an answer, the turnstyle biases logits toward the symbolically-computed correct digits. Every intervention is audited.
-
 **Annotation marks:**
 - `5̲` underline — digit corrected by coprocessor
 - `5̂` circumflex — digit the model never emitted
 - `⊢` turnstile — "this was derived"
 - `∎` QED — "proof complete"
 
-## Turnstyles
-
-| Turnstyle | Domain | Example |
-|-----------|--------|---------|
-| `ArithmeticTurnstyle` | `+`, `-`, `*`, `/` | "What is 445 + 152?" |
-| `DateTurnstyle` | Days/weeks between dates | "How many days between 2026-01-01 and 2026-03-20?" |
-| `UnitTurnstyle` | Physical unit conversion | "How many km is 26.2 miles?" |
-| `CurrencyTurnstyle` | Currency conversion | "How much is 100 USD in EUR?" |
-| `PercentageTurnstyle` | Percentages, tips, discounts | "What is 15% of 230?" |
-| `CountingTurnstyle` | Letters, vowels, words | "How many r's in 'strawberry'?" |
-| `BaseConversionTurnstyle` | Binary, hex, octal | "What is 255 in binary?" |
-| `SandboxTurnstyle` | Arbitrary Python via WASM | "What does \`sum(range(101))\` return?" |
-
-Each turnstyle follows the same pattern: `parse()` computes an oracle answer, `make_processor()` sets up digit biasing, `generate()` runs the model with grounded outputs.
-
 ## SandboxTurnstyle
 
-Executes arbitrary Python in a WASM sandbox (Deno + Pyodide) and biases digit logits toward the computed result. The model writes the prose; the sandbox guarantees the number.
+Extracts Python from prompts via fenced code blocks, inline backticks (`` `expr` ``), "what does X return" patterns, or directives (`Evaluate: expr`). Bare arithmetic falls through to `ArithmeticTurnstyle`.
 
 ```python
 from turnstyle import SandboxTurnstyle, DenoPyodideBackend
@@ -54,12 +72,10 @@ backend = DenoPyodideBackend()
 t = SandboxTurnstyle(model, tokenizer, device, backend=backend)
 
 text, proof = t.generate("What does `sum(range(101))` return?")
-# proof.answer == 5050
+text, proof = t.generate("Evaluate: sum(int(d) for d in str(2**100))")
 ```
 
-Supports fenced code blocks, inline backtick expressions, and directive prompts. See [docs/sandbox.md](docs/sandbox.md) for full details.
-
-**Requirements:** [Deno](https://deno.land) installed on PATH. No network access or filesystem access from sandboxed code.
+See [docs/sandbox.md](docs/sandbox.md) for the full reference — code extraction patterns, backends, error behavior, and V1 limitations.
 
 ## Install
 
