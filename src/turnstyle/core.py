@@ -79,6 +79,7 @@ class CoprocessorDiagnostic:
     expression: str
     answer: int | float
     answer_str: str = ""  # formatted answer; defaults to str(abs(answer))
+    answer_charset: str = "0123456789"  # characters treated as biasable answer positions
     expected_digits: int = 0
     digits: list[DigitAudit] = field(default_factory=list)
     extra_digits_after_done: int = 0
@@ -166,13 +167,14 @@ class CoprocessorDiagnostic:
         return self.answer_str or str(abs(self.answer))
 
     def _mark_digits(self) -> str:
-        """Apply underline/hat marks to digit characters, passing through non-digits."""
+        """Apply underline/hat marks to answer characters, passing through others."""
         display = self._display
         audited = len(self.digits)
+        charset = set(self.answer_charset)
         parts = []
         digit_idx = 0
         for ch in display:
-            if ch.isdigit():
+            if ch.lower() in charset:
                 audit = next((d for d in self.digits if d.position == digit_idx), None)
                 if audit and audit.corrected:
                     parts.append(f"{ch}\u0332")  # underline = changed
