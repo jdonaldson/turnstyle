@@ -28,6 +28,13 @@ from turnstyle.arithmetic import (
 from turnstyle.dates import DateTurnstyle, parse_date_arithmetic
 from turnstyle.units import UnitTurnstyle, parse_unit_conversion
 from turnstyle.currency import CurrencyTurnstyle, parse_currency_conversion
+from turnstyle.percentage import PercentageTurnstyle, parse_percentage
+from turnstyle.counting import CountingTurnstyle, parse_counting
+from turnstyle.base_conversion import (
+    BaseConversionTurnstyle,
+    BaseConversionProcessor,
+    parse_base_conversion,
+)
 
 __all__ = [
     "SYMBOL",
@@ -46,5 +53,12 @@ __all__ = [
     "parse_unit_conversion",
     "CurrencyTurnstyle",
     "parse_currency_conversion",
+    "PercentageTurnstyle",
+    "parse_percentage",
+    "CountingTurnstyle",
+    "parse_counting",
+    "BaseConversionTurnstyle",
+    "BaseConversionProcessor",
+    "parse_base_conversion",
     "extract_number",
 ]

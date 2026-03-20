@@ -1,9 +1,12 @@
-"""Tests for date, unit, and currency parsers — no model needed."""
+"""Tests for all parsers — no model needed."""
 
 from datetime import date
 from turnstyle.dates import parse_date_arithmetic, _parse_date
 from turnstyle.units import parse_unit_conversion
 from turnstyle.currency import parse_currency_conversion
+from turnstyle.percentage import parse_percentage
+from turnstyle.counting import parse_counting
+from turnstyle.base_conversion import parse_base_conversion
 
 
 # ── date parsing ─────────────────────────────────────────────────────
@@ -123,3 +126,134 @@ class TestCurrencyConversion:
 
     def test_unknown_currency_returns_none(self):
         assert parse_currency_conversion("100 zorkmids to USD") is None
+
+
+# ── percentage ──────────────────────────────────────────────────────
+
+class TestPercentage:
+    def test_percent_of(self):
+        result = parse_percentage("What is 15% of 230?")
+        assert result is not None
+        _, _, _, answer, _ = result
+        assert answer == 34.5
+
+    def test_what_percentage(self):
+        result = parse_percentage("What percentage is 45 of 180?")
+        assert result is not None
+        _, _, _, answer, _ = result
+        assert answer == 25.0
+
+    def test_tip(self):
+        result = parse_percentage("20% tip on $85")
+        assert result is not None
+        _, _, _, answer, _ = result
+        assert answer == 17.0
+
+    def test_discount(self):
+        result = parse_percentage("25% off 200")
+        assert result is not None
+        _, _, _, answer, _ = result
+        assert answer == 150.0
+
+    def test_with_dollar_sign(self):
+        result = parse_percentage("What is 10% of $500?")
+        assert result is not None
+        _, _, _, answer, _ = result
+        assert answer == 50.0
+
+    def test_nonsense_returns_none(self):
+        assert parse_percentage("What color is the sky?") is None
+
+
+# ── counting ────────────────────────────────────────────────────────
+
+class TestCounting:
+    def test_vowels(self):
+        result = parse_counting("How many vowels in 'mississippi'?")
+        assert result is not None
+        _, _, count, _ = result
+        assert count == 4
+
+    def test_consonants(self):
+        result = parse_counting("How many consonants in 'python'?")
+        assert result is not None
+        _, _, count, _ = result
+        assert count == 5  # p, y, t, h, n
+
+    def test_words(self):
+        result = parse_counting("How many words in 'the quick brown fox'?")
+        assert result is not None
+        _, _, count, _ = result
+        assert count == 4
+
+    def test_letters(self):
+        result = parse_counting("How many letters in 'hello world'?")
+        assert result is not None
+        _, _, count, _ = result
+        assert count == 10  # excludes space
+
+    def test_characters(self):
+        result = parse_counting("How many characters in 'hello world'?")
+        assert result is not None
+        _, _, count, _ = result
+        assert count == 11  # includes space
+
+    def test_specific_char(self):
+        result = parse_counting("How many r's in 'strawberry'?")
+        assert result is not None
+        _, _, count, _ = result
+        assert count == 3
+
+    def test_specific_char_enterprise(self):
+        result = parse_counting('How many e\'s in "enterprise"?')
+        assert result is not None
+        _, _, count, _ = result
+        assert count == 3
+
+    def test_no_quoted_text_returns_none(self):
+        assert parse_counting("How many vowels in the sky?") is None
+
+
+# ── base conversion ─────────────────────────────────────────────────
+
+class TestBaseConversion:
+    def test_decimal_to_binary(self):
+        result = parse_base_conversion("What is 255 in binary?")
+        assert result is not None
+        _, _, _, result_str, _ = result
+        assert result_str == "11111111"
+
+    def test_decimal_to_hex(self):
+        result = parse_base_conversion("What is 255 in hex?")
+        assert result is not None
+        _, _, _, result_str, _ = result
+        assert result_str == "ff"
+
+    def test_decimal_to_octal(self):
+        result = parse_base_conversion("42 to octal")
+        assert result is not None
+        _, _, _, result_str, _ = result
+        assert result_str == "52"
+
+    def test_binary_to_decimal(self):
+        result = parse_base_conversion("Convert 1010 from binary to decimal")
+        assert result is not None
+        decimal_value, _, _, result_str, _ = result
+        assert decimal_value == 10
+        assert result_str == "10"
+
+    def test_hex_prefix_to_decimal(self):
+        result = parse_base_conversion("What is 0xff in decimal?")
+        assert result is not None
+        decimal_value, _, _, result_str, _ = result
+        assert decimal_value == 255
+        assert result_str == "255"
+
+    def test_convert_to_binary(self):
+        result = parse_base_conversion("Convert 10 to binary")
+        assert result is not None
+        _, _, _, result_str, _ = result
+        assert result_str == "1010"
+
+    def test_unknown_base_returns_none(self):
+        assert parse_base_conversion("What color is blue?") is None
