@@ -1,6 +1,4 @@
-<img src="turnstyle.png" alt="turnstyle" />
-
-# ⊢ Turnstyle
+<img src="turnstyle.png" alt="⊢ turnstyle" />
 
 Ground LLM generation in real computation. The model writes prose; turnstyles guarantee the facts.
 
