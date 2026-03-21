@@ -5,10 +5,9 @@ Ground LLM generation in real computation. The model writes prose; turnstyles gu
 A turnstyle intercepts generation at the token level, running an oracle (anything from `a + b` to arbitrary Python in a WASM sandbox) and steering the model toward the correct answer. Every intervention is audited.
 
 ```python
-from turnstyle import SandboxTurnstyle, DenoPyodideBackend
+from turnstyle import SandboxTurnstyle
 
-backend = DenoPyodideBackend()
-t = SandboxTurnstyle(model, tokenizer, device, backend=backend)
+t = SandboxTurnstyle(model, tokenizer, device)
 
 # The model writes the explanation. The sandbox computes the answer.
 text, proof = t.generate("""What does this return?
@@ -19,7 +18,7 @@ len(primes)
 # proof.answer == 25
 ```
 
-The code runs in a WASM sandbox (Deno + Pyodide) — no network, no filesystem, no syscalls. The model can't hallucinate a number that the sandbox actually computed.
+The code runs in a WASM sandbox — no network, no filesystem, no syscalls. The model can't hallucinate a number that the sandbox actually computed.
 
 ## Turnstyles
 
@@ -66,10 +65,9 @@ print(proof.detail())
 Extracts Python from prompts via fenced code blocks, inline backticks (`` `expr` ``), "what does X return" patterns, or directives (`Evaluate: expr`). Bare arithmetic falls through to `ArithmeticTurnstyle`.
 
 ```python
-from turnstyle import SandboxTurnstyle, DenoPyodideBackend
+from turnstyle import SandboxTurnstyle
 
-backend = DenoPyodideBackend()
-t = SandboxTurnstyle(model, tokenizer, device, backend=backend)
+t = SandboxTurnstyle(model, tokenizer, device)
 
 text, proof = t.generate("What does `sum(range(101))` return?")
 text, proof = t.generate("Evaluate: sum(int(d) for d in str(2**100))")
@@ -85,7 +83,9 @@ pip install turnstyle
 
 Requires `torch` and `transformers`. Works with any HuggingFace causal LM.
 
-For sandbox support, install [Deno](https://deno.land):
+For sandbox support (runs Python in a WASM sandbox):
 ```bash
-curl -fsSL https://deno.land/install.sh | sh
+pip install turnstyle[sandbox]
 ```
+
+This installs `wasmtime` and auto-downloads CPython WASM on first use. Falls back to [Deno](https://deno.land) + Pyodide if wasmtime is unavailable.

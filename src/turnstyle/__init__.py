@@ -40,6 +40,7 @@ from turnstyle.sandbox_backend import (
     SandboxResult,
     SandboxBackend,
     DenoPyodideBackend,
+    WasmtimeBackend,
     MockBackend,
 )
 
@@ -73,5 +74,6 @@ __all__ = [
     "SandboxResult",
     "SandboxBackend",
     "DenoPyodideBackend",
+    "WasmtimeBackend",
     "MockBackend",
 ]

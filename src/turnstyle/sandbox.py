@@ -14,6 +14,7 @@ from turnstyle.core import Turnstyle
 from turnstyle.sandbox_backend import (
     DenoPyodideBackend,
     SandboxBackend,
+    WasmtimeBackend,
 )
 
 
@@ -119,7 +120,10 @@ class SandboxTurnstyle(Turnstyle):
     def __init__(self, model, tokenizer, device, backend: SandboxBackend | None = None,
                  timeout: float = 5.0, bias_strength: float = 15.0):
         super().__init__(model, tokenizer, device, bias_strength)
-        self.backend = backend or DenoPyodideBackend()
+        if backend is None:
+            wt = WasmtimeBackend()
+            backend = wt if wt.available() else DenoPyodideBackend()
+        self.backend = backend
         self.timeout = timeout
 
     def parse(self, prompt: str):

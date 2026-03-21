@@ -7,9 +7,16 @@ Execute arbitrary Python in a WASM sandbox and ground LLM digit generation in th
 ```
 Prompt → parse_sandbox_code() → extract Python
                                       ↓
-                              DenoPyodideBackend.execute()
+                              Backend.execute()
                                       ↓
-                              Deno spawns → loads Pyodide WASM
+                    ┌─────────────────┴─────────────────┐
+                    │                                   │
+           WasmtimeBackend (preferred)       DenoPyodideBackend (fallback)
+           CPython WASM via wasmtime         Deno → Pyodide WASM
+           pip install turnstyle[sandbox]    Requires Deno on PATH
+           ~50ms warm, ~0.7s cold            ~3-5s cold start
+                    │                                   │
+                    └─────────────────┬─────────────────┘
                                       ↓
                               Python runs in sandbox (no network, no FS)
                                       ↓
@@ -20,13 +27,15 @@ Prompt → parse_sandbox_code() → extract Python
 
 Same architecture as every other turnstyle: code runs at parse time, the numeric result feeds into digit biasing. The sandbox guarantees isolation — no network, no filesystem, no syscalls.
 
+`SandboxTurnstyle` auto-selects the best available backend: wasmtime if installed, otherwise Deno.
+
 ## Quick Start
 
 ```python
-from turnstyle import SandboxTurnstyle, DenoPyodideBackend
+from turnstyle import SandboxTurnstyle
 
-backend = DenoPyodideBackend()
-t = SandboxTurnstyle(model, tokenizer, device, backend=backend)
+# Auto-selects WasmtimeBackend if available, otherwise DenoPyodideBackend
+t = SandboxTurnstyle(model, tokenizer, device)
 
 # Inline expression
 text, proof = t.generate("What does `sum(range(101))` return?")
@@ -92,9 +101,41 @@ Run: len([1,2,3])
 
 ## Backends
 
-### DenoPyodideBackend
+### WasmtimeBackend (preferred)
 
-The production backend. Spawns a Deno subprocess that loads Pyodide (Python compiled to WASM).
+Runs CPython 3.12 compiled to WASM via the `wasmtime` runtime. Pip-installable, no external dependencies.
+
+```python
+from turnstyle import WasmtimeBackend
+
+backend = WasmtimeBackend()
+assert backend.available()  # True if `wasmtime` package is installed
+
+result = backend.execute("sum(range(101))")
+print(result.numeric_value)  # 5050
+```
+
+**Install:** `pip install turnstyle[sandbox]`
+
+**Auto-setup:** On first use, downloads CPython WASM (~11MB) to `~/.cache/turnstyle/cpython-wasm/`. The compiled module is cached as `.cwasm` for instant subsequent loads.
+
+**Sandbox guarantees:**
+- No network access
+- No host filesystem access (only preopened stdlib, read-only)
+- Epoch-based timeout interruption
+- Fresh WASM instance per execution (no persistent state)
+
+**Performance:** ~0.7s cold compile (first load), ~50ms warm execution. Module cache makes subsequent sessions instant.
+
+**Custom cache dir:**
+```python
+from pathlib import Path
+backend = WasmtimeBackend(wasm_dir=Path("/custom/cache/dir"))
+```
+
+### DenoPyodideBackend (fallback)
+
+Spawns a Deno subprocess that loads Pyodide (Python compiled to WASM). Used when wasmtime is not installed.
 
 ```python
 from turnstyle import DenoPyodideBackend
@@ -194,6 +235,5 @@ echo '{"code":"sum(range(101))","timeout":5}' | deno run --allow-read --allow-ne
 ## Limitations (V1)
 
 - **Numeric results only** — digit biasing works on numbers. Non-numeric results fall through.
-- **Fresh subprocess per call** — ~3-5s cold start. No persistent Pyodide process.
-- **Stdlib only** — no `micropip.install()`. The sandbox runs pure Python.
-- **Deno only** — Node.js backend is a natural follow-up.
+- **Stdlib only** — no pip packages. The sandbox runs pure CPython.
+- **Fresh instance per call** — WasmtimeBackend reuses the compiled module but creates a fresh WASM instance per execution (isolation guarantee).

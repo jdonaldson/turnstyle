@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "turnstyle"
-version = "0.2.0"
+version = "0.3.0"
 description = "⊢ Symbolic coprocessors for LLM generation — ground model outputs in exact computation"
 readme = "README.md"
 license = "MIT"
@@ -20,7 +20,7 @@ dev = [
     "numpy",
     "pytest",
 ]
-sandbox = []  # Requires Deno installed externally: https://deno.land
+sandbox = ["wasmtime>=42.0"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/turnstyle"]
