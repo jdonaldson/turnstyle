@@ -89,3 +89,10 @@ pip install turnstyle[sandbox]
 ```
 
 This installs `wasmtime` and auto-downloads CPython WASM on first use. Falls back to [Deno](https://deno.land) + Pyodide if wasmtime is unavailable.
+
+## References
+
+Turnstyle is an implementation of **neurosymbolic programming** — combining neural generation with symbolic computation through constrained decoding.
+
+- Chaudhuri, S., Ellis, K., Polozov, O., Singh, R., Solar-Lezama, A., & Yue, Y. (2021). [Neurosymbolic Programming](https://www.nowpublishers.com/article/Details/PGL-049). *Foundations and Trends in Programming Languages*, 7(3), 158–243.
+- [Neuro-symbolic AI](https://en.wikipedia.org/wiki/Neuro-symbolic_AI) — Wikipedia overview of the broader field.
