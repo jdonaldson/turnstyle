@@ -91,3 +91,48 @@ def test_inline_missing_digits():
         final_state="DONE")
     inline = proof.inline()
     assert "0\u0302" in inline  # 0̂
+
+
+def test_plain_inline():
+    proof = CoprocessorDiagnostic(
+        expression="445+152", answer=597, expected_digits=3,
+        digits=[
+            DigitAudit(0, 5, 6, 15.0, 9.0, 10.0, True),
+            DigitAudit(1, 9, 9, 15.0, 10.0, 10.0, False),
+            DigitAudit(2, 7, 7, 15.0, 10.0, 10.0, False),
+        ],
+        final_state="DONE")
+    plain = proof.inline(plain=True)
+    assert plain == "445+152=597"
+    assert "\u22a2" not in plain
+    assert "\u220e" not in plain
+    assert "\u0332" not in plain
+
+
+def test_plain_summary():
+    proof = CoprocessorDiagnostic(
+        expression="445+152", answer=597, expected_digits=3,
+        digits=[
+            DigitAudit(0, 5, 6, 15.0, 9.0, 10.0, True),
+            DigitAudit(1, 9, 9, 15.0, 10.0, 10.0, False),
+            DigitAudit(2, 7, 7, 15.0, 10.0, 10.0, False),
+        ],
+        final_state="DONE")
+    summary = proof.summary(plain=True)
+    assert "\u22a2" not in summary
+    assert "1/3 corrected" in summary
+    assert "\u0394" not in summary
+
+
+def test_plain_detail():
+    proof = CoprocessorDiagnostic(
+        expression="445+152", answer=597, expected_digits=3,
+        digits=[
+            DigitAudit(0, 5, 6, 15.0, 9.0, 10.0, True),
+            DigitAudit(1, 9, 9, 15.0, 10.0, 10.0, False),
+            DigitAudit(2, 7, 7, 15.0, 10.0, 10.0, False),
+        ],
+        final_state="DONE", trigger_step=10, total_steps=15, max_steps=50)
+    detail = proof.detail(plain=True)
+    assert "->" in detail
+    assert "\u2192" not in detail

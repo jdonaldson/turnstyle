@@ -187,17 +187,25 @@ class CoprocessorDiagnostic:
                 parts.append(ch)  # decimal point, comma, minus, etc.
         return ''.join(parts)
 
-    def inline(self) -> str:
-        """⊢ 445+152=5̲97 ∎ — corrected digits underlined, missing digits hatted."""
-        return f"{SYMBOL} {self.expression}={self._mark_digits()} {QED}"
+    def inline(self, plain: bool = False) -> str:
+        """⊢ 445+152=5̲97 ∎ — corrected digits underlined, missing digits hatted.
 
-    def summary(self) -> str:
+        If plain=True, returns '445+152=597' with no symbols or marks.
+        """
+        answer = self._display if plain else self._mark_digits()
+        if plain:
+            return f"{self.expression}={answer}"
+        return f"{SYMBOL} {self.expression}={answer} {QED}"
+
+    def summary(self, plain: bool = False) -> str:
         """One-line audit summary."""
-        parts = [f"{SYMBOL} {self.expression}={self.answer}"]
+        prefix = "" if plain else f"{SYMBOL} "
+        parts = [f"{prefix}{self.expression}={self.answer}"]
         n = len(self.digits)
         if self.any_corrected:
             parts.append(f"{self.num_corrected}/{n} corrected")
-            parts.append(f"\u0394={self.max_confidence:.2f}")
+            if not plain:
+                parts.append(f"\u0394={self.max_confidence:.2f}")
         else:
             parts.append(f"0/{n} corrected")
         diag_str = self.diagnostic_summary()
@@ -205,13 +213,14 @@ class CoprocessorDiagnostic:
             parts.append(diag_str)
         return "  ".join(parts)
 
-    def detail(self) -> str:
+    def detail(self, plain: bool = False) -> str:
         """Multi-line forensic detail."""
-        lines = [self.summary()]
+        lines = [self.summary(plain=plain)]
         for d in self.digits:
             if d.corrected:
+                arrow = "->" if plain else "\u2192"
                 lines.append(
-                    f"  d{d.position}: [{d.model_predicted}\u2192{d.correct}]"
+                    f"  d{d.position}: [{d.model_predicted}{arrow}{d.correct}]"
                     f"  logit_gap={d.top_logit - d.model_logit:+.1f}")
         lines.append(
             f"  trigger@step {self.trigger_step}/{self.total_steps}"
