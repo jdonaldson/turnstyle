@@ -39,12 +39,64 @@ The specialized turnstyles (arithmetic, dates, etc.) are fast pattern-matched or
 
 ## How it works
 
-Under the hood, a turnstyle is a `LogitsProcessor`. After the oracle computes the answer, the processor biases digit logits so the model emits the correct value. If the oracle fails (parse miss, non-numeric result, timeout), the model generates freely — no biasing, no crash.
+A turnstyle is a bridge between two systems: a neural network that generates language and a symbolic oracle that computes facts. The bridge is HuggingFace's `LogitsProcessor` interface — a hook that runs after the model produces logits for each token but before the token is sampled.
+
+### The pipeline
+
+```
+prompt ──→ parse() ──→ oracle result ──→ make_processor() ──→ generate()
+              │                              │                    │
+              │                              │                    ▼
+              │                              │            ┌──────────────┐
+              │                              └──────────→ │LogitsProcessor│
+              │                                           │              │
+              │    if parse fails,                        │ WAITING      │
+              └──→ model generates freely                 │  ↓ trigger   │
+                   (no biasing, no crash)                 │ TRIGGERED    │
+                                                          │  ↓ first digit│
+                                                          │ INJECTING    │
+                                                          │  ↓ non-digit │
+                                                          │ DONE         │
+                                                          └──────────────┘
+```
+
+**Step 1: Parse.** The oracle extracts a computable problem from the prompt. `ArithmeticTurnstyle` uses regex to find `445 + 152` → `597`. `SandboxTurnstyle` extracts Python code and runs it in a WASM sandbox. If parsing fails, the model generates freely — no intervention, no crash.
+
+**Step 2: Wire.** `make_processor()` creates a `LogitsProcessor` preloaded with the answer digits `[5, 9, 7]` and a digit-to-token mapping for the model's tokenizer.
+
+**Step 3: Generate.** The model generates tokens normally, but the processor intercepts every step:
+
+| State | What happens | Transition |
+|-------|-------------|------------|
+| **WAITING** | Watches for trigger words (`is`, `=`, `equals`) | → TRIGGERED on trigger |
+| **TRIGGERED** | Waits for the first digit token | → INJECTING on digit |
+| **INJECTING** | Adds `+15.0` to the correct digit's logit each step | → DONE on non-digit |
+| **DONE** | Counts any extra digits (model rambling) | terminal |
+
+### Logit biasing
+
+The coprocessor doesn't force tokens — it *biases* them. At each digit position, it adds a fixed offset (default `15.0`) to the logit of the correct digit:
+
+```
+Model's logits for digit position 0:
+  "6" → 10.2  (model's top choice — wrong)
+  "5" →  9.1  (correct answer)
+  "4" →  3.7
+  ...
+
+After coprocessor bias (+15.0 to "5"):
+  "5" → 24.1  ← now top choice
+  "6" → 10.2
+  "4" →  3.7
+```
+
+If the model was already going to emit the correct digit, the bias is a no-op. If the model was wrong, the bias flips the ranking. Either way, the correction is recorded in the audit trail.
+
+### Audit trail
+
+Every digit gets a `DigitAudit` recording what the model wanted vs. what the oracle computed:
 
 ```python
-from turnstyle import ArithmeticTurnstyle
-
-t = ArithmeticTurnstyle(model, tokenizer, device)
 text, proof = t.generate("What is 445 + 152?")
 
 print(proof.inline()) # ⊢ 445+152=5̲97 ∎
@@ -59,6 +111,8 @@ print(proof.detail())
 - `5̂` circumflex — digit the model never emitted
 - `⊢` turnstile — "this was derived"
 - `∎` QED — "proof complete"
+
+Use `proof.inline(plain=True)` for annotation-free output.
 
 ## SandboxTurnstyle
 
