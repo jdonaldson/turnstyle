@@ -114,6 +114,50 @@ print(proof.detail())
 
 Use `proof.inline(plain=True)` for annotation-free output.
 
+## Build your own
+
+A turnstyle is any subclass of `Turnstyle` that implements two methods:
+
+```python
+from turnstyle.core import Turnstyle
+from turnstyle.arithmetic import ArithmeticLogitsProcessor
+
+class FibonacciTurnstyle(Turnstyle):
+    """Ground Fibonacci answers in real computation."""
+
+    def parse(self, prompt: str):
+        """Extract a computable problem, or return None to skip biasing."""
+        import re
+        m = re.search(r'(\d+)(?:th|st|nd|rd)?\s+fibonacci', prompt, re.I)
+        if not m:
+            return None
+        n = int(m.group(1))
+        a, b = 0, 1
+        for _ in range(n):
+            a, b = b, a + b
+        return n, a  # (index, answer)
+
+    def make_processor(self, parsed, max_new_tokens: int):
+        """Wire the oracle's answer into a LogitsProcessor."""
+        n, answer = parsed
+        return ArithmeticLogitsProcessor(
+            self.tokenizer,
+            answer_digits=[int(d) for d in str(answer)],
+            expression=f"fib({n})",
+            answer=answer,
+            bias_strength=self.bias_strength,
+            max_new_tokens=max_new_tokens,
+        )
+```
+
+That's it. `parse()` is your oracle — compute the answer however you want. `make_processor()` wires it into digit biasing. If `parse()` returns `None`, the model generates freely.
+
+```python
+t = FibonacciTurnstyle(model, tokenizer, device)
+text, proof = t.generate("What is the 10th Fibonacci number?")
+# proof.answer == 55
+```
+
 ## SandboxTurnstyle
 
 Extracts Python from prompts via fenced code blocks, inline backticks (`` `expr` ``), "what does X return" patterns, or directives (`Evaluate: expr`). Bare arithmetic falls through to `ArithmeticTurnstyle`.
