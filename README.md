@@ -1,5 +1,7 @@
 # ⊢ Turnstyle
 
+![turnstyle](turnstyle.png)
+
 Ground LLM generation in real computation. The model writes prose; turnstyles guarantee the facts.
 
 A turnstyle intercepts generation at the token level, running an oracle (anything from `a + b` to arbitrary Python in a WASM sandbox) and steering the model toward the correct answer. Every intervention is audited.
