@@ -52,20 +52,22 @@ flowchart LR
     make --> lp["LogitsProcessor"]
     lp --> gen
     parse -->|failure| free["model generates freely<br/>(no biasing, no crash)"]
-
-    subgraph LogitsProcessor State Machine
-        direction TB
-        WAITING -->|trigger word| TRIGGERED
-        TRIGGERED -->|first digit| INJECTING
-        INJECTING -->|non-digit| DONE
-    end
 ```
 
-**Step 1: Parse.** The oracle extracts a computable problem from the prompt. `ArithmeticTurnstyle` uses regex to find `445 + 152` → `597`. `SandboxTurnstyle` extracts Python code and runs it in a WASM sandbox. If parsing fails, the model generates freely — no intervention, no crash.
+The oracle extracts a computable problem from the prompt. `ArithmeticTurnstyle` uses regex to find `445 + 152` → `597`. `SandboxTurnstyle` extracts Python code and runs it in a WASM sandbox. If parsing fails, the model generates freely — no intervention, no crash.
 
-**Step 2: Wire.** `make_processor()` creates a `LogitsProcessor` preloaded with the answer digits `[5, 9, 7]` and a digit-to-token mapping for the model's tokenizer.
+`make_processor()` creates a `LogitsProcessor` preloaded with the answer digits `[5, 9, 7]` and a digit-to-token mapping for the model's tokenizer. The processor is passed to `generate()`, which lets the model write freely while the coprocessor enforces correctness.
 
-**Step 3: Generate.** The model generates tokens normally, but the processor intercepts every step:
+### The state machine
+
+During generation, the `LogitsProcessor` walks through four states:
+
+```mermaid
+flowchart LR
+    WAITING -->|trigger word| TRIGGERED
+    TRIGGERED -->|first digit| INJECTING
+    INJECTING -->|non-digit| DONE
+```
 
 | State | What happens | Transition |
 |-------|-------------|------------|
@@ -158,6 +160,31 @@ t = FibonacciTurnstyle(model, tokenizer, device)
 text, proof = t.generate("What is the 10th Fibonacci number?")
 # proof.answer == 55
 ```
+
+## Probe routing
+
+For novel phrasings that regex can't catch, `RoutingTurnstyle` uses a linear
+probe on model hidden states to detect which turnstyle should handle the prompt.
+
+Regex-first, probe-fallback: existing parse patterns are tried first. The probe
+only activates when no regex matches.
+
+```python
+from turnstyle import RoutingTurnstyle, TurnstyleProbe
+
+probe = TurnstyleProbe.load("probe_weights.pt")
+router = RoutingTurnstyle(
+    turnstyles=[ArithmeticTurnstyle(model, tokenizer, device),
+                DateTurnstyle(model, tokenizer, device)],
+    probe=probe,
+    layer_index=23,  # model-specific
+)
+text, proof = router.generate("Sum of four hundred forty-five and one fifty-two")
+```
+
+Train a probe by collecting hidden states at your target layer for labeled
+prompts, then fitting a logistic regression. Save as a `.pt` file with
+`TurnstyleProbe.save()`.
 
 ## SandboxTurnstyle
 
