@@ -43,21 +43,22 @@ A turnstyle is a bridge between two systems: a neural network that generates lan
 
 ### The pipeline
 
-```
-prompt ──→ parse() ──→ oracle result ──→ make_processor() ──→ generate()
-              │                              │                    │
-              │                              │                    ▼
-              │                              │            ┌──────────────┐
-              │                              └──────────→ │LogitsProcessor│
-              │                                           │              │
-              │    if parse fails,                        │ WAITING      │
-              └──→ model generates freely                 │  ↓ trigger   │
-                   (no biasing, no crash)                 │ TRIGGERED    │
-                                                          │  ↓ first digit│
-                                                          │ INJECTING    │
-                                                          │  ↓ non-digit │
-                                                          │ DONE         │
-                                                          └──────────────┘
+```mermaid
+flowchart LR
+    prompt --> parse["parse()"]
+    parse -->|success| oracle["oracle result"]
+    oracle --> make["make_processor()"]
+    make --> gen["generate()"]
+    make --> lp["LogitsProcessor"]
+    lp --> gen
+    parse -->|failure| free["model generates freely<br/>(no biasing, no crash)"]
+
+    subgraph LogitsProcessor State Machine
+        direction TB
+        WAITING -->|trigger word| TRIGGERED
+        TRIGGERED -->|first digit| INJECTING
+        INJECTING -->|non-digit| DONE
+    end
 ```
 
 **Step 1: Parse.** The oracle extracts a computable problem from the prompt. `ArithmeticTurnstyle` uses regex to find `445 + 152` → `597`. `SandboxTurnstyle` extracts Python code and runs it in a WASM sandbox. If parsing fails, the model generates freely — no intervention, no crash.
