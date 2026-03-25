@@ -21,6 +21,8 @@ dev = [
     "pytest",
 ]
 sandbox = ["wasmtime>=42.0"]
+sweep = ["scikit-learn>=1.3"]
+mlx = ["mlx>=0.18", "mlx-lm>=0.18"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/turnstyle"]
