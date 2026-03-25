@@ -35,6 +35,12 @@ from turnstyle.base_conversion import (
     BaseConversionProcessor,
     parse_base_conversion,
 )
+from turnstyle.number_theory import (
+    GCDTurnstyle,
+    LCMTurnstyle,
+    FractionTurnstyle,
+    parse_number_theory,
+)
 from turnstyle.sandbox import SandboxTurnstyle, parse_sandbox_code
 from turnstyle.sandbox_backend import (
     SandboxResult,
@@ -75,6 +81,10 @@ __all__ = [
     "BaseConversionProcessor",
     "parse_base_conversion",
     "extract_number",
+    "GCDTurnstyle",
+    "LCMTurnstyle",
+    "FractionTurnstyle",
+    "parse_number_theory",
     "SandboxTurnstyle",
     "parse_sandbox_code",
     "SandboxResult",
