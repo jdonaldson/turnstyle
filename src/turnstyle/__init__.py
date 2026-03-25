@@ -43,6 +43,12 @@ from turnstyle.sandbox_backend import (
     WasmtimeBackend,
     MockBackend,
 )
+from turnstyle.probe import TurnstyleProbe, RoutingTurnstyle
+
+try:
+    from turnstyle.sweep import probe_sweep, generate_prompts, SweepResult
+except ImportError:
+    pass
 
 __all__ = [
     "SYMBOL",
@@ -76,4 +82,9 @@ __all__ = [
     "DenoPyodideBackend",
     "WasmtimeBackend",
     "MockBackend",
+    "TurnstyleProbe",
+    "RoutingTurnstyle",
+    "probe_sweep",
+    "generate_prompts",
+    "SweepResult",
 ]
