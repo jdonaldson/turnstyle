@@ -89,6 +89,8 @@ class CountingTurnstyle(Turnstyle):
         text, proof = t.generate("How many r's in 'strawberry'?")
     """
 
+    probe_label = "counting"
+
     def parse(self, prompt: str):
         return parse_counting(prompt)
 

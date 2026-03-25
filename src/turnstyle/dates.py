@@ -142,6 +142,8 @@ class DateTurnstyle(Turnstyle):
         text, proof = t.generate("How many days between March 20 and June 15?")
     """
 
+    probe_label = "date"
+
     def parse(self, prompt: str):
         return parse_date_arithmetic(prompt)
 

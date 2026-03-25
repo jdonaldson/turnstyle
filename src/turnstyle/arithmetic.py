@@ -145,6 +145,8 @@ class ArithmeticTurnstyle(Turnstyle):
         print(proof.inline())  # ⊢ 445+152=5̲97 ∎
     """
 
+    probe_label = "arithmetic"
+
     def parse(self, prompt: str):
         return parse_arithmetic(prompt)
 

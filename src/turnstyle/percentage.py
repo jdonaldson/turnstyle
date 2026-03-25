@@ -68,6 +68,8 @@ class PercentageTurnstyle(Turnstyle):
         text, proof = t.generate("What is 15% of 230?")
     """
 
+    probe_label = "percentage"
+
     def parse(self, prompt: str):
         return parse_percentage(prompt)
 

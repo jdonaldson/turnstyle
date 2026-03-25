@@ -117,6 +117,8 @@ class SandboxTurnstyle(Turnstyle):
         # proof.answer == 5050
     """
 
+    probe_label = "sandbox"
+
     def __init__(self, model, tokenizer, device, backend: SandboxBackend | None = None,
                  timeout: float = 5.0, bias_strength: float = 15.0):
         super().__init__(model, tokenizer, device, bias_strength)

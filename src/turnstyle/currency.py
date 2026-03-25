@@ -118,6 +118,8 @@ class CurrencyTurnstyle(Turnstyle):
         text, proof = t.generate("How much is 100 USD in EUR?")
     """
 
+    probe_label = "currency"
+
     def __init__(self, model, tokenizer, device, bias_strength=15.0,
                  rates: dict[str, float] | None = None):
         super().__init__(model, tokenizer, device, bias_strength)

@@ -163,6 +163,8 @@ class BaseConversionTurnstyle(Turnstyle):
         text, proof = t.generate("What is 255 in binary?")
     """
 
+    probe_label = "base_conversion"
+
     def parse(self, prompt: str):
         return parse_base_conversion(prompt)
 

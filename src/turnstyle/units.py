@@ -174,6 +174,8 @@ class UnitTurnstyle(Turnstyle):
         text, proof = t.generate("How many km is 26.2 miles?")
     """
 
+    probe_label = "unit"
+
     def parse(self, prompt: str):
         return parse_unit_conversion(prompt)
 
