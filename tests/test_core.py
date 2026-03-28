@@ -163,9 +163,10 @@ def test_token_audit_fields():
 class _FakeTokenizer:
     """Minimal tokenizer for testing SequenceLogitsProcessor."""
 
-    def __init__(self, vocab: dict[str, int]):
+    def __init__(self, vocab: dict[str, int], eos_token_id: int = 0):
         self._vocab = vocab
         self._inv = {v: k for k, v in vocab.items()}
+        self.eos_token_id = eos_token_id
 
     def encode(self, text, add_special_tokens=False):
         return [self._vocab[text]] if text in self._vocab else []
@@ -240,6 +241,22 @@ def test_seq_processor_proof_populated():
     assert proc.proof.trigger_step == 1
     assert len(proc.proof.digits) == 1
     assert len(proc.audits) == 1
+
+
+def test_seq_processor_forces_eos_after_done():
+    proc, vocab = _make_seq_processor()
+    eos_id = 0  # _FakeTokenizer default
+    ids = torch.tensor([[vocab["is"]]])
+    # Trigger
+    proc(ids, torch.zeros(1, 5))
+    # Inject the one token
+    proc(ids, torch.zeros(1, 5))
+    # Now DONE — should force EOS
+    scores = torch.zeros(1, 5)
+    out = proc(ids, scores)
+    assert proc.state == "DONE"
+    assert out[0, eos_id].item() > out[0, 1].item()
+    assert out[0, eos_id].item() > out[0, 2].item()
 
 
 def test_seq_processor_correction_tracking():

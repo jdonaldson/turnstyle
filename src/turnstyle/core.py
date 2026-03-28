@@ -317,6 +317,14 @@ class SequenceLogitsProcessor(LogitsProcessor):
             else:
                 self.state = "DONE"
 
+        if self.state == "DONE":
+            # Force EOS to prevent model from generating extra tokens
+            # after the biased answer sequence.
+            eos_id = getattr(self.tokenizer, 'eos_token_id', None)
+            if eos_id is not None:
+                scores[0, :] -= 100.0
+                scores[0, eos_id] += 100.0
+
         self.proof.final_state = self.state
         self.proof.total_steps = self.step_count
         return scores
