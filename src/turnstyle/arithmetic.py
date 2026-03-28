@@ -150,6 +150,38 @@ class ArithmeticTurnstyle(Turnstyle):
     def parse(self, prompt: str):
         return parse_arithmetic(prompt)
 
+    def parse_from_hidden(self, hidden_state):
+        """Extract operation and operands from hidden states via IntentProbe."""
+        if self.intent_probe is None:
+            return None
+
+        intent = self.intent_probe.predict(hidden_state)
+
+        op_label, op_conf = intent.get("operation", (None, 0))
+        a_label, a_conf = intent.get("operand_a", (None, 0))
+        b_label, b_conf = intent.get("operand_b", (None, 0))
+
+        # Confidence gate
+        min_conf = min(op_conf, a_conf, b_conf)
+        if min_conf < 0.7:
+            return None
+
+        op_map = {"add": "+", "sub": "-", "mul": "*", "div": "/"}
+        op = op_map.get(op_label)
+        if op is None:
+            return None
+
+        try:
+            a, b = int(a_label), int(b_label)
+        except (ValueError, TypeError):
+            return None
+
+        if op == "/" and b == 0:
+            return None
+
+        result = {"+": a + b, "-": a - b, "*": a * b, "/": a // b}[op]
+        return a, b, op, result
+
     def make_processor(self, parsed, max_new_tokens: int):
         a, b, op, answer = parsed
         answer_digits = [int(d) for d in str(abs(answer))]

@@ -28,7 +28,7 @@ import numpy as np
 import torch
 from transformers import PreTrainedModel, PreTrainedTokenizerBase
 
-from turnstyle.probe import TurnstyleProbe
+from turnstyle.probe import IntentProbe, TurnstyleProbe
 
 # ── default prompt labels ────────────────────────────────────────────
 
@@ -42,6 +42,9 @@ ALL_LABELS = [
     "base_conversion",
     "sandbox",
     "number_theory",
+    "boolean",
+    "sorting",
+    "dyck",
 ]
 
 # ── prompt templates ─────────────────────────────────────────────────
@@ -163,6 +166,42 @@ _TEMPLATES: dict[str, list[str]] = {
         "What is {a}/{b} in simplest form?",
         "Can you reduce the fraction {a}/{b}?",
     ],
+    "boolean": [
+        "What is {bool1} and {bool2}?",
+        "Evaluate {bool1} or {bool2}",
+        "What is not {bool1}?",
+        "What is {bool1} and not {bool2}?",
+        "{bool1} or {bool2}",
+        "Is {bool1} and {bool2} true?",
+        "Evaluate: not {bool1} or {bool2}",
+        "What does {bool1} and {bool2} evaluate to?",
+        "Compute {bool1} or not {bool2}",
+        "What is the result of {bool1} and {bool2}?",
+    ],
+    "sorting": [
+        "Sort the following words: {word} {word2} {word3}",
+        "Sort: {word}, {word2}, {word3}",
+        "Sort [{word}, {word2}, {word3}] alphabetically",
+        "Put these words in order: {word} {word2} {word3}",
+        "Alphabetically sort {word}, {word2}, {word3}",
+        "Sort the words: {word} {word2} {word3}",
+        "Arrange in alphabetical order: {word}, {word2}, {word3}",
+        "Sort these: {word} {word2} {word3}",
+        "Sort the list: {word}, {word2}, {word3}",
+        "Alphabetize: {word} {word2} {word3}",
+    ],
+    "dyck": [
+        "Complete the brackets: {brackets}",
+        "Close the brackets: {brackets}",
+        "Finish the parentheses: {brackets}",
+        "What closes this bracket sequence: {brackets}",
+        "Balance these brackets: {brackets}",
+        "Complete: {brackets}",
+        "Close the parentheses: {brackets}",
+        "Finish the brackets: {brackets}",
+        "What brackets close: {brackets}",
+        "Complete the braces: {brackets}",
+    ],
 }
 
 _NEGATIVE_TEMPLATES = [
@@ -199,6 +238,19 @@ _PHRASES = [
     "the quick brown fox", "hello world", "to be or not to be",
     "all that glitters is not gold", "the rain in spain",
 ]
+_BOOLS = ["True", "False"]
+_WORDS2 = [
+    "cherry", "banana", "apple", "date", "elderberry", "fig", "grape",
+    "honeydew", "kiwi", "lemon", "mango", "nectarine", "orange", "papaya",
+]
+_WORDS3 = [
+    "apricot", "blueberry", "coconut", "dragonfruit", "eggplant", "fennel",
+    "guava", "huckleberry", "jackfruit", "kumquat", "lime", "mandarin",
+]
+_BRACKET_SEQS = [
+    "(", "( (", "( ( (", "[ (", "{ [ (", "( [", "( ( )", "{ ( [ (", "[ [ (",
+    "{ { [ [", "( ( ( (", "[ ( [",
+]
 _COUNTRIES = ["France", "Japan", "Brazil", "Canada", "Australia"]
 _TOPICS = ["space", "history", "cooking", "music", "philosophy"]
 _BOOKS = ["1984", "Hamlet", "The Odyssey", "Dune", "Pride and Prejudice"]
@@ -226,6 +278,8 @@ def _fill_template(template: str, rng: random.Random) -> str:
         "{month1}": rng.choice(_MONTHS),
         "{month2}": rng.choice(_MONTHS),
         "{word}": rng.choice(_WORDS),
+        "{word2}": rng.choice(_WORDS2),
+        "{word3}": rng.choice(_WORDS3),
         "{phrase}": rng.choice(_PHRASES),
         "{country}": rng.choice(_COUNTRIES),
         "{topic}": rng.choice(_TOPICS),
@@ -234,6 +288,9 @@ def _fill_template(template: str, rng: random.Random) -> str:
         "{concept}": rng.choice(_CONCEPTS),
         "{condition}": rng.choice(_CONDITIONS),
         "{language}": rng.choice(_LANGUAGES),
+        "{bool1}": rng.choice(_BOOLS),
+        "{bool2}": rng.choice(_BOOLS),
+        "{brackets}": rng.choice(_BRACKET_SEQS),
     }
     result = template
     for key, val in replacements.items():
@@ -822,5 +879,285 @@ def probe_sweep(
 
     if verbose:
         print(f"\nBest layer: {best_layer} ({best_accuracy:.1%})")
+
+    return result
+
+
+# ════════════════════════════════════════════════════════════════════════
+# Intent sweep — per-dimension probe training for parse_from_hidden()
+# ════════════════════════════════════════════════════════════════════════
+
+_INTENT_TEMPLATES: dict[str, dict[str, dict[str, list[str]]]] = {
+    "arithmetic": {
+        "operation": {
+            "add": [
+                "What is {a} + {b}?",
+                "{a} plus {b}",
+                "Add {a} and {b}",
+                "What do you get when you add {a} to {b}?",
+                "The sum of {a} and {b}",
+            ],
+            "sub": [
+                "What is {a} - {b}?",
+                "{a} minus {b}",
+                "Subtract {b} from {a}",
+                "What's left if you take {b} from {a}?",
+                "The difference between {a} and {b}",
+            ],
+            "mul": [
+                "What is {a} * {b}?",
+                "{a} times {b}",
+                "Multiply {a} by {b}",
+                "What's {a} multiplied by {b}?",
+                "The product of {a} and {b}",
+            ],
+            "div": [
+                "What is {a} / {b}?",
+                "{a} divided by {b}",
+                "Divide {a} by {b}",
+                "How many times does {b} go into {a}?",
+            ],
+        },
+    },
+}
+
+
+def generate_intent_prompts(
+    turnstyle_label: str = "arithmetic",
+    per_class: int = 50,
+    seed: int = 42,
+) -> dict[str, dict[str, list[str]]]:
+    """Generate labeled prompts for intent probe training.
+
+    Returns {dimension_name: {class_label: [filled_prompts]}}.
+    """
+    rng = random.Random(seed)
+    templates = _INTENT_TEMPLATES.get(turnstyle_label)
+    if templates is None:
+        raise ValueError(
+            f"No intent templates for {turnstyle_label!r}. "
+            f"Available: {', '.join(_INTENT_TEMPLATES)}"
+        )
+
+    result: dict[str, dict[str, list[str]]] = {}
+    for dim_name, classes in templates.items():
+        result[dim_name] = {}
+        for class_label, tmpls in classes.items():
+            prompts = []
+            for i in range(per_class):
+                tmpl = tmpls[i % len(tmpls)]
+                prompts.append(_fill_template(tmpl, rng))
+            result[dim_name][class_label] = prompts
+
+    return result
+
+
+@dataclass
+class IntentSweepResult:
+    """Results from an intent probe sweep."""
+
+    turnstyle_label: str
+    dimensions: dict[str, dict[int, float]]  # {dim: {layer_idx: accuracy, ...}}
+    best_layers: dict[str, int]  # {dim: best_layer}
+    best_accuracies: dict[str, float]  # {dim: best_accuracy}
+    intent_probe: IntentProbe
+    pool: str
+    backend: str = "torch"
+
+    def summary(self) -> str:
+        lines = [
+            f"Intent sweep: {self.turnstyle_label}, "
+            f"pool={self.pool}, backend={self.backend}",
+            "",
+        ]
+        for dim_name in sorted(self.dimensions):
+            layer_accs = self.dimensions[dim_name]
+            best_layer = self.best_layers[dim_name]
+            best_acc = self.best_accuracies[dim_name]
+            lines.append(f"  {dim_name}: best layer {best_layer} ({best_acc:.1%})")
+            for layer in sorted(layer_accs):
+                acc = layer_accs[layer]
+                marker = " ◀" if layer == best_layer else ""
+                lines.append(f"    L{layer:3d}: {acc:.1%}{marker}")
+        return "\n".join(lines)
+
+
+def intent_sweep(
+    model,
+    tokenizer=None,
+    turnstyle_label: str = "arithmetic",
+    intent_prompts: dict[str, dict[str, list[str]]] | None = None,
+    layer_range: tuple[int, int] | None = None,
+    pool: str = "last",
+    test_ratio: float = 0.2,
+    threshold: float = 0.5,
+    save_path: str | None = None,
+    device: str | None = None,
+    verbose: bool = True,
+    backend: str | None = None,
+) -> IntentSweepResult:
+    """Sweep layers and train per-dimension intent probes.
+
+    Like probe_sweep() but trains one probe per intent dimension
+    (e.g., "operation", "operand_a") rather than one probe for routing.
+
+    Returns IntentSweepResult with the best IntentProbe.
+    """
+    resolved_backend = _detect_backend(model, backend)
+
+    # Load model if string
+    if isinstance(model, str):
+        if verbose:
+            print(f"Loading model: {model} (backend={resolved_backend})")
+        if resolved_backend == "mlx":
+            from mlx_lm import load as mlx_load
+            model, tokenizer = mlx_load(model)
+        else:
+            from transformers import AutoModelForCausalLM, AutoTokenizer
+            tokenizer = tokenizer or AutoTokenizer.from_pretrained(model)
+            model = AutoModelForCausalLM.from_pretrained(
+                model, torch_dtype=torch.float16,
+            )
+
+    if tokenizer is None:
+        raise ValueError("tokenizer is required when model is not a string")
+
+    # Device setup (torch only)
+    if resolved_backend == "torch":
+        if device is None:
+            if hasattr(model, "device"):
+                device = str(model.device)
+            else:
+                device = "cuda" if torch.cuda.is_available() else "cpu"
+        model = model.to(device)
+        model.eval()
+    else:
+        device = "mlx"
+
+    # Generate intent prompts
+    if intent_prompts is None:
+        intent_prompts = generate_intent_prompts(turnstyle_label)
+
+    # Determine layer range
+    layers = _get_layers(model)
+    num_layers = len(layers)
+    if layer_range is not None:
+        start, end = layer_range
+        layer_indices = list(range(start, min(end + 1, num_layers)))
+    else:
+        layer_indices = list(range(num_layers))
+
+    # Train a probe for each dimension
+    dimension_probes: dict[str, TurnstyleProbe] = {}
+    dimension_accuracies: dict[str, dict[int, float]] = {}
+    best_layers: dict[str, int] = {}
+    best_accs: dict[str, float] = {}
+
+    for dim_name, classes in intent_prompts.items():
+        if verbose:
+            print(f"\nDimension: {dim_name} ({len(classes)} classes)")
+
+        # Build flat prompt list + labels
+        class_names = sorted(classes.keys())
+        class_to_idx = {name: i for i, name in enumerate(class_names)}
+
+        all_prompts: list[str] = []
+        all_labels: list[int] = []
+        for cls_name in class_names:
+            for p in classes[cls_name]:
+                all_prompts.append(p)
+                all_labels.append(class_to_idx[cls_name])
+
+        # Train/test split
+        rng = np.random.RandomState(42)
+        train_idx: list[int] = []
+        test_idx: list[int] = []
+        offset = 0
+        for cls_name in class_names:
+            n = len(classes[cls_name])
+            indices = list(range(offset, offset + n))
+            rng.shuffle(indices)
+            split = max(1, int(n * test_ratio))
+            test_idx.extend(indices[:split])
+            train_idx.extend(indices[split:])
+            offset += n
+
+        train_prompts = [all_prompts[i] for i in train_idx]
+        test_prompts = [all_prompts[i] for i in test_idx]
+        train_labels = np.array([all_labels[i] for i in train_idx])
+        test_labels = np.array([all_labels[i] for i in test_idx])
+
+        if verbose:
+            print(f"  {len(train_prompts)} train / {len(test_prompts)} test")
+
+        # Extract hidden states
+        if resolved_backend == "mlx":
+            train_hidden = _extract_all_hidden_states_mlx(
+                model, tokenizer, train_prompts, pool, layer_indices,
+            )
+            test_hidden = _extract_all_hidden_states_mlx(
+                model, tokenizer, test_prompts, pool, layer_indices,
+            )
+        else:
+            train_hidden = _extract_all_hidden_states(
+                model, tokenizer, train_prompts, train_labels.tolist(),
+                device, pool, layer_indices,
+            )
+            test_hidden = _extract_all_hidden_states(
+                model, tokenizer, test_prompts, test_labels.tolist(),
+                device, pool, layer_indices,
+            )
+
+        # Train probe at each layer
+        layer_accs: dict[int, float] = {}
+        dim_best_layer = -1
+        dim_best_acc = -1.0
+        dim_best_clf = None
+        dim_best_scaler = None
+
+        for idx in layer_indices:
+            acc, per_label, clf, scaler = _train_probe_at_layer(
+                train_hidden[idx], train_labels,
+                test_hidden[idx], test_labels,
+                class_names,
+            )
+            layer_accs[idx] = acc
+            if verbose:
+                print(f"    Layer {idx:3d}: {acc:.1%}")
+            if acc > dim_best_acc:
+                dim_best_acc = acc
+                dim_best_layer = idx
+                dim_best_clf = clf
+                dim_best_scaler = scaler
+
+        dimension_accuracies[dim_name] = layer_accs
+        best_layers[dim_name] = dim_best_layer
+        best_accs[dim_name] = dim_best_acc
+
+        # Convert to TurnstyleProbe
+        dimension_probes[dim_name] = _sklearn_to_probe(
+            dim_best_clf, dim_best_scaler, class_names, threshold,
+        )
+
+    # Package as IntentProbe
+    intent_probe = IntentProbe(dimension_probes)
+
+    if save_path:
+        intent_probe.save(save_path)
+        if verbose:
+            print(f"\nSaved intent probe to {save_path}")
+
+    result = IntentSweepResult(
+        turnstyle_label=turnstyle_label,
+        dimensions=dimension_accuracies,
+        best_layers=best_layers,
+        best_accuracies=best_accs,
+        intent_probe=intent_probe,
+        pool=pool,
+        backend=resolved_backend,
+    )
+
+    if verbose:
+        print(f"\n{result.summary()}")
 
     return result

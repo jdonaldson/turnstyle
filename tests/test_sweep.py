@@ -10,15 +10,18 @@ import torch
 
 from turnstyle.sweep import (
     ALL_LABELS,
+    IntentSweepResult,
     SweepResult,
+    _INTENT_TEMPLATES,
     _detect_backend,
     _extract_all_hidden_states_mlx,
     _is_mlx_module,
     _sklearn_to_probe,
     _train_probe_at_layer,
+    generate_intent_prompts,
     generate_prompts,
 )
-from turnstyle.probe import TurnstyleProbe
+from turnstyle.probe import IntentProbe, TurnstyleProbe
 
 
 # ── generate_prompts tests ───────────────────────────────────────────
@@ -343,6 +346,9 @@ class TestProbeLabelAttributes:
             ("CountingTurnstyle", "counting"),
             ("BaseConversionTurnstyle", "base_conversion"),
             ("SandboxTurnstyle", "sandbox"),
+            ("BooleanTurnstyle", "boolean"),
+            ("SortingTurnstyle", "sorting"),
+            ("DyckTurnstyle", "dyck"),
         ],
     )
     def test_probe_label_is_class_attribute(self, cls_name, expected_label):
@@ -371,6 +377,9 @@ class TestProbeLabelAttributes:
             turnstyle.CountingTurnstyle,
             turnstyle.BaseConversionTurnstyle,
             turnstyle.SandboxTurnstyle,
+            turnstyle.BooleanTurnstyle,
+            turnstyle.SortingTurnstyle,
+            turnstyle.DyckTurnstyle,
         ]
         for cls in classes:
             doc = cls.__doc__ or ""
@@ -671,3 +680,79 @@ class TestSweepResultBackend:
             backend="mlx",
         )
         assert "backend=mlx" in result.summary()
+
+
+# ── Intent template tests ───────────────────────────────────────────
+
+
+class TestIntentTemplates:
+    def test_arithmetic_templates_exist(self):
+        """Arithmetic intent templates are defined."""
+        assert "arithmetic" in _INTENT_TEMPLATES
+        assert "operation" in _INTENT_TEMPLATES["arithmetic"]
+
+    def test_arithmetic_operation_classes(self):
+        """Arithmetic operation has 4 classes."""
+        ops = _INTENT_TEMPLATES["arithmetic"]["operation"]
+        assert set(ops.keys()) == {"add", "sub", "mul", "div"}
+        for cls_templates in ops.values():
+            assert len(cls_templates) >= 4
+
+
+class TestGenerateIntentPrompts:
+    def test_structure(self):
+        """Returns {dim: {class: [prompts]}}."""
+        result = generate_intent_prompts()
+        assert "operation" in result
+        assert set(result["operation"].keys()) == {"add", "sub", "mul", "div"}
+        for cls_prompts in result["operation"].values():
+            assert len(cls_prompts) == 50
+
+    def test_per_class_count(self):
+        result = generate_intent_prompts(per_class=10)
+        for cls_prompts in result["operation"].values():
+            assert len(cls_prompts) == 10
+
+    def test_deterministic(self):
+        p1 = generate_intent_prompts(seed=42)
+        p2 = generate_intent_prompts(seed=42)
+        assert p1 == p2
+
+    def test_different_seeds(self):
+        p1 = generate_intent_prompts(seed=1)
+        p2 = generate_intent_prompts(seed=2)
+        assert p1["operation"]["add"] != p2["operation"]["add"]
+
+    def test_unknown_label_raises(self):
+        with pytest.raises(ValueError, match="No intent templates"):
+            generate_intent_prompts(turnstyle_label="nonexistent")
+
+    def test_prompts_are_filled(self):
+        """Prompts should not contain {a} or {b} placeholders."""
+        result = generate_intent_prompts(per_class=5)
+        for cls_prompts in result["operation"].values():
+            for p in cls_prompts:
+                assert "{a}" not in p
+                assert "{b}" not in p
+
+
+class TestIntentSweepResult:
+    def test_summary_readable(self):
+        """Summary produces human-readable output."""
+        probe = IntentProbe({
+            "operation": TurnstyleProbe(
+                torch.randn(4, 8), torch.zeros(4),
+                ["add", "sub", "mul", "div"]),
+        })
+        result = IntentSweepResult(
+            turnstyle_label="arithmetic",
+            dimensions={"operation": {0: 0.7, 1: 0.95}},
+            best_layers={"operation": 1},
+            best_accuracies={"operation": 0.95},
+            intent_probe=probe,
+            pool="last",
+        )
+        s = result.summary()
+        assert "operation" in s
+        assert "95.0%" in s
+        assert "arithmetic" in s
