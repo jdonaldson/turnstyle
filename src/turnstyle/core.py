@@ -20,6 +20,7 @@ from dataclasses import dataclass, field
 from enum import Enum, auto
 
 import torch
+from transformers import LogitsProcessor
 
 SYMBOL = "\u22a2"  # ⊢
 QED = "\u220e"     # ∎
@@ -241,6 +242,123 @@ def extract_number(text: str) -> int | None:
 
 
 # ════════════════════════════════════════════════════════════════════════
+# Token-level audit + sequence processor
+# ════════════════════════════════════════════════════════════════════════
+
+@dataclass
+class TokenAudit:
+    """Per-token record of what the coprocessor did (for arbitrary token biasing)."""
+    position: int
+    correct_token_id: int
+    model_top_token_id: int
+    bias_applied: float
+    model_logit: float
+    top_logit: float
+    corrected: bool
+
+
+class SequenceLogitsProcessor(LogitsProcessor):
+    """Biases logits toward a pre-tokenized answer sequence.
+
+    State machine: WAITING → INJECTING → DONE
+
+    Unlike ArithmeticLogitsProcessor (digit-only), this handles arbitrary
+    token sequences — boolean answers, sorted word lists, bracket sequences, etc.
+
+    Usage:
+        tokens = tokenizer.encode("True", add_special_tokens=False)
+        proc = SequenceLogitsProcessor(
+            tokenizer, tokens, expression="True and False",
+            answer_str="True", bias_strength=15.0)
+    """
+
+    def __init__(
+        self,
+        tokenizer,
+        answer_token_ids: list[int],
+        expression: str,
+        answer_str: str,
+        bias_strength: float = 15.0,
+        max_new_tokens: int = 50,
+        trigger_texts: set[str] | None = None,
+    ):
+        self.tokenizer = tokenizer
+        self.answer_token_ids = answer_token_ids
+        self.bias_strength = bias_strength
+        self.trigger_texts = trigger_texts or {'is', '=', 'equals', ':'}
+        self.state = "WAITING"
+        self.token_idx = 0
+        self.step_count = 0
+
+        self.audits: list[TokenAudit] = []
+        self.proof = CoprocessorDiagnostic(
+            expression=expression,
+            answer=0,
+            answer_str=answer_str,
+            expected_digits=len(answer_token_ids),
+            max_steps=max_new_tokens,
+        )
+
+    def __call__(
+        self, input_ids: torch.LongTensor, scores: torch.FloatTensor,
+    ) -> torch.FloatTensor:
+        self.step_count += 1
+        last_id = input_ids[0, -1].item()
+        last_text = self.tokenizer.decode([last_id]).strip().lower()
+
+        if self.state == "WAITING":
+            if last_text in self.trigger_texts:
+                self.state = "INJECTING"
+                self.proof.trigger_step = self.step_count
+
+        elif self.state == "INJECTING":
+            if self.token_idx < len(self.answer_token_ids):
+                scores = self._bias_token(scores)
+            else:
+                self.state = "DONE"
+
+        self.proof.final_state = self.state
+        self.proof.total_steps = self.step_count
+        return scores
+
+    def _bias_token(self, scores: torch.FloatTensor) -> torch.FloatTensor:
+        correct_id = self.answer_token_ids[self.token_idx]
+        top_id = int(torch.argmax(scores, dim=-1)[0])
+
+        model_logit = scores[0, correct_id].item()
+        top_logit = scores[0, top_id].item()
+
+        scores[0, correct_id] += self.bias_strength
+
+        new_top_id = int(torch.argmax(scores, dim=-1)[0])
+        corrected = new_top_id != top_id
+
+        self.audits.append(TokenAudit(
+            position=self.token_idx,
+            correct_token_id=correct_id,
+            model_top_token_id=top_id,
+            bias_applied=self.bias_strength,
+            model_logit=model_logit,
+            top_logit=top_logit,
+            corrected=corrected,
+        ))
+
+        # Also record as DigitAudit for proof compatibility
+        self.proof.digits.append(DigitAudit(
+            position=self.token_idx,
+            correct=correct_id,
+            model_predicted=top_id,
+            bias_applied=self.bias_strength,
+            model_logit=model_logit,
+            top_logit=top_logit,
+            corrected=corrected,
+        ))
+
+        self.token_idx += 1
+        return scores
+
+
+# ════════════════════════════════════════════════════════════════════════
 # Base class
 # ════════════════════════════════════════════════════════════════════════
 
@@ -252,6 +370,8 @@ class Turnstyle:
         make_processor(parsed, max_new_tokens) -> LogitsProcessor
     """
 
+    intent_probe = None  # IntentProbe, set by sweep or manually
+
     def __init__(self, model, tokenizer, device, bias_strength=15.0):
         self.model = model
         self.tokenizer = tokenizer
@@ -260,6 +380,14 @@ class Turnstyle:
 
     def parse(self, prompt: str):
         raise NotImplementedError
+
+    def parse_from_hidden(self, hidden_state):
+        """Probe-based parsing from model hidden states.
+
+        Returns same format as parse(), or None if not supported/confident enough.
+        Subclasses override to convert probe-extracted intents into parsed format.
+        """
+        return None
 
     def make_processor(self, parsed, max_new_tokens: int):
         raise NotImplementedError
