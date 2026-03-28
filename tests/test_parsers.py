@@ -387,5 +387,17 @@ class TestDyckParsing:
         _, closing, _ = result
         assert closing == ")))"
 
+    def test_angle_brackets(self):
+        result = parse_dyck("Complete the brackets: < ( [")
+        assert result is not None
+        _, closing, _ = result
+        assert closing == "])>"
+
+    def test_angle_brackets_partial(self):
+        result = parse_dyck("Complete the brackets: < ( ) [")
+        assert result is not None
+        _, closing, _ = result
+        assert closing == "]>"
+
     def test_no_brackets_returns_none(self):
         assert parse_dyck("What is the capital of France?") is None

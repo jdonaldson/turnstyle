@@ -11,7 +11,7 @@ import re
 
 from turnstyle.core import SequenceLogitsProcessor, Turnstyle
 
-_OPEN_TO_CLOSE = {'(': ')', '[': ']', '{': '}'}
+_OPEN_TO_CLOSE = {'(': ')', '[': ']', '{': '}', '<': '>'}
 _CLOSE_TO_OPEN = {v: k for k, v in _OPEN_TO_CLOSE.items()}
 _ALL_BRACKETS = set(_OPEN_TO_CLOSE.keys()) | set(_OPEN_TO_CLOSE.values())
 
@@ -28,7 +28,7 @@ def parse_dyck(text: str) -> tuple[str, str, str] | None:
     m = re.search(
         r'(?:complete|close|finish|balance)(?:\s+the)?\s+'
         r'(?:brackets?|parenthes[ei]s|braces)\s*[:=]?\s*'
-        r'([\(\)\[\]\{\}\s]+)',
+        r'([\(\)\[\]\{\}<>\s]+)',
         lower,
     )
     if not m:
