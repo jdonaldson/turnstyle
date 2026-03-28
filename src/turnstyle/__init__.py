@@ -54,7 +54,22 @@ from turnstyle.sandbox_backend import (
     WasmtimeBackend,
     MockBackend,
 )
-from turnstyle.probe import TurnstyleProbe, IntentProbe, RoutingTurnstyle
+from turnstyle.probe import (
+    TurnstyleProbe,
+    IntentProbe,
+    MetacognitiveProbe,
+    StrategyRouter,
+    RoutingTurnstyle,
+)
+from turnstyle.extract import (
+    ExtractionMethod,
+    ExtractionResult,
+    ExtractionSpec,
+    FieldSpec,
+    classify_token,
+    generate_short,
+    extract,
+)
 
 try:
     from turnstyle.sweep import (
@@ -114,7 +129,16 @@ __all__ = [
     "MockBackend",
     "TurnstyleProbe",
     "IntentProbe",
+    "MetacognitiveProbe",
+    "StrategyRouter",
     "RoutingTurnstyle",
+    "ExtractionMethod",
+    "ExtractionResult",
+    "ExtractionSpec",
+    "FieldSpec",
+    "classify_token",
+    "generate_short",
+    "extract",
     "probe_sweep",
     "generate_prompts",
     "generate_intent_prompts",

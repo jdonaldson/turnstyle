@@ -11,6 +11,7 @@ from __future__ import annotations
 import re
 
 from turnstyle.core import SequenceLogitsProcessor, Turnstyle
+from turnstyle.extract import ExtractionSpec, FieldSpec
 
 
 def parse_boolean(text: str) -> tuple[str, bool, str] | None:
@@ -53,6 +54,51 @@ def parse_boolean(text: str) -> tuple[str, bool, str] | None:
     return normalized, result, str(result)
 
 
+def _normalize_boolean_expr(raw: str) -> str:
+    """Normalize a boolean expression to valid Python."""
+    normalized = raw.strip()
+    normalized = re.sub(r'\btrue\b', 'True', normalized, flags=re.IGNORECASE)
+    normalized = re.sub(r'\bfalse\b', 'False', normalized, flags=re.IGNORECASE)
+    normalized = re.sub(r'\band\b', 'and', normalized, flags=re.IGNORECASE)
+    normalized = re.sub(r'\bor\b', 'or', normalized, flags=re.IGNORECASE)
+    normalized = re.sub(r'\bnot\b', 'not', normalized, flags=re.IGNORECASE)
+    return normalized
+
+
+def _assemble_boolean(fields: dict) -> tuple[str, bool, str]:
+    """Assemble boolean extraction fields into parse() tuple format."""
+    raw = fields["expression"]
+    normalized = _normalize_boolean_expr(raw)
+
+    # Validate: only allowed tokens
+    tokens = set(normalized.split()) - {'True', 'False', 'and', 'or', 'not', '(', ')'}
+    if tokens:
+        raise ValueError(f"Invalid tokens in expression: {tokens}")
+
+    result = eval(normalized, {"__builtins__": {}}, {  # noqa: S307
+        "True": True, "False": False,
+    })
+    if not isinstance(result, bool):
+        raise ValueError(f"Expression did not evaluate to bool: {result}")
+
+    return normalized, result, str(result)
+
+
+BOOLEAN_EXTRACTION_SPEC = ExtractionSpec(
+    fields=[
+        FieldSpec(
+            name="expression",
+            prompt_template=(
+                "Extract the boolean expression (using True, False, and, or, not) "
+                "from this text. Return only the expression.\n"
+                "Text: {input}\nExpression:"
+            ),
+        ),
+    ],
+    assemble=_assemble_boolean,
+)
+
+
 class BooleanTurnstyle(Turnstyle):
     """Grounds boolean expression evaluation in exact computation.
 
@@ -61,9 +107,10 @@ class BooleanTurnstyle(Turnstyle):
     """
 
     probe_label = "boolean"
+    extraction_spec = BOOLEAN_EXTRACTION_SPEC
 
     def parse(self, prompt: str):
-        return parse_boolean(prompt)
+        return None  # routing via probe, fields via extraction
 
     def make_processor(self, parsed, max_new_tokens: int):
         expression, result, result_str = parsed

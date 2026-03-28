@@ -14,6 +14,7 @@ import re
 
 from turnstyle.arithmetic import ArithmeticLogitsProcessor
 from turnstyle.core import Turnstyle
+from turnstyle.extract import ExtractionSpec, FieldSpec
 
 _VOWELS = set('aeiouAEIOU')
 
@@ -82,6 +83,70 @@ def parse_counting(text: str):
     return None
 
 
+_COUNT_TYPES = ["vowels", "consonants", "words", "letters", "characters", "specific_letter"]
+
+
+def _assemble_counting(fields: dict) -> tuple[str, str, int, str]:
+    """Assemble counting extraction fields into parse() tuple format."""
+    target = fields["target"].strip().strip("'\"")
+    count_type = fields["count_type"]
+    short = _short(target)
+
+    if count_type == "vowels":
+        count = sum(1 for c in target if c in _VOWELS)
+        return target, "vowels", count, f"vowels({short})"
+    elif count_type == "consonants":
+        count = sum(1 for c in target if c.isalpha() and c not in _VOWELS)
+        return target, "consonants", count, f"consonants({short})"
+    elif count_type == "words":
+        count = len(target.split())
+        return target, "words", count, f"words({short})"
+    elif count_type == "letters":
+        count = sum(1 for c in target if c.isalpha())
+        return target, "letters", count, f"letters({short})"
+    elif count_type == "characters":
+        count = len(target)
+        return target, "characters", count, f"chars({short})"
+    elif count_type == "specific_letter":
+        letter = fields["specific_letter"].lower()
+        count = target.lower().count(letter)
+        return target, f"'{letter}'", count, f"count({letter},{short})"
+    else:
+        raise ValueError(f"Unknown count_type: {count_type}")
+
+
+COUNTING_EXTRACTION_SPEC = ExtractionSpec(
+    fields=[
+        FieldSpec(
+            name="target",
+            prompt_template=(
+                "What is the string being analyzed in this text? "
+                "Return only the target string, no quotes.\n"
+                "Text: {input}\nTarget:"
+            ),
+        ),
+        FieldSpec(
+            name="count_type",
+            prompt_template=(
+                "What type of counting is being asked for?\n"
+                "Text: {input}\nType:"
+            ),
+            options=_COUNT_TYPES,
+        ),
+        FieldSpec(
+            name="specific_letter",
+            prompt_template=(
+                "What specific letter is being counted? "
+                "If no specific letter, answer 'a'.\n"
+                "Text: {input}\nLetter:"
+            ),
+            options=list("abcdefghijklmnopqrstuvwxyz"),
+        ),
+    ],
+    assemble=_assemble_counting,
+)
+
+
 class CountingTurnstyle(Turnstyle):
     """Grounds string counting in exact computation.
 
@@ -90,9 +155,10 @@ class CountingTurnstyle(Turnstyle):
     """
 
     probe_label = "counting"
+    extraction_spec = COUNTING_EXTRACTION_SPEC
 
     def parse(self, prompt: str):
-        return parse_counting(prompt)
+        return None  # routing via probe, fields via extraction
 
     def make_processor(self, parsed, max_new_tokens: int):
         _, _, result, expr = parsed

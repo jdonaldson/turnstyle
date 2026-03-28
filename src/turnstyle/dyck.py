@@ -10,6 +10,7 @@ from __future__ import annotations
 import re
 
 from turnstyle.core import SequenceLogitsProcessor, Turnstyle
+from turnstyle.extract import ExtractionSpec, FieldSpec
 
 _OPEN_TO_CLOSE = {'(': ')', '[': ']', '{': '}', '<': '>'}
 _CLOSE_TO_OPEN = {v: k for k, v in _OPEN_TO_CLOSE.items()}
@@ -62,6 +63,53 @@ def parse_dyck(text: str) -> tuple[str, str, str] | None:
     return open_seq, closing, closing
 
 
+def _filter_brackets(raw: str) -> str:
+    """Keep only bracket characters from raw text."""
+    return "".join(ch for ch in raw if ch in _ALL_BRACKETS)
+
+
+def _assemble_dyck(fields: dict) -> tuple[str, str, str]:
+    """Assemble dyck extraction fields into parse() tuple format."""
+    raw = fields["brackets"]
+    brackets = [ch for ch in raw if ch in _ALL_BRACKETS]
+
+    if not brackets:
+        raise ValueError("No brackets found")
+
+    stack = []
+    for ch in brackets:
+        if ch in _OPEN_TO_CLOSE:
+            stack.append(ch)
+        elif ch in _CLOSE_TO_OPEN:
+            if stack and stack[-1] == _CLOSE_TO_OPEN[ch]:
+                stack.pop()
+            else:
+                raise ValueError(f"Mismatched bracket: {ch}")
+
+    if not stack:
+        raise ValueError("Brackets already balanced")
+
+    closing = "".join(_OPEN_TO_CLOSE[ch] for ch in reversed(stack))
+    open_seq = " ".join(brackets)
+    return open_seq, closing, closing
+
+
+DYCK_EXTRACTION_SPEC = ExtractionSpec(
+    fields=[
+        FieldSpec(
+            name="brackets",
+            prompt_template=(
+                "Extract the bracket sequence from this text. "
+                "Return only the brackets.\n"
+                "Text: {input}\nBrackets:"
+            ),
+            postprocess=_filter_brackets,
+        ),
+    ],
+    assemble=_assemble_dyck,
+)
+
+
 class DyckTurnstyle(Turnstyle):
     """Grounds bracket completion in stack-based computation.
 
@@ -70,9 +118,10 @@ class DyckTurnstyle(Turnstyle):
     """
 
     probe_label = "dyck"
+    extraction_spec = DYCK_EXTRACTION_SPEC
 
     def parse(self, prompt: str):
-        return parse_dyck(prompt)
+        return None  # routing via probe, fields via extraction
 
     def make_processor(self, parsed, max_new_tokens: int):
         open_seq, closing, closing_str = parsed

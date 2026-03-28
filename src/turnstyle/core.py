@@ -379,6 +379,8 @@ class Turnstyle:
     """
 
     intent_probe = None  # IntentProbe, set by sweep or manually
+    metacognitive_probe = None  # MetacognitiveProbe, set per-task
+    extraction_spec = None  # ExtractionSpec, set by subclass
 
     def __init__(self, model, tokenizer, device, bias_strength=15.0):
         self.model = model
@@ -403,6 +405,13 @@ class Turnstyle:
     def generate(self, prompt: str, max_new_tokens: int = 50):
         """Generate with symbolic grounding. Returns (text, diagnostic)."""
         parsed = self.parse(prompt)
+
+        # Extraction fallback: try LLM extraction if regex failed
+        if parsed is None and self.extraction_spec is not None:
+            from turnstyle.extract import extract
+            result = extract(prompt, self, self.extraction_spec)
+            if result is not None and result.parsed is not None:
+                parsed = result.parsed
 
         messages = [{"role": "user", "content": prompt}]
         text = self.tokenizer.apply_chat_template(

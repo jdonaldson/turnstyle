@@ -14,6 +14,7 @@ from datetime import date, datetime, timedelta
 
 from turnstyle.arithmetic import ArithmeticLogitsProcessor
 from turnstyle.core import Turnstyle
+from turnstyle.extract import ExtractionSpec, FieldSpec
 
 # ── date parsing ─────────────────────────────────────────────────────
 
@@ -135,6 +136,59 @@ def parse_date_arithmetic(text: str):
     return None
 
 
+_DATE_UNITS = ["days", "weeks"]
+
+
+def _assemble_date(fields: dict) -> tuple[str, int, str]:
+    """Assemble date extraction fields into parse() tuple format."""
+    date1_str = fields["date1"].strip().strip('.,?!')
+    date2_str = fields["date2"].strip().strip('.,?!')
+    unit = fields["unit"].rstrip("s") or "day"  # normalize: "days" → "day"
+
+    d1 = _parse_date(date1_str)
+    d2 = _parse_date(date2_str)
+    if d1 is None or d2 is None:
+        raise ValueError(f"Could not parse dates: {date1_str!r}, {date2_str!r}")
+
+    delta = abs((d2 - d1).days)
+    if unit == "week":
+        answer = delta // 7
+        expr = f"weeks({d1.isoformat()},{d2.isoformat()})"
+    else:
+        answer = delta
+        expr = f"days({d1.isoformat()},{d2.isoformat()})"
+    return expr, answer, unit
+
+
+DATE_EXTRACTION_SPEC = ExtractionSpec(
+    fields=[
+        FieldSpec(
+            name="date1",
+            prompt_template=(
+                "What is the first/start date mentioned in this text? "
+                "Return just the date.\nText: {input}\nDate:"
+            ),
+        ),
+        FieldSpec(
+            name="date2",
+            prompt_template=(
+                "What is the second/end date mentioned in this text? "
+                "Return just the date.\nText: {input}\nDate:"
+            ),
+        ),
+        FieldSpec(
+            name="unit",
+            prompt_template=(
+                "What unit of time is being asked about?\n"
+                "Text: {input}\nUnit:"
+            ),
+            options=_DATE_UNITS,
+        ),
+    ],
+    assemble=_assemble_date,
+)
+
+
 class DateTurnstyle(Turnstyle):
     """Grounds date arithmetic in datetime computation.
 
@@ -143,9 +197,10 @@ class DateTurnstyle(Turnstyle):
     """
 
     probe_label = "date"
+    extraction_spec = DATE_EXTRACTION_SPEC
 
     def parse(self, prompt: str):
-        return parse_date_arithmetic(prompt)
+        return None  # routing via probe, fields via extraction
 
     def make_processor(self, parsed, max_new_tokens: int):
         expr, answer, unit = parsed

@@ -11,6 +11,7 @@ from dataclasses import dataclass
 
 from turnstyle.arithmetic import ArithmeticLogitsProcessor
 from turnstyle.core import Turnstyle
+from turnstyle.extract import ExtractionSpec, FieldSpec
 from turnstyle.sandbox_backend import (
     DenoPyodideBackend,
     SandboxBackend,
@@ -108,6 +109,29 @@ def _looks_like_code(text: str) -> bool:
     return any(re.search(p, text) for p in code_patterns)
 
 
+def _assemble_sandbox(fields: dict) -> SandboxParsed:
+    """Assemble sandbox extraction fields into SandboxParsed."""
+    code = fields["code"].strip()
+    if not code:
+        raise ValueError("Empty code extracted")
+    return SandboxParsed(code=code, description=f"extracted: {code[:40]}")
+
+
+SANDBOX_EXTRACTION_SPEC = ExtractionSpec(
+    fields=[
+        FieldSpec(
+            name="code",
+            prompt_template=(
+                "Extract the Python code or expression from this text. "
+                "Return only the code, no explanation.\n"
+                "Text: {input}\nCode:"
+            ),
+        ),
+    ],
+    assemble=_assemble_sandbox,
+)
+
+
 class SandboxTurnstyle(Turnstyle):
     """Grounds LLM generation in arbitrary Python execution via WASM sandbox.
 
@@ -118,6 +142,7 @@ class SandboxTurnstyle(Turnstyle):
     """
 
     probe_label = "sandbox"
+    extraction_spec = SANDBOX_EXTRACTION_SPEC
 
     def __init__(self, model, tokenizer, device, backend: SandboxBackend | None = None,
                  timeout: float = 5.0, bias_strength: float = 15.0):
@@ -129,16 +154,55 @@ class SandboxTurnstyle(Turnstyle):
         self.timeout = timeout
 
     def parse(self, prompt: str):
-        parsed = parse_sandbox_code(prompt)
-        if parsed is None:
-            return None
+        return None  # routing via probe, fields via extraction
 
-        result = self.backend.execute(parsed.code, timeout=self.timeout)
-
+    def _execute_parsed(self, sandbox_parsed: SandboxParsed):
+        """Execute extracted code and return (SandboxParsed, result) or None."""
+        result = self.backend.execute(sandbox_parsed.code, timeout=self.timeout)
         if result.error is not None or result.numeric_value is None:
             return None
+        return sandbox_parsed, result
 
-        return parsed, result
+    def generate(self, prompt: str, max_new_tokens: int = 50):
+        """Generate with sandbox execution. Extraction → execute → bias."""
+        from turnstyle.extract import extract
+
+        result = extract(prompt, self, self.extraction_spec)
+        parsed = None
+        if result is not None and result.parsed is not None:
+            # result.parsed is a SandboxParsed — need to execute it
+            executed = self._execute_parsed(result.parsed)
+            if executed is not None:
+                parsed = executed
+
+        messages = [{"role": "user", "content": prompt}]
+        text = self.tokenizer.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True)
+        inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
+
+        if parsed is None:
+            import torch
+            with torch.no_grad():
+                out = self.model.generate(
+                    **inputs, max_new_tokens=max_new_tokens, do_sample=False)
+            text = self.tokenizer.decode(
+                out[0][inputs["input_ids"].shape[1]:],
+                skip_special_tokens=True).strip()
+            return text, None
+
+        processor = self.make_processor(parsed, max_new_tokens)
+        import torch
+        with torch.no_grad():
+            out = self.model.generate(
+                **inputs,
+                max_new_tokens=max_new_tokens,
+                do_sample=False,
+                logits_processor=[processor],
+            )
+        text = self.tokenizer.decode(
+            out[0][inputs["input_ids"].shape[1]:],
+            skip_special_tokens=True).strip()
+        return text, processor.proof
 
     def make_processor(self, parsed, max_new_tokens: int):
         sandbox_parsed, result = parsed

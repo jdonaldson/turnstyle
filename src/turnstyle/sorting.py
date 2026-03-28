@@ -10,6 +10,7 @@ from __future__ import annotations
 import re
 
 from turnstyle.core import SequenceLogitsProcessor, Turnstyle
+from turnstyle.extract import ExtractionSpec, FieldSpec
 
 
 def parse_sorting(text: str) -> tuple[list[str], list[str], str] | None:
@@ -42,6 +43,31 @@ def parse_sorting(text: str) -> tuple[list[str], list[str], str] | None:
     return words, sorted_words, sorted_str
 
 
+def _assemble_sorting(fields: dict) -> tuple[list[str], list[str], str]:
+    """Assemble sorting extraction fields into parse() tuple format."""
+    raw = fields["words"]
+    words = [w.strip() for w in re.split(r'[,\s]+', raw) if w.strip()]
+    if len(words) < 2:
+        raise ValueError("Need at least 2 words to sort")
+    sorted_words = sorted(words)
+    return words, sorted_words, " ".join(sorted_words)
+
+
+SORTING_EXTRACTION_SPEC = ExtractionSpec(
+    fields=[
+        FieldSpec(
+            name="words",
+            prompt_template=(
+                "Extract the list of words to sort from this text. "
+                "Return only the words, comma-separated.\n"
+                "Text: {input}\nWords:"
+            ),
+        ),
+    ],
+    assemble=_assemble_sorting,
+)
+
+
 class SortingTurnstyle(Turnstyle):
     """Grounds alphabetical sorting in exact computation.
 
@@ -50,9 +76,10 @@ class SortingTurnstyle(Turnstyle):
     """
 
     probe_label = "sorting"
+    extraction_spec = SORTING_EXTRACTION_SPEC
 
     def parse(self, prompt: str):
-        return parse_sorting(prompt)
+        return None  # routing via probe, fields via extraction
 
     def make_processor(self, parsed, max_new_tokens: int):
         original_words, sorted_words, sorted_str = parsed
