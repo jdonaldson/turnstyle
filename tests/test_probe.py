@@ -1,4 +1,4 @@
-"""Tests for TurnstyleProbe and RoutingTurnstyle.
+"""Tests for TurnstyleProbe, MetacognitiveProbe, StrategyRouter, and RoutingTurnstyle.
 
 All tests use mock objects — no model or GPU required.
 """
@@ -9,7 +9,13 @@ from unittest.mock import MagicMock, patch
 import torch
 import pytest
 
-from turnstyle.probe import TurnstyleProbe, IntentProbe, RoutingTurnstyle
+from turnstyle.probe import (
+    TurnstyleProbe,
+    IntentProbe,
+    MetacognitiveProbe,
+    StrategyRouter,
+    RoutingTurnstyle,
+)
 from turnstyle.core import Turnstyle
 
 
@@ -406,3 +412,283 @@ class TestRoutingTurnstyle:
         hidden = torch.tensor([[[1.0, 2.0], [3.0, 4.0]]])  # (1, 2, 2)
         pooled = router._pool_hidden(hidden)
         assert torch.allclose(pooled, torch.tensor([3.0, 4.0]))
+
+
+# ── MetacognitiveProbe tests ─────────────────────────────────────────
+
+
+def make_metacognitive_probe(succeed_weight=3.0, fail_weight=0.0, hidden_dim=8, threshold=0.7):
+    """Create a MetacognitiveProbe with known weights.
+
+    succeed_weight controls how strongly the first half of hidden dims
+    activates the "succeed" label.
+    """
+    weights = torch.zeros(2, hidden_dim)
+    half = hidden_dim // 2
+    weights[0, :half] = fail_weight     # "fail" responds to first half
+    weights[1, half:] = succeed_weight  # "succeed" responds to second half
+    bias = torch.zeros(2)
+    inner = TurnstyleProbe(weights, bias, ["fail", "succeed"])
+    return MetacognitiveProbe(inner, threshold=threshold)
+
+
+class TestMetacognitiveProbe:
+    def test_needs_intervention_high_succeed(self):
+        """When succeed score > threshold, no intervention needed."""
+        gate = make_metacognitive_probe(succeed_weight=3.0, threshold=0.7)
+        h = torch.zeros(8)
+        h[4:] = 5.0  # strong succeed signal
+        needs_help, confidence = gate.needs_intervention(h)
+        assert needs_help is False
+        assert confidence > 0.7
+
+    def test_needs_intervention_low_succeed(self):
+        """When succeed score < threshold, intervention needed."""
+        gate = make_metacognitive_probe(succeed_weight=3.0, threshold=0.7)
+        h = torch.zeros(8)
+        # No activation in succeed region → sigmoid(0) ≈ 0.5 < 0.7
+        needs_help, confidence = gate.needs_intervention(h)
+        assert needs_help is True
+        assert confidence > 0.0
+
+    def test_needs_intervention_uncertain(self):
+        """Near-0.5 scores default to intervention."""
+        gate = make_metacognitive_probe(succeed_weight=0.1, threshold=0.7)
+        h = torch.ones(8) * 0.1  # weak signal everywhere
+        needs_help, _ = gate.needs_intervention(h)
+        assert needs_help is True  # uncertain → intervene
+
+    def test_save_load_roundtrip(self):
+        gate = make_metacognitive_probe(succeed_weight=2.5, threshold=0.6)
+        h = torch.zeros(8)
+        h[4:] = 4.0
+        orig_needs, orig_conf = gate.needs_intervention(h)
+
+        with tempfile.NamedTemporaryFile(suffix=".pt") as f:
+            gate.save(f.name)
+            # Threshold is now persisted — no need to pass it
+            loaded = MetacognitiveProbe.load(f.name)
+
+        assert loaded.threshold == 0.6
+        loaded_needs, loaded_conf = loaded.needs_intervention(h)
+        assert orig_needs == loaded_needs
+        assert abs(orig_conf - loaded_conf) < 1e-6
+
+    def test_save_load_threshold_override(self):
+        """Explicit threshold on load overrides saved value."""
+        gate = make_metacognitive_probe(succeed_weight=2.5, threshold=0.6)
+
+        with tempfile.NamedTemporaryFile(suffix=".pt") as f:
+            gate.save(f.name)
+            loaded = MetacognitiveProbe.load(f.name, threshold=0.9)
+
+        assert loaded.threshold == 0.9
+
+    def test_threshold_adjustable(self):
+        """Different thresholds change gate behavior on same input."""
+        h = torch.zeros(8)
+        h[4:] = 0.1  # weak succeed signal → sigmoid(1.0*0.1*4=0.4) ≈ 0.60
+
+        # Low threshold → no intervention (0.60 > 0.3)
+        gate_low = make_metacognitive_probe(succeed_weight=1.0, threshold=0.3)
+        needs_help_low, _ = gate_low.needs_intervention(h)
+
+        # High threshold → intervention needed (0.60 < 0.999)
+        gate_high = make_metacognitive_probe(succeed_weight=1.0, threshold=0.999)
+        needs_help_high, _ = gate_high.needs_intervention(h)
+
+        assert needs_help_low is False
+        assert needs_help_high is True
+
+
+# ── StrategyRouter tests ─────────────────────────────────────────────
+
+
+def make_strategy_probe(hidden_dim=8, succeed_dims=None, weight=3.0):
+    """Create a binary succeed/fail probe for a strategy."""
+    weights = torch.zeros(2, hidden_dim)
+    succeed_dims = succeed_dims or [4, 5, 6, 7]
+    for d in succeed_dims:
+        weights[1, d] = weight  # "succeed" responds to these dims
+    bias = torch.zeros(2)
+    return TurnstyleProbe(weights, bias, ["fail", "succeed"])
+
+
+class TestStrategyRouter:
+    def test_route_picks_best_strategy(self):
+        """Routes to the strategy with highest succeed score."""
+        router = StrategyRouter(default_strategy="baseline")
+        # Strategy A: responds to dims 0-3
+        router.add_strategy("sql", make_strategy_probe(succeed_dims=[0, 1, 2, 3]))
+        # Strategy B: responds to dims 4-7
+        router.add_strategy("regex", make_strategy_probe(succeed_dims=[4, 5, 6, 7]))
+
+        h = torch.zeros(8)
+        h[:4] = 5.0  # strong signal in sql region
+        name, conf = router.route(h)
+        assert name == "sql"
+        assert conf > 0.5
+
+    def test_route_default_when_empty(self):
+        """No strategies → returns default."""
+        router = StrategyRouter(default_strategy="baseline")
+        h = torch.ones(8)
+        name, conf = router.route(h)
+        assert name == "baseline"
+        assert conf == 0.0
+
+    def test_add_multiple_strategies(self):
+        """Multiple probes coexist correctly."""
+        router = StrategyRouter()
+        router.add_strategy("a", make_strategy_probe(succeed_dims=[0, 1]))
+        router.add_strategy("b", make_strategy_probe(succeed_dims=[2, 3]))
+        router.add_strategy("c", make_strategy_probe(succeed_dims=[4, 5]))
+        assert len(router.strategies) == 3
+
+        # Activate dim 4-5 → strategy c wins
+        h = torch.zeros(8)
+        h[4:6] = 5.0
+        name, _ = router.route(h)
+        assert name == "c"
+
+    def test_save_load_roundtrip(self):
+        router = StrategyRouter(default_strategy="fallback")
+        router.add_strategy("sql", make_strategy_probe(succeed_dims=[0, 1, 2, 3]))
+        router.add_strategy("regex", make_strategy_probe(succeed_dims=[4, 5, 6, 7]))
+
+        h = torch.zeros(8)
+        h[:4] = 5.0
+        orig_name, orig_conf = router.route(h)
+
+        with tempfile.TemporaryDirectory() as d:
+            router.save(d)
+            loaded = StrategyRouter.load(d)
+
+        assert loaded.default_strategy == "fallback"
+        loaded_name, loaded_conf = loaded.route(h)
+        assert orig_name == loaded_name
+        assert abs(orig_conf - loaded_conf) < 1e-6
+
+
+# ── RoutingTurnstyle + metacognitive gate tests ──────────────────────
+
+
+class TestRoutingWithGate:
+    def make_router(self):
+        """Create a RoutingTurnstyle with mock components."""
+        t_arith = MockTurnstyle("what is", "arithmetic")
+        t_date = MockTurnstyle("how many days", "date")
+        turnstyles = [t_arith, t_date]
+        probe = make_probe()
+        router = RoutingTurnstyle(
+            turnstyles=turnstyles,
+            probe=probe,
+            layer_index=23,
+        )
+        return router, turnstyles
+
+    def _mock_free_generate(self, router):
+        """Set up mocks so _free_generate returns predictable output."""
+        mock_output = torch.tensor([[1, 2, 3, 4, 5]])
+        router.model.generate = MagicMock(return_value=mock_output)
+        router.tokenizer.apply_chat_template = MagicMock(return_value="template")
+        mock_inputs = MagicMock()
+        mock_inputs.__getitem__ = lambda self, k: torch.tensor([[1, 2]])
+        mock_inputs.to = MagicMock(return_value=mock_inputs)
+        router.tokenizer.return_value = mock_inputs
+        router.tokenizer.decode = MagicMock(return_value="free generation")
+
+    def test_gate_skips_turnstyle_when_model_confident(self):
+        """Metacognitive probe says succeed → skip turnstyle, free generate."""
+        router, turnstyles = self.make_router()
+
+        # Attach a gate that always says "model will succeed"
+        gate = MagicMock()
+        gate.needs_intervention = MagicMock(return_value=(False, 0.95))
+        turnstyles[0].metacognitive_probe = gate
+
+        self._mock_free_generate(router)
+
+        # Mock _extract_hidden since we don't have a real model
+        with patch.object(router, '_extract_hidden', return_value=torch.zeros(8)):
+            text, diag = router.generate("What is 3 + 4?")
+
+        assert not turnstyles[0]._generated  # turnstyle was skipped
+        assert text == "free generation"
+        assert diag is None
+
+    def test_gate_applies_turnstyle_when_model_uncertain(self):
+        """Metacognitive probe says fail → turnstyle applied as normal."""
+        router, turnstyles = self.make_router()
+
+        # Attach a gate that says "model needs help"
+        gate = MagicMock()
+        gate.needs_intervention = MagicMock(return_value=(True, 0.8))
+        turnstyles[0].metacognitive_probe = gate
+
+        with patch.object(router, '_extract_hidden', return_value=torch.zeros(8)):
+            text, diag = router.generate("What is 3 + 4?")
+
+        assert turnstyles[0]._generated  # turnstyle was used
+        assert "[arithmetic]" in text
+
+    def test_no_gate_applies_turnstyle_normally(self):
+        """Without metacognitive probe, regex match → turnstyle as before."""
+        router, turnstyles = self.make_router()
+        # No gate set (default)
+        text, diag = router.generate("What is 3 + 4?")
+        assert turnstyles[0]._generated
+        assert "[arithmetic]" in text
+
+    def test_strategy_router_selects_strategy(self):
+        """Strategy router picks between strategies on probe fallback."""
+        router, turnstyles = self.make_router()
+        mock_h = torch.zeros(8)
+
+        # Set up a strategy router that prefers "date"
+        strategy_router = MagicMock()
+        strategy_router.route = MagicMock(return_value=("date", 0.9))
+        router.strategy_router = strategy_router
+
+        with patch.object(router, '_probe_route',
+                          return_value=([(turnstyles[0], 0.8)], mock_h)):
+            text, diag = router.generate("Some ambiguous prompt")
+
+        # Strategy router rerouted from arithmetic to date
+        assert turnstyles[1]._generated
+        assert "[date]" in text
+
+    def test_strategy_router_ignored_when_strategy_unknown(self):
+        """Strategy router returns unknown label → falls through to probe pick."""
+        router, turnstyles = self.make_router()
+        mock_h = torch.zeros(8)
+
+        strategy_router = MagicMock()
+        strategy_router.route = MagicMock(return_value=("unknown_strategy", 0.9))
+        router.strategy_router = strategy_router
+
+        with patch.object(router, '_probe_route',
+                          return_value=([(turnstyles[0], 0.8)], mock_h)):
+            text, diag = router.generate("Some prompt")
+
+        # Falls through to probe's pick (arithmetic)
+        assert turnstyles[0]._generated
+
+    def test_gate_on_probe_fallback_path(self):
+        """Metacognitive gate checked on probe-routed turnstyle too."""
+        router, turnstyles = self.make_router()
+        mock_h = torch.zeros(8)
+
+        # Attach gate to arithmetic that says "model will succeed"
+        gate = MagicMock()
+        gate.needs_intervention = MagicMock(return_value=(False, 0.95))
+        turnstyles[0].metacognitive_probe = gate
+
+        self._mock_free_generate(router)
+
+        with patch.object(router, '_probe_route',
+                          return_value=([(turnstyles[0], 0.9)], mock_h)):
+            text, diag = router.generate("Natural language math question")
+
+        assert not turnstyles[0]._generated  # skipped by gate
+        assert text == "free generation"
