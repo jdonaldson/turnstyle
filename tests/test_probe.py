@@ -9,7 +9,7 @@ from unittest.mock import MagicMock, patch
 import torch
 import pytest
 
-from turnstyle.probe import TurnstyleProbe, RoutingTurnstyle
+from turnstyle.probe import TurnstyleProbe, IntentProbe, RoutingTurnstyle
 from turnstyle.core import Turnstyle
 
 
@@ -131,6 +131,92 @@ class TestTurnstyleProbe:
         scores = probe.predict_all(h)
         assert scores["arithmetic"] > scores["date"]
 
+    def test_predict_best_returns_top_label(self):
+        """predict_best returns the highest-scoring label."""
+        probe = make_probe(threshold=0.5)
+        h = torch.zeros(8)
+        h[:4] = 5.0  # strong arithmetic signal
+        label, score = probe.predict_best(h)
+        assert label == "arithmetic"
+        assert score > 0.5
+
+    def test_predict_best_date(self):
+        """predict_best returns date when second half is active."""
+        probe = make_probe(threshold=0.5)
+        h = torch.zeros(8)
+        h[4:] = 5.0  # strong date signal
+        label, score = probe.predict_best(h)
+        assert label == "date"
+        assert score > 0.5
+
+
+# ── IntentProbe tests ──────────────────────────────────────────────────
+
+
+class TestIntentProbe:
+    def make_intent_probe(self, hidden_dim=8):
+        """Create an IntentProbe with two dimensions."""
+        # Operation probe: 4 classes (add, sub, mul, div)
+        op_weights = torch.zeros(4, hidden_dim)
+        op_weights[0, 0] = 3.0  # add
+        op_weights[1, 1] = 3.0  # sub
+        op_weights[2, 2] = 3.0  # mul
+        op_weights[3, 3] = 3.0  # div
+        op_probe = TurnstyleProbe(
+            op_weights, torch.zeros(4),
+            ["add", "sub", "mul", "div"])
+
+        # Operand_a probe: 3 classes
+        a_weights = torch.zeros(3, hidden_dim)
+        a_weights[0, 4] = 3.0  # "10"
+        a_weights[1, 5] = 3.0  # "20"
+        a_weights[2, 6] = 3.0  # "30"
+        a_probe = TurnstyleProbe(
+            a_weights, torch.zeros(3),
+            ["10", "20", "30"])
+
+        return IntentProbe({"operation": op_probe, "operand_a": a_probe})
+
+    def test_predict_returns_all_dimensions(self):
+        ip = self.make_intent_probe()
+        h = torch.zeros(8)
+        h[0] = 5.0  # add
+        h[5] = 5.0  # operand_a = 20
+        result = ip.predict(h)
+        assert "operation" in result
+        assert "operand_a" in result
+        assert result["operation"][0] == "add"
+        assert result["operand_a"][0] == "20"
+
+    def test_predict_confidence(self):
+        ip = self.make_intent_probe()
+        h = torch.zeros(8)
+        h[2] = 5.0  # mul
+        result = ip.predict(h)
+        label, conf = result["operation"]
+        assert label == "mul"
+        assert conf > 0.9
+
+    def test_save_load_roundtrip(self):
+        ip = self.make_intent_probe()
+        h = torch.zeros(8)
+        h[1] = 5.0  # sub
+        h[6] = 5.0  # 30
+        original = ip.predict(h)
+
+        with tempfile.TemporaryDirectory() as d:
+            ip.save(d)
+            loaded = IntentProbe.load(d)
+
+        loaded_result = loaded.predict(h)
+        assert loaded_result["operation"][0] == original["operation"][0]
+        assert loaded_result["operand_a"][0] == original["operand_a"][0]
+        assert abs(loaded_result["operation"][1] - original["operation"][1]) < 1e-6
+
+    def test_dimensions_property(self):
+        ip = self.make_intent_probe()
+        assert set(ip.dimensions.keys()) == {"operation", "operand_a"}
+
 
 # ── RoutingTurnstyle tests ─────────────────────────────────────────────
 
@@ -207,10 +293,11 @@ class TestRoutingTurnstyle:
     def test_generate_probe_fallback(self):
         """generate() falls back to probe when regex fails."""
         router, turnstyles = self.make_router()
+        mock_h = torch.zeros(8)
 
         # Mock the probe route to return arithmetic
         with patch.object(router, '_probe_route',
-                          return_value=[(turnstyles[0], 0.9)]):
+                          return_value=([(turnstyles[0], 0.9)], mock_h)):
             text, diag = router.generate("Sum of four hundred and one fifty-two")
 
         assert turnstyles[0]._generated
@@ -221,7 +308,7 @@ class TestRoutingTurnstyle:
         router, turnstyles = self.make_router()
 
         # Mock probe to return empty (no match)
-        with patch.object(router, '_probe_route', return_value=[]):
+        with patch.object(router, '_probe_route', return_value=([], None)):
             # Mock the model generation pipeline
             mock_output = torch.tensor([[1, 2, 3, 4, 5]])
             router.model.generate = MagicMock(return_value=mock_output)
@@ -245,16 +332,64 @@ class TestRoutingTurnstyle:
     def test_probe_route_delegates_to_highest_scorer(self):
         """Probe fallback delegates to the highest-scoring turnstyle."""
         router, turnstyles = self.make_router()
+        mock_h = torch.zeros(8)
 
         # Probe returns date as higher scorer
         with patch.object(router, '_probe_route',
-                          return_value=[(turnstyles[1], 0.95),
-                                        (turnstyles[0], 0.7)]):
+                          return_value=([(turnstyles[1], 0.95),
+                                         (turnstyles[0], 0.7)], mock_h)):
             text, diag = router.generate("Novel phrasing about dates")
 
         assert turnstyles[1]._generated
         assert not turnstyles[0]._generated
         assert "[date]" in text
+
+    def test_generate_uses_parse_from_hidden(self):
+        """When probe routes and parse_from_hidden succeeds, uses processor."""
+        router, turnstyles = self.make_router()
+        mock_h = torch.zeros(8)
+
+        # Make arithmetic turnstyle's parse_from_hidden return a result
+        turnstyles[0].parse_from_hidden = MagicMock(return_value={"matched": True})
+        mock_proc = MagicMock()
+        mock_proc.proof = None
+        turnstyles[0].make_processor = MagicMock(return_value=mock_proc)
+
+        # Mock model generation pipeline
+        mock_output = torch.tensor([[1, 2, 3, 4, 5]])
+        router.model.generate = MagicMock(return_value=mock_output)
+        router.tokenizer.apply_chat_template = MagicMock(return_value="template")
+        mock_inputs = MagicMock()
+        mock_inputs.__getitem__ = lambda self, k: torch.tensor([[1, 2]])
+        mock_inputs.to = MagicMock(return_value=mock_inputs)
+        router.tokenizer.return_value = mock_inputs
+        router.tokenizer.decode = MagicMock(return_value="probe-parsed result")
+
+        with patch.object(router, '_probe_route',
+                          return_value=([(turnstyles[0], 0.9)], mock_h)):
+            text, diag = router.generate("Natural language math question")
+
+        # parse_from_hidden was called with the hidden state
+        turnstyles[0].parse_from_hidden.assert_called_once_with(mock_h)
+        # make_processor was called (not t.generate)
+        turnstyles[0].make_processor.assert_called_once()
+        assert not turnstyles[0]._generated  # t.generate was NOT called
+        assert text == "probe-parsed result"
+
+    def test_generate_falls_through_when_parse_from_hidden_returns_none(self):
+        """When parse_from_hidden returns None, falls back to t.generate."""
+        router, turnstyles = self.make_router()
+        mock_h = torch.zeros(8)
+
+        # parse_from_hidden returns None (not confident enough)
+        turnstyles[0].parse_from_hidden = MagicMock(return_value=None)
+
+        with patch.object(router, '_probe_route',
+                          return_value=([(turnstyles[0], 0.9)], mock_h)):
+            text, diag = router.generate("Natural language math question")
+
+        turnstyles[0].parse_from_hidden.assert_called_once_with(mock_h)
+        assert turnstyles[0]._generated  # fell through to t.generate()
 
     def test_pool_mean(self):
         """Mean pooling averages across positions."""
