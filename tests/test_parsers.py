@@ -7,6 +7,9 @@ from turnstyle.currency import parse_currency_conversion
 from turnstyle.percentage import parse_percentage
 from turnstyle.counting import parse_counting
 from turnstyle.base_conversion import parse_base_conversion
+from turnstyle.boolean import parse_boolean
+from turnstyle.sorting import parse_sorting
+from turnstyle.dyck import parse_dyck
 
 
 # ── date parsing ─────────────────────────────────────────────────────
@@ -257,3 +260,132 @@ class TestBaseConversion:
 
     def test_unknown_base_returns_none(self):
         assert parse_base_conversion("What color is blue?") is None
+
+
+# ── boolean parsing ─────────────────────────────────────────────────
+
+class TestBooleanParsing:
+    def test_simple_and(self):
+        result = parse_boolean("True and False")
+        assert result is not None
+        expr, val, val_str = result
+        assert val is False
+        assert val_str == "False"
+
+    def test_simple_or(self):
+        result = parse_boolean("False or True")
+        assert result is not None
+        _, val, _ = result
+        assert val is True
+
+    def test_not(self):
+        result = parse_boolean("not False")
+        assert result is not None
+        _, val, _ = result
+        assert val is True
+
+    def test_complex_expression(self):
+        result = parse_boolean("True and not False and True")
+        assert result is not None
+        _, val, _ = result
+        assert val is True
+
+    def test_all_false(self):
+        result = parse_boolean("False and False")
+        assert result is not None
+        _, val, _ = result
+        assert val is False
+
+    def test_case_insensitive(self):
+        result = parse_boolean("true AND false")
+        assert result is not None
+        _, val, _ = result
+        assert val is False
+
+    def test_in_question(self):
+        result = parse_boolean("What is True or False?")
+        assert result is not None
+        _, val, _ = result
+        assert val is True
+
+    def test_no_boolean_returns_none(self):
+        assert parse_boolean("What is the capital of France?") is None
+
+
+# ── sorting parsing ─────────────────────────────────────────────────
+
+class TestSortingParsing:
+    def test_sort_words(self):
+        result = parse_sorting("Sort the following words: banana apple cherry")
+        assert result is not None
+        original, sorted_words, sorted_str = result
+        assert sorted_words == ["apple", "banana", "cherry"]
+        assert sorted_str == "apple banana cherry"
+
+    def test_sort_with_commas(self):
+        result = parse_sorting("Sort: cherry, banana, apple")
+        assert result is not None
+        _, sorted_words, _ = result
+        assert sorted_words == ["apple", "banana", "cherry"]
+
+    def test_sort_brackets(self):
+        result = parse_sorting("Sort [cherry, banana, apple]")
+        assert result is not None
+        _, sorted_words, _ = result
+        assert sorted_words == ["apple", "banana", "cherry"]
+
+    def test_sort_already_sorted(self):
+        result = parse_sorting("Sort the following words: apple banana cherry")
+        assert result is not None
+        _, sorted_words, _ = result
+        assert sorted_words == ["apple", "banana", "cherry"]
+
+    def test_no_sort_returns_none(self):
+        assert parse_sorting("What is the capital of France?") is None
+
+    def test_single_word_returns_none(self):
+        # Need at least 2 words to sort
+        assert parse_sorting("Sort: apple") is None
+
+
+# ── dyck language parsing ───────────────────────────────────────────
+
+class TestDyckParsing:
+    def test_simple_open(self):
+        result = parse_dyck("Complete the brackets: (")
+        assert result is not None
+        _, closing, _ = result
+        assert closing == ")"
+
+    def test_nested(self):
+        result = parse_dyck("Complete the brackets: ( (")
+        assert result is not None
+        _, closing, _ = result
+        assert closing == "))"
+
+    def test_mixed_brackets(self):
+        result = parse_dyck("Complete the brackets: ( [ {")
+        assert result is not None
+        _, closing, _ = result
+        assert closing == "}])"
+
+    def test_partially_closed(self):
+        result = parse_dyck("Complete the brackets: ( ( )")
+        assert result is not None
+        _, closing, _ = result
+        assert closing == ")"
+
+    def test_already_balanced_returns_none(self):
+        assert parse_dyck("Complete the brackets: ( )") is None
+
+    def test_mismatched_returns_none(self):
+        assert parse_dyck("Complete the brackets: ( ]") is None
+
+    def test_close_variant(self):
+        result = parse_dyck("Close the parentheses: ( ( (")
+        assert result is not None
+        _, closing, _ = result
+        assert closing == ")))"
+
+    def test_no_brackets_returns_none(self):
+        assert parse_dyck("What is the capital of France?") is None
