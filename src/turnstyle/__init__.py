@@ -17,6 +17,8 @@ from turnstyle.core import (
     DIAGNOSTIC_LABELS,
     DigitAudit,
     CoprocessorDiagnostic,
+    TokenAudit,
+    SequenceLogitsProcessor,
     Turnstyle,
     extract_number,
 )
@@ -41,6 +43,9 @@ from turnstyle.number_theory import (
     FractionTurnstyle,
     parse_number_theory,
 )
+from turnstyle.boolean import BooleanTurnstyle, parse_boolean
+from turnstyle.sorting import SortingTurnstyle, parse_sorting
+from turnstyle.dyck import DyckTurnstyle, parse_dyck
 from turnstyle.sandbox import SandboxTurnstyle, parse_sandbox_code
 from turnstyle.sandbox_backend import (
     SandboxResult,
@@ -49,10 +54,17 @@ from turnstyle.sandbox_backend import (
     WasmtimeBackend,
     MockBackend,
 )
-from turnstyle.probe import TurnstyleProbe, RoutingTurnstyle
+from turnstyle.probe import TurnstyleProbe, IntentProbe, RoutingTurnstyle
 
 try:
-    from turnstyle.sweep import probe_sweep, generate_prompts, SweepResult
+    from turnstyle.sweep import (
+        probe_sweep,
+        generate_prompts,
+        generate_intent_prompts,
+        intent_sweep,
+        SweepResult,
+        IntentSweepResult,
+    )
 except ImportError:
     pass
 
@@ -81,10 +93,18 @@ __all__ = [
     "BaseConversionProcessor",
     "parse_base_conversion",
     "extract_number",
+    "TokenAudit",
+    "SequenceLogitsProcessor",
     "GCDTurnstyle",
     "LCMTurnstyle",
     "FractionTurnstyle",
     "parse_number_theory",
+    "BooleanTurnstyle",
+    "parse_boolean",
+    "SortingTurnstyle",
+    "parse_sorting",
+    "DyckTurnstyle",
+    "parse_dyck",
     "SandboxTurnstyle",
     "parse_sandbox_code",
     "SandboxResult",
@@ -93,8 +113,12 @@ __all__ = [
     "WasmtimeBackend",
     "MockBackend",
     "TurnstyleProbe",
+    "IntentProbe",
     "RoutingTurnstyle",
     "probe_sweep",
     "generate_prompts",
+    "generate_intent_prompts",
+    "intent_sweep",
     "SweepResult",
+    "IntentSweepResult",
 ]
