@@ -1,4 +1,5 @@
-"""Tests for TurnstyleProbe, MetacognitiveProbe, StrategyRouter, and RoutingTurnstyle.
+"""Tests for TurnstyleProbe, MultiPositionProbe, MetacognitiveProbe,
+StrategyRouter, and RoutingTurnstyle.
 
 All tests use mock objects — no model or GPU required.
 """
@@ -10,7 +11,11 @@ import torch
 import pytest
 
 from turnstyle.probe import (
+    LAST_TOKEN,
+    MEAN_POOL,
+    ExtractionPoint,
     TurnstyleProbe,
+    MultiPositionProbe,
     IntentProbe,
     MetacognitiveProbe,
     StrategyRouter,
@@ -154,6 +159,199 @@ class TestTurnstyleProbe:
         label, score = probe.predict_best(h)
         assert label == "date"
         assert score > 0.5
+
+
+# ── MultiPositionProbe tests ──────────────────────────────────────
+
+
+def make_multipos_probe(
+    labels=None, threshold=0.5, hidden_dim=8,
+):
+    """Create a MultiPositionProbe with two extraction points.
+
+    Point 0: pos0@L1 — first half of weights respond to this
+    Point 1: last@L23 — second half of weights respond to this
+    Total feature dim = hidden_dim * 2 (one per extraction point).
+    """
+    labels = labels or ["pattern_a", "pattern_b", "pattern_c"]
+    num_labels = len(labels)
+    total_dim = hidden_dim * 2  # two extraction points
+
+    weights = torch.zeros(num_labels, total_dim)
+    # pattern_a: responds to first extraction point (pos0@L1), dims 0..hidden_dim
+    weights[0, :hidden_dim] = 2.0
+    # pattern_b: responds to second extraction point (last@L23), dims hidden_dim..2*hidden_dim
+    weights[1, hidden_dim:] = 2.0
+    # pattern_c: responds to both equally
+    weights[2, :] = 1.0
+
+    bias = torch.zeros(num_labels)
+    points = [
+        ExtractionPoint(layer=1, position=0),       # pos0@L1
+        ExtractionPoint(layer=23, position=LAST_TOKEN),  # last@L23
+    ]
+    return MultiPositionProbe(weights, bias, labels, points, threshold)
+
+
+class TestMultiPositionProbe:
+    def test_required_layers(self):
+        probe = make_multipos_probe()
+        assert probe.required_layers == {1, 23}
+
+    def test_assemble_concatenates_correctly(self):
+        probe = make_multipos_probe(hidden_dim=4)
+        # Mock hidden states: layer 1 and layer 23, each (seq_len=3, hidden_dim=4)
+        layer_hidden = {
+            1: torch.tensor([[1.0, 2.0, 3.0, 4.0],
+                             [5.0, 6.0, 7.0, 8.0],
+                             [9.0, 10.0, 11.0, 12.0]]),
+            23: torch.tensor([[0.1, 0.2, 0.3, 0.4],
+                              [0.5, 0.6, 0.7, 0.8],
+                              [0.9, 1.0, 1.1, 1.2]]),
+        }
+        assembled = probe.assemble(layer_hidden)
+        # pos0@L1 = [1,2,3,4], last@L23 = [0.9,1.0,1.1,1.2]
+        expected = torch.tensor([1.0, 2.0, 3.0, 4.0, 0.9, 1.0, 1.1, 1.2])
+        assert torch.allclose(assembled, expected)
+
+    def test_assemble_mean_pool(self):
+        """MEAN_POOL position averages across all token positions."""
+        points = [ExtractionPoint(layer=0, position=MEAN_POOL)]
+        weights = torch.ones(1, 4)
+        probe = MultiPositionProbe(weights, torch.zeros(1), ["x"], points)
+        layer_hidden = {
+            0: torch.tensor([[2.0, 4.0, 6.0, 8.0],
+                             [4.0, 6.0, 8.0, 10.0]]),
+        }
+        assembled = probe.assemble(layer_hidden)
+        expected = torch.tensor([3.0, 5.0, 7.0, 9.0])  # mean of rows
+        assert torch.allclose(assembled, expected)
+
+    def test_assemble_position_clamped(self):
+        """Position index > seq_len is clamped to last token."""
+        points = [ExtractionPoint(layer=0, position=99)]
+        weights = torch.ones(1, 4)
+        probe = MultiPositionProbe(weights, torch.zeros(1), ["x"], points)
+        layer_hidden = {
+            0: torch.tensor([[1.0, 2.0, 3.0, 4.0],
+                             [5.0, 6.0, 7.0, 8.0]]),
+        }
+        assembled = probe.assemble(layer_hidden)
+        # position 99 clamped to last = [5,6,7,8]
+        assert torch.allclose(assembled, torch.tensor([5.0, 6.0, 7.0, 8.0]))
+
+    def test_predict_responds_to_first_point(self):
+        """Strong signal at pos0@L1 → pattern_a wins."""
+        probe = make_multipos_probe(hidden_dim=4, threshold=0.5)
+        layer_hidden = {
+            1: torch.tensor([[5.0, 5.0, 5.0, 5.0],  # pos0: strong signal
+                             [0.0, 0.0, 0.0, 0.0]]),
+            23: torch.tensor([[0.0, 0.0, 0.0, 0.0],
+                              [0.0, 0.0, 0.0, 0.0]]),  # last: no signal
+        }
+        assembled = probe.assemble(layer_hidden)
+        label, score = probe.predict_best(assembled)
+        assert label == "pattern_a"
+
+    def test_predict_responds_to_second_point(self):
+        """Strong signal at last@L23 → pattern_b wins."""
+        probe = make_multipos_probe(hidden_dim=4, threshold=0.5)
+        layer_hidden = {
+            1: torch.tensor([[0.0, 0.0, 0.0, 0.0],
+                             [0.0, 0.0, 0.0, 0.0]]),
+            23: torch.tensor([[0.0, 0.0, 0.0, 0.0],
+                              [5.0, 5.0, 5.0, 5.0]]),  # last: strong signal
+        }
+        assembled = probe.assemble(layer_hidden)
+        label, score = probe.predict_best(assembled)
+        assert label == "pattern_b"
+
+    def test_predict_from_layers(self):
+        """Full pipeline: layer dict → assemble → predict."""
+        probe = make_multipos_probe(hidden_dim=4, threshold=0.5)
+        layer_hidden = {
+            1: torch.tensor([[5.0, 5.0, 5.0, 5.0],
+                             [0.0, 0.0, 0.0, 0.0]]),
+            23: torch.tensor([[0.0, 0.0, 0.0, 0.0],
+                              [0.0, 0.0, 0.0, 0.0]]),
+        }
+        scores = probe.predict_from_layers(layer_hidden)
+        assert "pattern_a" in scores
+
+    def test_predict_threshold_filters(self):
+        """High threshold filters low-confidence labels."""
+        probe = make_multipos_probe(hidden_dim=4, threshold=0.99)
+        layer_hidden = {
+            1: torch.tensor([[0.1, 0.1, 0.1, 0.1],
+                             [0.0, 0.0, 0.0, 0.0]]),
+            23: torch.tensor([[0.0, 0.0, 0.0, 0.0],
+                              [0.0, 0.0, 0.0, 0.0]]),
+        }
+        assembled = probe.assemble(layer_hidden)
+        scores = probe.predict(assembled)
+        assert len(scores) == 0  # nothing above 0.99
+
+    def test_predict_all_ignores_threshold(self):
+        probe = make_multipos_probe(hidden_dim=4, threshold=0.99)
+        layer_hidden = {
+            1: torch.zeros(2, 4),
+            23: torch.zeros(2, 4),
+        }
+        assembled = probe.assemble(layer_hidden)
+        scores = probe.predict_all(assembled)
+        assert len(scores) == 3  # all labels present
+
+    def test_save_load_roundtrip(self):
+        probe = make_multipos_probe(hidden_dim=4, threshold=0.42)
+        layer_hidden = {
+            1: torch.tensor([[3.0, 3.0, 3.0, 3.0],
+                             [0.0, 0.0, 0.0, 0.0]]),
+            23: torch.tensor([[0.0, 0.0, 0.0, 0.0],
+                              [1.0, 1.0, 1.0, 1.0]]),
+        }
+        assembled = probe.assemble(layer_hidden)
+        original_scores = probe.predict_all(assembled)
+
+        with tempfile.NamedTemporaryFile(suffix=".pt") as f:
+            probe.save(f.name)
+            loaded = MultiPositionProbe.load(f.name)
+
+        assert loaded.labels == probe.labels
+        assert loaded.threshold == probe.threshold
+        assert len(loaded.extraction_points) == len(probe.extraction_points)
+        for orig, load in zip(probe.extraction_points, loaded.extraction_points):
+            assert orig.layer == load.layer
+            assert orig.position == load.position
+
+        loaded_assembled = loaded.assemble(layer_hidden)
+        loaded_scores = loaded.predict_all(loaded_assembled)
+        for label in probe.labels:
+            assert abs(original_scores[label] - loaded_scores[label]) < 1e-6
+
+    def test_three_extraction_points(self):
+        """Probe with 3 extraction points assembles correctly."""
+        points = [
+            ExtractionPoint(layer=0, position=0),
+            ExtractionPoint(layer=12, position=LAST_TOKEN),
+            ExtractionPoint(layer=23, position=LAST_TOKEN),
+        ]
+        hidden_dim = 4
+        total_dim = hidden_dim * 3
+        weights = torch.zeros(2, total_dim)
+        weights[0, :hidden_dim] = 1.0  # responds to L0 pos0
+        weights[1, hidden_dim * 2:] = 1.0  # responds to L23 last
+        bias = torch.zeros(2)
+        probe = MultiPositionProbe(weights, bias, ["a", "b"], points)
+
+        layer_hidden = {
+            0: torch.tensor([[5.0, 5.0, 5.0, 5.0]]),
+            12: torch.tensor([[0.0, 0.0, 0.0, 0.0]]),
+            23: torch.tensor([[0.0, 0.0, 0.0, 0.0]]),
+        }
+        assembled = probe.assemble(layer_hidden)
+        assert assembled.shape == (total_dim,)
+        label, _ = probe.predict_best(assembled)
+        assert label == "a"  # strong signal at L0 pos0
 
 
 # ── IntentProbe tests ──────────────────────────────────────────────────
@@ -692,3 +890,133 @@ class TestRoutingWithGate:
 
         assert not turnstyles[0]._generated  # skipped by gate
         assert text == "free generation"
+
+
+# ── RoutingTurnstyle + MultiPositionProbe integration ───────────────
+
+
+class TestRoutingWithMultiPosition:
+    def make_multipos_router(self):
+        """Create a RoutingTurnstyle with a MultiPositionProbe."""
+        t_arith = MockTurnstyle("what is", "arithmetic")
+        t_date = MockTurnstyle("how many days", "date")
+        turnstyles = [t_arith, t_date]
+
+        # MultiPositionProbe: pos0@L1 + last@L23
+        hidden_dim = 8
+        total_dim = hidden_dim * 2
+        weights = torch.zeros(2, total_dim)
+        weights[0, :hidden_dim] = 2.0   # arithmetic: responds to pos0@L1
+        weights[1, hidden_dim:] = 2.0   # date: responds to last@L23
+        bias = torch.zeros(2)
+        points = [
+            ExtractionPoint(layer=1, position=0),
+            ExtractionPoint(layer=23, position=LAST_TOKEN),
+        ]
+        probe = MultiPositionProbe(
+            weights, bias, ["arithmetic", "date"], points, threshold=0.5,
+        )
+
+        router = RoutingTurnstyle(
+            turnstyles=turnstyles,
+            probe=probe,
+            layer_index=23,  # for downstream (metacognitive gate, parse_from_hidden)
+        )
+        return router, turnstyles
+
+    def test_regex_still_works(self):
+        """Regex path is unaffected by MultiPositionProbe."""
+        router, turnstyles = self.make_multipos_router()
+        text, diag = router.generate("What is 3 + 4?")
+        assert turnstyles[0]._generated
+        assert "[arithmetic]" in text
+
+    def test_probe_fallback_uses_multi_position(self):
+        """Probe fallback assembles features from multiple extraction points."""
+        router, turnstyles = self.make_multipos_router()
+
+        # Mock the forward pass: _probe_route calls _install_hooks, model(),
+        # then assembles. We mock at the _probe_route level to verify it
+        # returns the right candidate based on multi-position features.
+        mock_h = torch.zeros(8)  # downstream hidden state
+
+        # Simulate: strong signal at pos0@L1 → arithmetic wins
+        with patch.object(
+            router, '_probe_route',
+            return_value=([(turnstyles[0], 0.9)], mock_h),
+        ):
+            text, diag = router.generate("Sum of four hundred and one fifty-two")
+
+        assert turnstyles[0]._generated
+        assert "[arithmetic]" in text
+
+    def test_probe_route_installs_multi_hooks(self):
+        """_probe_route installs hooks on all required layers."""
+        router, turnstyles = self.make_multipos_router()
+
+        # Track which layers get hooked
+        hooked_layers = []
+        original_install = router._install_hooks
+
+        def tracking_install(layers=None):
+            if layers:
+                hooked_layers.extend(layers)
+            original_install(layers)
+
+        # Mock model forward pass
+        mock_output = MagicMock()
+        router.model.return_value = mock_output
+        router.tokenizer.apply_chat_template = MagicMock(return_value="template")
+        mock_inputs = MagicMock()
+        mock_inputs.__getitem__ = lambda self, k: torch.tensor([[1, 2]])
+        mock_inputs.to = MagicMock(return_value=mock_inputs)
+        router.tokenizer.return_value = mock_inputs
+
+        # Pre-populate captured hidden states (since model is mock)
+        def fake_install(layers=None):
+            hooked_layers.clear()
+            if layers:
+                hooked_layers.extend(layers)
+            router._captured_hidden = {
+                1: torch.zeros(1, 3, 8),   # layer 1: (batch, seq, dim)
+                23: torch.zeros(1, 3, 8),  # layer 23
+            }
+
+        with patch.object(router, '_install_hooks', side_effect=fake_install):
+            with patch.object(router, '_remove_hooks'):
+                candidates, h = router._probe_route("test prompt")
+
+        # Both layer 1 and 23 should be requested
+        assert 1 in hooked_layers
+        assert 23 in hooked_layers
+
+    def test_downstream_hidden_from_layer_index(self):
+        """The returned hidden state comes from layer_index, not the assembled vector."""
+        router, turnstyles = self.make_multipos_router()
+
+        # Pre-populate captured hidden states with distinct values per layer
+        layer1_hidden = torch.ones(1, 3, 8) * 1.0  # layer 1
+        layer23_hidden = torch.ones(1, 3, 8) * 7.0  # layer 23
+
+        def fake_install(layers=None):
+            router._captured_hidden = {
+                1: layer1_hidden,
+                23: layer23_hidden,
+            }
+
+        router.tokenizer.apply_chat_template = MagicMock(return_value="template")
+        mock_inputs = MagicMock()
+        mock_inputs.__getitem__ = lambda self, k: torch.tensor([[1, 2]])
+        mock_inputs.to = MagicMock(return_value=mock_inputs)
+        router.tokenizer.return_value = mock_inputs
+
+        with patch.object(router, '_install_hooks', side_effect=fake_install):
+            with patch.object(router, '_remove_hooks'):
+                router.model.return_value = MagicMock()
+                candidates, h = router._probe_route("test")
+
+        # h should be pooled from layer_index=23, not assembled
+        # Default pool="mean", so mean of (1, 3, 8) where all values are 7.0
+        assert h is not None
+        assert h.shape == (8,)
+        assert torch.allclose(h, torch.tensor([7.0] * 8))

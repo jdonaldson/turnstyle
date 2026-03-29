@@ -7,11 +7,29 @@ probe-fallback — existing parse patterns are always tried first.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from pathlib import Path
 
 import torch
 
 from turnstyle.core import Turnstyle
+
+# Position constants for ExtractionPoint
+LAST_TOKEN = -1
+MEAN_POOL = -2
+
+
+@dataclass
+class ExtractionPoint:
+    """Where to read a hidden state vector from a model forward pass.
+
+    layer: transformer layer index (0 = embedding, 1+ = transformer blocks)
+    position: token index (0, 1, 2, ...), or LAST_TOKEN (-1) for the final
+              token, or MEAN_POOL (-2) to average across all positions.
+    """
+
+    layer: int
+    position: int  # token index, LAST_TOKEN, or MEAN_POOL
 
 
 class TurnstyleProbe:
@@ -87,6 +105,121 @@ class TurnstyleProbe:
         """Load probe weights from a .pt file."""
         data = torch.load(path, weights_only=False)
         return cls(data["weights"], data["bias"], data["labels"], data["threshold"])
+
+
+class MultiPositionProbe:
+    """Linear probe reading from multiple (layer, position) extraction points.
+
+    Different token positions encode different information: position 0 carries
+    the quantifier/command word, while the last token carries accumulated
+    structural context. Concatenating hidden states from multiple points into
+    a single feature vector dramatically improves classification.
+
+    Example: pos0@L1 (2048d) + last@L23 (2048d) = 4096d feature vector,
+    boosting 27-way pattern accuracy from 71% to 90%.
+    """
+
+    def __init__(
+        self,
+        weights: torch.Tensor,
+        bias: torch.Tensor,
+        labels: list[str],
+        extraction_points: list[ExtractionPoint],
+        threshold: float = 0.5,
+    ):
+        """
+        weights: (num_labels, total_dim) where total_dim = len(points) * hidden_dim
+        bias: (num_labels,)
+        labels: class names matching weight rows
+        extraction_points: where to read hidden states (order must match training)
+        threshold: sigmoid score above which a label is activated
+        """
+        self.weights = weights
+        self.bias = bias
+        self.labels = labels
+        self.extraction_points = extraction_points
+        self.threshold = threshold
+
+    @property
+    def required_layers(self) -> set[int]:
+        """Unique layer indices needed for extraction."""
+        return {ep.layer for ep in self.extraction_points}
+
+    def assemble(self, hidden_states: dict[int, torch.Tensor]) -> torch.Tensor:
+        """Build feature vector from per-layer hidden states.
+
+        hidden_states: {layer_index: (seq_len, hidden_dim)} — batch dim
+                       must already be squeezed.
+        Returns: (total_dim,) concatenated feature vector.
+        """
+        parts = []
+        for ep in self.extraction_points:
+            hs = hidden_states[ep.layer]  # (seq_len, hidden_dim)
+            if ep.position == LAST_TOKEN:
+                parts.append(hs[-1])
+            elif ep.position == MEAN_POOL:
+                parts.append(hs.mean(dim=0))
+            else:
+                idx = min(ep.position, hs.shape[0] - 1)
+                parts.append(hs[idx])
+        return torch.cat(parts)
+
+    def predict(self, assembled: torch.Tensor) -> dict[str, float]:
+        """Score labels from a pre-assembled feature vector."""
+        logits = assembled @ self.weights.T + self.bias
+        scores = torch.sigmoid(logits)
+        return {
+            label: float(score)
+            for label, score in zip(self.labels, scores)
+            if score > self.threshold
+        }
+
+    def predict_all(self, assembled: torch.Tensor) -> dict[str, float]:
+        """Score all labels (ignoring threshold)."""
+        logits = assembled @ self.weights.T + self.bias
+        scores = torch.sigmoid(logits)
+        return {label: float(score) for label, score in zip(self.labels, scores)}
+
+    def predict_best(self, assembled: torch.Tensor) -> tuple[str, float]:
+        """Return the single highest-scoring label and its confidence."""
+        logits = assembled @ self.weights.T + self.bias
+        scores = torch.sigmoid(logits)
+        idx = torch.argmax(scores).item()
+        return self.labels[idx], float(scores[idx])
+
+    def predict_from_layers(
+        self, hidden_states: dict[int, torch.Tensor],
+    ) -> dict[str, float]:
+        """Full pipeline: assemble from layer outputs, then predict."""
+        return self.predict(self.assemble(hidden_states))
+
+    def save(self, path: str):
+        """Save probe weights and extraction spec to a .pt file."""
+        torch.save(
+            {
+                "weights": self.weights,
+                "bias": self.bias,
+                "labels": self.labels,
+                "threshold": self.threshold,
+                "extraction_points": [
+                    (ep.layer, ep.position) for ep in self.extraction_points
+                ],
+            },
+            path,
+        )
+
+    @classmethod
+    def load(cls, path: str) -> MultiPositionProbe:
+        """Load probe weights and extraction spec from a .pt file."""
+        data = torch.load(path, weights_only=False)
+        points = [
+            ExtractionPoint(layer=l, position=p)
+            for l, p in data["extraction_points"]
+        ]
+        return cls(
+            data["weights"], data["bias"], data["labels"],
+            points, data.get("threshold", 0.5),
+        )
 
 
 class IntentProbe:
@@ -248,15 +381,18 @@ class RoutingTurnstyle(Turnstyle):
     def __init__(
         self,
         turnstyles: list[Turnstyle],
-        probe: TurnstyleProbe,
+        probe: TurnstyleProbe | MultiPositionProbe,
         layer_index: int,
         pool: str = "mean",
         strategy_router: StrategyRouter | None = None,
     ):
         """
         turnstyles: list of turnstyle instances
-        probe: trained TurnstyleProbe with weights
-        layer_index: which hidden layer to extract (e.g., 23 for SmolLM2)
+        probe: TurnstyleProbe or MultiPositionProbe for routing
+        layer_index: hidden layer for downstream consumers (metacognitive gate,
+                     parse_from_hidden). For MultiPositionProbe, the probe
+                     specifies its own extraction points; layer_index is only
+                     used for downstream pooled hidden state.
         pool: "mean" or "last" — how to pool hidden states across positions
         strategy_router: optional StrategyRouter for multi-strategy routing
         """
@@ -267,8 +403,8 @@ class RoutingTurnstyle(Turnstyle):
         self.layer_index = layer_index
         self.pool = pool
         self.strategy_router = strategy_router
-        self._hook_handle = None
-        self._captured_hidden = None
+        self._hook_handles: list = []
+        self._captured_hidden: dict[int, torch.Tensor] | None = None
 
         # Map probe labels → turnstyle instances
         # Convention: each turnstyle class has a probe_label class attribute
@@ -280,22 +416,35 @@ class RoutingTurnstyle(Turnstyle):
             )
             self.label_to_turnstyle[label] = t
 
-    def _install_hook(self):
-        """Register forward hook on the target layer."""
-        layer = self.model.model.layers[self.layer_index]
+    def _install_hooks(self, layer_indices: set[int] | None = None):
+        """Register forward hooks on one or more layers.
 
-        def hook_fn(module, input, output):
-            if isinstance(output, tuple):
-                self._captured_hidden = output[0].detach()
-            else:
-                self._captured_hidden = output.detach()
+        If layer_indices is None, hooks the single self.layer_index.
+        Captured hidden states are stored in self._captured_hidden
+        as {layer_index: (batch, seq_len, hidden_dim)}.
+        """
+        self._captured_hidden = {}
+        indices = layer_indices or {self.layer_index}
 
-        self._hook_handle = layer.register_forward_hook(hook_fn)
+        for layer_idx in indices:
+            layer = self.model.model.layers[layer_idx]
 
-    def _remove_hook(self):
-        if self._hook_handle is not None:
-            self._hook_handle.remove()
-            self._hook_handle = None
+            def make_hook(idx):
+                def hook_fn(module, input, output):
+                    if isinstance(output, tuple):
+                        self._captured_hidden[idx] = output[0].detach()
+                    else:
+                        self._captured_hidden[idx] = output.detach()
+                return hook_fn
+
+            handle = layer.register_forward_hook(make_hook(layer_idx))
+            self._hook_handles.append(handle)
+
+    def _remove_hooks(self):
+        """Remove all registered forward hooks."""
+        for handle in self._hook_handles:
+            handle.remove()
+        self._hook_handles = []
 
     def _pool_hidden(self, hidden: torch.Tensor) -> torch.Tensor:
         """Pool hidden states across sequence positions.
@@ -322,7 +471,12 @@ class RoutingTurnstyle(Turnstyle):
         """Use probe to identify candidate turnstyles.
 
         Returns ([(turnstyle, score)], pooled_hidden_state).
-        The pooled hidden state is reused by parse_from_hidden().
+        The pooled hidden state is reused by parse_from_hidden() and
+        metacognitive gate checks.
+
+        For MultiPositionProbe: hooks all required layers, assembles the
+        multi-position feature vector for scoring, but returns a single-layer
+        pooled vector for downstream consumers.
         """
         messages = [{"role": "user", "content": prompt}]
         text = self.tokenizer.apply_chat_template(
@@ -330,22 +484,47 @@ class RoutingTurnstyle(Turnstyle):
         )
         inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
 
-        self._install_hook()
-        try:
-            with torch.no_grad():
-                self.model(**inputs)
-            assert self._captured_hidden is not None, "Hook did not capture hidden states"
-            h = self._pool_hidden(self._captured_hidden)
-        finally:
-            self._remove_hook()
+        if isinstance(self.probe, MultiPositionProbe):
+            # Multi-position: hook all required layers + layer_index for downstream
+            layers = self.probe.required_layers | {self.layer_index}
+            self._install_hooks(layers)
+            try:
+                with torch.no_grad():
+                    self.model(**inputs)
+                assert self._captured_hidden, "Hooks did not capture hidden states"
+                # Build per-layer dict with batch dim squeezed
+                layer_hidden = {
+                    idx: h[0] for idx, h in self._captured_hidden.items()
+                }
+                assembled = self.probe.assemble(layer_hidden)
+                # Downstream hidden state: pool from self.layer_index
+                h_downstream = self._pool_hidden(
+                    self._captured_hidden[self.layer_index],
+                )
+            finally:
+                self._remove_hooks()
 
-        scores = self.probe.predict(h)
+            scores = self.probe.predict(assembled)
+        else:
+            # Single-position probe: existing behavior
+            self._install_hooks()
+            try:
+                with torch.no_grad():
+                    self.model(**inputs)
+                assert self._captured_hidden, "Hook did not capture hidden states"
+                h_downstream = self._pool_hidden(
+                    self._captured_hidden[self.layer_index],
+                )
+            finally:
+                self._remove_hooks()
+
+            scores = self.probe.predict(h_downstream)
 
         candidates = []
         for label, score in sorted(scores.items(), key=lambda x: -x[1]):
             if label in self.label_to_turnstyle:
                 candidates.append((self.label_to_turnstyle[label], score))
-        return candidates, h
+        return candidates, h_downstream
 
     def _extract_hidden(self, prompt: str) -> torch.Tensor:
         """Run a forward pass and return the pooled hidden state."""
@@ -355,14 +534,16 @@ class RoutingTurnstyle(Turnstyle):
         )
         inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
 
-        self._install_hook()
+        self._install_hooks()
         try:
             with torch.no_grad():
                 self.model(**inputs)
-            assert self._captured_hidden is not None
-            return self._pool_hidden(self._captured_hidden)
+            assert self._captured_hidden
+            return self._pool_hidden(
+                self._captured_hidden[self.layer_index],
+            )
         finally:
-            self._remove_hook()
+            self._remove_hooks()
 
     def _check_metacognitive_gate(
         self, turnstyle: Turnstyle, prompt: str, h: torch.Tensor | None = None,

@@ -55,7 +55,11 @@ from turnstyle.sandbox_backend import (
     MockBackend,
 )
 from turnstyle.probe import (
+    LAST_TOKEN,
+    MEAN_POOL,
+    ExtractionPoint,
     TurnstyleProbe,
+    MultiPositionProbe,
     IntentProbe,
     MetacognitiveProbe,
     StrategyRouter,
@@ -127,7 +131,11 @@ __all__ = [
     "DenoPyodideBackend",
     "WasmtimeBackend",
     "MockBackend",
+    "LAST_TOKEN",
+    "MEAN_POOL",
+    "ExtractionPoint",
     "TurnstyleProbe",
+    "MultiPositionProbe",
     "IntentProbe",
     "MetacognitiveProbe",
     "StrategyRouter",
