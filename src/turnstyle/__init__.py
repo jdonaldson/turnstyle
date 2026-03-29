@@ -44,6 +44,16 @@ from turnstyle.number_theory import (
     parse_number_theory,
 )
 from turnstyle.boolean import BooleanTurnstyle, parse_boolean
+from turnstyle.formal_fallacies import (
+    FormalFallaciesTurnstyle,
+    solve_formal_fallacy,
+    extract_and_split,
+    parse_sentence,
+    probe_parse_sentence,
+    classify_pattern,
+    check_validity,
+    QUANTIFIER_WORDS,
+)
 from turnstyle.sorting import SortingTurnstyle, parse_sorting
 from turnstyle.dyck import DyckTurnstyle, parse_dyck
 from turnstyle.sandbox import SandboxTurnstyle, parse_sandbox_code
@@ -120,6 +130,14 @@ __all__ = [
     "parse_number_theory",
     "BooleanTurnstyle",
     "parse_boolean",
+    "FormalFallaciesTurnstyle",
+    "solve_formal_fallacy",
+    "extract_and_split",
+    "parse_sentence",
+    "probe_parse_sentence",
+    "classify_pattern",
+    "check_validity",
+    "QUANTIFIER_WORDS",
     "SortingTurnstyle",
     "parse_sorting",
     "DyckTurnstyle",
