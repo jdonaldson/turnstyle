@@ -54,6 +54,25 @@ from turnstyle.formal_fallacies import (
     check_validity,
     QUANTIFIER_WORDS,
 )
+from turnstyle.sql import (
+    SchemaSpec,
+    SQLTurnstyle,
+    load_into_sqlite,
+    get_schema_description,
+    generate_sql,
+    repair_sql,
+    match_result_to_option,
+    extract_question,
+    extract_options,
+    extract_scene_text,
+    auto_sql_examples,
+    parse_markdown_table,
+)
+from turnstyle.colored_objects import (
+    colored_objects_parse_tables,
+    parse_scene,
+    COLORS,
+)
 from turnstyle.sorting import SortingTurnstyle, parse_sorting
 from turnstyle.dyck import DyckTurnstyle, parse_dyck
 from turnstyle.sandbox import SandboxTurnstyle, parse_sandbox_code
@@ -138,6 +157,21 @@ __all__ = [
     "classify_pattern",
     "check_validity",
     "QUANTIFIER_WORDS",
+    "SchemaSpec",
+    "SQLTurnstyle",
+    "load_into_sqlite",
+    "get_schema_description",
+    "generate_sql",
+    "repair_sql",
+    "match_result_to_option",
+    "extract_question",
+    "extract_options",
+    "extract_scene_text",
+    "auto_sql_examples",
+    "parse_markdown_table",
+    "colored_objects_parse_tables",
+    "parse_scene",
+    "COLORS",
     "SortingTurnstyle",
     "parse_sorting",
     "DyckTurnstyle",
