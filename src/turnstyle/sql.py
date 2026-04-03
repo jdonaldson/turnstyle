@@ -1223,6 +1223,10 @@ class SQLTurnstyle(Turnstyle):
         (SchemaSpec or generic markdown). Generates SQL via the model.
         If intent_probe is set, predicts query hints to condition few-shot examples.
 
+        Works with or without multiple-choice options. When options are present,
+        matches the SQL result to an option letter. When absent (free-answer tasks
+        like object_counting), returns the raw SQL result string.
+
         When diag is provided, populates it with intermediate state for debugging.
         """
         tables = self.parse_tables(prompt)
@@ -1239,10 +1243,6 @@ class SQLTurnstyle(Turnstyle):
             return None
 
         options = extract_options(prompt)
-        if not options:
-            if diag is not None:
-                diag["error"] = "no_options"
-            return None
 
         question = extract_question(prompt)
         if diag is not None:
@@ -1255,11 +1255,12 @@ class SQLTurnstyle(Turnstyle):
             return None
 
         # Meta-schema questions: can be answered from table structure alone
-        meta_result = _meta_schema_solve(question, tables, options)
-        if meta_result is not None:
-            if diag is not None:
-                diag["meta_schema"] = True
-            return meta_result
+        if options:
+            meta_result = _meta_schema_solve(question, tables, options)
+            if meta_result is not None:
+                if diag is not None:
+                    diag["meta_schema"] = True
+                return meta_result
 
         # Predict query hints from hidden states (if probe available)
         query_hints = self._predict_query_hints(prompt)
@@ -1303,13 +1304,21 @@ class SQLTurnstyle(Turnstyle):
         if err:
             return None
 
-        answer = match_result_to_option(result, options)
-        if diag is not None:
-            diag["matched_option"] = answer
+        # With options: match result to option letter
+        if options:
+            answer = match_result_to_option(result, options)
+            if diag is not None:
+                diag["matched_option"] = answer
+            if answer is None:
+                return None
+            return f"SQL: {sql} -> {result}", answer
 
+        # Without options (free-answer): return raw result
+        answer = str(result).strip() if result is not None else None
+        if diag is not None:
+            diag["raw_answer"] = answer
         if answer is None:
             return None
-
         return f"SQL: {sql} -> {result}", answer
 
     def generate(self, prompt: str, max_new_tokens: int = 50):
