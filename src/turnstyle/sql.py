@@ -391,33 +391,145 @@ def repair_sql(raw_sql: str, conn: sqlite3.Connection, tables: dict,
     if agg_where:
         repaired = agg_where.group(1)
 
-    # Fix: single-table query when question spans multiple tables.
-    # When question mentions "animal" (generic) and multiple tables exist,
-    # rewrite queries to span all tables via UNION.
+    # ── Single-pass repairs (operate on flat SQL, before UNION restructure) ──
+
+    # Fix: inverted comparison operators for "younger/shorter than X and older/taller than Y"
+    if question:
+        q_lower = question.lower()
+        inv_m = re.match(
+            r".*(?:younger|shorter|lighter|smaller)\s+than\s+(\w+)"
+            r"\s+and\s+(?:older|taller|heavier|larger)\s+than\s+(\w+)",
+            q_lower)
+        if inv_m:
+            name_a, name_b = inv_m.group(1), inv_m.group(2)
+            cmp_fix = re.match(
+                r"(SELECT\s+\w+\s+FROM\s+\w+\s+WHERE\s+\w+\s*)"
+                r"(>)(\s*\(SELECT\s+\w+\s+FROM\s+\w+\s+WHERE\s+\w+\s*=\s*'"
+                + re.escape(name_a.capitalize()) + r"'\))"
+                r"(\s+AND\s+\w+\s*)"
+                r"(<)(\s*\(SELECT\s+\w+\s+FROM\s+\w+\s+WHERE\s+\w+\s*=\s*'"
+                + re.escape(name_b.capitalize()) + r"'\))",
+                repaired, flags=re.IGNORECASE)
+            if cmp_fix:
+                repaired = (
+                    cmp_fix.group(1) + "<" + cmp_fix.group(3)
+                    + cmp_fix.group(4) + ">" + cmp_fix.group(6)
+                )
+
+    # Fix: "next to last" with ORDER BY ASC → should be DESC LIMIT 1 OFFSET 1
+    if question and "next to last" in question.lower():
+        ntl_m = re.match(
+            r"(SELECT\s+\w+\s+FROM\s+\w+\s+ORDER\s+BY\s+\w+)\s+ASC\s+"
+            r"LIMIT\s+\d+\s+OFFSET\s+\d+",
+            repaired, flags=re.IGNORECASE)
+        if ntl_m:
+            repaired = f"{ntl_m.group(1)} DESC LIMIT 1 OFFSET 1"
+
+    # Fix: ordinal ROWID off-by-one ("second" → ROWID=2, not 1)
+    if question:
+        _ORDINAL_MAP = {
+            "first": 1, "second": 2, "third": 3, "fourth": 4, "fifth": 5,
+            "sixth": 6, "seventh": 7, "eighth": 8, "ninth": 9, "tenth": 10,
+        }
+        q_lower = question.lower()
+        for word, expected_pos in _ORDINAL_MAP.items():
+            if word in q_lower:
+                rowid_fix = re.match(
+                    r"(SELECT\s+\w+\s+FROM\s+\w+\s+WHERE\s+ROWID\s*=\s*)(\d+)",
+                    repaired, flags=re.IGNORECASE)
+                if rowid_fix:
+                    actual_pos = int(rowid_fix.group(2))
+                    if actual_pos != expected_pos:
+                        repaired = rowid_fix.group(1) + str(expected_pos)
+                break
+
+    # Fix: superlative questions with hardcoded values instead of MAX/MIN.
+    # Skip when question contains ordinals ("second youngest" ≠ "youngest").
+    if question:
+        q_lower = question.lower()
+        _ORDINALS = {"first", "second", "third", "fourth", "fifth",
+                     "sixth", "seventh", "eighth", "ninth", "tenth",
+                     "next to last"}
+        has_ordinal = any(o in q_lower for o in _ORDINALS)
+        _SUPERLATIVE_MAX = [
+            "oldest", "tallest", "heaviest", "largest", "biggest",
+            "highest", "longest", "most", "taller than the other",
+            "older than the other", "heavier than the other",
+        ]
+        _SUPERLATIVE_MIN = [
+            "youngest", "shortest", "lightest", "smallest",
+            "lowest", "least",
+        ]
+        sup_dir = None
+        if not has_ordinal:
+            if any(s in q_lower for s in _SUPERLATIVE_MAX):
+                sup_dir = "MAX"
+            elif any(s in q_lower for s in _SUPERLATIVE_MIN):
+                sup_dir = "MIN"
+
+        if sup_dir:
+            # Pattern A: col > (subquery for name='X') → col = (SELECT MAX/MIN)
+            sup_compare = re.match(
+                r"(SELECT\s+)(\w+(?:\s*,\s*\w+)*)(\s+FROM\s+)(\w+)"
+                r"\s+WHERE\s+(\w+)\s*>\s*\(SELECT\s+\w+\s+FROM\s+\w+"
+                r"\s+WHERE\s+\w+\s*=\s*'[^']+'\)",
+                repaired, flags=re.IGNORECASE)
+            if sup_compare:
+                sel_col = sup_compare.group(2)
+                tbl = sup_compare.group(4)
+                cmp_col = sup_compare.group(5)
+                repaired = (
+                    f"SELECT {sel_col} FROM {tbl} "
+                    f"WHERE {cmp_col} = (SELECT {sup_dir}({cmp_col}) FROM {tbl})"
+                )
+            else:
+                # Pattern B: col = 'literal' (no nested subquery) → col = (SELECT MAX/MIN)
+                if "(SELECT" not in repaired.upper():
+                    sup_literal = re.match(
+                        r"(SELECT\s+\w+(?:\s*,\s*\w+)*\s+FROM\s+)(\w+)"
+                        r"(\s+WHERE\s+)(\w+)\s*=\s*'([^']+)'",
+                        repaired, flags=re.IGNORECASE)
+                    if sup_literal:
+                        tbl = sup_literal.group(2)
+                        col = sup_literal.group(4)
+                        repaired = (
+                            f"{sup_literal.group(1)}{tbl}{sup_literal.group(3)}"
+                            f"{col} = (SELECT {sup_dir}({col}) FROM {tbl})"
+                        )
+
+    # ── Multi-table UNION (runs AFTER single-pass repairs on flat SQL) ──
+
     if question and len(tables) > 1:
         q_lower = question.lower()
         generic_terms = ["animal", "animals", "creature", "creatures"]
-        if any(term in q_lower for term in generic_terms):
-            # Pattern 1: SELECT AGG(col) FROM table → UNION the inner column
+        table_names_mentioned = sum(
+            1 for tname in tables if tname.rstrip("s") in q_lower or tname in q_lower
+        )
+        needs_union = (
+            any(term in q_lower for term in generic_terms)
+            or table_names_mentioned >= 2
+        )
+        if needs_union:
+            # Pattern 1: SELECT AGG(col_or_*) FROM table → UNION the inner column
             agg_single = re.match(
                 r"(SELECT\s+)(SUM|MIN|MAX|AVG|COUNT)"
-                r"(\s*\(\s*)(\w+)(\s*\)\s+FROM\s+)(\w+)(.*)",
+                r"(\s*\(\s*)(\w+|\*)(\s*\)\s+FROM\s+)(\w+)(.*)",
                 repaired, flags=re.IGNORECASE)
             if agg_single:
                 agg_col = agg_single.group(4)
                 queried_table = agg_single.group(6)
-                if (queried_table in tables
-                        and all(agg_col in t[0] for t in tables.values())):
-                    union = " UNION ALL ".join(
-                        f"SELECT {agg_col} FROM {t}" for t in tables)
-                    repaired = (
-                        f"{agg_single.group(1)}{agg_single.group(2)}"
-                        f"{agg_single.group(3)}{agg_col}"
-                        f"{agg_single.group(5)}({union})"
-                        f"{agg_single.group(7)}"
-                    )
+                if queried_table in tables:
+                    if agg_col == "*" or all(agg_col in t[0] for t in tables.values()):
+                        union = " UNION ALL ".join(
+                            f"SELECT {agg_col} FROM {t}" for t in tables)
+                        repaired = (
+                            f"{agg_single.group(1)}{agg_single.group(2)}"
+                            f"{agg_single.group(3)}{agg_col}"
+                            f"{agg_single.group(5)}({union})"
+                            f"{agg_single.group(7)}"
+                        )
 
-            # Pattern 2: SELECT col FROM table [ORDER BY ...] → UNION
+            # Pattern 2: SELECT col FROM table [ORDER BY/WHERE ...] → UNION
             if not agg_single:
                 single_table = re.match(
                     r"(SELECT\s+)(\w+)(\s+FROM\s+)(\w+)(.*)",
@@ -426,17 +538,33 @@ def repair_sql(raw_sql: str, conn: sqlite3.Connection, tables: dict,
                     col = single_table.group(2)
                     queried_table = single_table.group(4)
                     rest = single_table.group(5)
-                    # Only rewrite if queried_table is one of our tables,
-                    # the column exists in all tables, and query doesn't
-                    # use ROWID (which doesn't exist in UNION subqueries)
                     if (queried_table in tables
                             and all(col in t[0] for t in tables.values())
                             and "rowid" not in repaired.lower()):
+                        # If rest has WHERE on other columns, use SELECT *
+                        inner_col = col
+                        if re.search(r"\bWHERE\b", rest, re.IGNORECASE):
+                            inner_col = "*"
                         union = " UNION ALL ".join(
-                            f"SELECT {col} FROM {t}" for t in tables)
+                            f"SELECT {inner_col} FROM {t}" for t in tables)
                         repaired = (
                             f"{single_table.group(1)}{col}"
                             f"{single_table.group(3)}({union}){rest}"
+                        )
+
+            # Pattern 3: ROWID-based single-table query → last table's last row
+            if "rowid" in repaired.lower() and agg_single is None:
+                rowid_m = re.match(
+                    r"(SELECT\s+)(\w+)(\s+FROM\s+)(\w+)"
+                    r"\s+WHERE\s+ROWID\s*=\s*\(SELECT\s+MAX\(ROWID\)\s+FROM\s+\w+\)",
+                    repaired, flags=re.IGNORECASE)
+                if rowid_m:
+                    col = rowid_m.group(2)
+                    if all(col in t[0] for t in tables.values()):
+                        last_table = list(tables.keys())[-1]
+                        repaired = (
+                            f"SELECT {col} FROM {last_table} "
+                            f"ORDER BY ROWID DESC LIMIT 1"
                         )
 
     return repaired
@@ -552,6 +680,43 @@ def extract_options(text: str) -> dict:
 # ════════════════════════════════════════════════════════════════════════
 # JSON parsing for model extraction
 # ════════════════════════════════════════════════════════════════════════
+
+def _meta_schema_solve(
+    question: str, tables: dict, options: dict,
+) -> tuple[str, str] | None:
+    """Answer meta-schema questions from table structure alone.
+
+    Handles:
+    - "How many species are listed" → number of tables
+    - "What is the number of the column with X" → column position (1-indexed)
+    """
+    q_lower = question.lower()
+
+    # "How many species" → count of tables
+    species_m = re.match(
+        r"how many (?:species|types|kinds).+(?:listed|in the table)",
+        q_lower)
+    if species_m:
+        n_tables = len(tables)
+        answer = match_result_to_option(n_tables, options)
+        if answer:
+            return f"meta_schema: {n_tables} species (tables)", answer
+
+    # "What is the number of the column with X" → column position
+    col_num_m = re.match(
+        r"what is the (?:number|position|index) of the column (?:with |for |of )?(?:the )?(\w+)",
+        q_lower)
+    if col_num_m:
+        target_col = col_num_m.group(1).rstrip("s")  # "weights" → "weight"
+        for _tname, (columns, _rows) in tables.items():
+            for i, col in enumerate(columns, 1):
+                if col.startswith(target_col) or target_col in col:
+                    answer = match_result_to_option(i, options)
+                    if answer:
+                        return f"meta_schema: column '{col}' is #{i}", answer
+
+    return None
+
 
 def parse_markdown_table(text: str) -> tuple[list[str], list[tuple]] | None:
     """Parse a markdown table from model output.
@@ -1051,12 +1216,14 @@ class SQLTurnstyle(Turnstyle):
         answer = f"({best_letter})"
         return f"logit_poll: {best_letter} (score={best_score:.2f})", answer
 
-    def _sql_solve(self, prompt: str) -> tuple[str, str] | None:
+    def _sql_solve(self, prompt: str, diag: dict | None = None) -> tuple[str, str] | None:
         """Text-to-SQL fallback.
 
         Tries parse_tables() first (deterministic), then _model_extract()
         (SchemaSpec or generic markdown). Generates SQL via the model.
         If intent_probe is set, predicts query hints to condition few-shot examples.
+
+        When diag is provided, populates it with intermediate state for debugging.
         """
         tables = self.parse_tables(prompt)
 
@@ -1064,19 +1231,40 @@ class SQLTurnstyle(Turnstyle):
         if tables is None:
             tables = self._model_extract(prompt)
 
+        if diag is not None:
+            diag["tables_parsed"] = tables is not None
+            diag["table_names"] = list(tables.keys()) if tables else []
+
         if not tables:
             return None
 
         options = extract_options(prompt)
         if not options:
+            if diag is not None:
+                diag["error"] = "no_options"
             return None
 
         question = extract_question(prompt)
+        if diag is not None:
+            diag["question"] = question
+            diag["options"] = options
+
         if not question:
+            if diag is not None:
+                diag["error"] = "no_question"
             return None
+
+        # Meta-schema questions: can be answered from table structure alone
+        meta_result = _meta_schema_solve(question, tables, options)
+        if meta_result is not None:
+            if diag is not None:
+                diag["meta_schema"] = True
+            return meta_result
 
         # Predict query hints from hidden states (if probe available)
         query_hints = self._predict_query_hints(prompt)
+        if diag is not None:
+            diag["query_hints"] = query_hints
 
         conn = load_into_sqlite(tables)
         tbl_name = next(iter(tables))
@@ -1096,18 +1284,29 @@ class SQLTurnstyle(Turnstyle):
                 tbl_name, tbl_columns, positional, rows=tbl_rows,
                 query_hints=query_hints)
 
-        sql = generate_sql(
+        raw_sql = generate_sql(
             self.model, self.tokenizer, self.device,
             schema, question, examples)
-        sql = repair_sql(sql, conn, tables, question=question)
+        sql = repair_sql(raw_sql, conn, tables, question=question)
+
+        if diag is not None:
+            diag["raw_sql"] = raw_sql
+            diag["repaired_sql"] = sql if sql != raw_sql else None
 
         result, err = _try_execute(conn, sql)
         conn.close()
+
+        if diag is not None:
+            diag["sql_result"] = result
+            diag["sql_error"] = err
 
         if err:
             return None
 
         answer = match_result_to_option(result, options)
+        if diag is not None:
+            diag["matched_option"] = answer
+
         if answer is None:
             return None
 

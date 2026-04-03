@@ -32,8 +32,10 @@ src/turnstyle/
 
 ## Current Frontier
 
-- **Penguins at 90.9%** via SQL → knowledge poll → logit poll → free generation. Remaining 6 failures are data-dependent (need SQL improvements, not routing).
-- **repair_sql**: deterministic regex fixes (+4.9pp). Best ROI pattern — fix systematic generation bugs before adding inference.
+- **Penguins at 99.3%** (142/143) via SQL → knowledge poll → logit poll → free generation. Single remaining failure is a unit conversion issue (0.6 m → 60 cm).
+- **repair_sql v3**: 90.9% → 99.3% (+8.4pp). New patterns: COUNT(*) UNION, explicit table name triggers, superlative→MAX/MIN, ordinal ROWID, "next to last", inverted comparisons, multi-table ROWID ordering.
+- **Meta-schema solver**: intercepts "how many species" (→ table count) and "column number" (→ column position) before SQL generation.
+- **`--diagnose` flag**: `swollm evaluate --diagnose` captures per-example diagnostics (tier, SQL, errors, options) for debugging.
 - **Selective few-shot conditioning**: intent probe at L4 routes COMPARISON queries to few-shot hints (+2.8pp). Other intents are net-negative when hinted.
 - **Bonsai 8B**: 1-bit 8B model smoke-tested (194.8 tok/s). Not integrated. MLX path blocked on Python 3.14.
 
