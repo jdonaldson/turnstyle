@@ -8,6 +8,8 @@ reproducible experiments that produced findings recorded in `CLAUDE.md` or memor
 | Script | Result | Date |
 |---|---|---|
 | `accumulator_fix_experiment.py` | tracking_shuffled 78.0% → 92.4% (+14.4pp) via accumulator-side fix (no prompt change) | 2026-04-06 |
+| `objcount_diag.py` | object_counting failure diagnostic: 63 extraction_lost_item + 3 category_lookup_failed at baseline 73.6% | 2026-04-06 |
+| `objcount_accumulator_fix.py` | object_counting 73.6% → 100.0% (+26.4pp) via accumulator-side fix (no prompt change) | 2026-04-06 |
 
 ## Running
 
