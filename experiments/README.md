@@ -10,6 +10,8 @@ reproducible experiments that produced findings recorded in `CLAUDE.md` or memor
 | `accumulator_fix_experiment.py` | tracking_shuffled 78.0% → 92.4% (+14.4pp) via accumulator-side fix (no prompt change) | 2026-04-06 |
 | `objcount_diag.py` | object_counting failure diagnostic: 63 extraction_lost_item + 3 category_lookup_failed at baseline 73.6% | 2026-04-06 |
 | `objcount_accumulator_fix.py` | object_counting 73.6% → 100.0% (+26.4pp) via accumulator-side fix (no prompt change) | 2026-04-06 |
+| `ld_diag.py` | logical_deduction failure diagnostic: 51 failures at baseline 79.6% across 4 categories | 2026-04-07 |
+| `ld_accumulator_fix.py` | logical_deduction 79.6% → 93.2% (+13.6pp) via accumulator-side fix (field fallback + segment override + preamble skip) | 2026-04-07 |
 
 ## Running
 
