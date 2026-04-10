@@ -1,19 +1,29 @@
 """Base conversion turnstyle — grounds number base conversions in exact computation.
 
-Handles:
-    "What is 255 in binary?"
-    "What is 255 in hex?"
-    "Convert 1010 from binary to decimal"
-    "What is 0xFF in decimal?"
-    "42 to octal"
+The LLM extracts three fields (number, from-base, to-base) from free-form text;
+exact arithmetic computes the result.  No keyword patterns required.
+
+    t = BaseConversionTurnstyle(model, tokenizer, device)
+    text, proof = t.generate("Express the binary value 1010 as a decimal number")
+    text, proof = t.generate("Hex ff to decimal")
+
+Optionally train a hidden-state probe for faster / more accurate from-base
+inference (replaces one classify_token call with a single forward pass):
+
+    t.build_from_base_probe()
 """
 
 from __future__ import annotations
 
 import re
+from typing import TYPE_CHECKING, Any
 
 from turnstyle.arithmetic import ArithmeticLogitsProcessor
 from turnstyle.core import Turnstyle
+from turnstyle.extract import ExtractionSpec, FieldSpec
+
+if TYPE_CHECKING:
+    from turnstyle.probe import TurnstyleProbe
 
 # ── base name lookup ──────────────────────────────────────────────────
 
@@ -24,9 +34,8 @@ _BASE_NAMES: dict[str, int] = {
     'hex': 16, 'hexadecimal': 16, 'base 16': 16, 'base16': 16,
 }
 
+_BASE_OPTIONS = ["binary", "octal", "decimal", "hexadecimal"]
 
-def _parse_base(name: str) -> int | None:
-    return _BASE_NAMES.get(name.lower().strip())
 
 
 def _format_result(value: int, base: int) -> str:
@@ -69,72 +78,127 @@ def _parse_number(text: str, base: int | None = None) -> tuple[int, int] | None:
         return None
 
 
-# ── expression parsing ────────────────────────────────────────────────
+# ── LLM extraction spec ───────────────────────────────────────────────
 
-def parse_base_conversion(text: str):
-    """Extract base conversion from text.
+def _assemble_base_conversion(fields: dict[str, Any]):
+    number_text = re.sub(r'\s+', '', fields["number_text"])  # strip whitespace
+    from_base = _BASE_NAMES.get(fields["from_base"])
+    to_base = _BASE_NAMES.get(fields["to_base"])
+    if not from_base or not to_base or from_base == to_base:
+        return None
+    parsed = _parse_number(number_text, from_base)
+    if not parsed:
+        return None
+    value, _ = parsed
+    result_str = _format_result(value, to_base)
+    expr = f"{number_text}(base{from_base})\u2192base{to_base}"
+    return value, from_base, to_base, result_str, expr
 
-    Returns (decimal_value, from_base, to_base, result_str, expression) or None.
-    """
-    lower = text.lower().strip().rstrip('?.')
 
-    # "Convert 1010 from binary to decimal"
-    m = re.search(r'convert\s+([\da-fx]+)\s+from\s+(\w+)\s+to\s+(\w+)', lower)
-    if m:
-        num_text, from_name, to_name = m.group(1), m.group(2), m.group(3)
-        from_base = _parse_base(from_name)
-        to_base = _parse_base(to_name)
-        if from_base and to_base:
-            parsed = _parse_number(num_text, from_base)
-            if parsed:
-                value, _ = parsed
-                result_str = _format_result(value, to_base)
-                expr = f"{num_text}\u2082{from_base}\u2192\u2082{to_base}"
-                return value, from_base, to_base, result_str, expr
+BASE_CONVERSION_EXTRACTION_SPEC = ExtractionSpec(
+    fields=[
+        FieldSpec(
+            name="number_text",
+            prompt_template=(
+                "Number conversion problem: {input}\n"
+                "What is the number to be converted? "
+                "Reply with only the number itself, no explanation."
+            ),
+            options=None,
+            max_tokens=20,
+        ),
+        FieldSpec(
+            name="from_base",
+            prompt_template=(
+                "Number conversion problem: {input}\n"
+                "What base (number system) is the input number written in?"
+            ),
+            options=_BASE_OPTIONS,
+        ),
+        FieldSpec(
+            name="to_base",
+            prompt_template=(
+                "Number conversion problem: {input}\n"
+                "What base (number system) should the answer be expressed in?"
+            ),
+            options=_BASE_OPTIONS,
+        ),
+    ],
+    assemble=_assemble_base_conversion,
+)
 
-    # "Convert 255 to binary" / "Convert 0xFF to decimal"
-    m = re.search(r'convert\s+([\da-fx]+)\s+to\s+(\w+)', lower)
-    if m:
-        num_text, to_name = m.group(1), m.group(2)
-        to_base = _parse_base(to_name)
-        if to_base:
-            parsed = _parse_number(num_text)
-            if parsed:
-                value, from_base = parsed
-                if from_base != to_base:
-                    result_str = _format_result(value, to_base)
-                    expr = f"{num_text}\u2192base{to_base}"
-                    return value, from_base, to_base, result_str, expr
 
-    # "What is 255 in binary?" / "What is 0xFF in decimal?"
-    m = re.search(r'what is\s+([\da-fx]+)\s+in\s+(\w+)', lower)
-    if m:
-        num_text, to_name = m.group(1), m.group(2)
-        to_base = _parse_base(to_name)
-        if to_base:
-            parsed = _parse_number(num_text)
-            if parsed:
-                value, from_base = parsed
-                if from_base != to_base:
-                    result_str = _format_result(value, to_base)
-                    expr = f"{num_text}\u2192base{to_base}"
-                    return value, from_base, to_base, result_str, expr
+# ── from-base probe training data ─────────────────────────────────────
+# Prompts where from-base is unambiguous (explicit context or prefix).
+# Probe trained on last-token hidden state at layer L; generalises to
+# implicit cases (e.g. "What is 1010 in decimal?" → infers binary).
 
-    # "255 to binary" / "0xff to decimal" / "42 to hex"
-    m = re.search(r'([\da-fx]+)\s+to\s+(\w+)', lower)
-    if m:
-        num_text, to_name = m.group(1), m.group(2)
-        to_base = _parse_base(to_name)
-        if to_base:
-            parsed = _parse_number(num_text)
-            if parsed:
-                value, from_base = parsed
-                if from_base != to_base:
-                    result_str = _format_result(value, to_base)
-                    expr = f"{num_text}\u2192base{to_base}"
-                    return value, from_base, to_base, result_str, expr
-
-    return None
+_FROM_BASE_TRAINING: dict[str, list[str]] = {
+    "binary": [
+        "Convert 1010 from binary to decimal",
+        "Convert 11111111 from binary to decimal",
+        "Convert 0b1010 to decimal",
+        "What is 0b11111111 in decimal?",
+        "What is 0b101 in decimal?",
+        "Express the binary number 1100 in decimal",
+        "The binary representation 10101010 equals what in decimal?",
+        "Convert the binary value 110011 to decimal",
+        "0b1111 to decimal",
+        "What decimal value does binary 11001100 represent?",
+        "Convert 1010 from binary to hex",
+        "Convert 11110000 from binary to octal",
+        "0b11001 to hex",
+        "binary 1000 to decimal",
+    ],
+    "octal": [
+        "Convert 17 from octal to decimal",
+        "Convert 0o17 to decimal",
+        "What is 0o52 in decimal?",
+        "What is 0o755 in decimal?",
+        "Express the octal number 77 in decimal",
+        "The octal value 123 is what in decimal?",
+        "Convert 0o377 to binary",
+        "What decimal number equals octal 644?",
+        "Convert 17 from octal to hex",
+        "0o100 to decimal",
+        "Convert the octal 755 to binary",
+        "What is 0o17 in binary?",
+        "0o644 to decimal",
+        "octal 52 to decimal",
+    ],
+    "decimal": [
+        "Convert 255 from decimal to binary",
+        "Convert 42 from decimal to hex",
+        "What is 255 in binary?",
+        "What is 10 in binary?",
+        "Express decimal 255 as hexadecimal",
+        "The decimal number 100 in binary is?",
+        "Convert decimal 65 to hex",
+        "What is the binary of 8?",
+        "Convert 255 to binary",
+        "Convert 16 to hex",
+        "What is 42 in octal?",
+        "Express 127 in hexadecimal",
+        "Convert the decimal number 256 to octal",
+        "255 to hex",
+    ],
+    "hexadecimal": [
+        "Convert ff from hexadecimal to decimal",
+        "Convert 0xff to decimal",
+        "What is 0xFF in decimal?",
+        "What is 0xAB in decimal?",
+        "Express the hex value ff as decimal",
+        "The hexadecimal 1A equals what in decimal?",
+        "Convert hex ff to binary",
+        "0x1F to decimal",
+        "What decimal value is hex 2A?",
+        "Convert 1A from hexadecimal to octal",
+        "0xDEAD to decimal",
+        "Convert the hex number FF to binary",
+        "hex 100 to decimal",
+        "What is 0xF0 in binary?",
+    ],
+}
 
 
 # ── processor with hex support ────────────────────────────────────────
@@ -147,7 +211,6 @@ class BaseConversionProcessor(ArithmeticLogitsProcessor):
                  max_new_tokens: int = 50):
         super().__init__(tokenizer, answer_digits, expression, answer_value,
                          bias_strength, max_new_tokens)
-        # Add hex letter mappings (10=a, 11=b, ..., 15=f)
         for i, ch in enumerate('abcdef'):
             val = 10 + i
             ids = tokenizer.encode(ch, add_special_tokens=False)
@@ -159,19 +222,137 @@ class BaseConversionProcessor(ArithmeticLogitsProcessor):
 class BaseConversionTurnstyle(Turnstyle):
     """Grounds number base conversions in exact computation.
 
+    The LLM extracts number, from-base, and to-base from free-form text;
+    Python computes the exact result and biases generation.
+
         t = BaseConversionTurnstyle(model, tokenizer, device)
-        text, proof = t.generate("What is 255 in binary?")
+        text, proof = t.generate("Express the binary value 1010 as decimal")
+
+    Optionally train a hidden-state probe for faster from-base inference:
+
+        t.build_from_base_probe()
+        text, proof = t.generate("What is 1010 in decimal?")
+        # probe infers from_base=2 → result is 10
     """
 
     probe_label = "base_conversion"
+    extraction_spec = BASE_CONVERSION_EXTRACTION_SPEC
+    _from_base_probe: "TurnstyleProbe | None" = None
+    _from_base_probe_layer: int = 2
 
     def parse(self, prompt: str):
-        return parse_base_conversion(prompt)
+        """Use probe + LLM for from-base when probe is trained; else defer to extraction_spec."""
+        if self._from_base_probe is None:
+            return None  # extraction_spec handles everything
+
+        from turnstyle.extract import classify_token, generate_short
+
+        from_base = self._probe_from_base(prompt)
+        if from_base is None:
+            return None
+
+        to_idx, _ = classify_token(
+            self.model, self.tokenizer, self.device,
+            f"Number conversion problem: {prompt!r}\n"
+            "What base should the answer be expressed in?",
+            _BASE_OPTIONS,
+        )
+        to_base = _BASE_NAMES[_BASE_OPTIONS[to_idx]]
+
+        number_text, _ = generate_short(
+            self.model, self.tokenizer, self.device,
+            f"Number conversion problem: {prompt!r}\n"
+            "What is the number to be converted? Reply with only the number.",
+            max_tokens=20,
+        )
+        number_text = re.sub(r'\s+', '', number_text)
+
+        if not to_base or from_base == to_base or not number_text:
+            return None
+
+        parsed = _parse_number(number_text, from_base)
+        if not parsed:
+            return None
+        value, _ = parsed
+        result_str = _format_result(value, to_base)
+        expr = f"{number_text}(base{from_base})\u2192base{to_base}"
+        return value, from_base, to_base, result_str, expr
+
+    def build_from_base_probe(self, layer: int = 2) -> None:
+        """Train a from-base classifier and install it on this instance.
+
+        Hooks the last-token hidden state at ``layer``, runs one forward pass
+        per training prompt, fits a 4-class SGDClassifier, and stores a baked
+        ``TurnstyleProbe`` (no scaler needed at inference time).
+        """
+        import numpy as np
+        import torch
+        from sklearn.linear_model import SGDClassifier
+        from sklearn.preprocessing import StandardScaler
+
+        from turnstyle.probe import TurnstyleProbe
+
+        X: list[np.ndarray] = []
+        y: list[str] = []
+        captured: dict[str, torch.Tensor] = {}
+
+        def _hook(module, input, output):
+            captured["h"] = output[0][:, -1, :].detach().cpu()
+
+        target_layer = self.model.model.layers[layer]
+        handle = target_layer.register_forward_hook(_hook)
+        try:
+            for label, prompts in _FROM_BASE_TRAINING.items():
+                for prompt in prompts:
+                    enc = self.tokenizer(prompt, return_tensors="pt").to(self.device)
+                    with torch.no_grad():
+                        self.model(**enc)
+                    X.append(captured["h"][0].numpy())
+                    y.append(label)
+        finally:
+            handle.remove()
+
+        X_arr = np.array(X)
+        scaler = StandardScaler()
+        X_scaled = scaler.fit_transform(X_arr)
+
+        clf = SGDClassifier(loss="log_loss", max_iter=2000, random_state=42)
+        clf.fit(X_scaled, y)
+
+        scale = torch.tensor(scaler.scale_, dtype=torch.float32)
+        mean = torch.tensor(scaler.mean_, dtype=torch.float32)
+        W = torch.tensor(clf.coef_, dtype=torch.float32) / scale
+        b = torch.tensor(clf.intercept_, dtype=torch.float32) - (W @ mean)
+
+        self._from_base_probe = TurnstyleProbe(
+            weights=W, bias=b, labels=clf.classes_.tolist()
+        )
+        self._from_base_probe_layer = layer
+
+    def _probe_from_base(self, prompt: str) -> int | None:
+        """One forward pass → last-token hidden state → probe → base int."""
+        import torch
+
+        captured: dict[str, torch.Tensor] = {}
+
+        def _hook(module, input, output):
+            captured["h"] = output[0][:, -1, :].detach()
+
+        target_layer = self.model.model.layers[self._from_base_probe_layer]
+        handle = target_layer.register_forward_hook(_hook)
+        try:
+            enc = self.tokenizer(prompt, return_tensors="pt").to(self.device)
+            with torch.no_grad():
+                self.model(**enc)
+        finally:
+            handle.remove()
+
+        label, _conf = self._from_base_probe.predict_best(captured["h"][0])
+        return _BASE_NAMES.get(label)
 
     def make_processor(self, parsed, max_new_tokens: int):
         decimal_value, from_base, to_base, result_str, expr = parsed
 
-        # Map result characters to digit values (0-15 for hex)
         answer_digits = []
         for ch in result_str:
             if ch.isdigit():
@@ -179,7 +360,6 @@ class BaseConversionTurnstyle(Turnstyle):
             elif ch.lower() in 'abcdef':
                 answer_digits.append(ord(ch.lower()) - ord('a') + 10)
 
-        # Use hex-aware processor when output contains a-f
         if to_base == 16:
             proc = BaseConversionProcessor(
                 self.tokenizer, answer_digits, expr, decimal_value,

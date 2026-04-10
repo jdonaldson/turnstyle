@@ -6,7 +6,6 @@ from turnstyle.units import parse_unit_conversion
 from turnstyle.currency import parse_currency_conversion
 from turnstyle.percentage import parse_percentage
 from turnstyle.counting import parse_counting
-from turnstyle.base_conversion import parse_base_conversion
 from turnstyle.boolean import parse_boolean
 from turnstyle.sorting import parse_sorting
 from turnstyle.dyck import parse_dyck
@@ -216,50 +215,6 @@ class TestCounting:
     def test_no_quoted_text_returns_none(self):
         assert parse_counting("How many vowels in the sky?") is None
 
-
-# ── base conversion ─────────────────────────────────────────────────
-
-class TestBaseConversion:
-    def test_decimal_to_binary(self):
-        result = parse_base_conversion("What is 255 in binary?")
-        assert result is not None
-        _, _, _, result_str, _ = result
-        assert result_str == "11111111"
-
-    def test_decimal_to_hex(self):
-        result = parse_base_conversion("What is 255 in hex?")
-        assert result is not None
-        _, _, _, result_str, _ = result
-        assert result_str == "ff"
-
-    def test_decimal_to_octal(self):
-        result = parse_base_conversion("42 to octal")
-        assert result is not None
-        _, _, _, result_str, _ = result
-        assert result_str == "52"
-
-    def test_binary_to_decimal(self):
-        result = parse_base_conversion("Convert 1010 from binary to decimal")
-        assert result is not None
-        decimal_value, _, _, result_str, _ = result
-        assert decimal_value == 10
-        assert result_str == "10"
-
-    def test_hex_prefix_to_decimal(self):
-        result = parse_base_conversion("What is 0xff in decimal?")
-        assert result is not None
-        decimal_value, _, _, result_str, _ = result
-        assert decimal_value == 255
-        assert result_str == "255"
-
-    def test_convert_to_binary(self):
-        result = parse_base_conversion("Convert 10 to binary")
-        assert result is not None
-        _, _, _, result_str, _ = result
-        assert result_str == "1010"
-
-    def test_unknown_base_returns_none(self):
-        assert parse_base_conversion("What color is blue?") is None
 
 
 # ── boolean parsing ─────────────────────────────────────────────────
