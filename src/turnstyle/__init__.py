@@ -67,11 +67,6 @@ from turnstyle.sql import (
     auto_sql_examples,
     parse_markdown_table,
 )
-from turnstyle.colored_objects import (
-    colored_objects_parse_tables,
-    parse_scene,
-    COLORS,
-)
 from turnstyle.sorting import SortingTurnstyle, parse_sorting
 from turnstyle.dyck import DyckTurnstyle, parse_dyck
 from turnstyle.comparison_ordering import ComparisonOrderingTurnstyle
@@ -174,9 +169,6 @@ __all__ = [
     "extract_scene_text",
     "auto_sql_examples",
     "parse_markdown_table",
-    "colored_objects_parse_tables",
-    "parse_scene",
-    "COLORS",
     "SortingTurnstyle",
     "parse_sorting",
     "DyckTurnstyle",
