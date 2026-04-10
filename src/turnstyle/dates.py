@@ -198,6 +198,38 @@ class DateTurnstyle(Turnstyle):
 
     probe_label = "date"
     extraction_spec = DATE_EXTRACTION_SPEC
+    examples = [
+        "How many days between March 20 and June 15?",
+        "How many days from January 1 to March 15?",
+        "How many weeks between April 1 and July 1?",
+        "How many days until Christmas?",
+        "How many days from 2026-01-01 to 2026-12-31?",
+        "How many days between February 14 and May 5?",
+        "Count the days between October 31 and December 25",
+        "How far apart are June 21 and September 22?",
+        "Days remaining until New Year?",
+        "How long from March 1 to August 31 in days?",
+        "How many days between July 4 and November 11?",
+        "How many weeks from May 1 to July 15?",
+        "How many days from September 1 to December 1?",
+        "How many days between Easter and Christmas?",
+        "How many days until Valentine's Day?",
+        "How many days between January 20 and March 20?",
+        "How many days from April 15 to June 30?",
+        "How many weeks between August 1 and October 15?",
+        "How many days between the first and last day of February?",
+        "How many days between November 1 and December 31?",
+        "How many days from 2026-03-01 to 2026-06-01?",
+        "How many days between January 1 and July 4?",
+        "How far in days from March 15 to June 21?",
+        "How many days until Halloween?",
+        "How many days between May 25 and September 5?",
+        "How many days from December 1 to February 28?",
+        "How many weeks between January 1 and April 1?",
+        "How many days between the summer solstice and autumn equinox?",
+        "How many days from August 15 to December 25?",
+        "How many days between February 1 and April 30?",
+    ]
 
     def parse(self, prompt: str):
         return None  # routing via probe, fields via extraction

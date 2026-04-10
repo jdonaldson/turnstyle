@@ -77,6 +77,38 @@ class SortingTurnstyle(Turnstyle):
 
     probe_label = "sorting"
     extraction_spec = SORTING_EXTRACTION_SPEC
+    examples = [
+        "Sort the following words alphabetically: beach wind cat tiger rug",
+        "Sort the following words alphabetically: apple banana cherry date elderberry",
+        "Sort the following words alphabetically: mango kiwi grape orange pear",
+        "Sort the following words alphabetically: zebra ant bear cat dog",
+        "Sort the following words alphabetically: python java rust go haskell",
+        "Sort the following words alphabetically: yellow blue green red purple",
+        "Sort the following words alphabetically: chair table lamp desk sofa",
+        "Sort the following words alphabetically: river ocean lake sea pond",
+        "Sort: cherry, banana, apple, date",
+        "Sort: mango, apple, kiwi, grape",
+        "Sort: zebra, ant, bear, cat, dog",
+        "Sort these words: python, java, rust",
+        "Sort [cherry, banana, apple] alphabetically",
+        "Alphabetically sort: yellow, blue, green",
+        "Put these words in order: wolf, fox, bear, deer",
+        "Sort: lemon, lime, orange, grapefruit",
+        "Sort the following words: house, apartment, cottage",
+        "Sort: rain, snow, hail, sleet, fog",
+        "Sort alphabetically: pencil, pen, marker, crayon",
+        "Sort: north, south, east, west",
+        "Sort the words: diamond, ruby, emerald, sapphire",
+        "Sort: mercury, venus, earth, mars, jupiter",
+        "Alphabetize: walnut, almond, cashew, pecan",
+        "Sort these: guitar, piano, violin, cello",
+        "Sort the following: doctor, teacher, engineer, lawyer",
+        "Sort: red, orange, yellow, green, blue",
+        "Sort: morning, afternoon, evening, night",
+        "Sort alphabetically: Paris, London, Berlin, Rome",
+        "Sort: alpha, beta, gamma, delta, epsilon",
+        "Sort the following words alphabetically: spring, summer, autumn, winter",
+    ]
 
     def parse(self, prompt: str):
         return None  # routing via probe, fields via extraction

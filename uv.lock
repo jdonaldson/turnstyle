@@ -1626,6 +1626,11 @@ sweep = [
     { name = "scikit-learn", version = "1.8.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "mlx", marker = "extra == 'mlx'", specifier = ">=0.18" },
@@ -1638,6 +1643,9 @@ requires-dist = [
     { name = "wasmtime", marker = "extra == 'sandbox'", specifier = ">=42.0" },
 ]
 provides-extras = ["dev", "sandbox", "sweep", "mlx"]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=9.0.2" }]
 
 [[package]]
 name = "typer"

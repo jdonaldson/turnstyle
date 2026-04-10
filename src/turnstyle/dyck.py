@@ -119,6 +119,38 @@ class DyckTurnstyle(Turnstyle):
 
     probe_label = "dyck"
     extraction_spec = DYCK_EXTRACTION_SPEC
+    examples = [
+        "Complete the rest of the sequence, making sure that the parentheses are closed properly. Input: ( ( ) [",
+        "Complete the rest of the sequence, making sure that the parentheses are closed properly. Input: { [ ( )",
+        "Complete the rest of the sequence, making sure that the parentheses are closed properly. Input: < { } <",
+        "Complete the rest of the sequence, making sure that the parentheses are closed properly. Input: ( ( ( )",
+        "Complete the rest of the sequence, making sure that the parentheses are closed properly. Input: [ ( { } ) [",
+        "Complete the rest of the sequence, making sure that the parentheses are closed properly. Input: { [ ] {",
+        "Complete the rest of the sequence, making sure that the parentheses are closed properly. Input: ( [ )",
+        "Complete the rest of the sequence, making sure that the parentheses are closed properly. Input: < < > {",
+        "Complete the brackets: ( ( ) [ ]",
+        "Close the brackets: { [ (",
+        "Balance these brackets: ( ( ) ) [",
+        "Finish the parentheses: ( [",
+        "What closes this bracket sequence: { [ ( )",
+        "Complete the brackets: < { } <",
+        "Close the brackets: [ ( { } ) [",
+        "Balance: ( ( ( )",
+        "Finish: { [ ] {",
+        "Complete the brackets: ( ( ) [ ] {",
+        "Close: < < > {",
+        "Balance these: [ { < ( )",
+        "Complete: [ [ ] [",
+        "Close the parentheses: ( ( ) ( )",
+        "What brackets complete: { { } {",
+        "Complete the brackets: ( ) ( ) (",
+        "Finish: < ( { )",
+        "Close: [ < ] <",
+        "Balance: { [ { [ ]",
+        "Complete the sequence: ( [ ( )",
+        "Finish the parentheses: { ( ) [",
+        "Complete: < { > {",
+    ]
 
     def parse(self, prompt: str):
         return None  # routing via probe, fields via extraction

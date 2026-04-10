@@ -410,10 +410,7 @@ class RoutingTurnstyle(Turnstyle):
         # Convention: each turnstyle class has a probe_label class attribute
         self.label_to_turnstyle: dict[str, Turnstyle] = {}
         for t in turnstyles:
-            label = getattr(
-                t, "probe_label",
-                type(t).__name__.lower().replace("turnstyle", ""),
-            )
+            label = getattr(t, "probe_label", "") or type(t).__name__.lower().replace("turnstyle", "")
             self.label_to_turnstyle[label] = t
 
     def _install_hooks(self, layer_indices: set[int] | None = None):
@@ -656,6 +653,97 @@ class RoutingTurnstyle(Turnstyle):
 
         # Step 5: No match at all — free generation
         return self._free_generate(prompt, max_new_tokens)
+
+    @classmethod
+    def build(
+        cls,
+        solvers: "list[Turnstyle]",
+        model,
+        tokenizer,
+        device: str | None = None,
+        layer: int = 1,
+        pool: str = "last",
+        n_per_solver: int = 50,
+        bias_strength: float = 15.0,
+        verbose: bool = True,
+    ) -> "RoutingTurnstyle":
+        """Train a route probe from each solver's examples, return a fitted hub.
+
+        Collects ``examples[:n_per_solver]`` from each solver, runs a single-layer
+        probe sweep at ``layer`` with last-token pooling (optimal per 2026-04-10
+        experiment: L1, last-token, 92-100% LOO on multi-task families), then
+        returns a ready-to-use ``RoutingTurnstyle``.
+
+        Args:
+            solvers: list of Turnstyle instances, each with ``probe_label`` and
+                ``examples`` class attributes.
+            model: loaded HuggingFace PreTrainedModel (already on correct device).
+            tokenizer: corresponding tokenizer.
+            device: device string ("cpu", "cuda", etc.). Auto-detected if None.
+            layer: transformer layer index for probe (default 1 = L1).
+            pool: hidden-state pooling mode (default "last" = last-token).
+            n_per_solver: maximum examples per solver for probe training.
+            bias_strength: logit bias applied by this hub's turnstyles.
+            verbose: print probe sweep progress.
+
+        Returns:
+            RoutingTurnstyle with a trained probe at the specified layer.
+
+        Note:
+            Requires sklearn (``pip install scikit-learn``). On macOS, lbfgs
+            may trigger joblib multiprocessing — use n_per_solver <= 50 to keep
+            training fast and avoid long joblib overhead.
+        """
+        from turnstyle.sweep import probe_sweep
+
+        # Collect prompts keyed by probe_label
+        prompts: dict[str, list[str]] = {}
+        for s in solvers:
+            label = getattr(s, "probe_label", "")
+            examples = getattr(s, "examples", [])
+            if label and examples:
+                prompts[label] = list(examples[:n_per_solver])
+
+        if not prompts:
+            raise ValueError(
+                "No solver has both probe_label and examples — "
+                "cannot train route probe. Add examples to your solver classes."
+            )
+
+        # Auto-detect device
+        if device is None:
+            if hasattr(model, "device"):
+                device = str(model.device)
+            else:
+                import torch
+                device = "cuda" if torch.cuda.is_available() else "cpu"
+
+        if verbose:
+            label_counts = {k: len(v) for k, v in prompts.items()}
+            print(f"RoutingTurnstyle.build(): training route probe")
+            print(f"  labels: {list(label_counts.keys())}")
+            print(f"  examples per label: {label_counts}")
+            print(f"  layer={layer}, pool={pool}, device={device}")
+
+        result = probe_sweep(
+            model,
+            tokenizer,
+            prompts=prompts,
+            layer_range=(layer, layer),
+            pool=pool,
+            device=device,
+            verbose=verbose,
+        )
+
+        if verbose:
+            print(f"  best layer: {result.best_layer} ({result.best_accuracy:.1%})")
+
+        return cls(
+            solvers,
+            result.probe,
+            layer_index=layer,
+            pool=pool,
+        )
 
     def _free_generate(
         self, prompt: str, max_new_tokens: int,

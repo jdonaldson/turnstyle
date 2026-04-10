@@ -392,3 +392,240 @@ class SentenceIRSolver:
         return sentence_ir_solve(
             self.model, self.tokenizer, self.device,
             text, self.spec, diag=diag)
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# Turnstyle subclasses for probe-routed deterministic solvers
+# ═══════════════════════════════════════════════════════════════════════
+
+# ── direction tables (navigate) ─────────────────────────────────────────────
+_ABS_DIR: dict[str, tuple[int, int]] = {
+    "forward":  ( 0,  1), "backward": ( 0, -1),
+    "left":     (-1,  0), "right":    ( 1,  0),
+    "north":    ( 0,  1), "south":    ( 0, -1),
+    "west":     (-1,  0), "east":     ( 1,  0),
+}
+_FACING = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+_STEP_ABS_RE = re.compile(
+    r"Take\s+(\d+)\s+steps?\s+(forward|backward|left|right|north|south|east|west)", re.I)
+_STEP_FWD_RE = re.compile(r"Take\s+(\d+)\s+steps?$", re.I)
+_STEP_REL_RE = re.compile(r"Take\s+(\d+)\s+steps?\s+(forward|backward)", re.I)
+_TURN_RE = re.compile(r"Turn\s+(left|right|around)", re.I)
+_NAV_OPTIONS_RE = re.compile(r"\(([A-Z])\)\s*(.+?)(?=\s*\([A-Z]\)|\s*$)", re.S)
+
+
+def _navigate_solve(text: str) -> str | None:
+    """Deterministic navigate solver. Returns 'Yes'/'No' or None."""
+    after_q = text.split("?", 1)[-1]
+    body = after_q.split("\nOptions:")[0].strip()
+
+    x, y = 0, 0
+    if "Always face forward" in text:
+        for n_str, direction in _STEP_ABS_RE.findall(body):
+            dx, dy = _ABS_DIR[direction.lower()]
+            x += int(n_str) * dx
+            y += int(n_str) * dy
+    else:
+        facing = 0
+        fwd_map = {"forward": 0, "backward": 2}
+        for sent in re.split(r"\.\s*", body):
+            sent = sent.strip()
+            t = _TURN_RE.match(sent)
+            if t:
+                d = t.group(1).lower()
+                if d == "left":    facing = (facing - 1) % 4
+                elif d == "right": facing = (facing + 1) % 4
+                else:              facing = (facing + 2) % 4
+                continue
+            sr = _STEP_REL_RE.match(sent)
+            if sr:
+                n = int(sr.group(1))
+                offset = fwd_map.get(sr.group(2).lower(), 0)
+                fx, fy = _FACING[(facing + offset) % 4]
+                x += n * fx; y += n * fy
+                continue
+            sf = _STEP_FWD_RE.match(sent)
+            if sf:
+                n = int(sf.group(1))
+                fx, fy = _FACING[facing]
+                x += n * fx; y += n * fy
+
+    return "Yes" if (x == 0 and y == 0) else "No"
+
+
+# ── truth chain patterns (web_of_lies) ─────────────────────────────────────
+_WOL_BASE_RE = re.compile(r"^(\w+)\s+(tells\s+the\s+truth|lies)\s*$", re.I)
+_WOL_SAYS_RE = re.compile(r"(\w+)\s+says\s+(\w+)\s+(tells\s+the\s+truth|lies)", re.I)
+_WOL_QUERY_RE = re.compile(r"Does\s+(\w+)\s+tell\s+the\s+truth\?", re.I)
+
+
+def _wol_solve(text: str) -> str | None:
+    """Deterministic web_of_lies solver. Returns 'Yes'/'No' or None."""
+    text = re.sub(r"^Question:\s*", "", text.strip())
+    truth: dict[str, bool] = {}
+
+    for sent in re.split(r"\.\s+|\.\Z", text):
+        sent = sent.strip()
+        if re.search(r"\bsays\b", sent, re.I):
+            continue
+        m = _WOL_BASE_RE.match(sent)
+        if m:
+            truth[m.group(1)] = m.group(2).strip().lower() == "tells the truth"
+
+    prev_size = -1
+    while len(truth) != prev_size:
+        prev_size = len(truth)
+        for speaker, subject, claim in _WOL_SAYS_RE.findall(text):
+            asserted = claim.strip().lower() == "tells the truth"
+            if subject in truth and speaker not in truth:
+                truth[speaker] = (asserted == truth[subject])
+            elif speaker in truth and subject not in truth:
+                truth[subject] = asserted if truth[speaker] else not asserted
+
+    m = _WOL_QUERY_RE.search(text)
+    if not m:
+        return None
+    queried = m.group(1)
+    if queried not in truth:
+        return None
+    return "Yes" if truth[queried] else "No"
+
+
+def _wol_parse_options(text: str) -> dict[str, str]:
+    opts_section = text.split("Options:")[-1] if "Options:" in text else text
+    return {
+        letter: val.strip()
+        for letter, val in _NAV_OPTIONS_RE.findall(opts_section)
+    }
+
+
+from turnstyle.core import SequenceLogitsProcessor, Turnstyle
+
+
+class NavigateTurnstyle(Turnstyle):
+    """Grounds spatial navigation in deterministic coordinate simulation.
+
+    Parses movement instructions, simulates the path, and biases the
+    model's answer toward 'Yes' (returns to origin) or 'No' (does not).
+
+        t = NavigateTurnstyle(model, tokenizer, device)
+        text, proof = t.generate("If you follow these instructions, do you return to the starting point?\\nAlways face forward. Take 3 steps right. Take 3 steps left.\\nOptions:\\n(A) Yes\\n(B) No")
+    """
+
+    probe_label = "spatial_navigation"
+    examples = [
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 3 steps right. Take 3 steps left.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 5 steps forward. Take 5 steps backward.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 1 step left. Take 1 step right.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 7 steps north. Take 7 steps south.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 2 steps east. Take 3 steps west.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 10 steps forward. Take 5 steps backward. Take 5 steps backward.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Take 4 steps. Turn around. Take 4 steps.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Take 3 steps. Turn left. Take 3 steps. Turn left. Take 3 steps. Turn left. Take 3 steps.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Take 2 steps. Turn right. Take 2 steps. Turn right. Take 2 steps. Turn right. Take 2 steps.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 3 steps left. Take 1 step right.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 9 steps forward. Take 9 steps backward. Take 1 step left.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Take 5 steps. Turn right. Take 5 steps. Turn right. Take 5 steps. Turn right. Take 5 steps.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 8 steps right. Take 8 steps left. Take 3 steps forward.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Take 1 step. Turn around. Take 1 step.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 6 steps north. Take 3 steps south. Take 3 steps south.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 4 steps east. Take 4 steps west. Take 2 steps north. Take 2 steps south.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Take 7 steps. Turn left. Take 3 steps.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 2 steps forward. Take 2 steps forward. Take 4 steps backward.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 1 step right. Take 1 step forward. Take 1 step left. Take 1 step backward.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Take 10 steps. Turn right. Take 10 steps. Turn right. Take 10 steps. Turn right. Take 10 steps.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 5 steps left. Take 3 steps right. Take 2 steps right.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Take 6 steps. Turn around. Take 3 steps.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 12 steps north. Take 12 steps south.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 3 steps west. Take 3 steps east. Take 5 steps north. Take 5 steps south.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Take 4 steps. Turn left. Take 4 steps. Turn left. Take 4 steps. Turn left. Take 4 steps.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 2 steps right. Take 5 steps left.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Take 8 steps. Turn right. Take 8 steps. Turn around. Take 8 steps. Turn left. Take 8 steps.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 1 step north. Take 1 step east. Take 1 step south. Take 1 step west.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Always face forward. Take 15 steps forward. Take 7 steps backward. Take 8 steps backward.\nOptions:\n(A) Yes\n(B) No",
+        "If you follow these instructions, do you return to the starting point? Take 3 steps. Turn right. Take 3 steps. Turn right. Take 6 steps. Turn right. Take 6 steps.\nOptions:\n(A) Yes\n(B) No",
+    ]
+
+    def parse(self, prompt: str):
+        """Deterministic solve: simulate navigation, match answer to options."""
+        answer = _navigate_solve(prompt)
+        if answer is None:
+            return None
+        opts = _wol_parse_options(prompt)
+        for letter, val in opts.items():
+            if val.strip().lower() == answer.lower():
+                return (f"({letter})", answer)
+        # If no options found, return the raw answer
+        return (answer, answer)
+
+    def make_processor(self, parsed, max_new_tokens: int):
+        option_letter, answer_text = parsed
+        answer_ids = self.tokenizer.encode(option_letter, add_special_tokens=False)
+        return SequenceLogitsProcessor(
+            self.tokenizer, answer_ids, expression="navigate",
+            answer_str=option_letter, bias_strength=self.bias_strength,
+            max_new_tokens=max_new_tokens)
+
+
+class WebOfLiesTurnstyle(Turnstyle):
+    """Grounds truth-chain reasoning in deterministic propagation.
+
+    Parses base truth facts and derived statements, propagates truth
+    values, and biases the model's answer toward 'Yes' or 'No'.
+
+        t = WebOfLiesTurnstyle(model, tokenizer, device)
+        text, proof = t.generate("Maeva tells the truth. Phoebe says Maeva lies. Does Phoebe tell the truth?\\nOptions:\\n(A) Yes\\n(B) No")
+    """
+
+    probe_label = "truth_chain"
+    examples = [
+        "Maeva tells the truth. Phoebe says Maeva lies. Does Phoebe tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Alice lies. Bob says Alice tells the truth. Does Bob tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Charlie tells the truth. Dana says Charlie lies. Eve says Dana tells the truth. Does Eve tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Frank lies. Grace says Frank lies. Does Grace tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Henry tells the truth. Iris says Henry tells the truth. Jack says Iris lies. Does Jack tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Kate lies. Leo says Kate tells the truth. Maya says Leo tells the truth. Does Maya tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Nora tells the truth. Oliver says Nora lies. Pete says Oliver lies. Does Pete tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Quinn lies. Rachel says Quinn lies. Sam says Rachel tells the truth. Does Sam tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Tina tells the truth. Uma says Tina tells the truth. Does Uma tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Victor lies. Wendy says Victor tells the truth. Xander says Wendy lies. Does Xander tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Yolanda tells the truth. Zach says Yolanda lies. Does Zach tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Alex lies. Blake says Alex lies. Does Blake tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Cameron tells the truth. Dylan says Cameron tells the truth. Erin says Dylan lies. Does Erin tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Finn lies. Georgia says Finn tells the truth. Hana says Georgia tells the truth. Does Hana tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Ivan tells the truth. Julia says Ivan lies. Karl says Julia tells the truth. Does Karl tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Lisa lies. Marcus says Lisa lies. Nat says Marcus lies. Does Nat tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Oscar tells the truth. Penny says Oscar tells the truth. Quinn says Penny lies. Does Quinn tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Rosa lies. Sam says Rosa tells the truth. Tara says Sam tells the truth. Does Tara tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Ulrich tells the truth. Vera says Ulrich lies. Will says Vera lies. Does Will tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Xena lies. Yoshi says Xena lies. Zoe says Yoshi tells the truth. Does Zoe tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Abel tells the truth. Beth says Abel tells the truth. Carl says Beth tells the truth. Does Carl tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Diana lies. Ethan says Diana lies. Faye says Ethan lies. Does Faye tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Gary tells the truth. Hana says Gary tells the truth. Ida says Hana tells the truth. Does Ida tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Jake lies. Kim says Jake tells the truth. Leo says Kim lies. Does Leo tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Mia tells the truth. Nick says Mia lies. Olga says Nick lies. Does Olga tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Paul lies. Queenie says Paul lies. Rob says Queenie tells the truth. Does Rob tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Sara tells the truth. Todd says Sara tells the truth. Uma says Todd lies. Does Uma tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Vlad lies. Wren says Vlad tells the truth. Xavier says Wren tells the truth. Does Xavier tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Yara tells the truth. Zeus says Yara lies. Does Zeus tell the truth?\nOptions:\n(A) Yes\n(B) No",
+        "Adam lies. Barb says Adam lies. Carol says Barb tells the truth. Does Carol tell the truth?\nOptions:\n(A) Yes\n(B) No",
+    ]
+
+    def parse(self, prompt: str):
+        """Deterministic solve: propagate truth values, match answer to options."""
+        answer = _wol_solve(prompt)
+        if answer is None:
+            return None
+        opts = _wol_parse_options(prompt)
+        for letter, val in opts.items():
+            if val.strip().lower() == answer.lower():
+                return (f"({letter})", answer)
+        return (answer, answer)
+
+    def make_processor(self, parsed, max_new_tokens: int):
+        option_letter, answer_text = parsed
+        answer_ids = self.tokenizer.encode(option_letter, add_special_tokens=False)
+        return SequenceLogitsProcessor(
+            self.tokenizer, answer_ids, expression="web_of_lies",
+            answer_str=option_letter, bias_strength=self.bias_strength,
+            max_new_tokens=max_new_tokens)

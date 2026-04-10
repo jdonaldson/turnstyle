@@ -1501,6 +1501,38 @@ class FormalFallaciesTurnstyle(Turnstyle):
     """
 
     probe_label = "formal_fallacies"
+    examples = [
+        "Consider the following argument: Every elephant is a mammal. Some elephants are gray. Therefore, some mammals are gray. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: All birds have wings. No penguins can fly. Therefore, some birds cannot fly. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: All roses are flowers. All flowers need water. Therefore, all roses need water. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: No cats are dogs. Some pets are cats. Therefore, some pets are not dogs. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: All A are B. All B are C. Therefore, all A are C. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: Some students are athletes. All athletes are healthy. Therefore, all students are healthy. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: All mammals are warm-blooded. Whales are mammals. Therefore, whales are warm-blooded. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: No fish are mammals. All sharks are fish. Therefore, no sharks are mammals. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: All teachers are educated. Some educated people are poor. Therefore, some teachers are poor. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: Every square is a rectangle. Every rectangle has four sides. Therefore, every square has four sides. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: All politicians are liars. Some people are politicians. Therefore, some people are liars. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: No reptile is warm-blooded. All snakes are reptiles. Therefore, no snake is warm-blooded. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: Some cars are electric. All electric vehicles are eco-friendly. Therefore, some cars are eco-friendly. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: All programmers use computers. Some teachers use computers. Therefore, some teachers are programmers. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: All metals conduct electricity. Gold is a metal. Therefore, gold conducts electricity. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: Some doctors are surgeons. All surgeons wear gloves. Therefore, some doctors wear gloves. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: No vegetarian eats meat. All vegans are vegetarians. Therefore, no vegan eats meat. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: All diamonds are hard. Some jewels are diamonds. Therefore, all jewels are hard. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: Every prime number greater than 2 is odd. 7 is a prime number greater than 2. Therefore, 7 is odd. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: Some athletes are tall. All tall people play basketball. Therefore, some athletes play basketball. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: All humans are mortal. Socrates is a human. Therefore, Socrates is mortal. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: No insect has a backbone. Spiders are insects. Therefore, spiders have no backbone. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: All nurses are compassionate. Some compassionate people are good listeners. Therefore, some nurses are good listeners. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: Some books are bestsellers. All bestsellers are popular. Therefore, some books are popular. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: All computers need power. All phones are computers. Therefore, all phones need power. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: No herbivore eats meat. All deer are herbivores. Therefore, no deer eat meat. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: Some plants are poisonous. All poisonous plants are dangerous. Therefore, all plants are dangerous. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: All triangles have three sides. All equilateral shapes are triangles. Therefore, all equilateral shapes have three sides. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: Some leaders are corrupt. All corrupt people abuse power. Therefore, some leaders abuse power. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+        "Consider the following argument: Every whale is a mammal. Every mammal breathes air. Therefore, every whale breathes air. Is the argument valid or invalid?\nOptions:\n(A) valid\n(B) invalid",
+    ]
 
     def parse(self, prompt: str):
         """Parse argument and compute validity.

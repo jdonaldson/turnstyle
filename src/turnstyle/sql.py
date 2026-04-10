@@ -900,6 +900,40 @@ class SQLTurnstyle(Turnstyle):
     """
 
     schema_spec: SchemaSpec | None = None
+    probe_label = "tabular"
+    examples = [
+        # penguins_in_a_table style
+        "Here is a table that describes some penguins and attributes about them.\n|name|age|height (cm)|weight (kg)|bill length (mm)|flipper length (cm)|\n|Herman|10|47|29|39|18|\n|Gwen|15|45|28|38|19|\n|Nora|9|40|22|32|16|\nWhich penguin is the oldest?\nOptions:\n(A) Herman\n(B) Gwen\n(C) Nora",
+        "Here is a table that describes some penguins and attributes about them.\n|name|age|height (cm)|weight (kg)|\n|Amara|7|42|24|\n|Floyd|14|50|31|\n|Kwame|11|46|27|\nWhich penguin weighs the most?\nOptions:\n(A) Amara\n(B) Floyd\n(C) Kwame",
+        "Here is a table that describes some penguins and attributes about them.\n|name|age|height (cm)|bill length (mm)|\n|Olga|6|43|35|\n|Peter|13|48|40|\n|Amy|9|41|33|\nWhich penguin has the longest bill?\nOptions:\n(A) Olga\n(B) Peter\n(C) Amy",
+        # reasoning_about_colored_objects style
+        "On the nightstand, there is a red fidget spinner, a mauve dog leash, a blue teddy bear, and a burgundy cup. How many non-burgundy things are on the nightstand?\nOptions:\n(A) zero\n(B) one\n(C) two\n(D) three\n(E) four",
+        "On the table, there is a purple paperclip, a red plate, a green mug, and a yellow cup. How many objects are on the table?\nOptions:\n(A) two\n(B) three\n(C) four\n(D) five",
+        "On the desk, there is a blue pencil, a green notebook, and a red eraser. How many non-blue things are on the desk?\nOptions:\n(A) zero\n(B) one\n(C) two\n(D) three",
+        "On the floor, there is a brown ball, a black shoe, a white sock, and a gray hat. How many items are not brown?\nOptions:\n(A) one\n(B) two\n(C) three\n(D) four",
+        "On the shelf, there is a silver mirror, a gold frame, and a bronze clock. What color is the mirror?\nOptions:\n(A) silver\n(B) gold\n(C) bronze",
+        # object_counting style
+        "I have a flower, a cup, two pencils, and three books. How many objects do I have?\nOptions:\n(A) five\n(B) six\n(C) seven\n(D) eight",
+        "There are four apples, two oranges, and one banana on the table. How many fruits are there?\nOptions:\n(A) five\n(B) six\n(C) seven\n(D) eight",
+        "I have three dogs and two cats. How many pets do I have?\nOptions:\n(A) four\n(B) five\n(C) six",
+        "On the table there are two cups, three plates, one fork, and four spoons. How many items are on the table?\nOptions:\n(A) eight\n(B) nine\n(C) ten\n(D) eleven",
+        "I bought one apple, two bananas, three oranges, and four grapes. How many fruit items did I buy?\nOptions:\n(A) eight\n(B) nine\n(C) ten\n(D) eleven",
+        "Here is a table about species of birds.\n|name|wingspan (cm)|weight (g)|\n|Robin|26|19|\n|Sparrow|21|30|\n|Finch|24|22|\nWhich bird has the widest wingspan?\nOptions:\n(A) Robin\n(B) Sparrow\n(C) Finch",
+        "Here is a table about gemstones.\n|name|hardness|carat|price|\n|Diamond|10|2.1|5000|\n|Ruby|9|1.5|3000|\n|Emerald|7.5|2.0|2500|\nWhich gemstone is the hardest?\nOptions:\n(A) Diamond\n(B) Ruby\n(C) Emerald",
+        "On the windowsill, there is a green plant, a red vase, a blue bowl, a yellow cup, and a white candle. How many objects are on the windowsill?\nOptions:\n(A) three\n(B) four\n(C) five\n(D) six",
+        "There are five red cars and three blue cars in the parking lot. How many cars are there in total?\nOptions:\n(A) six\n(B) seven\n(C) eight\n(D) nine",
+        "I have two tables, four chairs, one sofa, and three lamps. How many furniture items do I have?\nOptions:\n(A) eight\n(B) nine\n(C) ten\n(D) eleven",
+        "Here is a table that describes some fish.\n|name|length (cm)|weight (g)|color|\n|Nemo|10|50|orange|\n|Dory|20|120|blue|\n|Gill|15|80|gray|\nWhich fish is the longest?\nOptions:\n(A) Nemo\n(B) Dory\n(C) Gill",
+        "On the counter there is a purple bowl, a green mug, and an orange plate. How many non-purple items are on the counter?\nOptions:\n(A) zero\n(B) one\n(C) two\n(D) three",
+        "I see one moon, eight planets, and countless stars. How many distinct celestial bodies did I list?\nOptions:\n(A) seven\n(B) eight\n(C) nine\n(D) ten",
+        "Here is a table about athletes.\n|name|age|sport|\n|Alice|25|swimming|\n|Bob|30|cycling|\n|Carol|27|running|\nWhich athlete is oldest?\nOptions:\n(A) Alice\n(B) Bob\n(C) Carol",
+        "There are two apples, zero oranges, and four bananas. How many fruits are there in total?\nOptions:\n(A) four\n(B) five\n(C) six\n(D) seven",
+        "On the desk there are three pens and two pencils. How many writing instruments are on the desk?\nOptions:\n(A) three\n(B) four\n(C) five\n(D) six",
+        "Here is a table about coffee shops.\n|name|rating|price|\n|Starbucks|4.2|high|\n|BlueBottle|4.5|high|\n|Dunkin|3.8|low|\nWhich shop has the highest rating?\nOptions:\n(A) Starbucks\n(B) BlueBottle\n(C) Dunkin",
+        "On the floor, I see a red ball, two green cubes, and a blue pyramid. How many objects are there in total?\nOptions:\n(A) three\n(B) four\n(C) five",
+        "I have five coins, three bills, and two checks. How many financial instruments do I have?\nOptions:\n(A) eight\n(B) nine\n(C) ten\n(D) eleven",
+        "Here is a table that lists some cities and their populations.\n|city|population|\n|Alpha|50000|\n|Beta|120000|\n|Gamma|75000|\nWhich city has the largest population?\nOptions:\n(A) Alpha\n(B) Beta\n(C) Gamma",
+    ]
 
     def __init__(self, model, tokenizer, device, bias_strength=15.0,
                  schema_spec: SchemaSpec | None = None,

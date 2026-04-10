@@ -146,6 +146,38 @@ class ArithmeticTurnstyle(Turnstyle):
     """
 
     probe_label = "arithmetic"
+    examples = [
+        "What is 445 + 152?",
+        "What is 100 - 34?",
+        "What is 8 * 7?",
+        "What is 144 / 12?",
+        "What is 250 + 375?",
+        "What is 1000 - 537?",
+        "What is 9 * 13?",
+        "What is 56 / 7?",
+        "Calculate 55 plus 37",
+        "Add 200 and 150 together",
+        "Subtract 39 from 100",
+        "Multiply 7 by 9",
+        "What do you get when you add 45 to 87?",
+        "Find the difference between 500 and 237",
+        "What's the product of 6 and 13?",
+        "Compute 48 divided by 6",
+        "How much is 123 times 4?",
+        "What is 777 + 888?",
+        "What is 500 * 3?",
+        "What is 300 / 15?",
+        "What is 99 - 44?",
+        "What is 12 * 12?",
+        "What is 81 / 9?",
+        "What is 256 + 128?",
+        "What is 1000 - 1?",
+        "What is 17 * 18?",
+        "What is 240 / 8?",
+        "What is 450 + 550?",
+        "What is 75 - 25?",
+        "What is 11 * 11?",
+    ]
 
     def parse(self, prompt: str):
         return parse_arithmetic(prompt)

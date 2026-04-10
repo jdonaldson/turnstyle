@@ -108,6 +108,38 @@ class BooleanTurnstyle(Turnstyle):
 
     probe_label = "boolean"
     extraction_spec = BOOLEAN_EXTRACTION_SPEC
+    examples = [
+        "not ( ( not ( False ) and ( True ) ) or ( False ) )",
+        "( ( False ) and ( True ) ) or not ( True )",
+        "not ( True ) or ( False )",
+        "( True ) and not ( False ) and ( True )",
+        "True and False",
+        "not True",
+        "True or False",
+        "not False",
+        "False and True",
+        "True or not False",
+        "not ( True or False )",
+        "( True and False ) or True",
+        "not ( False ) and not ( True )",
+        "True and True and False",
+        "False or False or True",
+        "not ( not True )",
+        "True and not True",
+        "( False or True ) and False",
+        "not False and not False",
+        "True or True or False",
+        "not ( True and True )",
+        "False and not False",
+        "True or False or not True",
+        "not True and True",
+        "( not True ) and ( not False )",
+        "False or not False",
+        "True and False and True",
+        "not ( False or False )",
+        "( True ) or ( False ) or ( True )",
+        "not ( True ) and ( True ) or ( False )",
+    ]
 
     def parse(self, prompt: str):
         return None  # routing via probe, fields via extraction

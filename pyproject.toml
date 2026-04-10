@@ -26,3 +26,8 @@ mlx = ["mlx>=0.18", "mlx-lm>=0.18"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/turnstyle"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+]

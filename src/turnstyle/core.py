@@ -378,6 +378,8 @@ class Turnstyle:
         make_processor(parsed, max_new_tokens) -> LogitsProcessor
     """
 
+    probe_label: str = ""    # route-type label used by RoutingTurnstyle.build()
+    examples: list[str] = [] # representative input prompts for probe training
     intent_probe = None  # IntentProbe, set by sweep or manually
     metacognitive_probe = None  # MetacognitiveProbe, set per-task
     extraction_spec = None  # ExtractionSpec, set by subclass

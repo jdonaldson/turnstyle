@@ -35,7 +35,6 @@ from turnstyle.counting import CountingTurnstyle, parse_counting
 from turnstyle.base_conversion import (
     BaseConversionTurnstyle,
     BaseConversionProcessor,
-    parse_base_conversion,
 )
 from turnstyle.number_theory import (
     GCDTurnstyle,
@@ -75,6 +74,9 @@ from turnstyle.colored_objects import (
 )
 from turnstyle.sorting import SortingTurnstyle, parse_sorting
 from turnstyle.dyck import DyckTurnstyle, parse_dyck
+from turnstyle.comparison_ordering import ComparisonOrderingTurnstyle
+from turnstyle.object_tracking import ObjectTrackingTurnstyle
+from turnstyle.ir import NavigateTurnstyle, WebOfLiesTurnstyle
 from turnstyle.sandbox import SandboxTurnstyle, parse_sandbox_code
 from turnstyle.sandbox_backend import (
     SandboxResult,
@@ -124,6 +126,10 @@ __all__ = [
     "DigitAudit",
     "CoprocessorDiagnostic",
     "Turnstyle",
+    "ComparisonOrderingTurnstyle",
+    "ObjectTrackingTurnstyle",
+    "NavigateTurnstyle",
+    "WebOfLiesTurnstyle",
     "ArithmeticTurnstyle",
     "ArithmeticLogitsProcessor",
     "parse_arithmetic",
@@ -139,7 +145,6 @@ __all__ = [
     "parse_counting",
     "BaseConversionTurnstyle",
     "BaseConversionProcessor",
-    "parse_base_conversion",
     "extract_number",
     "TokenAudit",
     "SequenceLogitsProcessor",
