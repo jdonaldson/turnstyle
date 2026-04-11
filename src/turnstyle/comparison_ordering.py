@@ -1,9 +1,20 @@
 """Comparison ordering turnstyle — grounds logical deduction in constraint satisfaction.
 
-Parses ordering constraints from the problem text, finds the unique permutation
-consistent with all constraints, then maps the result to the correct answer option.
+Parses ordering constraints from the problem text via LLM extraction, finds the
+unique permutation consistent with all constraints, then maps the result to the
+correct answer option.
 
-Handles BBH logical_deduction_three/five/seven_objects at 100%.
+Handles BBH logical_deduction_three/five/seven_objects.
+
+Extraction schema
+-----------------
+constraint → pairwise:   {"lo": "lower item", "hi": "higher item"}
+constraint → positional: {"item": "item name", "pos": N}
+  pos=1  lowest/leftmost/oldest/worst
+  pos=-1 highest/rightmost/newest/best
+  pos=0  middle
+query:                   {"ask": "item_at", "pos": N}
+                      or {"ask": "arrangement"}
 """
 
 from __future__ import annotations
@@ -12,237 +23,233 @@ import re
 from itertools import permutations
 
 from turnstyle.core import SequenceLogitsProcessor, Turnstyle
+from turnstyle.ir import SentenceIRSpec, SentenceRecord
 
 
-# ── item extraction ─────────────────────────────────────────────────────────
+# ── few-shot extraction prompt ───────────────────────────────────────────────
 
-def _extract_items(text: str) -> list[str]:
-    """Extract named items from the preamble ('there are N X: a, b, and c')."""
-    m = re.search(r"(?:three|four|five|six|seven)\s+[\w ]+?:\s*(.+?)\.", text, re.I)
-    if not m:
-        return []
-    raw = m.group(1)
-    parts = re.split(r",\s*(?:and\s+)?|\s+and\s+", raw)
-    items = []
-    for p in parts:
-        p = re.sub(r"^(a|an|the)\s+", "", p.strip(), flags=re.I).strip().rstrip(".")
-        if p:
-            items.append(p)
-    return items
+_EXTRACT_PROMPT = """\
+Extract ordering information as JSON.
+
+constraint → pairwise: {{"lo": "lower item", "hi": "higher item"}}
+  lo is older/worse/lighter/leftward of hi
+constraint → positional: {{"item": "item name", "pos": N}}
+  pos=1 lowest/leftmost/oldest/worst, pos=-1 highest/rightmost/newest/best
+query → {{"ask": "item_at", "pos": N}} or {{"ask": "arrangement"}}
+
+Examples:
+sentence: The green book is to the left of the red book.
+type: constraint
+{{"lo": "green book", "hi": "red book"}}
+
+sentence: The red car is newer than the blue car.
+type: constraint
+{{"lo": "blue car", "hi": "red car"}}
+
+sentence: Alice finished above Bob.
+type: constraint
+{{"lo": "Bob", "hi": "Alice"}}
+
+sentence: The oak tree is the tallest.
+type: constraint
+{{"item": "oak tree", "pos": -1}}
+
+sentence: The pine tree is the shortest.
+type: constraint
+{{"item": "pine tree", "pos": 1}}
+
+sentence: Tom finished first.
+type: constraint
+{{"item": "Tom", "pos": -1}}
+
+sentence: Tom finished second-to-last.
+type: constraint
+{{"item": "Tom", "pos": 2}}
+
+sentence: The yellow envelope is second from the left.
+type: constraint
+{{"item": "yellow envelope", "pos": 2}}
+
+sentence: Which book is the leftmost?
+type: query
+{{"ask": "item_at", "pos": 1}}
+
+sentence: Which runner finished last?
+type: query
+{{"ask": "item_at", "pos": 1}}
+
+sentence: Which is the second-newest?
+type: query
+{{"ask": "item_at", "pos": -2}}
+
+sentence: Which competitor finished first?
+type: query
+{{"ask": "item_at", "pos": -1}}
+
+sentence: Which is in the middle?
+type: query
+{{"ask": "item_at", "pos": 0}}
+
+sentence: Which of the following is a valid arrangement from left to right?
+type: query
+{{"ask": "arrangement"}}
+
+sentence: {sentence}
+type: {type}
+"""
 
 
-# ── constraint solver (exhaustive permutation check) ───────────────────────
+# ── sentence classifier (syntactic, no keyword vocabulary) ───────────────────
 
-def _gt_ordering(text: str, items: list[str]) -> list[str] | None:
-    """Find the unique ordering consistent with all constraints.
+def _classify_comparison(sentence: str) -> str:
+    return "query" if "?" in sentence else "constraint"
 
-    Ordering convention: position 1 = lowest/worst/leftmost,
-                         position n = highest/best/rightmost.
-    """
-    body = text.split("Options:")[0]
+
+# ── constraint solver ────────────────────────────────────────────────────────
+
+def _aggregate_comparison(
+    records: list[SentenceRecord],
+    question: str | None,
+    options: dict[str, str],
+) -> str | None:
+    """Collect constraints from records, find unique ordering, match answer."""
+    items: list[str] = []
+    pairwise: list[tuple[int, int]] = []   # (lo_idx, hi_idx)
+    positional: list[tuple[int, int]] = [] # (item_idx, raw_pos)
+    query: dict | None = None
+
+    def get_idx(name: str) -> int:
+        lo = name.strip().lower()
+        for i, it in enumerate(items):
+            if it.lower() == lo:
+                return i
+        items.append(name.strip())
+        return len(items) - 1
+
+    for rec in records:
+        d = rec.data
+        if rec.record_type == "query":
+            if isinstance(d, dict) and "ask" in d:
+                query = d
+            continue
+        if not isinstance(d, dict):
+            continue
+        if "lo" in d and "hi" in d:
+            a = get_idx(str(d["lo"]))
+            b = get_idx(str(d["hi"]))
+            if a != b:
+                pairwise.append((a, b))
+        elif "item" in d and "pos" in d:
+            a = get_idx(str(d["item"]))
+            try:
+                positional.append((a, int(d["pos"])))
+            except (TypeError, ValueError):
+                pass
+
+    if not items or not (pairwise or positional):
+        return None
+
     n = len(items)
-    item_lo = [it.lower() for it in items]
-    item_pat = "|".join(re.escape(it) for it in items)
-    art = r"(?:(?:a|an|the)\s+)?"
-    be  = r"(?:is|are)"
 
-    preds: list[tuple] = []
+    # Resolve raw pos to 1-indexed absolute positions
+    resolved: list[tuple[int, int]] = []
+    for a, pos in positional:
+        if pos < 0:
+            pos = n + pos + 1   # -1 → n, -2 → n-1
+        elif pos == 0:
+            pos = (n + 1) // 2  # middle
+        if 1 <= pos <= n:
+            resolved.append((a, pos))
 
-    def find(name: str) -> int | None:
-        lo = name.lower()
-        for k, it in enumerate(item_lo):
-            if it == lo:
-                return k
-        return None
-
-    def add_before(a_str: str, b_str: str) -> None:
-        a, b = find(a_str), find(b_str)
-        if a is not None and b is not None and a != b:
-            preds.append(('before', a, b))
-
-    def add_at(a_str: str, pos: int) -> None:
-        a = find(a_str)
-        if a is not None and 1 <= pos <= n:
-            preds.append(('at', a, pos))
-
-    # spatial
-    for m in re.finditer(rf"({item_pat})\s+{be}\s+to\s+the\s+right\s+of\s+{art}({item_pat})", body, re.I):
-        add_before(m.group(2), m.group(1))
-    for m in re.finditer(rf"({item_pat})\s+{be}\s+to\s+the\s+left\s+of\s+{art}({item_pat})", body, re.I):
-        add_before(m.group(1), m.group(2))
-
-    # TODO(no-keyword): adj_h/adj_l are semantic vocabulary lists — breaks on OOD
-    # adjectives ("more ancient", "shallower", etc.). Replace _gt_ordering with
-    # IRSpec/SentenceIRSpec extraction: LLM extracts (item1, relation, item2)
-    # triples as JSON; deterministic permutation solver runs downstream.
-    # comparative adjectives
-    adj_h = (r"newer|larger|heavier|taller|faster|more expensive|later|better|higher"
-             r"|pricier|more costly")
-    adj_l = (r"older|smaller|lighter|shorter|slower|cheaper|earlier|worse|lower"
-             r"|less expensive|less costly|less pricey")
-
-    for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:{adj_h})\s+than\s+{art}({item_pat})", body, re.I):
-        add_before(m.group(2), m.group(1))
-    for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:{adj_l})\s+than\s+{art}({item_pat})", body, re.I):
-        add_before(m.group(1), m.group(2))
-
-    # tournament comparatives
-    for m in re.finditer(rf"({item_pat})\s+finished\s+(?:above|ahead of)\s+{art}({item_pat})", body, re.I):
-        add_before(m.group(2), m.group(1))
-    for m in re.finditer(rf"({item_pat})\s+finished\s+(?:below|behind)\s+{art}({item_pat})", body, re.I):
-        add_before(m.group(1), m.group(2))
-
-    # superlatives
-    sup_last = (r"rightmost|newest|largest|heaviest|tallest|fastest|most expensive|latest"
-                r"|best|highest|most costly|most pricey|most valuable")
-    sup_first = (r"leftmost|oldest|smallest|lightest|shortest|slowest|cheapest|earliest"
-                 r"|worst|lowest|least expensive|least costly|least pricey|least valuable")
-
-    for m in re.finditer(rf"({item_pat})\s+{be}\s+the\s+(?:{sup_last})", body, re.I):
-        add_at(m.group(1), n)
-    for m in re.finditer(rf"({item_pat})\s+{be}\s+the\s+(?:{sup_first})", body, re.I):
-        add_at(m.group(1), 1)
-
-    # tournament extremes
-    for m in re.finditer(rf"({item_pat})\s+finished\s+(?:first|1st)\b", body, re.I):
-        add_at(m.group(1), n)
-    for m in re.finditer(rf"({item_pat})\s+finished\s+(?:last)\b", body, re.I):
-        add_at(m.group(1), 1)
-
-    # ordinal positions
-    ORDINALS = [("second", 2), ("third", 3), ("fourth", 4),
-                ("fifth", 5), ("sixth", 6), ("seventh", 7)]
-    sup_h_words = (r"newest|most expensive|largest|heaviest|tallest|fastest"
-                   r"|best|highest|most costly|most pricey|most valuable")
-    sup_l_words = (r"oldest|cheapest|smallest|lightest|shortest|slowest"
-                   r"|worst|lowest|least expensive|least costly|least pricey")
-
-    for word, k in ORDINALS:
-        for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:the\s+)?{word}\s+from\s+the\s+left", body, re.I):
-            add_at(m.group(1), k)
-        for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:the\s+)?{word}\s+from\s+the\s+right", body, re.I):
-            add_at(m.group(1), n - k + 1)
-        for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:the\s+)?{word}-(?:{sup_h_words})", body, re.I):
-            add_at(m.group(1), n - k + 1)
-        for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:the\s+)?{word}-(?:{sup_l_words})", body, re.I):
-            add_at(m.group(1), k)
-
-    # tournament ordinals
-    for word, k in ORDINALS:
-        for m in re.finditer(rf"({item_pat})\s+finished\s+{word}(?!-to)\b", body, re.I):
-            add_at(m.group(1), n - k + 1)
-
-    # X-to-last
-    to_last_map = [("second", 2), ("third", 3), ("fourth", 4), ("fifth", 5)]
-    for word, k in to_last_map:
-        for m in re.finditer(rf"({item_pat})\s+finished\s+{word}-to-last\b", body, re.I):
-            add_at(m.group(1), k)
-
-    if not preds:
-        return None
-
+    # Find the unique permutation satisfying all constraints
     pos_arr = [0] * n
 
     def check(perm: tuple) -> bool:
-        for i, it in enumerate(perm):
-            idx = find(it)
-            if idx is not None:
-                pos_arr[idx] = i
-        for kind, a, b in preds:
-            if kind == 'before':
-                if pos_arr[a] >= pos_arr[b]:
-                    return False
-            else:
-                if pos_arr[a] + 1 != b:
-                    return False
+        for i, idx in enumerate(perm):
+            pos_arr[idx] = i
+        for a, b in pairwise:
+            if pos_arr[a] >= pos_arr[b]:
+                return False
+        for a, p in resolved:
+            if pos_arr[a] + 1 != p:
+                return False
         return True
 
-    valid: list[list[str]] = []
-    for perm in permutations(items):
+    valid: list[tuple] = []
+    for perm in permutations(range(n)):
         if check(perm):
-            valid.append(list(perm))
+            valid.append(perm)
             if len(valid) > 1:
                 break
 
-    return valid[0] if len(valid) == 1 else None
+    if len(valid) != 1:
+        return None
 
+    ordering = [items[i] for i in valid[0]]
 
-def _parse_options(text: str) -> dict[str, str]:
-    opts = text.split("Options:")[-1] if "Options:" in text else text
-    return {
-        letter: val.strip()
-        for letter, val in re.findall(
-            r"\(([A-Z])\)\s+(.+?)(?=\n\([A-Z]\)|\Z)", opts, re.S
-        )
-    }
+    # Infer query from question text if LLM didn't produce one
+    if query is None:
+        if question and "arrangement" in question.lower():
+            query = {"ask": "arrangement"}
+        else:
+            return None
 
+    ask = query.get("ask")
 
-def _answer_from_ordering(ordering: list[str], options: dict[str, str]) -> str | None:
-    """Map ordering to option letter via positional description in option text."""
-    n = len(ordering)
-    ORDINALS = [("second", 2), ("third", 3), ("fourth", 4),
-                ("fifth", 5), ("sixth", 6), ("seventh", 7)]
-    sup_h = (r"newest|largest|heaviest|tallest|fastest|most expensive|rightmost|latest"
-             r"|best|highest|most costly|most pricey|most valuable")
-    sup_l = (r"oldest|smallest|lightest|shortest|slowest|cheapest|leftmost|earliest"
-             r"|worst|lowest|least expensive|least costly|least pricey|least valuable")
-    sup_h_words = (r"newest|most expensive|largest|heaviest|tallest|fastest"
-                   r"|best|highest|most costly|most pricey|most valuable")
-    sup_l_words = (r"oldest|cheapest|smallest|lightest|shortest|slowest"
-                   r"|worst|lowest|least expensive|least costly|least pricey")
-
-    for letter, opt in options.items():
-        for i, item in enumerate(ordering):
-            if item.lower() not in opt.lower():
-                continue
-            pos = i + 1
-
-            if re.search(r'\bthe\s+(?:' + sup_h + r')\b', opt, re.I) and pos == n:
-                return f"({letter})"
-            if re.search(r'\bthe\s+(?:' + sup_l + r')\b', opt, re.I) and pos == 1:
+    if ask == "arrangement":
+        for letter, opt in options.items():
+            opt_items = [o.strip().lower() for o in re.split(r",\s*", opt)]
+            if opt_items == [o.lower() for o in ordering]:
                 return f"({letter})"
 
-            if re.search(r"middle|center", opt, re.I) and pos == (n + 1) // 2:
-                return f"({letter})"
-
-            if re.search(r"finished first|finished 1st", opt, re.I) and pos == n:
-                return f"({letter})"
-            if re.search(r"finished last\b", opt, re.I) and pos == 1:
-                return f"({letter})"
-
-            for word, k in ORDINALS:
-                if re.search(rf"\b{word}\s+from\s+the\s+left", opt, re.I) and pos == k:
-                    return f"({letter})"
-                if re.search(rf"\b{word}\s+from\s+the\s+right", opt, re.I) and pos == n - k + 1:
-                    return f"({letter})"
-                if re.search(rf"\b{word}-(?:{sup_h_words})", opt, re.I) and pos == n - k + 1:
-                    return f"({letter})"
-                if re.search(rf"\b{word}-(?:{sup_l_words})", opt, re.I) and pos == k:
-                    return f"({letter})"
-                if re.search(rf"\bfinished\s+{word}\b(?!-to-last)", opt, re.I) and pos == n - k + 1:
-                    return f"({letter})"
-
-            for word, k in [("second", 2), ("third", 3), ("fourth", 4), ("fifth", 5)]:
-                if re.search(rf"\bfinished\s+{word}-to-last\b", opt, re.I) and pos == k:
+    elif ask == "item_at":
+        try:
+            pos = int(query.get("pos", 1))
+        except (TypeError, ValueError):
+            return None
+        if pos < 0:
+            idx = n + pos
+        elif pos == 0:
+            idx = n // 2
+        else:
+            idx = pos - 1
+        if 0 <= idx < n:
+            target = ordering[idx].lower()
+            for letter, opt in options.items():
+                if target in opt.lower():
                     return f"({letter})"
 
     return None
 
 
+# ── SentenceIRSpec ────────────────────────────────────────────────────────────
+
+COMPARISON_ORDERING_SPEC = SentenceIRSpec(
+    sentence_types=["constraint", "query"],
+    extract_prompt=_EXTRACT_PROMPT,
+    aggregate=_aggregate_comparison,
+    classify_fn=_classify_comparison,
+    max_tokens=40,
+)
+
+
+# ── Turnstyle subclass ────────────────────────────────────────────────────────
+
 class ComparisonOrderingTurnstyle(Turnstyle):
     """Grounds comparison/ordering tasks in deterministic constraint satisfaction.
 
-    Parses ordering constraints (left of, newer than, finished above, etc.)
-    and finds the unique permutation satisfying all constraints. Maps the
-    result to the matching option letter.
+    LLM extracts (lo, hi) pairwise and (item, pos) positional constraints from
+    each sentence; the unique consistent permutation is found and mapped to the
+    correct option letter — no adjective vocabulary lists.
 
-    Handles BBH logical_deduction_three/five/seven_objects at 100%.
+    Handles BBH logical_deduction_three/five/seven_objects.
 
         t = ComparisonOrderingTurnstyle(model, tokenizer, device)
         text, proof = t.generate("The following paragraphs each describe a set of three objects...")
     """
 
     probe_label = "comparison_ordering"
+    sentence_ir_spec = COMPARISON_ORDERING_SPEC
     examples = [
         "The following paragraphs each describe a set of three objects kept in order. The objects are ordered left to right.\nThe green book is to the left of the red book. The red book is to the left of the blue book.\nWhich of the following options is a valid arrangement of the books from left to right?\nOptions:\n(A) green, blue, red\n(B) red, green, blue\n(C) green, red, blue",
         "The following paragraphs each describe a set of three objects kept in order. The objects are ordered left to right.\nThe white envelope is newer than the yellow envelope. The yellow envelope is newer than the pink envelope.\nWhich is the newest?\nOptions:\n(A) white envelope\n(B) yellow envelope\n(C) pink envelope",
@@ -277,18 +284,8 @@ class ComparisonOrderingTurnstyle(Turnstyle):
     ]
 
     def parse(self, prompt: str):
-        """Deterministic solve: extract ordering constraints, find consistent permutation."""
-        items = _extract_items(prompt)
-        if not items:
-            return None
-        ordering = _gt_ordering(prompt, items)
-        if ordering is None:
-            return None
-        options = _parse_options(prompt)
-        answer = _answer_from_ordering(ordering, options)
-        if answer is None:
-            return None
-        return (answer,)
+        """No regex fast path — all solving via sentence_ir_spec."""
+        return None
 
     def make_processor(self, parsed, max_new_tokens: int):
         (answer_letter,) = parsed

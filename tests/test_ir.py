@@ -11,6 +11,7 @@ from turnstyle.ir import (
     _segment_via_llm,
     parse_scene,
 )
+from turnstyle.comparison_ordering import _aggregate_comparison
 
 
 # ════════════════════════════════════════════════════════════════════════
@@ -293,3 +294,122 @@ class TestSegmentViaLlm:
         with patch("turnstyle.extract.generate_short", return_value=('{"text": "a", "type": "fact"}', 0.9)):
             result = _segment_via_llm(None, None, None, "test", spec)
         assert result is None
+
+
+# ════════════════════════════════════════════════════════════════════════
+# _aggregate_comparison — deterministic constraint solver
+# ════════════════════════════════════════════════════════════════════════
+
+def _rec(record_type: str, data: dict) -> SentenceRecord:
+    return SentenceRecord(sentence="", record_type=record_type, data=data)
+
+
+class TestAggregateComparison:
+    def test_pairwise_item_at(self):
+        """A < B < C, ask for leftmost → A."""
+        records = [
+            _rec("constraint", {"lo": "red", "hi": "blue"}),
+            _rec("constraint", {"lo": "blue", "hi": "green"}),
+            _rec("query", {"ask": "item_at", "pos": 1}),
+        ]
+        result = _aggregate_comparison(records, None, {"A": "red", "B": "blue", "C": "green"})
+        assert result == "(A)"
+
+    def test_pairwise_item_at_highest(self):
+        """A < B < C, ask for rightmost (pos=-1) → C."""
+        records = [
+            _rec("constraint", {"lo": "red", "hi": "blue"}),
+            _rec("constraint", {"lo": "blue", "hi": "green"}),
+            _rec("query", {"ask": "item_at", "pos": -1}),
+        ]
+        result = _aggregate_comparison(records, None, {"A": "red", "B": "blue", "C": "green"})
+        assert result == "(C)"
+
+    def test_pairwise_item_at_middle(self):
+        """A < B < C, ask for middle (pos=0) → B."""
+        records = [
+            _rec("constraint", {"lo": "red", "hi": "blue"}),
+            _rec("constraint", {"lo": "blue", "hi": "green"}),
+            _rec("query", {"ask": "item_at", "pos": 0}),
+        ]
+        result = _aggregate_comparison(records, None, {"A": "red", "B": "blue", "C": "green"})
+        assert result == "(B)"
+
+    def test_positional_constraint(self):
+        """Positional: B at pos=1, A at pos=3, ask for pos=-1 → A."""
+        records = [
+            _rec("constraint", {"item": "blue", "pos": 1}),
+            _rec("constraint", {"item": "red", "pos": -1}),
+            _rec("constraint", {"lo": "blue", "hi": "green"}),
+            _rec("query", {"ask": "item_at", "pos": -1}),
+        ]
+        result = _aggregate_comparison(records, None, {"A": "red", "B": "green", "C": "blue"})
+        assert result == "(A)"
+
+    def test_arrangement_query(self):
+        """A < B < C, ask for valid arrangement."""
+        records = [
+            _rec("constraint", {"lo": "red", "hi": "blue"}),
+            _rec("constraint", {"lo": "blue", "hi": "green"}),
+            _rec("query", {"ask": "arrangement"}),
+        ]
+        options = {"A": "green, blue, red", "B": "red, green, blue", "C": "red, blue, green"}
+        result = _aggregate_comparison(records, None, options)
+        assert result == "(C)"
+
+    def test_infers_arrangement_from_question(self):
+        """No query record; question contains 'arrangement' → infer ask=arrangement."""
+        records = [
+            _rec("constraint", {"lo": "red", "hi": "blue"}),
+            _rec("constraint", {"lo": "blue", "hi": "green"}),
+        ]
+        options = {"A": "green, blue, red", "B": "red, green, blue", "C": "red, blue, green"}
+        result = _aggregate_comparison(records, "Which is a valid arrangement?", options)
+        assert result == "(C)"
+
+    def test_no_constraints_returns_none(self):
+        records = [_rec("query", {"ask": "item_at", "pos": 1})]
+        result = _aggregate_comparison(records, None, {"A": "red"})
+        assert result is None
+
+    def test_ambiguous_returns_none(self):
+        """No constraints → multiple valid orderings → None."""
+        records = [
+            _rec("constraint", {"lo": "red", "hi": "blue"}),
+            _rec("query", {"ask": "item_at", "pos": 1}),
+        ]
+        # 3 items but only 1 pairwise constraint → not unique for 3 items
+        records.append(_rec("constraint", {"lo": "green", "hi": "red"}))
+        # Now: green < red < blue → unique
+        result = _aggregate_comparison(
+            records, None, {"A": "green", "B": "red", "C": "blue"})
+        assert result == "(A)"
+
+    def test_no_query_no_question_returns_none(self):
+        records = [
+            _rec("constraint", {"lo": "red", "hi": "blue"}),
+            _rec("constraint", {"lo": "blue", "hi": "green"}),
+        ]
+        result = _aggregate_comparison(records, None, {"A": "red"})
+        assert result is None
+
+    def test_negative_pos_second_from_top(self):
+        """pos=-2 = second from top = second-newest."""
+        records = [
+            _rec("constraint", {"lo": "red", "hi": "blue"}),
+            _rec("constraint", {"lo": "blue", "hi": "green"}),
+            _rec("query", {"ask": "item_at", "pos": -2}),
+        ]
+        result = _aggregate_comparison(records, None, {"A": "red", "B": "blue", "C": "green"})
+        assert result == "(B)"
+
+    def test_preamble_record_ignored(self):
+        """A constraint with unparseable data is silently skipped."""
+        records = [
+            _rec("constraint", {"garbage": "The following paragraphs describe"}),
+            _rec("constraint", {"lo": "red", "hi": "blue"}),
+            _rec("constraint", {"lo": "blue", "hi": "green"}),
+            _rec("query", {"ask": "item_at", "pos": 1}),
+        ]
+        result = _aggregate_comparison(records, None, {"A": "red", "B": "blue", "C": "green"})
+        assert result == "(A)"

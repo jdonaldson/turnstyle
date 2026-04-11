@@ -648,6 +648,34 @@ class RoutingTurnstyle(Turnstyle):
                     ).strip()
                     return text, getattr(processor, "proof", None), t.probe_label
 
+            # Step 3c: SentenceIRSpec extraction (per-sentence LLM + deterministic compute)
+            sentence_ir_spec = getattr(t, 'sentence_ir_spec', None)
+            if sentence_ir_spec is not None:
+                from turnstyle.ir import sentence_ir_solve
+                answer = sentence_ir_solve(
+                    self.model, self.tokenizer, self.device, prompt, sentence_ir_spec)
+                if answer is not None:
+                    processor = t.make_processor((answer,), max_new_tokens)
+                    messages = [{"role": "user", "content": prompt}]
+                    chat_text = self.tokenizer.apply_chat_template(
+                        messages, tokenize=False, add_generation_prompt=True,
+                    )
+                    inputs = self.tokenizer(
+                        chat_text, return_tensors="pt",
+                    ).to(self.device)
+                    with torch.no_grad():
+                        out = self.model.generate(
+                            **inputs,
+                            max_new_tokens=max_new_tokens,
+                            do_sample=False,
+                            logits_processor=[processor],
+                        )
+                    text = self.tokenizer.decode(
+                        out[0][inputs["input_ids"].shape[1]:],
+                        skip_special_tokens=True,
+                    ).strip()
+                    return text, getattr(processor, "proof", None), t.probe_label
+
             # Step 4: Fall back to regex on routed turnstyle
             text, proof = t.generate(prompt, max_new_tokens=max_new_tokens)
             return text, proof, t.probe_label
