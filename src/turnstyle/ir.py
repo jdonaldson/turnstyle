@@ -242,7 +242,7 @@ class SentenceIRSpec:
 
     sentence_types: valid type labels for classification.
     extract_prompt: template with {sentence} and {type} placeholders.
-    aggregate: (records, question, options) → answer string or None.
+    aggregate: (records, options) → answer string or None.
     classify_fn: (sentence) → type string. None = use classify_token.
     split_fn: (body_str) → list[str]. Overrides parse_scene sentence splitting
         when set — useful for tasks needing period-stripped sentences.
@@ -388,7 +388,7 @@ def sentence_ir_solve(
 
     # Aggregate
     try:
-        answer = spec.aggregate(records, question, options)
+        answer = spec.aggregate(records, options)
     except Exception as e:
         if diag is not None:
             diag["error"] = f"aggregate_failed: {e}"

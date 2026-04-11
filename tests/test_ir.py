@@ -312,7 +312,7 @@ class TestAggregateComparison:
             _rec("constraint", {"lo": "blue", "hi": "green"}),
             _rec("query", {"ask": "item_at", "pos": 1}),
         ]
-        result = _aggregate_comparison(records, None, {"A": "red", "B": "blue", "C": "green"})
+        result = _aggregate_comparison(records, {"A": "red", "B": "blue", "C": "green"})
         assert result == "(A)"
 
     def test_pairwise_item_at_highest(self):
@@ -322,7 +322,7 @@ class TestAggregateComparison:
             _rec("constraint", {"lo": "blue", "hi": "green"}),
             _rec("query", {"ask": "item_at", "pos": -1}),
         ]
-        result = _aggregate_comparison(records, None, {"A": "red", "B": "blue", "C": "green"})
+        result = _aggregate_comparison(records, {"A": "red", "B": "blue", "C": "green"})
         assert result == "(C)"
 
     def test_pairwise_item_at_middle(self):
@@ -332,7 +332,7 @@ class TestAggregateComparison:
             _rec("constraint", {"lo": "blue", "hi": "green"}),
             _rec("query", {"ask": "item_at", "pos": 0}),
         ]
-        result = _aggregate_comparison(records, None, {"A": "red", "B": "blue", "C": "green"})
+        result = _aggregate_comparison(records, {"A": "red", "B": "blue", "C": "green"})
         assert result == "(B)"
 
     def test_positional_constraint(self):
@@ -343,7 +343,7 @@ class TestAggregateComparison:
             _rec("constraint", {"lo": "blue", "hi": "green"}),
             _rec("query", {"ask": "item_at", "pos": -1}),
         ]
-        result = _aggregate_comparison(records, None, {"A": "red", "B": "green", "C": "blue"})
+        result = _aggregate_comparison(records, {"A": "red", "B": "green", "C": "blue"})
         assert result == "(A)"
 
     def test_arrangement_query(self):
@@ -354,12 +354,12 @@ class TestAggregateComparison:
             _rec("query", {"ask": "arrangement"}),
         ]
         options = {"A": "green, blue, red", "B": "red, green, blue", "C": "red, blue, green"}
-        result = _aggregate_comparison(records, None, options)
+        result = _aggregate_comparison(records, options)
         assert result == "(C)"
 
     def test_no_constraints_returns_none(self):
         records = [_rec("query", {"ask": "item_at", "pos": 1})]
-        result = _aggregate_comparison(records, None, {"A": "red"})
+        result = _aggregate_comparison(records, {"A": "red"})
         assert result is None
 
     def test_ambiguous_returns_none(self):
@@ -372,7 +372,7 @@ class TestAggregateComparison:
         records.append(_rec("constraint", {"lo": "green", "hi": "red"}))
         # Now: green < red < blue → unique
         result = _aggregate_comparison(
-            records, None, {"A": "green", "B": "red", "C": "blue"})
+            records, {"A": "green", "B": "red", "C": "blue"})
         assert result == "(A)"
 
     def test_no_query_no_question_returns_none(self):
@@ -380,7 +380,7 @@ class TestAggregateComparison:
             _rec("constraint", {"lo": "red", "hi": "blue"}),
             _rec("constraint", {"lo": "blue", "hi": "green"}),
         ]
-        result = _aggregate_comparison(records, None, {"A": "red"})
+        result = _aggregate_comparison(records, {"A": "red"})
         assert result is None
 
     def test_negative_pos_second_from_top(self):
@@ -390,7 +390,7 @@ class TestAggregateComparison:
             _rec("constraint", {"lo": "blue", "hi": "green"}),
             _rec("query", {"ask": "item_at", "pos": -2}),
         ]
-        result = _aggregate_comparison(records, None, {"A": "red", "B": "blue", "C": "green"})
+        result = _aggregate_comparison(records, {"A": "red", "B": "blue", "C": "green"})
         assert result == "(B)"
 
     def test_preamble_record_ignored(self):
@@ -401,5 +401,5 @@ class TestAggregateComparison:
             _rec("constraint", {"lo": "blue", "hi": "green"}),
             _rec("query", {"ask": "item_at", "pos": 1}),
         ]
-        result = _aggregate_comparison(records, None, {"A": "red", "B": "blue", "C": "green"})
+        result = _aggregate_comparison(records, {"A": "red", "B": "blue", "C": "green"})
         assert result == "(A)"

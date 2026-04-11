@@ -94,7 +94,6 @@ def _classify_tracking(sentence: str) -> str:
 
 def _aggregate_tracking(
     records: list[SentenceRecord],
-    _question: str | None,
     options: dict[str, str],
 ) -> str | None:
     """Simulate object swaps from extracted records, match final state to options."""

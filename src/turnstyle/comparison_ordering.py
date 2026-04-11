@@ -111,7 +111,6 @@ def _classify_comparison(sentence: str) -> str:
 
 def _aggregate_comparison(
     records: list[SentenceRecord],
-    _question: str | None,
     options: dict[str, str],
 ) -> str | None:
     """Collect lo/hi and item/pos constraints from records, find unique ordering."""
