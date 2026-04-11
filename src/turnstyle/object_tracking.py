@@ -1,9 +1,15 @@
 """Object tracking turnstyle — grounds shuffled-object tracking in state simulation.
 
-Parses initial object assignments and swap actions, simulates the state
-transitions, and maps the final state to the correct answer option.
+Extracts initial object assignments and swap actions via schema extraction, then
+simulates the state transitions deterministically.
 
-Handles BBH tracking_shuffled_objects_three/five/seven_objects at 100%.
+Extraction schema
+-----------------
+init  → {"ActorName": "item", ...}   — one entry per actor
+swap  → {"actor1": "Name", "actor2": "Name"}
+query → {"ask": "Name"}
+
+Handles BBH tracking_shuffled_objects_three/five/seven_objects.
 """
 
 from __future__ import annotations
@@ -11,132 +17,153 @@ from __future__ import annotations
 import re
 
 from turnstyle.core import SequenceLogitsProcessor, Turnstyle
+from turnstyle.ir import SentenceIRSpec, SentenceRecord
 
 
-# ── known actor set ────────────────────────────────────────────────────────
+# ── closed actor set (structural) ────────────────────────────────────────────
+
 ALL_ACTORS = ["Alice", "Bob", "Claire", "Dave", "Eve", "Fred", "Gertrude"]
-_ACTOR_PAT = "|".join(ALL_ACTORS)
-
-# TODO(no-keyword): _INIT_VERBS and _ACTION_RE are semantic verb lists — breaks
-# on novel phrasings ("receives", "is holding", "exchanges with", etc.). Replace
-# with SentenceIRSpec extraction: LLM extracts (actor, item) init pairs and
-# (actor1, actor2) swap pairs as JSON; state simulation runs downstream.
-# ── init verb phrases ──────────────────────────────────────────────────────
-_INIT_VERBS = [
-    re.compile(r"gets\s+(.+)",           re.I),
-    re.compile(r"has\s+a\s+(.+)",        re.I),
-    re.compile(r"is\s+dancing\s+with\s+(.+)", re.I),
-    re.compile(r"is\s+playing\s+(.+)",   re.I),
-]
-
-# ── action verb ────────────────────────────────────────────────────────────
-_ACTION_RE = re.compile(
-    rf"({_ACTOR_PAT})\s+and\s+({_ACTOR_PAT})\s+(?:swap|switch|trade)",
-    re.I,
-)
-
-# ── query ──────────────────────────────────────────────────────────────────
-_QUERY_RE = re.compile(
-    rf"At the end of .+?,\s+({_ACTOR_PAT})\s+(?:is|has)",
-    re.I,
-)
-
-# ── options ────────────────────────────────────────────────────────────────
-_OPTIONS_RE = re.compile(r"\(([A-Z])\)\s+(.+?)(?=\n\([A-Z]\)|\Z)", re.S)
 
 
-def _detect_actors(text: str) -> list[str]:
-    """Return ordered actors present in the preamble sentence."""
-    return [a for a in ALL_ACTORS if re.search(rf"\b{a}\b", text)]
+# ── few-shot extraction prompt ────────────────────────────────────────────────
+
+_EXTRACT_PROMPT = """\
+Extract object tracking information as JSON.
+
+init  → object mapping each actor to their item: {{"ActorName": "item", ...}}
+swap  → {{"actor1": "Name", "actor2": "Name"}}
+query → {{"ask": "Name"}}
+preamble → null
+
+Examples:
+sentence: At the start of the day, Alice has a yellow ball, Bob has a white ball, and Claire has a green ball.
+type: init
+{{"Alice": "yellow ball", "Bob": "white ball", "Claire": "green ball"}}
+
+sentence: At the start of the day, Alice has a piano, Bob has a guitar, Claire has a violin, Dave has a flute, and Eve has a drum.
+type: init
+{{"Alice": "piano", "Bob": "guitar", "Claire": "violin", "Dave": "flute", "Eve": "drum"}}
+
+sentence: At the start of the day, Alice is playing tennis, Bob is playing soccer, and Claire is playing basketball.
+type: init
+{{"Alice": "tennis", "Bob": "soccer", "Claire": "basketball"}}
+
+sentence: Then Alice and Bob swap balls.
+type: swap
+{{"actor1": "Alice", "actor2": "Bob"}}
+
+sentence: Then Bob and Claire trade presents.
+type: swap
+{{"actor1": "Bob", "actor2": "Claire"}}
+
+sentence: Then Dave and Eve switch hats.
+type: swap
+{{"actor1": "Dave", "actor2": "Eve"}}
+
+sentence: At the end of the day, what color ball does Alice have?
+type: query
+{{"ask": "Alice"}}
+
+sentence: At the end of the day, what does Bob have?
+type: query
+{{"ask": "Bob"}}
+
+sentence: Alice, Bob, and Claire each have a ball.
+type: preamble
+null
+
+sentence: {sentence}
+type: {type}
+"""
 
 
-def _parse_init(sent: str, actors: list[str]) -> dict[str, str]:
-    """Extract {actor: item} from the init sentence."""
+# ── sentence classifier (structural) ─────────────────────────────────────────
+
+
+def _classify_tracking(sentence: str) -> str:
+    if "?" in sentence:
+        return "query"
+    if re.search(r"\bstart\b", sentence, re.I):
+        return "init"
+    actor_count = sum(1 for a in ALL_ACTORS if re.search(rf"\b{a}\b", sentence))
+    return "swap" if actor_count == 2 else "preamble"
+
+
+# ── aggregator ────────────────────────────────────────────────────────────────
+
+
+def _aggregate_tracking(
+    records: list[SentenceRecord],
+    _question: str | None,
+    options: dict[str, str],
+) -> str | None:
+    """Simulate object swaps from extracted records, match final state to options."""
     state: dict[str, str] = {}
-    actor_boundary = "|".join(actors)
-    chunks = re.split(rf",\s*(?:and\s+)?(?={actor_boundary})", sent, flags=re.I)
-    for chunk in chunks:
-        chunk = chunk.strip().rstrip(".,")
-        for actor in actors:
-            m = re.search(rf"\b{actor}\b", chunk, re.I)
-            if m:
-                rest = chunk[m.end():].strip()
-                for pat in _INIT_VERBS:
-                    vm = pat.match(rest)
-                    if vm:
-                        state[actor] = vm.group(1).strip().rstrip(".,")
-                        break
-                break
-    return state
+    swaps: list[tuple[str, str]] = []
+    query_actor: str | None = None
 
+    for rec in records:
+        d = rec.data
+        if not isinstance(d, dict):
+            continue
+        if rec.record_type == "init":
+            for actor, item in d.items():
+                if isinstance(item, str):
+                    state[actor] = item.strip().rstrip(".,")
+        elif rec.record_type == "swap":
+            if "actor1" in d and "actor2" in d:
+                swaps.append((str(d["actor1"]).strip(), str(d["actor2"]).strip()))
+        elif rec.record_type == "query":
+            if "ask" in d:
+                query_actor = str(d["ask"]).strip()
 
-def _parse_action(sent: str) -> tuple[str, str] | None:
-    """Return (actor1, actor2) if this is a swap sentence, else None."""
-    m = _ACTION_RE.search(sent)
-    return (m.group(1), m.group(2)) if m else None
-
-
-def _parse_query(text: str) -> str | None:
-    """Return the queried actor name."""
-    m = _QUERY_RE.search(text)
-    return m.group(1) if m else None
-
-
-def _parse_options(text: str) -> dict[str, str]:
-    """Return {letter: value} from Options block."""
-    opts_section = text.split("Options:")[-1] if "Options:" in text else text
-    return {letter: val.strip() for letter, val in _OPTIONS_RE.findall(opts_section)}
-
-
-def _tracking_solve(text: str) -> str | None:
-    """Deterministic tracking solver. Returns option letter like '(A)' or None."""
-    lines = [line.strip() for line in text.split(".") if line.strip()]
-
-    actors = _detect_actors(lines[0] if lines else text)
-    if not actors:
+    if not state or query_actor is None:
         return None
 
-    init_sent = next((line for line in lines if re.search(r"At the start", line, re.I)), None)
-    if not init_sent:
+    for a1, a2 in swaps:
+        if a1 in state and a2 in state:
+            state[a1], state[a2] = state[a2], state[a1]
+
+    if query_actor not in state:
         return None
 
-    state = _parse_init(init_sent, actors)
-    if len(state) < len(actors):
-        return None
-
-    for line in lines:
-        pair = _parse_action(line)
-        if pair:
-            a1, a2 = pair
-            if a1 in state and a2 in state:
-                state[a1], state[a2] = state[a2], state[a1]
-
-    queried = _parse_query(text)
-    if not queried or queried not in state:
-        return None
-
-    answer_val = state[queried]
-    opts = _parse_options(text)
-    for letter, val in opts.items():
-        if val.lower() == answer_val.lower():
+    answer_val = state[query_actor].lower()
+    for letter, opt in options.items():
+        if opt.lower() in answer_val or answer_val in opt.lower():
             return f"({letter})"
 
     return None
 
 
+# ── SentenceIRSpec ────────────────────────────────────────────────────────────
+
+OBJECT_TRACKING_SPEC = SentenceIRSpec(
+    sentence_types=["init", "swap", "query", "preamble"],
+    extract_prompt=_EXTRACT_PROMPT,
+    aggregate=_aggregate_tracking,
+    classify_fn=_classify_tracking,
+    max_tokens=100,
+)
+
+
+# ── Turnstyle subclass ────────────────────────────────────────────────────────
+
+
 class ObjectTrackingTurnstyle(Turnstyle):
     """Grounds object-tracking tasks in deterministic state simulation.
 
-    Parses initial object assignments and swap actions, simulates the
-    chain of swaps, and maps the final state to the correct answer option.
+    LLM extracts actor→item assignments (init) and actor pairs (swap) per
+    sentence; Python simulates the swap chain and matches the final state
+    to the correct option letter.
 
-    Handles BBH tracking_shuffled_objects_three/five/seven_objects at 100%.
+    Handles BBH tracking_shuffled_objects_three/five/seven_objects.
 
         t = ObjectTrackingTurnstyle(model, tokenizer, device)
         text, proof = t.generate("Alice, Bob, and Claire each have a ball. At the start...")
     """
 
     probe_label = "object_tracking"
+    sentence_ir_spec = OBJECT_TRACKING_SPEC
     examples = [
         "Alice, Bob, and Claire each have a ball. At the start of the day, Alice has a yellow ball, Bob has a white ball, and Claire has a green ball. Then Alice and Bob swap balls. At the end of the day, what color ball does Alice have?\nOptions:\n(A) yellow\n(B) white\n(C) green",
         "Alice, Bob, and Claire each have a ball. At the start of the day, Alice has a red ball, Bob has a blue ball, and Claire has a purple ball. Then Bob and Claire swap balls. At the end of the day, what color ball does Bob have?\nOptions:\n(A) red\n(B) blue\n(C) purple",
@@ -170,12 +197,9 @@ class ObjectTrackingTurnstyle(Turnstyle):
         "Alice, Bob, Claire, Dave, and Eve each have a bag. At the start of the day, Alice has a backpack, Bob has a briefcase, Claire has a purse, Dave has a suitcase, and Eve has a tote. Then Alice and Dave swap bags. At the end of the day, what bag does Dave have?\nOptions:\n(A) backpack\n(B) briefcase\n(C) purse\n(D) suitcase\n(E) tote",
     ]
 
-    def parse(self, prompt: str):
-        """Deterministic solve: simulate object swaps, match final state to options."""
-        answer = _tracking_solve(prompt)
-        if answer is None:
-            return None
-        return (answer,)
+    def parse(self, prompt: str):  # noqa: ARG002
+        """No regex fast path — all solving via sentence_ir_spec."""
+        return None
 
     def make_processor(self, parsed, max_new_tokens: int):
         (answer_letter,) = parsed
