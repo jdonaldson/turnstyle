@@ -114,109 +114,77 @@ def _aggregate_comparison(
     question: str | None,
     options: dict[str, str],
 ) -> str | None:
-    """Collect constraints from records, find unique ordering, match answer."""
-    items: list[str] = []
-    pairwise: list[tuple[int, int]] = []  # (lo_idx, hi_idx)
-    positional: list[tuple[int, int]] = []  # (item_idx, raw_pos)
-    query: dict | None = None
-
-    def get_idx(name: str) -> int:
-        lo = name.strip().lower()
-        for i, it in enumerate(items):
-            if it.lower() == lo:
-                return i
-        items.append(name.strip())
-        return len(items) - 1
+    """Collect lo/hi and item/pos constraints from records, find unique ordering."""
+    pairs:  list[tuple[str, str]] = []  # (lo, hi) — lo ranks below hi
+    pinned: list[tuple[str, int]] = []  # (name, raw_pos)
+    query:  dict | None = None
 
     for rec in records:
         d = rec.data
-        if rec.record_type == "query":
-            if isinstance(d, dict) and "ask" in d:
-                query = d
-            continue
         if not isinstance(d, dict):
             continue
-        if "lo" in d and "hi" in d:
-            a = get_idx(str(d["lo"]))
-            b = get_idx(str(d["hi"]))
-            if a != b:
-                pairwise.append((a, b))
+        if rec.record_type == "query" and "ask" in d:
+            query = d
+        elif "lo" in d and "hi" in d:
+            pairs.append((str(d["lo"]).strip().lower(), str(d["hi"]).strip().lower()))
         elif "item" in d and "pos" in d:
-            a = get_idx(str(d["item"]))
             try:
-                positional.append((a, int(d["pos"])))
+                pinned.append((str(d["item"]).strip().lower(), int(d["pos"])))
             except (TypeError, ValueError):
                 pass
 
-    if not items or not (pairwise or positional):
+    if not pairs and not pinned:
         return None
 
+    # Unique items in first-seen order
+    items = list(dict.fromkeys(
+        [name for lo, hi in pairs for name in (lo, hi)]
+        + [name for name, _ in pinned]
+    ))
     n = len(items)
 
-    # Resolve raw pos to 1-indexed absolute positions
-    resolved: list[tuple[int, int]] = []
-    for a, pos in positional:
-        if pos < 0:
-            pos = n + pos + 1  # -1 → n, -2 → n-1
-        elif pos == 0:
-            pos = (n + 1) // 2  # middle
-        if 1 <= pos <= n:
-            resolved.append((a, pos))
+    def abs_pos(raw: int) -> int:
+        """Map raw pos (signed, 0=middle) to 1-indexed absolute position."""
+        if raw < 0:  return n + raw + 1   # -1 → n, -2 → n-1
+        if raw == 0: return (n + 1) // 2  # middle
+        return raw
+
+    pinned_abs = [(name, abs_pos(pos)) for name, pos in pinned
+                  if 1 <= abs_pos(pos) <= n]
 
     # Find the unique permutation satisfying all constraints
-    pos_arr = [0] * n
+    ordering = None
+    for perm in permutations(items):
+        rank = {item: i for i, item in enumerate(perm)}
+        if (all(rank[lo] < rank[hi] for lo, hi in pairs)
+                and all(rank[name] + 1 == pos for name, pos in pinned_abs)):
+            if ordering is not None:
+                return None  # ambiguous — more than one valid ordering
+            ordering = list(perm)
 
-    def check(perm: tuple) -> bool:
-        for i, idx in enumerate(perm):
-            pos_arr[idx] = i
-        for a, b in pairwise:
-            if pos_arr[a] >= pos_arr[b]:
-                return False
-        for a, p in resolved:
-            if pos_arr[a] + 1 != p:
-                return False
-        return True
-
-    valid: list[tuple] = []
-    for perm in permutations(range(n)):
-        if check(perm):
-            valid.append(perm)
-            if len(valid) > 1:
-                break
-
-    if len(valid) != 1:
+    if ordering is None:
         return None
-
-    ordering = [items[i] for i in valid[0]]
 
     # Infer query from question text if LLM didn't produce one
     if query is None:
-        if question and "arrangement" in question.lower():
-            query = {"ask": "arrangement"}
-        else:
-            return None
+        query = {"ask": "arrangement"} if question and "arrangement" in question.lower() else None
+    if query is None:
+        return None
 
     ask = query.get("ask")
 
     if ask == "arrangement":
         for letter, opt in options.items():
-            opt_items = [o.strip().lower() for o in re.split(r",\s*", opt)]
-            if opt_items == [o.lower() for o in ordering]:
+            if [o.strip().lower() for o in re.split(r",\s*", opt)] == ordering:
                 return f"({letter})"
 
     elif ask == "item_at":
         try:
-            pos = int(query.get("pos", 1))
+            idx = abs_pos(int(query.get("pos", 1))) - 1
         except (TypeError, ValueError):
             return None
-        if pos < 0:
-            idx = n + pos
-        elif pos == 0:
-            idx = n // 2
-        else:
-            idx = pos - 1
         if 0 <= idx < n:
-            target = ordering[idx].lower()
+            target = ordering[idx]
             for letter, opt in options.items():
                 if target in opt.lower():
                     return f"({letter})"
