@@ -27,6 +27,10 @@ MONTHS = {
     'oct': 10, 'nov': 11, 'dec': 12,
 }
 
+# TODO(no-keyword): HOLIDAYS is a hardcoded knowledge dict — cultural knowledge
+# that should come from the model, not be enumerated here. Replace with LLM
+# extraction: model resolves holiday names to (month, day); deterministic date
+# arithmetic runs downstream.
 HOLIDAYS = {
     'christmas': (12, 25), 'christmas day': (12, 25),
     'new year': (1, 1), "new year's": (1, 1), "new year's day": (1, 1),

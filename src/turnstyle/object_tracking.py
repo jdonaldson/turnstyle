@@ -17,6 +17,10 @@ from turnstyle.core import SequenceLogitsProcessor, Turnstyle
 ALL_ACTORS = ["Alice", "Bob", "Claire", "Dave", "Eve", "Fred", "Gertrude"]
 _ACTOR_PAT = "|".join(ALL_ACTORS)
 
+# TODO(no-keyword): _INIT_VERBS and _ACTION_RE are semantic verb lists — breaks
+# on novel phrasings ("receives", "is holding", "exchanges with", etc.). Replace
+# with SentenceIRSpec extraction: LLM extracts (actor, item) init pairs and
+# (actor1, actor2) swap pairs as JSON; state simulation runs downstream.
 # ── init verb phrases ──────────────────────────────────────────────────────
 _INIT_VERBS = [
     re.compile(r"gets\s+(.+)",           re.I),

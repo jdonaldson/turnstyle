@@ -16,6 +16,10 @@ from turnstyle.arithmetic import ArithmeticLogitsProcessor
 from turnstyle.core import Turnstyle
 from turnstyle.extract import ExtractionSpec, FieldSpec
 
+# TODO(no-keyword): _VOWELS and the vowel/consonant/words/letters keyword
+# patterns below break on novel count-type phrasings or non-English tasks.
+# Replace with LLM extraction: model identifies (target_string, count_type);
+# deterministic character/word counting runs downstream.
 _VOWELS = set('aeiouAEIOU')
 
 

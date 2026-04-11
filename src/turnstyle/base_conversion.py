@@ -25,6 +25,10 @@ from turnstyle.extract import ExtractionSpec, FieldSpec
 if TYPE_CHECKING:
     from turnstyle.probe import TurnstyleProbe
 
+# TODO(no-keyword): _BASE_NAMES is a vocabulary list for base name synonyms.
+# Fairly closed set but still brittle ("base-2", "two's complement", etc.).
+# Replace with LLM extraction: model identifies (value, from_base, to_base);
+# deterministic conversion runs downstream.
 # ── base name lookup ──────────────────────────────────────────────────
 
 _BASE_NAMES: dict[str, int] = {

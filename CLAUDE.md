@@ -12,6 +12,8 @@ Neurosymbolic library for structured LLM intervention — logit biasing, hidden-
 - **Solvers**: compose from reusable primitives — SQL generation, logit polling, knowledge decomposition. Task-specific solvers live in swollm.
 - **Metacognitive gates**: explored; gate is redundant when fallback chain is sequential ("try A, then B on failure" = same routing). Gate only matters for commit-before-trying scenarios.
 
+**No semantic keyword lists in solvers.** If a solver contains adjective lists, vocabulary enumerations, or multi-case regex for semantic parsing, it must be replaced with probe routing + LLM extraction. The only legitimate regex uses are structural patterns with no natural-language synonyms: arithmetic/boolean operators, digit patterns, bracket matching. When you see a keyword list in a solver, replace it — don't add a fallback around it.
+
 When building a new capability: first prove it works on BBH with full accuracy, then strip out the BBH-specific parts and test what generalizes.
 
 ## Architecture

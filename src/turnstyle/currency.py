@@ -39,6 +39,10 @@ _DEFAULT_RATES: dict[str, float] = {
     'nzd': 1.63,
 }
 
+# TODO(no-keyword): _ALIASES is a synonym vocabulary list — breaks on unlisted
+# currencies or phrasings ("quid", "loonie", "greenback", etc.). Replace with
+# LLM extraction: model identifies (value, from_currency, to_currency) and
+# normalizes currency names; rate lookup and conversion run downstream.
 # ── currency name normalization ──────────────────────────────────────
 
 _ALIASES: dict[str, str] = {

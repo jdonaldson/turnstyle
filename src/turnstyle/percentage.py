@@ -24,6 +24,10 @@ def parse_percentage(text: str):
     """
     lower = text.lower()
 
+    # TODO(no-keyword): operation synonym patterns (off/discount, tip, is_pct)
+    # break on novel phrasings ("markdown", "gratuity", "what fraction", etc.).
+    # Replace with LLM extraction: model identifies (value, base, operation) and
+    # normalizes operation type; deterministic arithmetic runs downstream.
     patterns = [
         # "What percentage is 45 of 180?" / "What percent is 45 of 180?"
         (r'what percent(?:age)?\s+is\s+([\d.,]+)\s+of\s+\$?([\d.,]+)', 'is_pct'),

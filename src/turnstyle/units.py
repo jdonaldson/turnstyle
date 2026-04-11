@@ -66,6 +66,10 @@ _TEMP_CONVERSIONS = {
     ('kelvin', 'fahrenheit'): lambda k: (k - 273.15) * 9 / 5 + 32,
 }
 
+# TODO(no-keyword): _ALIASES is a synonym vocabulary list — breaks on novel unit
+# names or abbreviations not enumerated here. Replace parse_unit_conversion with
+# LLM extraction: model identifies (value, from_unit, to_unit) and normalizes
+# unit names; deterministic conversion runs downstream.
 # ── unit name normalization ──────────────────────────────────────────
 
 _ALIASES: dict[str, str] = {

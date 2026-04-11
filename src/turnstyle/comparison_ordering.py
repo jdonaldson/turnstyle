@@ -71,6 +71,10 @@ def _gt_ordering(text: str, items: list[str]) -> list[str] | None:
     for m in re.finditer(rf"({item_pat})\s+{be}\s+to\s+the\s+left\s+of\s+{art}({item_pat})", body, re.I):
         add_before(m.group(1), m.group(2))
 
+    # TODO(no-keyword): adj_h/adj_l are semantic vocabulary lists — breaks on OOD
+    # adjectives ("more ancient", "shallower", etc.). Replace _gt_ordering with
+    # IRSpec/SentenceIRSpec extraction: LLM extracts (item1, relation, item2)
+    # triples as JSON; deterministic permutation solver runs downstream.
     # comparative adjectives
     adj_h = (r"newer|larger|heavier|taller|faster|more expensive|later|better|higher"
              r"|pricier|more costly")
