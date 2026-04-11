@@ -3,14 +3,13 @@
 from unittest.mock import patch
 
 from turnstyle.ir import (
+    Scene,
     SentenceIRSpec,
     SentenceRecord,
     _default_split,
-    _extract_body,
-    _extract_options,
-    _extract_question,
     _parse_json,
     _segment_via_llm,
+    parse_scene,
 )
 
 
@@ -65,26 +64,91 @@ class TestDefaultSplit:
 
 
 # ════════════════════════════════════════════════════════════════════════
-# _extract_body / _extract_question / _extract_options
+# parse_scene — sentences-first scene parsing
 # ════════════════════════════════════════════════════════════════════════
 
-class TestExtractHelpers:
-    def test_extract_body_strips_question(self):
-        text = "Alice lies. Bob says Alice lies. Does Bob tell the truth?"
-        body = _extract_body(text)
-        assert "Alice lies" in body
-        assert "Does Bob" not in body
+class TestParseScene:
+    def test_web_of_lies_basic(self):
+        text = "Alice lies. Bob says Alice lies. Does Bob tell the truth?\nOptions:\n(A) Yes\n(B) No"
+        scene = parse_scene(text)
+        body, question, options = scene.body, scene.question, scene.options
+        assert "Alice lies." in body
+        assert "Bob says Alice lies." in body
+        assert question == "Does Bob tell the truth?"
+        assert options == {"A": "Yes", "B": "No"}
 
-    def test_extract_question(self):
-        text = "Alice lies. Does Bob tell the truth? Options: (A) Yes (B) No"
-        q = _extract_question(text)
-        assert q is not None
-        assert "Does Bob" in q
+    def test_navigate_question_first(self):
+        """Navigate: question comes before body instructions."""
+        text = (
+            "If you follow these instructions, do you return to the starting point? "
+            "Always face forward. Take 3 steps right. Take 3 steps left.\n"
+            "Options:\n(A) Yes\n(B) No"
+        )
+        scene = parse_scene(text)
+        body, question, options = scene.body, scene.question, scene.options
+        assert "Always face forward." in body
+        assert "Take 3 steps right." in body
+        assert "Take 3 steps left." in body
+        assert question is not None
+        assert "return to the starting point" in question
+        assert options == {"A": "Yes", "B": "No"}
 
-    def test_extract_options(self):
-        text = "Options: (A) Yes (B) No"
-        opts = _extract_options(text)
-        assert opts == {"A": "Yes", "B": "No"}
+    def test_options_without_keyword(self):
+        """Options detected by (A)/(B) prefix, not by 'Options:' keyword."""
+        text = "Alice lies. Does Bob tell the truth?\n(A) Yes\n(B) No"
+        scene = parse_scene(text)
+        body, question, options = scene.body, scene.question, scene.options
+        assert options == {"A": "Yes", "B": "No"}
+
+    def test_multiline_body(self):
+        text = (
+            "Alice has a ball. Bob has a cube.\n\n"
+            "They swap items. Which does Alice have?\n"
+            "Options:\n(A) ball\n(B) cube"
+        )
+        scene = parse_scene(text)
+        body, question, options = scene.body, scene.question, scene.options
+        assert len(body) >= 2
+        assert "Alice has a ball." in body
+        assert "Bob has a cube." in body
+        assert "Which does Alice have?" == question
+        assert options == {"A": "ball", "B": "cube"}
+
+    def test_question_prefix_stripped(self):
+        text = "Question: Alice lies. Does Bob tell the truth?\n(A) Yes\n(B) No"
+        scene = parse_scene(text)
+        body, question, options = scene.body, scene.question, scene.options
+        assert "Alice lies." in body
+        assert question is not None
+        assert "Does Bob" in question
+
+    def test_options_header_skipped(self):
+        """'Options:' header line is skipped, not included in body."""
+        text = "Alice lies.\nOptions:\n(A) Yes\n(B) No"
+        scene = parse_scene(text)
+        body, question, options = scene.body, scene.question, scene.options
+        assert body == ["Alice lies."]
+        assert options == {"A": "Yes", "B": "No"}
+
+    def test_no_options(self):
+        scene = parse_scene("Alice lies. Bob lies.")
+        body, question, options = scene.body, scene.question, scene.options
+        assert options == {}
+        assert question is None
+        assert len(body) == 2
+
+    def test_no_question(self):
+        scene = parse_scene("Alice lies. Bob lies.\n(A) Yes\n(B) No")
+        body, question, options = scene.body, scene.question, scene.options
+        assert question is None
+        assert options == {"A": "Yes", "B": "No"}
+
+    def test_empty_string(self):
+        scene = parse_scene("")
+        body, question, options = scene.body, scene.question, scene.options
+        assert body == []
+        assert question is None
+        assert options == {}
 
 
 # ════════════════════════════════════════════════════════════════════════

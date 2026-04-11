@@ -20,6 +20,7 @@ from turnstyle.core import (
     TokenAudit,
     SequenceLogitsProcessor,
     Turnstyle,
+    SolverResult,
     extract_number,
 )
 from turnstyle.arithmetic import (
@@ -71,7 +72,7 @@ from turnstyle.sorting import SortingTurnstyle, parse_sorting
 from turnstyle.dyck import DyckTurnstyle, parse_dyck
 from turnstyle.comparison_ordering import ComparisonOrderingTurnstyle
 from turnstyle.object_tracking import ObjectTrackingTurnstyle
-from turnstyle.ir import NavigateTurnstyle, WebOfLiesTurnstyle
+from turnstyle.ir import NavigateTurnstyle, WebOfLiesTurnstyle, Scene, parse_scene
 from turnstyle.sandbox import SandboxTurnstyle, parse_sandbox_code
 from turnstyle.sandbox_backend import (
     SandboxResult,
@@ -125,6 +126,9 @@ __all__ = [
     "ObjectTrackingTurnstyle",
     "NavigateTurnstyle",
     "WebOfLiesTurnstyle",
+    "Scene",
+    "SolverResult",
+    "parse_scene",
     "ArithmeticTurnstyle",
     "ArithmeticLogitsProcessor",
     "parse_arithmetic",

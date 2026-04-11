@@ -453,3 +453,18 @@ class Turnstyle:
         answer_str = proof._display
         marked = proof._mark_digits()
         return text.replace(answer_str, marked, 1)
+
+
+@dataclass
+class SolverResult:
+    """Result from a single solver invocation.
+
+    text:      generated text (the model's answer)
+    proof:     proof object if the solver biased generation, else None
+    solver:    probe_label of the solver used, or "free" for unrouted generation
+    sentences: body sentences from parse_scene that triggered routing to this solver
+    """
+    text: str
+    proof: object | None
+    solver: str
+    sentences: list[str]

@@ -557,28 +557,27 @@ class RoutingTurnstyle(Turnstyle):
         needs_help, confidence = gate.needs_intervention(h)
         return not needs_help, confidence
 
-    def generate(self, prompt: str, max_new_tokens: int = 50):
-        """Generate with routing: regex first, probe fallback.
+    def _solve_one(
+        self, prompt: str, max_new_tokens: int = 50
+    ) -> tuple[str, object | None, str]:
+        """Core routing + generation. Returns (text, proof, solver_label).
 
-        Metacognitive gate: if a matched turnstyle has a metacognitive_probe
-        and it predicts the model will succeed, skip the turnstyle.
-        Strategy router: if available, pick the best strategy for the input.
-
-        Returns: (text, diagnostic_or_None)
+        solver_label is the probe_label of the solver that handled the prompt,
+        or "free" if no solver matched.
         """
         # Step 1: Try regex parsers
         matches = self.parse(prompt)
 
         if matches is not None:
-            # Regex matched — use first match
             t, parsed = matches[0]
 
-            # Metacognitive gate: check if model needs help
             should_skip, _ = self._check_metacognitive_gate(t, prompt)
             if should_skip:
-                return self._free_generate(prompt, max_new_tokens)
+                text, proof = self._free_generate(prompt, max_new_tokens)
+                return text, proof, "free"
 
-            return t.generate(prompt, max_new_tokens=max_new_tokens)
+            text, proof = t.generate(prompt, max_new_tokens=max_new_tokens)
+            return text, proof, t.probe_label
 
         # Step 2: No regex match — use probe
         candidates, h = self._probe_route(prompt)
@@ -595,7 +594,8 @@ class RoutingTurnstyle(Turnstyle):
             # Metacognitive gate on routed turnstyle
             should_skip, _ = self._check_metacognitive_gate(t, prompt, h)
             if should_skip:
-                return self._free_generate(prompt, max_new_tokens)
+                text, proof = self._free_generate(prompt, max_new_tokens)
+                return text, proof, "free"
 
             # Step 3: Try probe-based parsing with captured hidden states
             parsed = t.parse_from_hidden(h)
@@ -619,7 +619,7 @@ class RoutingTurnstyle(Turnstyle):
                     out[0][inputs["input_ids"].shape[1]:],
                     skip_special_tokens=True,
                 ).strip()
-                return text, getattr(processor, "proof", None)
+                return text, getattr(processor, "proof", None), t.probe_label
 
             # Step 3b: Try LLM extraction on routed turnstyle
             extraction_spec = getattr(t, 'extraction_spec', None)
@@ -646,13 +646,48 @@ class RoutingTurnstyle(Turnstyle):
                         out[0][inputs["input_ids"].shape[1]:],
                         skip_special_tokens=True,
                     ).strip()
-                    return text, getattr(processor, "proof", None)
+                    return text, getattr(processor, "proof", None), t.probe_label
 
             # Step 4: Fall back to regex on routed turnstyle
-            return t.generate(prompt, max_new_tokens=max_new_tokens)
+            text, proof = t.generate(prompt, max_new_tokens=max_new_tokens)
+            return text, proof, t.probe_label
 
         # Step 5: No match at all — free generation
-        return self._free_generate(prompt, max_new_tokens)
+        text, proof = self._free_generate(prompt, max_new_tokens)
+        return text, proof, "free"
+
+    def generate(self, prompt: str, max_new_tokens: int = 50):
+        """Generate with routing: regex first, probe fallback.
+
+        Metacognitive gate: if a matched turnstyle has a metacognitive_probe
+        and it predicts the model will succeed, skip the turnstyle.
+        Strategy router: if available, pick the best strategy for the input.
+
+        Returns: (text, diagnostic_or_None)
+        """
+        text, proof, _ = self._solve_one(prompt, max_new_tokens)
+        return text, proof
+
+    def solve(self, prompt: str, max_new_tokens: int = 50) -> "list[SolverResult]":
+        """Route, solve, and return structured results.
+
+        Always returns a list. Single-task prompts return a one-element list;
+        multi-task detection (future) will return multiple elements.
+
+        Each SolverResult carries the generated text, proof, solver label,
+        and the body sentences from parse_scene that triggered routing.
+        """
+        from turnstyle.core import SolverResult
+        from turnstyle.ir import parse_scene
+
+        scene = parse_scene(prompt)
+        text, proof, label = self._solve_one(prompt, max_new_tokens)
+        return [SolverResult(
+            text=text,
+            proof=proof,
+            solver=label,
+            sentences=scene.body,
+        )]
 
     @classmethod
     def build(

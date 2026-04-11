@@ -7,6 +7,10 @@ the extraction machinery is shared.
 Two usage patterns:
     1. IRSolver(model, tokenizer, device, spec) — as llm_fallback for solvers
     2. ir_solve(model, tokenizer, device, text, spec) — standalone function
+
+Scene parsing is sentences-first: parse_scene() splits the full text into
+sentences and classifies each as body / question / option — no dependency on
+"Options:" keyword.
 """
 
 from __future__ import annotations
@@ -70,50 +74,68 @@ def _parse_json(text: str) -> Any | None:
     return None
 
 
-def _extract_body(text: str) -> str:
-    """Extract the scene/body portion before the question."""
-    # Strip "Question:" prefix if present
-    if text.startswith("Question:"):
-        text = text[len("Question:"):].strip()
+@dataclass
+class Scene:
+    """Parsed scene: body sentences, question, and MCQ options.
 
-    # Take everything before "Options:" if present
-    parts = re.split(r'\bOptions\b:?\s*', text, maxsplit=1)
-    body = parts[0].strip()
-
-    # Try to separate body from question (last sentence ending with ?)
-    q_idx = body.rfind("?")
-    if q_idx >= 0:
-        # Find sentence start before the question
-        period_idx = body.rfind(".", 0, q_idx)
-        if period_idx >= 0:
-            return body[:period_idx + 1].strip()
-    return body
+    Produced by parse_scene(). Used by RoutingTurnstyle for routing
+    and by solvers that need structured scene access.
+    """
+    body: list[str]
+    question: str | None
+    options: dict[str, str]
 
 
-def _extract_question(text: str) -> str | None:
-    """Extract the question sentence (last ? before Options:)."""
-    q_text = text.split("Options:")[0]
-    q_idx = q_text.rfind("?")
-    if q_idx < 0:
-        return None
-    q_start = q_text.rfind(".", 0, q_idx)
-    if q_start < 0:
-        q_start = q_text.rfind("  ", 0, q_idx)
-    raw = q_text[q_start + 1:q_idx + 1].strip()
-    if "\n" in raw:
-        for line in reversed(raw.split("\n")):
-            line = line.strip()
-            if line and "?" in line:
-                return line
-    return raw
+def parse_scene(text: str) -> Scene:
+    """Sentences-first scene parsing — no "Options:" keyword dependency.
+
+    Splits text into individual sentences, classifies each as:
+      - option: line starting with (A)/(B)/... pattern
+      - question: chunk ending with '?'
+      - body: everything else
+
+    Returns (body_sentences, question, options) where:
+      body_sentences — list of fact/premise/instruction sentences
+      question       — the query sentence, or None
+      options        — {letter: text} for MCQ choices
+    """
+    text = re.sub(r'^Question:\s*', '', text.strip())
+
+    body: list[str] = []
+    question: str | None = None
+    options: dict[str, str] = {}
+
+    for line in text.split('\n'):
+        line = line.strip()
+        if not line or re.match(r'^Options:?\s*$', line, re.I):
+            continue
+
+        # Option line: "(A) text"
+        m = re.match(r'^\(([A-R])\)\s*(.+)$', line)
+        if m:
+            options[m.group(1)] = m.group(2).strip()
+            continue
+
+        # Split line into sentences, keeping delimiter attached to each chunk
+        for chunk in re.split(r'(?<=[.?!])\s+', line):
+            chunk = chunk.strip()
+            if not chunk:
+                continue
+            if chunk.endswith('?'):
+                question = chunk
+            else:
+                body.append(chunk)
+
+    return Scene(body=body, question=question, options=options)
 
 
-def _extract_options(text: str) -> dict:
-    """Extract BBH-style options: (A) foo (B) bar → {A: foo, B: bar}."""
-    options = {}
-    for m in re.finditer(r"\(([A-R])\)\s+(.+?)(?=\s*\([A-R]\)|\s*$)", text):
-        options[m.group(1)] = m.group(2).strip()
-    return options
+def _default_split(body: str) -> list[str]:
+    """Split text on periods, strip whitespace, filter empty.
+
+    Available as SentenceIRSpec.split_fn override for tasks that need
+    period-stripped sentences (no trailing '.').
+    """
+    return [s.strip() for s in body.split(".") if s.strip()]
 
 
 def ir_solve(
@@ -124,15 +146,16 @@ def ir_solve(
 ) -> str | None:
     """Extract structured IR via LLM → compute answer.
 
-    1. Extract body from BBH text
+    1. Parse body/question/options from text (sentences-first)
     2. Format extraction prompt with body
     3. LLM generates JSON
     4. Parse JSON
     5. Compute answer via spec.compute(ir_data, question, options)
     """
-    body = _extract_body(text)
-    question = _extract_question(text)
-    options = _extract_options(text)
+    scene = parse_scene(text)
+    body = " ".join(scene.body)
+    question = scene.question
+    options = scene.options
 
     if diag is not None:
         diag["body"] = body
@@ -221,7 +244,8 @@ class SentenceIRSpec:
     extract_prompt: template with {sentence} and {type} placeholders.
     aggregate: (records, question, options) → answer string or None.
     classify_fn: (sentence) → type string. None = use classify_token.
-    split_fn: (body) → list[str]. None = period-split.
+    split_fn: (body_str) → list[str]. Overrides parse_scene sentence splitting
+        when set — useful for tasks needing period-stripped sentences.
     max_tokens: maximum tokens per sentence extraction.
     """
     sentence_types: list[str]
@@ -232,11 +256,6 @@ class SentenceIRSpec:
     segment_prompt: str | None = None
     segment_max_tokens: int = 200
     max_tokens: int = 60
-
-
-def _default_split(body: str) -> list[str]:
-    """Split text on periods, strip whitespace, filter empty."""
-    return [s.strip() for s in body.split(".") if s.strip()]
 
 
 def _segment_via_llm(model, tokenizer, device, body, spec):
@@ -277,35 +296,38 @@ def sentence_ir_solve(
 ) -> str | None:
     """Per-sentence extraction → symbolic aggregation.
 
-    1. Extract body/question/options from BBH text
-    2. Segment body into typed chunks (LLM or deterministic fallback)
-    3. Append question segment
-    4. Extract structured data from each segment via LLM
-    5. Aggregate records and compute answer
+    1. Parse body sentences/question/options from text (sentences-first)
+    2. Optionally re-split body via spec.split_fn if set
+    3. Segment body into typed chunks (LLM or classify_fn fallback)
+    4. Append question segment
+    5. Extract structured data from each segment via LLM
+    6. Aggregate records and compute answer
     """
     from turnstyle.extract import generate_short
 
-    body = _extract_body(text)
-    question = _extract_question(text)
-    options = _extract_options(text)
+    scene = parse_scene(text)
+    body_sentences = scene.body
+    question = scene.question
+    options = scene.options
 
-    # Segmentation: try LLM first, fall back to deterministic
-    segments = None  # list of (text, type) pairs
+    # Allow spec.split_fn to override parse_scene sentence splitting
+    if spec.split_fn is not None:
+        body_sentences = spec.split_fn(" ".join(body_sentences))
+
+    # Segmentation: try LLM first, fall back to classify-each
+    segments = None
     segment_method = "deterministic"
 
     if spec.segment_prompt is not None:
-        segments = _segment_via_llm(model, tokenizer, device, body, spec)
+        segments = _segment_via_llm(model, tokenizer, device, " ".join(body_sentences), spec)
         if segments is not None:
             segment_method = "llm"
         else:
             segment_method = "llm_failed"
 
     if segments is None:
-        # Deterministic fallback: split + classify
-        split_fn = spec.split_fn or _default_split
-        sentences = split_fn(body)
         segments = []
-        for sentence in sentences:
+        for sentence in body_sentences:
             if spec.classify_fn is not None:
                 record_type = spec.classify_fn(sentence)
             else:
@@ -326,7 +348,7 @@ def sentence_ir_solve(
             segments.append((question, q_type))
 
     if diag is not None:
-        diag["body"] = body
+        diag["body"] = " ".join(body_sentences)
         diag["question"] = question
         diag["options"] = options
         diag["segments"] = [(t, tp) for t, tp in segments]
@@ -408,19 +430,16 @@ _ABS_DIR: dict[str, tuple[int, int]] = {
 _FACING = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 _STEP_ABS_RE = re.compile(
     r"Take\s+(\d+)\s+steps?\s+(forward|backward|left|right|north|south|east|west)", re.I)
-_STEP_FWD_RE = re.compile(r"Take\s+(\d+)\s+steps?$", re.I)
+_STEP_FWD_RE = re.compile(r"Take\s+(\d+)\s+steps?\.?\s*$", re.I)
 _STEP_REL_RE = re.compile(r"Take\s+(\d+)\s+steps?\s+(forward|backward)", re.I)
 _TURN_RE = re.compile(r"Turn\s+(left|right|around)", re.I)
-_NAV_OPTIONS_RE = re.compile(r"\(([A-Z])\)\s*(.+?)(?=\s*\([A-Z]\)|\s*$)", re.S)
 
 
-def _navigate_solve(text: str) -> str | None:
+def _navigate_solve(body_sentences: list[str]) -> str | None:
     """Deterministic navigate solver. Returns 'Yes'/'No' or None."""
-    after_q = text.split("?", 1)[-1]
-    body = after_q.split("\nOptions:")[0].strip()
-
+    body = " ".join(body_sentences)
     x, y = 0, 0
-    if "Always face forward" in text:
+    if "Always face forward" in body:
         for n_str, direction in _STEP_ABS_RE.findall(body):
             dx, dy = _ABS_DIR[direction.lower()]
             x += int(n_str) * dx
@@ -428,8 +447,8 @@ def _navigate_solve(text: str) -> str | None:
     else:
         facing = 0
         fwd_map = {"forward": 0, "backward": 2}
-        for sent in re.split(r"\.\s*", body):
-            sent = sent.strip()
+        for sent in body_sentences:
+            sent = re.sub(r'[.!]\s*$', '', sent.strip())
             t = _TURN_RE.match(sent)
             if t:
                 d = t.group(1).lower()
@@ -454,49 +473,43 @@ def _navigate_solve(text: str) -> str | None:
 
 
 # ── truth chain patterns (web_of_lies) ─────────────────────────────────────
-_WOL_BASE_RE = re.compile(r"^(\w+)\s+(tells\s+the\s+truth|lies)\s*$", re.I)
+_WOL_BASE_RE = re.compile(r"^(\w+)\s+(tells\s+the\s+truth|lies)\.?\s*$", re.I)
 _WOL_SAYS_RE = re.compile(r"(\w+)\s+says\s+(\w+)\s+(tells\s+the\s+truth|lies)", re.I)
 _WOL_QUERY_RE = re.compile(r"Does\s+(\w+)\s+tell\s+the\s+truth\?", re.I)
 
 
-def _wol_solve(text: str) -> str | None:
+def _wol_solve(body_sentences: list[str], question: str | None) -> str | None:
     """Deterministic web_of_lies solver. Returns 'Yes'/'No' or None."""
-    text = re.sub(r"^Question:\s*", "", text.strip())
     truth: dict[str, bool] = {}
 
-    for sent in re.split(r"\.\s+|\.\Z", text):
+    for sent in body_sentences:
         sent = sent.strip()
-        if re.search(r"\bsays\b", sent, re.I):
+        if re.search(r'\bsays\b', sent, re.I):
             continue
         m = _WOL_BASE_RE.match(sent)
         if m:
             truth[m.group(1)] = m.group(2).strip().lower() == "tells the truth"
 
+    full_body = " ".join(body_sentences)
     prev_size = -1
     while len(truth) != prev_size:
         prev_size = len(truth)
-        for speaker, subject, claim in _WOL_SAYS_RE.findall(text):
+        for speaker, subject, claim in _WOL_SAYS_RE.findall(full_body):
             asserted = claim.strip().lower() == "tells the truth"
             if subject in truth and speaker not in truth:
                 truth[speaker] = (asserted == truth[subject])
             elif speaker in truth and subject not in truth:
                 truth[subject] = asserted if truth[speaker] else not asserted
 
-    m = _WOL_QUERY_RE.search(text)
+    if not question:
+        return None
+    m = _WOL_QUERY_RE.search(question)
     if not m:
         return None
     queried = m.group(1)
     if queried not in truth:
         return None
     return "Yes" if truth[queried] else "No"
-
-
-def _wol_parse_options(text: str) -> dict[str, str]:
-    opts_section = text.split("Options:")[-1] if "Options:" in text else text
-    return {
-        letter: val.strip()
-        for letter, val in _NAV_OPTIONS_RE.findall(opts_section)
-    }
 
 
 from turnstyle.core import SequenceLogitsProcessor, Turnstyle
@@ -547,12 +560,13 @@ class NavigateTurnstyle(Turnstyle):
     ]
 
     def parse(self, prompt: str):
-        """Deterministic solve: simulate navigation, match answer to options."""
-        answer = _navigate_solve(prompt)
+        """Deterministic solve: parse scene, simulate navigation, match answer."""
+        scene = parse_scene(prompt)
+        body_sentences, question, options = scene.body, scene.question, scene.options
+        answer = _navigate_solve(body_sentences)
         if answer is None:
             return None
-        opts = _wol_parse_options(prompt)
-        for letter, val in opts.items():
+        for letter, val in options.items():
             if val.strip().lower() == answer.lower():
                 return (f"({letter})", answer)
         # If no options found, return the raw answer
@@ -612,12 +626,13 @@ class WebOfLiesTurnstyle(Turnstyle):
     ]
 
     def parse(self, prompt: str):
-        """Deterministic solve: propagate truth values, match answer to options."""
-        answer = _wol_solve(prompt)
+        """Deterministic solve: parse scene, propagate truth values, match answer."""
+        scene = parse_scene(prompt)
+        body_sentences, question, options = scene.body, scene.question, scene.options
+        answer = _wol_solve(body_sentences, question)
         if answer is None:
             return None
-        opts = _wol_parse_options(prompt)
-        for letter, val in opts.items():
+        for letter, val in options.items():
             if val.strip().lower() == answer.lower():
                 return (f"({letter})", answer)
         return (answer, answer)
