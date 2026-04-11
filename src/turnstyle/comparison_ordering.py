@@ -111,7 +111,7 @@ def _classify_comparison(sentence: str) -> str:
 
 def _aggregate_comparison(
     records: list[SentenceRecord],
-    question: str | None,
+    _question: str | None,
     options: dict[str, str],
 ) -> str | None:
     """Collect lo/hi and item/pos constraints from records, find unique ordering."""
@@ -165,9 +165,6 @@ def _aggregate_comparison(
     if ordering is None:
         return None
 
-    # Infer query from question text if LLM didn't produce one
-    if query is None:
-        query = {"ask": "arrangement"} if question and "arrangement" in question.lower() else None
     if query is None:
         return None
 

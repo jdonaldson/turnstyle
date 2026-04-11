@@ -357,16 +357,6 @@ class TestAggregateComparison:
         result = _aggregate_comparison(records, None, options)
         assert result == "(C)"
 
-    def test_infers_arrangement_from_question(self):
-        """No query record; question contains 'arrangement' → infer ask=arrangement."""
-        records = [
-            _rec("constraint", {"lo": "red", "hi": "blue"}),
-            _rec("constraint", {"lo": "blue", "hi": "green"}),
-        ]
-        options = {"A": "green, blue, red", "B": "red, green, blue", "C": "red, blue, green"}
-        result = _aggregate_comparison(records, "Which is a valid arrangement?", options)
-        assert result == "(C)"
-
     def test_no_constraints_returns_none(self):
         records = [_rec("query", {"ask": "item_at", "pos": 1})]
         result = _aggregate_comparison(records, None, {"A": "red"})
