@@ -7,7 +7,7 @@ Neurosymbolic library for structured LLM intervention — logit biasing, hidden-
 
 **BBH is a test harness, not the objective.** The 27-task BBH suite provides ground-truth labels and structural variety for validating generalizable tools. Every component should work beyond BBH:
 
-- **Scene parsing**: per-token split probe at L8 detects body→options transitions (100% accuracy, cross-task generalized). Regex `parse_scene` remains the offline/no-model fallback.
+- **Scene parsing**: per-token split probe at L8 detects body→options transitions (100% accuracy, cross-task generalized). `parse_scene()` is the offline/no-model fallback — sentences-first, returns `Scene(body, question, options)` dataclass, no "Options:" keyword dependency.
 - **Task routing**: `route_solver()` uses hidden-state probes for single-pass classification + scene splitting. `_detect_task` heuristics are the baseline it replaces.
 - **Solvers**: compose from reusable primitives — SQL generation, logit polling, knowledge decomposition. Task-specific solvers live in swollm.
 - **Metacognitive gates**: explored; gate is redundant when fallback chain is sequential ("try A, then B on failure" = same routing). Gate only matters for commit-before-trying scenarios.
@@ -22,7 +22,7 @@ src/turnstyle/
   probe.py          TurnstyleProbe, MultiPositionProbe, IntentProbe,
                     MetacognitiveProbe, StrategyRouter, RoutingTurnstyle
   extract.py        LLM extraction, ExtractionSpec
-  ir.py             IRSpec + IRSolver — single-pass JSON extraction + deterministic compute
+  ir.py             Scene, parse_scene(); IRSpec + IRSolver — single-pass JSON extraction + deterministic compute; SentenceIRSpec
   sweep.py          Probe training infrastructure (optional, needs sklearn)
   sql.py            SQLTurnstyle — text-to-SQL + probe routing + logit poll
   formal_fallacies.py  NL→FOL with probe-dispatched parser
@@ -34,6 +34,7 @@ src/turnstyle/
 
 ## Current Frontier
 
+- **Scene/SolverResult API** (2026-04-10): `parse_scene()` returns `Scene(body, question, options)` — sentences-first, no keyword deps. `SolverResult(text, proof, solver, sentences)` is the structured output type. `RoutingTurnstyle.solve()` → `list[SolverResult]`; `generate()` preserved for compat. `_solve_one()` internal method tracks which solver handled the prompt.
 - **Solver generalization**: 7 tasks wired with SQL/IR fallback paths behind regex fast paths. Regex remains primary (100% on BBH); fallbacks activate on regex parse failure for out-of-distribution resilience. SQL-first: object_counting, colored_objects, tracking_shuffled (×3). IR extraction: navigate, web_of_lies. LLM_FALLBACK_TASKS: 20/27 tasks.
 - **IRSpec/IRSolver** (`ir.py`): generic infrastructure for single-pass JSON extraction via LLM + deterministic compute. Used by navigate (coordinate simulation) and web_of_lies (truth propagation).
 - **`_sql_solve()` free-answer support**: extended to handle tasks without multiple-choice options (returns raw SQL result string).
