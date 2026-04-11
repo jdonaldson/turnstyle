@@ -21,45 +21,48 @@ from turnstyle.ir import SentenceIRSpec, SentenceRecord
 # ── few-shot extraction prompt ────────────────────────────────────────────────
 
 _EXTRACT_PROMPT = """\
-Extract object tracking information as JSON.
+Extract object tracking information as JSON triples: {{"subj": "...", "pred": "...", "obj": "..."}}
 
-init  → object mapping each actor to their item: {{"ActorName": "item", ...}}
-swap  → {{"actor1": "Name", "actor2": "Name"}}
-query → {{"ask": "Name"}}
-preamble → null
+predicates:
+  has  — subj currently holds obj
+  swap — subj and obj exchange items (symmetric)
+
+For init sentences with multiple actors, return an array of has-triples.
+For query sentences: {{"subj": "query", "pred": "has", "obj": "ActorName"}}
+For preamble sentences (intro only, no specific assignments): null
 
 Examples:
 sentence: At the start of the day, Alice has a yellow ball, Bob has a white ball, and Claire has a green ball.
-type: init
-{{"Alice": "yellow ball", "Bob": "white ball", "Claire": "green ball"}}
+type: fact
+[{{"subj": "Alice", "pred": "has", "obj": "yellow ball"}}, {{"subj": "Bob", "pred": "has", "obj": "white ball"}}, {{"subj": "Claire", "pred": "has", "obj": "green ball"}}]
 
 sentence: At the start of the day, Alice has a piano, Bob has a guitar, Claire has a violin, Dave has a flute, and Eve has a drum.
-type: init
-{{"Alice": "piano", "Bob": "guitar", "Claire": "violin", "Dave": "flute", "Eve": "drum"}}
+type: fact
+[{{"subj": "Alice", "pred": "has", "obj": "piano"}}, {{"subj": "Bob", "pred": "has", "obj": "guitar"}}, {{"subj": "Claire", "pred": "has", "obj": "violin"}}, {{"subj": "Dave", "pred": "has", "obj": "flute"}}, {{"subj": "Eve", "pred": "has", "obj": "drum"}}]
 
 sentence: At the start of the day, Alice is playing tennis, Bob is playing soccer, and Claire is playing basketball.
-type: init
-{{"Alice": "tennis", "Bob": "soccer", "Claire": "basketball"}}
+type: fact
+[{{"subj": "Alice", "pred": "has", "obj": "tennis"}}, {{"subj": "Bob", "pred": "has", "obj": "soccer"}}, {{"subj": "Claire", "pred": "has", "obj": "basketball"}}]
 
 sentence: Then Alice and Bob swap balls.
-type: swap
-{{"actor1": "Alice", "actor2": "Bob"}}
+type: fact
+{{"subj": "Alice", "pred": "swap", "obj": "Bob"}}
 
 sentence: Then Bob and Claire trade presents.
-type: swap
-{{"actor1": "Bob", "actor2": "Claire"}}
+type: fact
+{{"subj": "Bob", "pred": "swap", "obj": "Claire"}}
 
 sentence: Then Dave and Eve switch hats.
-type: swap
-{{"actor1": "Dave", "actor2": "Eve"}}
+type: fact
+{{"subj": "Dave", "pred": "swap", "obj": "Eve"}}
 
 sentence: At the end of the day, what color ball does Alice have?
 type: query
-{{"ask": "Alice"}}
+{{"subj": "query", "pred": "has", "obj": "Alice"}}
 
 sentence: At the end of the day, what does Bob have?
 type: query
-{{"ask": "Bob"}}
+{{"subj": "query", "pred": "has", "obj": "Bob"}}
 
 sentence: Alice, Bob, and Claire each have a ball.
 type: preamble
@@ -77,32 +80,32 @@ def _aggregate_tracking(
     records: list[SentenceRecord],
     options: dict[str, str],
 ) -> str | None:
-    """Simulate object swaps from extracted records, match final state to options."""
-    # Collect the three record types; order of swaps must be preserved.
-    state: dict[str, str] = {}        # actor → current item (mutated by swaps)
-    swaps: list[tuple[str, str]] = [] # (actor1, actor2) in problem order
-    query_actor: str | None = None    # who is being asked about
+    """Simulate object swaps from extracted triples, match final state to options."""
+    dicts = [r.data for r in records if isinstance(r.data, dict)]
 
-    for rec in records:
-        d = rec.data
-        if not isinstance(d, dict):
-            continue
-        if rec.record_type == "init":
-            # d is {"Alice": "yellow ball", "Bob": "white ball", ...}
-            for actor, item in d.items():
-                if isinstance(item, str):
-                    state[actor] = item.strip().rstrip(".,")
-        elif rec.record_type == "swap":
-            if "actor1" in d and "actor2" in d:
-                swaps.append((str(d["actor1"]).strip(), str(d["actor2"]).strip()))
-        elif rec.record_type == "query":
-            if "ask" in d:
-                query_actor = str(d["ask"]).strip()
+    # Parallel facts: all "has" triples establish starting state (no ordering dependency)
+    state: dict[str, str] = {
+        str(d["subj"]).strip(): str(d["obj"]).strip().rstrip(".,")
+        for d in dicts
+        if d.get("pred") == "has" and str(d.get("subj", "")).lower() != "query"
+    }
+
+    # Ordered swaps: each depends on the state left by the previous one
+    swaps = [
+        (str(d["subj"]).strip(), str(d["obj"]).strip())
+        for d in dicts if d.get("pred") == "swap"
+    ]
+
+    # Query target: the actor whose final item is being asked about
+    query_actor = next(
+        (str(d["obj"]).strip() for d in dicts if str(d.get("subj", "")).lower() == "query"),
+        None,
+    )
 
     if not state or query_actor is None:
         return None
 
-    # Apply swaps in order — each swap depends on the state left by the previous one.
+    # Apply swaps in order — each swap depends on the state left by the previous one
     for a1, a2 in swaps:
         if a1 in state and a2 in state:
             state[a1], state[a2] = state[a2], state[a1]
@@ -111,7 +114,7 @@ def _aggregate_tracking(
         return None
 
     # Substring match handles option labels shorter than extracted item names
-    # (e.g. option "yellow" matches state value "yellow ball").
+    # (e.g. option "yellow" matches state value "yellow ball")
     answer_val = state[query_actor].lower()
     for letter, opt in options.items():
         if opt.lower() in answer_val or answer_val in opt.lower():
@@ -123,7 +126,7 @@ def _aggregate_tracking(
 # ── SentenceIRSpec ────────────────────────────────────────────────────────────
 
 OBJECT_TRACKING_SPEC = SentenceIRSpec(
-    sentence_types=["init", "swap", "query", "preamble"],
+    sentence_types=["fact", "query", "preamble"],
     extract_prompt=_EXTRACT_PROMPT,
     aggregate=_aggregate_tracking,
     max_tokens=100,

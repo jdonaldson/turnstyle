@@ -304,102 +304,80 @@ def _rec(record_type: str, data: dict) -> SentenceRecord:
     return SentenceRecord(sentence="", record_type=record_type, data=data)
 
 
+def _lt(lo: str, hi: str) -> SentenceRecord:
+    return _rec("constraint", {"subj": lo, "pred": "less_than", "obj": hi})
+
+def _at(item: str, pos: int) -> SentenceRecord:
+    return _rec("constraint", {"subj": item, "pred": "at_pos", "obj": pos})
+
+def _qat(pos: int) -> SentenceRecord:
+    return _rec("query", {"subj": "query", "pred": "item_at", "obj": pos})
+
+def _qarr() -> SentenceRecord:
+    return _rec("query", {"subj": "query", "pred": "arrangement", "obj": None})
+
+
 class TestAggregateComparison:
     def test_pairwise_item_at(self):
         """A < B < C, ask for leftmost → A."""
-        records = [
-            _rec("constraint", {"lo": "red", "hi": "blue"}),
-            _rec("constraint", {"lo": "blue", "hi": "green"}),
-            _rec("query", {"ask": "item_at", "pos": 1}),
-        ]
+        records = [_lt("red", "blue"), _lt("blue", "green"), _qat(1)]
         result = _aggregate_comparison(records, {"A": "red", "B": "blue", "C": "green"})
         assert result == "(A)"
 
     def test_pairwise_item_at_highest(self):
         """A < B < C, ask for rightmost (pos=-1) → C."""
-        records = [
-            _rec("constraint", {"lo": "red", "hi": "blue"}),
-            _rec("constraint", {"lo": "blue", "hi": "green"}),
-            _rec("query", {"ask": "item_at", "pos": -1}),
-        ]
+        records = [_lt("red", "blue"), _lt("blue", "green"), _qat(-1)]
         result = _aggregate_comparison(records, {"A": "red", "B": "blue", "C": "green"})
         assert result == "(C)"
 
     def test_pairwise_item_at_middle(self):
         """A < B < C, ask for middle (pos=0) → B."""
-        records = [
-            _rec("constraint", {"lo": "red", "hi": "blue"}),
-            _rec("constraint", {"lo": "blue", "hi": "green"}),
-            _rec("query", {"ask": "item_at", "pos": 0}),
-        ]
+        records = [_lt("red", "blue"), _lt("blue", "green"), _qat(0)]
         result = _aggregate_comparison(records, {"A": "red", "B": "blue", "C": "green"})
         assert result == "(B)"
 
     def test_positional_constraint(self):
-        """Positional: B at pos=1, A at pos=3, ask for pos=-1 → A."""
-        records = [
-            _rec("constraint", {"item": "blue", "pos": 1}),
-            _rec("constraint", {"item": "red", "pos": -1}),
-            _rec("constraint", {"lo": "blue", "hi": "green"}),
-            _rec("query", {"ask": "item_at", "pos": -1}),
-        ]
+        """Positional: blue at pos=1, red at pos=-1, ask for pos=-1 → A."""
+        records = [_at("blue", 1), _at("red", -1), _lt("blue", "green"), _qat(-1)]
         result = _aggregate_comparison(records, {"A": "red", "B": "green", "C": "blue"})
         assert result == "(A)"
 
     def test_arrangement_query(self):
         """A < B < C, ask for valid arrangement."""
-        records = [
-            _rec("constraint", {"lo": "red", "hi": "blue"}),
-            _rec("constraint", {"lo": "blue", "hi": "green"}),
-            _rec("query", {"ask": "arrangement"}),
-        ]
+        records = [_lt("red", "blue"), _lt("blue", "green"), _qarr()]
         options = {"A": "green, blue, red", "B": "red, green, blue", "C": "red, blue, green"}
         result = _aggregate_comparison(records, options)
         assert result == "(C)"
 
     def test_no_constraints_returns_none(self):
-        records = [_rec("query", {"ask": "item_at", "pos": 1})]
+        records = [_qat(1)]
         result = _aggregate_comparison(records, {"A": "red"})
         assert result is None
 
-    def test_ambiguous_returns_none(self):
-        """No constraints → multiple valid orderings → None."""
-        records = [
-            _rec("constraint", {"lo": "red", "hi": "blue"}),
-            _rec("query", {"ask": "item_at", "pos": 1}),
-        ]
-        # 3 items but only 1 pairwise constraint → not unique for 3 items
-        records.append(_rec("constraint", {"lo": "green", "hi": "red"}))
+    def test_ambiguous_then_unique(self):
+        """One constraint is ambiguous; adding a second makes ordering unique."""
+        records = [_lt("red", "blue"), _qat(1)]
+        records.append(_lt("green", "red"))
         # Now: green < red < blue → unique
-        result = _aggregate_comparison(
-            records, {"A": "green", "B": "red", "C": "blue"})
+        result = _aggregate_comparison(records, {"A": "green", "B": "red", "C": "blue"})
         assert result == "(A)"
 
-    def test_no_query_no_question_returns_none(self):
-        records = [
-            _rec("constraint", {"lo": "red", "hi": "blue"}),
-            _rec("constraint", {"lo": "blue", "hi": "green"}),
-        ]
+    def test_no_query_returns_none(self):
+        records = [_lt("red", "blue"), _lt("blue", "green")]
         result = _aggregate_comparison(records, {"A": "red"})
         assert result is None
 
     def test_negative_pos_second_from_top(self):
         """pos=-2 = second from top = second-newest."""
-        records = [
-            _rec("constraint", {"lo": "red", "hi": "blue"}),
-            _rec("constraint", {"lo": "blue", "hi": "green"}),
-            _rec("query", {"ask": "item_at", "pos": -2}),
-        ]
+        records = [_lt("red", "blue"), _lt("blue", "green"), _qat(-2)]
         result = _aggregate_comparison(records, {"A": "red", "B": "blue", "C": "green"})
         assert result == "(B)"
 
     def test_preamble_record_ignored(self):
-        """A constraint with unparseable data is silently skipped."""
+        """A record with unknown pred is silently skipped."""
         records = [
-            _rec("constraint", {"garbage": "The following paragraphs describe"}),
-            _rec("constraint", {"lo": "red", "hi": "blue"}),
-            _rec("constraint", {"lo": "blue", "hi": "green"}),
-            _rec("query", {"ask": "item_at", "pos": 1}),
+            _rec("constraint", {"subj": "preamble", "pred": "unknown", "obj": "text"}),
+            _lt("red", "blue"), _lt("blue", "green"), _qat(1),
         ]
         result = _aggregate_comparison(records, {"A": "red", "B": "blue", "C": "green"})
         assert result == "(A)"

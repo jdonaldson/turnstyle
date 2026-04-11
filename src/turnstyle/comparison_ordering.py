@@ -29,70 +29,70 @@ from turnstyle.ir import SentenceIRSpec, SentenceRecord
 # ── few-shot extraction prompt ───────────────────────────────────────────────
 
 _EXTRACT_PROMPT = """\
-Extract ordering information as JSON.
+Extract ordering information as a JSON triple: {{"subj": "...", "pred": "...", "obj": "..."}}
 
-constraint → pairwise: {{"lo": "lower item", "hi": "higher item"}}
-  lo is older/worse/lighter/leftward of hi
-constraint → positional: {{"item": "item name", "pos": N}}
-  pos=1 lowest/leftmost/oldest/worst, pos=-1 highest/rightmost/newest/best
-query → {{"ask": "item_at", "pos": N}} or {{"ask": "arrangement"}}
+predicates:
+  less_than   — subj ranks below obj (left of, older than, worse than, lighter than, etc.)
+  at_pos      — subj is at position obj (1=lowest/leftmost/oldest, -1=highest/rightmost/newest, 0=middle)
+  item_at     — query: subj="query", obj=position N
+  arrangement — query: subj="query", obj=null
 
 Examples:
 sentence: The green book is to the left of the red book.
 type: constraint
-{{"lo": "green book", "hi": "red book"}}
+{{"subj": "green book", "pred": "less_than", "obj": "red book"}}
 
 sentence: The red car is newer than the blue car.
 type: constraint
-{{"lo": "blue car", "hi": "red car"}}
+{{"subj": "blue car", "pred": "less_than", "obj": "red car"}}
 
 sentence: Alice finished above Bob.
 type: constraint
-{{"lo": "Bob", "hi": "Alice"}}
+{{"subj": "Bob", "pred": "less_than", "obj": "Alice"}}
 
 sentence: The oak tree is the tallest.
 type: constraint
-{{"item": "oak tree", "pos": -1}}
+{{"subj": "oak tree", "pred": "at_pos", "obj": -1}}
 
 sentence: The pine tree is the shortest.
 type: constraint
-{{"item": "pine tree", "pos": 1}}
+{{"subj": "pine tree", "pred": "at_pos", "obj": 1}}
 
 sentence: Tom finished first.
 type: constraint
-{{"item": "Tom", "pos": -1}}
+{{"subj": "Tom", "pred": "at_pos", "obj": -1}}
 
 sentence: Tom finished second-to-last.
 type: constraint
-{{"item": "Tom", "pos": 2}}
+{{"subj": "Tom", "pred": "at_pos", "obj": 2}}
 
 sentence: The yellow envelope is second from the left.
 type: constraint
-{{"item": "yellow envelope", "pos": 2}}
+{{"subj": "yellow envelope", "pred": "at_pos", "obj": 2}}
 
 sentence: Which book is the leftmost?
 type: query
-{{"ask": "item_at", "pos": 1}}
+{{"subj": "query", "pred": "item_at", "obj": 1}}
 
 sentence: Which runner finished last?
 type: query
-{{"ask": "item_at", "pos": 1}}
+{{"subj": "query", "pred": "item_at", "obj": 1}}
 
 sentence: Which is the second-newest?
 type: query
-{{"ask": "item_at", "pos": -2}}
+{{"subj": "query", "pred": "item_at", "obj": -2}}
 
 sentence: Which competitor finished first?
 type: query
-{{"ask": "item_at", "pos": -1}}
+{{"subj": "query", "pred": "item_at", "obj": -1}}
 
 sentence: Which is in the middle?
 type: query
-{{"ask": "item_at", "pos": 0}}
+{{"subj": "query", "pred": "item_at", "obj": 0}}
 
 sentence: Which of the following is a valid arrangement from left to right?
 type: query
-{{"ask": "arrangement"}}
+{{"subj": "query", "pred": "arrangement", "obj": null}}
 
 sentence: {sentence}
 type: {type}
@@ -113,7 +113,7 @@ def _aggregate_comparison(
     records: list[SentenceRecord],
     options: dict[str, str],
 ) -> str | None:
-    """Collect lo/hi and item/pos constraints from records, find unique ordering."""
+    """Collect ordering triples from records, find unique permutation, return answer."""
     pairs:  list[tuple[str, str]] = []  # (lo, hi) — lo ranks below hi
     pinned: list[tuple[str, int]] = []  # (name, raw_pos)
     query:  dict | None = None
@@ -122,13 +122,17 @@ def _aggregate_comparison(
         d = rec.data
         if not isinstance(d, dict):
             continue
-        if rec.record_type == "query" and "ask" in d:
+        pred = d.get("pred")
+        subj = str(d.get("subj", "")).strip().lower()
+        obj  = d.get("obj")
+
+        if subj == "query":
             query = d
-        elif "lo" in d and "hi" in d:
-            pairs.append((str(d["lo"]).strip().lower(), str(d["hi"]).strip().lower()))
-        elif "item" in d and "pos" in d:
+        elif pred == "less_than" and obj is not None:
+            pairs.append((subj, str(obj).strip().lower()))
+        elif pred == "at_pos" and obj is not None:
             try:
-                pinned.append((str(d["item"]).strip().lower(), int(d["pos"])))
+                pinned.append((subj, int(obj)))
             except (TypeError, ValueError):
                 pass
 
@@ -167,16 +171,16 @@ def _aggregate_comparison(
     if query is None:
         return None
 
-    ask = query.get("ask")
+    pred = query.get("pred")
 
-    if ask == "arrangement":
+    if pred == "arrangement":
         for letter, opt in options.items():
             if [o.strip().lower() for o in re.split(r",\s*", opt)] == ordering:
                 return f"({letter})"
 
-    elif ask == "item_at":
+    elif pred == "item_at":
         try:
-            idx = abs_pos(int(query.get("pos", 1))) - 1
+            idx = abs_pos(int(query.get("obj", 1))) - 1
         except (TypeError, ValueError):
             return None
         if 0 <= idx < n:

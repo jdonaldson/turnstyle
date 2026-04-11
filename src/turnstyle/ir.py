@@ -373,7 +373,17 @@ def sentence_ir_solve(
         }
         sentence_diags.append(s_diag)
 
-        if data is not None:
+        if isinstance(data, list):
+            # Array output: one record per triple (e.g. multi-actor init sentences)
+            for item in data:
+                if isinstance(item, dict):
+                    records.append(SentenceRecord(
+                        sentence=seg_text,
+                        record_type=seg_type,
+                        data=item,
+                        confidence=confidence,
+                    ))
+        elif isinstance(data, dict):
             records.append(SentenceRecord(
                 sentence=seg_text,
                 record_type=seg_type,
