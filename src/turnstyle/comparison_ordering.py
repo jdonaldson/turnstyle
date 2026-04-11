@@ -6,15 +6,15 @@ correct answer option.
 
 Handles BBH logical_deduction_three/five/seven_objects.
 
-Extraction schema
------------------
-constraint → pairwise:   {"lo": "lower item", "hi": "higher item"}
-constraint → positional: {"item": "item name", "pos": N}
-  pos=1  lowest/leftmost/oldest/worst
-  pos=-1 highest/rightmost/newest/best
-  pos=0  middle
-query:                   {"ask": "item_at", "pos": N}
-                      or {"ask": "arrangement"}
+Extraction schema (subj, pred, obj triples)
+-------------------------------------------
+constraint → less_than:  {"subj": "lower item", "pred": "less_than", "obj": "higher item"}
+constraint → at_pos:     {"subj": "item name",  "pred": "at_pos",    "obj": N}
+  obj=1  lowest/leftmost/oldest/worst
+  obj=-1 highest/rightmost/newest/best
+  obj=0  middle
+query:    {"subj": "query", "pred": "item_at",    "obj": N}
+       or {"subj": "query", "pred": "arrangement", "obj": null}
 """
 
 from __future__ import annotations
@@ -109,66 +109,62 @@ def _classify_comparison(sentence: str) -> str:
 # ── constraint solver ────────────────────────────────────────────────────────
 
 
+def _abs_pos(raw: int, n: int) -> int:
+    """Map raw pos (signed, 0=middle) to 1-indexed absolute position."""
+    if raw < 0:  return n + raw + 1   # -1 → n, -2 → n-1
+    if raw == 0: return (n + 1) // 2  # middle
+    return raw
+
+
 def _aggregate_comparison(
     records: list[SentenceRecord],
     options: dict[str, str],
 ) -> str | None:
     """Collect ordering triples from records, find unique permutation, return answer."""
-    pairs:  list[tuple[str, str]] = []  # (lo, hi) — lo ranks below hi
-    pinned: list[tuple[str, int]] = []  # (name, raw_pos)
-    query:  dict | None = None
+    dicts = [r.data for r in records if isinstance(r.data, dict)]
 
-    for rec in records:
-        d = rec.data
-        if not isinstance(d, dict):
-            continue
-        pred = d.get("pred")
-        subj = str(d.get("subj", "")).strip().lower()
-        obj  = d.get("obj")
+    pairs = [
+        (str(d["subj"]).strip().lower(), str(d["obj"]).strip().lower())
+        for d in dicts if d.get("pred") == "less_than"
+    ]
 
-        if subj == "query":
-            query = d
-        elif pred == "less_than" and obj is not None:
-            pairs.append((subj, str(obj).strip().lower()))
-        elif pred == "at_pos" and obj is not None:
+    pinned_raw: list[tuple[str, int]] = []
+    for d in dicts:
+        if d.get("pred") == "at_pos":
             try:
-                pinned.append((subj, int(obj)))
+                pinned_raw.append((str(d["subj"]).strip().lower(), int(d["obj"])))
             except (TypeError, ValueError):
                 pass
 
-    if not pairs and not pinned:
+    query = next(
+        (d for d in dicts if str(d.get("subj", "")).lower() == "query"),
+        None,
+    )
+
+    if not pairs and not pinned_raw:
         return None
 
     # Unique items in first-seen order
     items = list(dict.fromkeys(
         [name for lo, hi in pairs for name in (lo, hi)]
-        + [name for name, _ in pinned]
+        + [name for name, _ in pinned_raw]
     ))
     n = len(items)
 
-    def abs_pos(raw: int) -> int:
-        """Map raw pos (signed, 0=middle) to 1-indexed absolute position."""
-        if raw < 0:  return n + raw + 1   # -1 → n, -2 → n-1
-        if raw == 0: return (n + 1) // 2  # middle
-        return raw
-
-    pinned_abs = [(name, abs_pos(pos)) for name, pos in pinned
-                  if 1 <= abs_pos(pos) <= n]
+    pinned = [(name, _abs_pos(pos, n)) for name, pos in pinned_raw
+              if 1 <= _abs_pos(pos, n) <= n]
 
     # Find the unique permutation satisfying all constraints
     ordering = None
     for perm in permutations(items):
         rank = {item: i for i, item in enumerate(perm)}
         if (all(rank[lo] < rank[hi] for lo, hi in pairs)
-                and all(rank[name] + 1 == pos for name, pos in pinned_abs)):
+                and all(rank[name] + 1 == pos for name, pos in pinned)):
             if ordering is not None:
                 return None  # ambiguous — more than one valid ordering
             ordering = list(perm)
 
-    if ordering is None:
-        return None
-
-    if query is None:
+    if ordering is None or query is None:
         return None
 
     pred = query.get("pred")
@@ -180,7 +176,7 @@ def _aggregate_comparison(
 
     elif pred == "item_at":
         try:
-            idx = abs_pos(int(query.get("obj", 1))) - 1
+            idx = _abs_pos(int(query.get("obj", 1)), n) - 1
         except (TypeError, ValueError):
             return None
         if 0 <= idx < n:
