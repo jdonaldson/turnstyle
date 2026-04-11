@@ -14,15 +14,8 @@ Handles BBH tracking_shuffled_objects_three/five/seven_objects.
 
 from __future__ import annotations
 
-import re
-
 from turnstyle.core import SequenceLogitsProcessor, Turnstyle
 from turnstyle.ir import SentenceIRSpec, SentenceRecord
-
-
-# ── closed actor set (structural) ────────────────────────────────────────────
-
-ALL_ACTORS = ["Alice", "Bob", "Claire", "Dave", "Eve", "Fred", "Gertrude"]
 
 
 # ── few-shot extraction prompt ────────────────────────────────────────────────
@@ -77,18 +70,6 @@ type: {type}
 """
 
 
-# ── sentence classifier (structural) ─────────────────────────────────────────
-
-
-def _classify_tracking(sentence: str) -> str:
-    if "?" in sentence:
-        return "query"
-    if re.search(r"\bstart\b", sentence, re.I):
-        return "init"
-    actor_count = sum(1 for a in ALL_ACTORS if re.search(rf"\b{a}\b", sentence))
-    return "swap" if actor_count == 2 else "preamble"
-
-
 # ── aggregator ────────────────────────────────────────────────────────────────
 
 
@@ -140,7 +121,6 @@ OBJECT_TRACKING_SPEC = SentenceIRSpec(
     sentence_types=["init", "swap", "query", "preamble"],
     extract_prompt=_EXTRACT_PROMPT,
     aggregate=_aggregate_tracking,
-    classify_fn=_classify_tracking,
     max_tokens=100,
 )
 
