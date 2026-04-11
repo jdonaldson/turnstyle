@@ -78,15 +78,17 @@ def _aggregate_tracking(
     options: dict[str, str],
 ) -> str | None:
     """Simulate object swaps from extracted records, match final state to options."""
-    state: dict[str, str] = {}
-    swaps: list[tuple[str, str]] = []
-    query_actor: str | None = None
+    # Collect the three record types; order of swaps must be preserved.
+    state: dict[str, str] = {}        # actor → current item (mutated by swaps)
+    swaps: list[tuple[str, str]] = [] # (actor1, actor2) in problem order
+    query_actor: str | None = None    # who is being asked about
 
     for rec in records:
         d = rec.data
         if not isinstance(d, dict):
             continue
         if rec.record_type == "init":
+            # d is {"Alice": "yellow ball", "Bob": "white ball", ...}
             for actor, item in d.items():
                 if isinstance(item, str):
                     state[actor] = item.strip().rstrip(".,")
@@ -100,6 +102,7 @@ def _aggregate_tracking(
     if not state or query_actor is None:
         return None
 
+    # Apply swaps in order — each swap depends on the state left by the previous one.
     for a1, a2 in swaps:
         if a1 in state and a2 in state:
             state[a1], state[a2] = state[a2], state[a1]
@@ -107,6 +110,8 @@ def _aggregate_tracking(
     if query_actor not in state:
         return None
 
+    # Substring match handles option labels shorter than extracted item names
+    # (e.g. option "yellow" matches state value "yellow ball").
     answer_val = state[query_actor].lower()
     for letter, opt in options.items():
         if opt.lower() in answer_val or answer_val in opt.lower():
