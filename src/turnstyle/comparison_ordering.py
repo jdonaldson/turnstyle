@@ -101,11 +101,13 @@ type: {type}
 
 # ── sentence classifier (syntactic, no keyword vocabulary) ───────────────────
 
+
 def _classify_comparison(sentence: str) -> str:
     return "query" if "?" in sentence else "constraint"
 
 
 # ── constraint solver ────────────────────────────────────────────────────────
+
 
 def _aggregate_comparison(
     records: list[SentenceRecord],
@@ -114,8 +116,8 @@ def _aggregate_comparison(
 ) -> str | None:
     """Collect constraints from records, find unique ordering, match answer."""
     items: list[str] = []
-    pairwise: list[tuple[int, int]] = []   # (lo_idx, hi_idx)
-    positional: list[tuple[int, int]] = [] # (item_idx, raw_pos)
+    pairwise: list[tuple[int, int]] = []  # (lo_idx, hi_idx)
+    positional: list[tuple[int, int]] = []  # (item_idx, raw_pos)
     query: dict | None = None
 
     def get_idx(name: str) -> int:
@@ -155,7 +157,7 @@ def _aggregate_comparison(
     resolved: list[tuple[int, int]] = []
     for a, pos in positional:
         if pos < 0:
-            pos = n + pos + 1   # -1 → n, -2 → n-1
+            pos = n + pos + 1  # -1 → n, -2 → n-1
         elif pos == 0:
             pos = (n + 1) // 2  # middle
         if 1 <= pos <= n:
@@ -235,6 +237,7 @@ COMPARISON_ORDERING_SPEC = SentenceIRSpec(
 
 # ── Turnstyle subclass ────────────────────────────────────────────────────────
 
+
 class ComparisonOrderingTurnstyle(Turnstyle):
     """Grounds comparison/ordering tasks in deterministic constraint satisfaction.
 
@@ -291,6 +294,10 @@ class ComparisonOrderingTurnstyle(Turnstyle):
         (answer_letter,) = parsed
         answer_ids = self.tokenizer.encode(answer_letter, add_special_tokens=False)
         return SequenceLogitsProcessor(
-            self.tokenizer, answer_ids, expression="comparison_ordering",
-            answer_str=answer_letter, bias_strength=self.bias_strength,
-            max_new_tokens=max_new_tokens)
+            self.tokenizer,
+            answer_ids,
+            expression="comparison_ordering",
+            answer_str=answer_letter,
+            bias_strength=self.bias_strength,
+            max_new_tokens=max_new_tokens,
+        )
