@@ -96,7 +96,7 @@ type: query
 
 sentence: {sentence}
 type: {type}
-"""
+{entities}"""
 
 
 # ── sentence classifier (syntactic, no keyword vocabulary) ───────────────────
@@ -121,25 +121,19 @@ def _aggregate_comparison(
     options: dict[str, str],
 ) -> str | None:
     """Collect ordering triples from records, find unique permutation, return answer."""
-    dicts = [r.data for r in records if isinstance(r.data, dict)]
+    triples = [t for r in records if (t := r.triple) is not None]
 
-    pairs = [
-        (str(d["subj"]).strip().lower(), str(d["obj"]).strip().lower())
-        for d in dicts if d.get("pred") == "less_than"
+    # Less-than pairs: (lower_item, higher_item), both normalised to lowercase
+    pairs = [(t.subj_lower, t.obj_lower) for t in triples if t.pred == "less_than"]
+
+    # Positional pins: (item_lowercase, raw_pos_int) — obj_int filters non-numeric objs
+    pinned_raw = [
+        (t.subj_lower, t.obj_int)
+        for t in triples
+        if t.pred == "at_pos" and t.obj_int is not None
     ]
 
-    pinned_raw: list[tuple[str, int]] = []
-    for d in dicts:
-        if d.get("pred") == "at_pos":
-            try:
-                pinned_raw.append((str(d["subj"]).strip().lower(), int(d["obj"])))
-            except (TypeError, ValueError):
-                pass
-
-    query = next(
-        (d for d in dicts if str(d.get("subj", "")).lower() == "query"),
-        None,
-    )
+    query = next((t for t in triples if t.is_query), None)
 
     if not pairs and not pinned_raw:
         return None
@@ -167,18 +161,13 @@ def _aggregate_comparison(
     if ordering is None or query is None:
         return None
 
-    pred = query.get("pred")
-
-    if pred == "arrangement":
+    if query.pred == "arrangement":
         for letter, opt in options.items():
             if [o.strip().lower() for o in re.split(r",\s*", opt)] == ordering:
                 return f"({letter})"
 
-    elif pred == "item_at":
-        try:
-            idx = _abs_pos(int(query.get("obj", 1)), n) - 1
-        except (TypeError, ValueError):
-            return None
+    elif query.pred == "item_at":
+        idx = _abs_pos(query.obj_int if query.obj_int is not None else 1, n) - 1
         if 0 <= idx < n:
             target = ordering[idx]
             for letter, opt in options.items():
@@ -196,6 +185,9 @@ COMPARISON_ORDERING_SPEC = SentenceIRSpec(
     aggregate=_aggregate_comparison,
     classify_fn=_classify_comparison,
     max_tokens=40,
+    # Extract "green book", "red car" etc. — "the <word1> <word2>" patterns,
+    # filtered against structural words (of, to, left, right, ...) in extract_entities.
+    entity_pattern=r'the ([a-z]+) ([a-z]+)',
 )
 
 

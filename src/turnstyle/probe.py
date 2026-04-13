@@ -64,7 +64,10 @@ class TurnstyleProbe:
         hidden_state: (hidden_dim,) — mean-pooled or last-token hidden state
         Returns: {label: score} for all types above threshold
         """
-        logits = hidden_state @ self.weights.T + self.bias
+        h = hidden_state.float()
+        w = self.weights.to(h.device)
+        b = self.bias.to(h.device)
+        logits = h @ w.T + b
         scores = torch.sigmoid(logits)
         return {
             label: float(score)
@@ -77,13 +80,19 @@ class TurnstyleProbe:
 
         Useful for debugging and threshold tuning.
         """
-        logits = hidden_state @ self.weights.T + self.bias
+        h = hidden_state.float()
+        w = self.weights.to(h.device)
+        b = self.bias.to(h.device)
+        logits = h @ w.T + b
         scores = torch.sigmoid(logits)
         return {label: float(score) for label, score in zip(self.labels, scores)}
 
     def predict_best(self, hidden_state: torch.Tensor) -> tuple[str, float]:
         """Return the single highest-scoring label and its confidence."""
-        logits = hidden_state @ self.weights.T + self.bias
+        h = hidden_state.float()
+        w = self.weights.to(h.device)
+        b = self.bias.to(h.device)
+        logits = h @ w.T + b
         scores = torch.sigmoid(logits)
         idx = torch.argmax(scores).item()
         return self.labels[idx], float(scores[idx])
@@ -501,7 +510,7 @@ class RoutingTurnstyle(Turnstyle):
             finally:
                 self._remove_hooks()
 
-            scores = self.probe.predict(assembled)
+            label, score = self.probe.predict_best(assembled)
         else:
             # Single-position probe: existing behavior
             self._install_hooks()
@@ -515,12 +524,11 @@ class RoutingTurnstyle(Turnstyle):
             finally:
                 self._remove_hooks()
 
-            scores = self.probe.predict(h_downstream)
+            label, score = self.probe.predict_best(h_downstream)
 
         candidates = []
-        for label, score in sorted(scores.items(), key=lambda x: -x[1]):
-            if label in self.label_to_turnstyle:
-                candidates.append((self.label_to_turnstyle[label], score))
+        if label in self.label_to_turnstyle:
+            candidates.append((self.label_to_turnstyle[label], score))
         return candidates, h_downstream
 
     def _extract_hidden(self, prompt: str) -> torch.Tensor:

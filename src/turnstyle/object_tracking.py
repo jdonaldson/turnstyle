@@ -31,7 +31,7 @@ For init sentences with multiple actors, return an array of has-triples.
 For query sentences: {{"subj": "query", "pred": "has", "obj": "ActorName"}}
 For preamble sentences (intro only, no specific assignments): null
 
-Examples:
+{entities}Examples:
 sentence: At the start of the day, Alice has a yellow ball, Bob has a white ball, and Claire has a green ball.
 type: fact
 [{{"subj": "Alice", "pred": "has", "obj": "yellow ball"}}, {{"subj": "Bob", "pred": "has", "obj": "white ball"}}, {{"subj": "Claire", "pred": "has", "obj": "green ball"}}]
@@ -81,26 +81,20 @@ def _aggregate_tracking(
     options: dict[str, str],
 ) -> str | None:
     """Simulate object swaps from extracted triples, match final state to options."""
-    dicts = [r.data for r in records if isinstance(r.data, dict)]
+    triples = [t for r in records if (t := r.triple) is not None]
 
     # Parallel facts: all "has" triples establish starting state (no ordering dependency)
     state: dict[str, str] = {
-        str(d["subj"]).strip(): str(d["obj"]).strip().rstrip(".,")
-        for d in dicts
-        if d.get("pred") == "has" and str(d.get("subj", "")).lower() != "query"
+        t.subj: t.obj_str
+        for t in triples
+        if t.pred == "has" and not t.is_query
     }
 
     # Ordered swaps: each depends on the state left by the previous one
-    swaps = [
-        (str(d["subj"]).strip(), str(d["obj"]).strip())
-        for d in dicts if d.get("pred") == "swap"
-    ]
+    swaps = [(t.subj, t.obj_str) for t in triples if t.pred == "swap"]
 
     # Query target: the actor whose final item is being asked about
-    query_actor = next(
-        (str(d["obj"]).strip() for d in dicts if str(d.get("subj", "")).lower() == "query"),
-        None,
-    )
+    query_actor = next((t.obj_str for t in triples if t.is_query), None)
 
     if not state or query_actor is None:
         return None

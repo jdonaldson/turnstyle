@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import json
 import re
+from collections import defaultdict
 from dataclasses import dataclass
 from typing import Any, Callable
 
@@ -228,12 +229,69 @@ class IRSolver:
 # ═══════════════════════════════════════════════════════════════════════
 
 @dataclass
+class Triple:
+    """Structured (subj, pred, obj) triple extracted from a sentence.
+
+    Properties handle the normalization boilerplate so aggregators don't
+    need repeated str()/strip()/lower()/int() patterns.
+
+    Convention:
+      subj="query"  marks a query sentence (is_query == True)
+      obj=None      for predicates with no object (e.g. arrangement query)
+    """
+    subj: str
+    pred: str
+    obj: Any
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "Triple | None":
+        """Construct from a raw extraction dict. Returns None if keys are missing."""
+        try:
+            return cls(subj=str(d["subj"]), pred=str(d["pred"]), obj=d["obj"])
+        except (KeyError, TypeError):
+            return None
+
+    @property
+    def is_query(self) -> bool:
+        """True when subj is 'query' (sentence is a question, not a constraint)."""
+        return self.subj.strip().lower() == "query"
+
+    @property
+    def subj_lower(self) -> str:
+        return self.subj.strip().lower()
+
+    @property
+    def obj_str(self) -> str:
+        """Object as a clean string, stripped of whitespace and trailing punctuation."""
+        return str(self.obj).strip().rstrip(".,")
+
+    @property
+    def obj_lower(self) -> str:
+        return self.obj_str.lower()
+
+    @property
+    def obj_int(self) -> int | None:
+        """Object as int, or None if not convertible."""
+        try:
+            return int(self.obj)  # type: ignore[arg-type]
+        except (TypeError, ValueError):
+            return None
+
+
+@dataclass
 class SentenceRecord:
     """One extracted record from a single sentence."""
     sentence: str
     record_type: str
     data: dict
     confidence: float = 1.0
+
+    @property
+    def triple(self) -> Triple | None:
+        """Parsed Triple if data is a valid triple dict, else None."""
+        if not isinstance(self.data, dict):
+            return None
+        return Triple.from_dict(self.data)
 
 
 @dataclass
@@ -256,6 +314,115 @@ class SentenceIRSpec:
     segment_prompt: str | None = None
     segment_max_tokens: int = 200
     max_tokens: int = 60
+    entity_pattern: str | None = None  # regex with one capture group; None → capitalized names
+
+
+# Common sentence-initial words that look like proper names but aren't entities
+_NAME_STOPWORDS = frozenset({
+    "The", "At", "Then", "And", "But", "If", "In", "On", "A", "An",
+    "Does", "Which", "What", "Who", "How", "Each", "Every", "All",
+})
+
+# Second-word filter for "the <adj> <noun>" NP extraction — skips structural words
+# that appear after "the" but aren't part of an item name.
+_NP_SECOND_SKIP = frozenset({
+    "of", "to", "from", "at", "in", "on", "a", "an", "the",
+    "left", "right", "middle", "end", "start", "way", "same",
+})
+
+
+@dataclass
+class Segment:
+    """One classified sentence with its type label."""
+    text: str
+    type: str
+
+
+class Segments:
+    """Ordered collection of classified sentence segments.
+
+    Produced by classifying body sentences against spec.sentence_types.
+    Supports filtering by type and syntactic entity extraction.
+    """
+
+    def __init__(self, items: list[Segment]):
+        self._items = items
+
+    @classmethod
+    def from_scene(
+        cls,
+        scene: Scene,
+        spec: "SentenceIRSpec",
+        model=None, tokenizer=None, device=None,
+    ) -> "Segments":
+        """Classify each body sentence + question into typed segments."""
+        sentences = scene.body
+        if spec.split_fn is not None:
+            sentences = spec.split_fn(" ".join(sentences))
+
+        items: list[Segment] = []
+        for sentence in sentences:
+            if spec.classify_fn is not None:
+                record_type = spec.classify_fn(sentence)
+            else:
+                from turnstyle.extract import classify_token
+                idx, _ = classify_token(model, tokenizer, device, sentence, spec.sentence_types)
+                record_type = spec.sentence_types[idx]
+            items.append(Segment(text=sentence, type=record_type))
+
+        # Append question if not already captured
+        if scene.question and not any(s.type == "query" for s in items):
+            q_type = spec.classify_fn(scene.question) if spec.classify_fn else "query"
+            items.append(Segment(text=scene.question, type=q_type))
+
+        return cls(items)
+
+    def where(self, *types: str) -> "Segments":
+        """Return a new Segments containing only the given type(s)."""
+        type_set = set(types)
+        return Segments([s for s in self._items if s.type in type_set])
+
+    def extract_entities(self, pattern: str | None = None) -> list[str]:
+        """Syntactically extract entity names from segments (no model needed).
+
+        pattern: regex with one or two capture groups.
+          - None (default): r'\\b([A-Z][a-z]+)\\b' — capitalized names, filtered
+            against _NAME_STOPWORDS.
+          - One group: match joined as-is.
+          - Two groups: joined as "<g1> <g2>", second group filtered against
+            _NP_SECOND_SKIP. Useful for "the <adj> <noun>" NP extraction.
+
+        Returns unique matches in first-seen order.
+        """
+        _default = pattern is None
+        pat = pattern or r'\b([A-Z][a-z]+)\b'
+        seen: dict[str, None] = {}
+        for seg in self._items:
+            for match in re.findall(pat, seg.text.lower() if not _default else seg.text):
+                if isinstance(match, tuple):
+                    # Two-group pattern — filter second word against NP skip set
+                    a, b = match[0].strip(), match[1].strip()
+                    if not a or not b or b in _NP_SECOND_SKIP:
+                        continue
+                    name = f"{a} {b}"
+                else:
+                    name = match.strip()
+                    if not name:
+                        continue
+                    if _default and name in _NAME_STOPWORDS:
+                        continue
+                if name not in seen:
+                    seen[name] = None
+        return list(seen)
+
+    def __iter__(self):
+        return iter(self._items)
+
+    def __len__(self):
+        return len(self._items)
+
+    def __repr__(self):
+        return f"Segments([{', '.join(f'{s.type}:{s.text[:30]!r}' for s in self._items)}])"
 
 
 def _segment_via_llm(model, tokenizer, device, body, spec):
@@ -306,67 +473,58 @@ def sentence_ir_solve(
     from turnstyle.extract import generate_short
 
     scene = parse_scene(text)
-    body_sentences = scene.body
-    question = scene.question
     options = scene.options
 
-    # Allow spec.split_fn to override parse_scene sentence splitting
-    if spec.split_fn is not None:
-        body_sentences = spec.split_fn(" ".join(body_sentences))
-
-    # Segmentation: try LLM first, fall back to classify-each
-    segments = None
+    # Segmentation: classify body sentences into typed segments
     segment_method = "deterministic"
+    segs: Segments
 
     if spec.segment_prompt is not None:
-        segments = _segment_via_llm(model, tokenizer, device, " ".join(body_sentences), spec)
-        if segments is not None:
+        raw = _segment_via_llm(
+            model, tokenizer, device,
+            " ".join(scene.body if spec.split_fn is None
+                     else spec.split_fn(" ".join(scene.body))),
+            spec,
+        )
+        if raw is not None:
+            segs = Segments([Segment(t, tp) for t, tp in raw])
             segment_method = "llm"
         else:
             segment_method = "llm_failed"
+            segs = Segments.from_scene(scene, spec, model, tokenizer, device)
+    else:
+        segs = Segments.from_scene(scene, spec, model, tokenizer, device)
 
-    if segments is None:
-        segments = []
-        for sentence in body_sentences:
-            if spec.classify_fn is not None:
-                record_type = spec.classify_fn(sentence)
-            else:
-                from turnstyle.extract import classify_token
-                idx, _ = classify_token(
-                    model, tokenizer, device, sentence, spec.sentence_types)
-                record_type = spec.sentence_types[idx]
-            segments.append((sentence, record_type))
-
-    # Append question segment if present and not already in LLM output
-    if question:
-        has_query = any(t == "query" for _, t in segments)
-        if not has_query:
-            if spec.classify_fn is not None:
-                q_type = spec.classify_fn(question)
-            else:
-                q_type = "query"
-            segments.append((question, q_type))
+    # Extract entity names from all segments — used to ground the extraction prompt.
+    # Syntactic (no model): spec.entity_pattern controls what's extracted.
+    # Default: capitalized names (Alice, Bob). Custom: e.g. lowercase NPs for items.
+    entities = segs.extract_entities(pattern=spec.entity_pattern)
+    entities_hint = f"Known entities: {', '.join(entities)}\n\n" if entities else ""
 
     if diag is not None:
-        diag["body"] = " ".join(body_sentences)
-        diag["question"] = question
+        diag["body"] = " ".join(scene.body)
+        diag["question"] = scene.question
         diag["options"] = options
-        diag["segments"] = [(t, tp) for t, tp in segments]
+        diag["segments"] = [(s.text, s.type) for s in segs]
         diag["segment_method"] = segment_method
+        diag["entities"] = entities
 
     records = []
     sentence_diags = []
 
-    for seg_text, seg_type in segments:
-        # Extract via LLM
-        prompt = spec.extract_prompt.format(sentence=seg_text, type=seg_type)
+    for seg in segs:
+        # {entities} is optional in the prompt template — format_map with defaultdict
+        # fills it if present, ignores it if absent.
+        prompt = spec.extract_prompt.format_map(
+            defaultdict(str, sentence=seg.text, type=seg.type, entities=entities_hint)
+        )
         response, confidence = generate_short(
             model, tokenizer, device, prompt, max_tokens=spec.max_tokens)
 
         data = _parse_json(response)
         s_diag = {
-            "sentence": seg_text,
-            "type": seg_type,
+            "sentence": seg.text,
+            "type": seg.type,
             "response": response,
             "confidence": confidence,
             "parsed": data is not None,
@@ -378,15 +536,15 @@ def sentence_ir_solve(
             for item in data:
                 if isinstance(item, dict):
                     records.append(SentenceRecord(
-                        sentence=seg_text,
-                        record_type=seg_type,
+                        sentence=seg.text,
+                        record_type=seg.type,
                         data=item,
                         confidence=confidence,
                     ))
         elif isinstance(data, dict):
             records.append(SentenceRecord(
-                sentence=seg_text,
-                record_type=seg_type,
+                sentence=seg.text,
+                record_type=seg.type,
                 data=data,
                 confidence=confidence,
             ))
@@ -394,7 +552,7 @@ def sentence_ir_solve(
     if diag is not None:
         diag["sentence_extractions"] = sentence_diags
         diag["n_parsed"] = len(records)
-        diag["n_segments"] = len(segments)
+        diag["n_segments"] = len(segs)
 
     # Aggregate
     try:
@@ -446,8 +604,16 @@ _TURN_RE = re.compile(r"Turn\s+(left|right|around)", re.I)
 
 
 def _navigate_solve(body_sentences: list[str]) -> str | None:
-    """Deterministic navigate solver. Returns 'Yes'/'No' or None."""
+    """Deterministic navigate solver. Returns 'Yes'/'No' or None.
+
+    Returns None if no navigation step patterns are found (prevents false matches
+    on non-navigate prompts).
+    """
     body = " ".join(body_sentences)
+    # Guard: require at least one step or turn pattern
+    if not (_STEP_ABS_RE.search(body) or _STEP_REL_RE.search(body) or
+            _STEP_FWD_RE.search(body) or _TURN_RE.search(body)):
+        return None
     x, y = 0, 0
     if "Always face forward" in body:
         for n_str, direction in _STEP_ABS_RE.findall(body):
