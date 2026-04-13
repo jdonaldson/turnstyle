@@ -281,12 +281,13 @@ class SequenceLogitsProcessor(LogitsProcessor):
         bias_strength: float = 15.0,
         max_new_tokens: int = 50,
         trigger_texts: set[str] | None = None,
+        immediate: bool = False,
     ):
         self.tokenizer = tokenizer
         self.answer_token_ids = answer_token_ids
         self.bias_strength = bias_strength
         self.trigger_texts = trigger_texts or {'is', '=', 'equals', ':'}
-        self.state = "WAITING"
+        self.state = "INJECTING" if immediate else "WAITING"
         self.token_idx = 0
         self.step_count = 0
 
