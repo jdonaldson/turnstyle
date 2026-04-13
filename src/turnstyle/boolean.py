@@ -19,15 +19,21 @@ def parse_boolean(text: str) -> tuple[str, bool, str] | None:
 
     Returns (expression, result, result_str) or None.
     Safe evaluation: only allows True, False, and, or, not, parentheses.
-    """
-    # Find boolean expression in the text
-    # Match sequences of True/False connected by and/or/not with optional parens
-    pattern = r'(?:(?:not\s+)?(?:True|False)(?:\s+(?:and|or)\s+(?:not\s+)?(?:True|False))*)'
-    m = re.search(pattern, text, re.IGNORECASE)
-    if not m:
-        return None
 
-    expr = m.group(0)
+    Handles BBH format: "not ( True or True ) and False is"
+    """
+    # BBH format: expression ends with " is" — extract everything before it
+    m_bbh = re.match(r'^([\w\s\(\)]+?)\s+is\s*$', text.strip(), re.IGNORECASE)
+    if m_bbh:
+        expr = m_bbh.group(1).strip()
+    else:
+        # Find boolean expression: sequences of True/False connected by and/or/not with parens
+        pattern = r'(?:(?:not\s+)?(?:True|False)(?:\s+(?:and|or)\s+(?:not\s+)?(?:True|False))*)'
+        m = re.search(pattern, text, re.IGNORECASE)
+        if not m:
+            return None
+        expr = m.group(0)
+
     # Normalize case
     normalized = expr
     normalized = re.sub(r'\btrue\b', 'True', normalized, flags=re.IGNORECASE)
@@ -142,7 +148,7 @@ class BooleanTurnstyle(Turnstyle):
     ]
 
     def parse(self, prompt: str):
-        return None  # routing via probe, fields via extraction
+        return parse_boolean(prompt)
 
     def make_processor(self, parsed, max_new_tokens: int):
         expression, result, result_str = parsed
@@ -150,4 +156,4 @@ class BooleanTurnstyle(Turnstyle):
         return SequenceLogitsProcessor(
             self.tokenizer, answer_ids, expression=expression,
             answer_str=result_str, bias_strength=self.bias_strength,
-            max_new_tokens=max_new_tokens)
+            max_new_tokens=max_new_tokens, immediate=True)

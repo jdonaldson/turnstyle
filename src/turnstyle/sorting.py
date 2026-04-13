@@ -17,8 +17,19 @@ def parse_sorting(text: str) -> tuple[list[str], list[str], str] | None:
     """Extract a word list from text and return sorted version.
 
     Returns (original_words, sorted_words, sorted_str) or None.
+
+    Handles BBH format: "Sort the following words alphabetically: List: w1 w2 w3"
     """
     lower = text.lower()
+
+    # BBH format: "Sort the following words alphabetically: List: w1 w2 ..."
+    m = re.search(r'list:\s+([a-z\'][a-z\' ]+[a-z\'])', lower)
+    if m:
+        raw = m.group(1)
+        words = [w.strip() for w in raw.split() if w.strip()]
+        if len(words) >= 2:
+            sorted_words = sorted(words)
+            return words, sorted_words, " ".join(sorted_words)
 
     # "Sort the following words: banana apple cherry"
     # "Sort [cherry, banana, apple]"
@@ -32,15 +43,13 @@ def parse_sorting(text: str) -> tuple[list[str], list[str], str] | None:
         return None
 
     raw = m.group(1)
-    # Split on commas and/or spaces
     words = [w.strip() for w in re.split(r'[,\s]+', raw) if w.strip()]
 
     if len(words) < 2:
         return None
 
     sorted_words = sorted(words)
-    sorted_str = " ".join(sorted_words)
-    return words, sorted_words, sorted_str
+    return words, sorted_words, " ".join(sorted_words)
 
 
 def _assemble_sorting(fields: dict) -> tuple[list[str], list[str], str]:
@@ -111,7 +120,7 @@ class SortingTurnstyle(Turnstyle):
     ]
 
     def parse(self, prompt: str):
-        return None  # routing via probe, fields via extraction
+        return parse_sorting(prompt)
 
     def make_processor(self, parsed, max_new_tokens: int):
         original_words, sorted_words, sorted_str = parsed
@@ -119,5 +128,5 @@ class SortingTurnstyle(Turnstyle):
         expression = " ".join(original_words)
         return SequenceLogitsProcessor(
             self.tokenizer, answer_ids, expression=expression,
-            answer_str=sorted_str, bias_strength=self.bias_strength,
-            max_new_tokens=max_new_tokens)
+            answer_str=sorted_str, bias_strength=50.0,
+            max_new_tokens=max_new_tokens, immediate=True)

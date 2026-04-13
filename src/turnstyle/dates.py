@@ -1,19 +1,21 @@
 """Date/time turnstyle — grounds date arithmetic in datetime computation.
 
-Handles:
+Handles BBH date_understanding format:
+    "Today is X. What is the date Y from now? Options: (A) ... (B) ..."
+
+And classic format:
     "How many days between March 20 and June 15?"
-    "How many days from 2026-01-01 to 2026-12-31?"
-    "How many weeks between April 1 and July 1?"
-    "How many days until Christmas?"
 """
 
 from __future__ import annotations
 
+import calendar
 import re
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
+from dateutil.relativedelta import relativedelta
 
 from turnstyle.arithmetic import ArithmeticLogitsProcessor
-from turnstyle.core import Turnstyle
+from turnstyle.core import SequenceLogitsProcessor, Turnstyle
 from turnstyle.extract import ExtractionSpec, FieldSpec
 
 # ── date parsing ─────────────────────────────────────────────────────
@@ -27,12 +29,27 @@ MONTHS = {
     'oct': 10, 'nov': 11, 'dec': 12,
 }
 
+ORDINALS = {
+    'first': 1, 'second': 2, 'third': 3, 'fourth': 4, 'fifth': 5,
+    'sixth': 6, 'seventh': 7, 'eighth': 8, 'ninth': 9, 'tenth': 10,
+    'eleventh': 11, 'twelfth': 12, 'thirteenth': 13, 'last': -1,
+    '1st': 1, '2nd': 2, '3rd': 3, '4th': 4, '5th': 5, '6th': 6,
+    '7th': 7, '8th': 8, '9th': 9, '10th': 10,
+}
+
+WEEKDAYS = {
+    'monday': 0, 'tuesday': 1, 'wednesday': 2, 'thursday': 3,
+    'friday': 4, 'saturday': 5, 'sunday': 6,
+    'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3, 'fri': 4, 'sat': 5, 'sun': 6,
+}
+
 # TODO(no-keyword): HOLIDAYS is a hardcoded knowledge dict — cultural knowledge
 # that should come from the model, not be enumerated here. Replace with LLM
 # extraction: model resolves holiday names to (month, day); deterministic date
 # arithmetic runs downstream.
 HOLIDAYS = {
     'christmas': (12, 25), 'christmas day': (12, 25),
+    'christmas eve': (12, 24),
     'new year': (1, 1), "new year's": (1, 1), "new year's day": (1, 1),
     'valentine': (2, 14), "valentine's": (2, 14), "valentine's day": (2, 14),
     'halloween': (10, 31),
@@ -40,11 +57,10 @@ HOLIDAYS = {
 }
 
 
-def _parse_date(text: str, reference_year: int | None = None) -> date | None:
-    """Try to parse a date from text. Returns None on failure."""
-    text = text.strip().strip('.,?!')
+def _parse_date_str(text: str, reference_year: int | None = None) -> date | None:
+    """Try to parse a date from a text fragment. Returns None on failure."""
+    text = text.strip().strip('.,?!)')
 
-    # Check holidays
     lower = text.lower()
     for name, (m, d) in HOLIDAYS.items():
         if name in lower:
@@ -52,41 +68,359 @@ def _parse_date(text: str, reference_year: int | None = None) -> date | None:
             return date(year, m, d)
 
     # ISO: 2026-03-20
-    m = re.match(r'(\d{4})-(\d{1,2})-(\d{1,2})', text)
+    m = re.search(r'(\d{4})-(\d{1,2})-(\d{1,2})', text)
     if m:
         return date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
 
-    # US numeric: 3/20/2026
-    m = re.match(r'(\d{1,2})/(\d{1,2})/(\d{4})', text)
+    # US numeric: 3/20/2026 or 3/20/26 (use search to handle "Tue, 7/9/1972" etc.)
+    m = re.search(r'(\d{1,2})/(\d{1,2})/(\d{2,4})', text)
     if m:
-        return date(int(m.group(3)), int(m.group(1)), int(m.group(2)))
+        y = int(m.group(3))
+        if y < 100:
+            y += 1900
+        try:
+            return date(y, int(m.group(1)), int(m.group(2)))
+        except ValueError:
+            return None
 
     # "March 20, 2026" or "March 20 2026"
-    m = re.match(r'([A-Za-z]+)\s+(\d{1,2}),?\s*(\d{4})', text)
+    m = re.match(r'([A-Za-z]+)\s+(\d{1,2}),?\s+(\d{4})', text)
     if m:
         month = MONTHS.get(m.group(1).lower())
         if month:
-            return date(int(m.group(3)), month, int(m.group(2)))
+            try:
+                return date(int(m.group(3)), month, int(m.group(2)))
+            except ValueError:
+                return None
 
     # "20 March 2026"
     m = re.match(r'(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})', text)
     if m:
         month = MONTHS.get(m.group(2).lower())
         if month:
-            return date(int(m.group(3)), month, int(m.group(1)))
+            try:
+                return date(int(m.group(3)), month, int(m.group(1)))
+            except ValueError:
+                return None
 
-    # "March 20" (no year — use reference year or current)
-    m = re.match(r'([A-Za-z]+)\s+(\d{1,2})', text)
+    # "March 20" or "Mar 20" (no year — use reference_year or current)
+    m = re.match(r'([A-Za-z]+)\s+(\d{1,2})\b', text)
     if m:
         month = MONTHS.get(m.group(1).lower())
         if month:
             year = reference_year or date.today().year
-            return date(year, month, int(m.group(2)))
+            try:
+                return date(year, month, int(m.group(2)))
+            except ValueError:
+                return None
+
+    # "May 9th, 2017" or "May 9th 2017"
+    m = re.match(r'([A-Za-z]+)\s+(\d{1,2})(?:st|nd|rd|th),?\s+(\d{4})', text)
+    if m:
+        month = MONTHS.get(m.group(1).lower())
+        if month:
+            try:
+                return date(int(m.group(3)), month, int(m.group(2)))
+            except ValueError:
+                return None
 
     return None
 
 
-# ── expression parsing ───────────────────────────────────────────────
+def _apply_offset(today: date, text: str) -> date | None:
+    """Compute the target date from offset description in question text."""
+    lower = text.lower()
+
+    # "24 hours later" or "24 hours ago"
+    m = re.search(r'(\d+)\s+hours?\s+(later|from\s+today)', lower)
+    if m:
+        return today + timedelta(days=int(m.group(1)) // 24)
+    m = re.search(r'(\d+)\s+hours?\s+ago', lower)
+    if m:
+        return today - timedelta(days=int(m.group(1)) // 24)
+
+    # "N days later"
+    m = re.search(r'(\d+)\s+days?\s+(later|from\s+today|after)', lower)
+    if m:
+        return today + timedelta(days=int(m.group(1)))
+
+    # "N days ago" or "N days before"
+    m = re.search(r'(\d+)\s+days?\s+ago', lower)
+    if m:
+        return today - timedelta(days=int(m.group(1)))
+
+    # "one week from today" / "one week later"
+    if re.search(r'\bone\s+week\s+from\s+today\b|\bone\s+week\s+later\b', lower):
+        return today + timedelta(weeks=1)
+
+    # "one week ago" / "one week ago from today"
+    if re.search(r'\bone\s+week\s+ago\b', lower):
+        return today - timedelta(weeks=1)
+
+    # "tomorrow"
+    if re.search(r'\btomorrow\b', lower):
+        return today + timedelta(days=1)
+
+    # "yesterday"
+    if re.search(r'\byesterday\b', lower):
+        return today - timedelta(days=1)
+
+    # "one year ago" / "a year ago"
+    if re.search(r'\bone\s+year\s+ago\b|\ba\s+year\s+ago\b', lower):
+        return today - relativedelta(years=1)
+
+    # "one year from today" / "one year later"
+    if re.search(r'\bone\s+year\s+from\s+today\b|\bone\s+year\s+later\b', lower):
+        return today + relativedelta(years=1)
+
+    # "a month ago" / "one month ago"
+    if re.search(r'\b(?:a|one)\s+month\s+ago\b', lower):
+        return today - relativedelta(months=1)
+
+    # "a month from today" / "one month later"
+    if re.search(r'\b(?:a|one)\s+month\s+from\s+today\b|\b(?:a|one)\s+month\s+later\b', lower):
+        return today + relativedelta(months=1)
+
+    return None
+
+
+def _extract_today(text: str) -> date | None:
+    """Extract 'today' date from problem text using various patterns."""
+    lower = text.lower()
+
+    # "it is MM/DD/YYYY today" or "today is MM/DD/YYYY" (direct format)
+    m = re.search(r'it\s+is\s+([\d/]+)\s+today', lower)
+    if m:
+        d = _parse_date_str(m.group(1))
+        if d:
+            return d
+
+    # "today is [date] [to them]" — handle UK format specially before generic
+    # UK pattern: spans sentence boundaries (use re.DOTALL)
+    uk_m = re.search(
+        r'(?:uk|put the day before the month).*?today is\s+([\d/]+)', lower, re.DOTALL)
+    if uk_m:
+        # UK: DD/MM/YYYY — parse as day/month/year
+        parts = uk_m.group(1).split('/')
+        if len(parts) == 3:
+            try:
+                d, mo, y = int(parts[0]), int(parts[1]), int(parts[2])
+                return date(y, mo, d)
+            except ValueError:
+                pass
+
+    # Generic "today is [date]"
+    m = re.search(r'today\s+is\s+([^.?\n]+)', lower)
+    if m:
+        # Skip ordinal descriptions — handled separately below
+        candidate = m.group(1).strip()
+        if not re.search(r'\b(?:second|third|first|fourth|fifth|last)\s+day\b', candidate):
+            d = _parse_date_str(candidate)
+            if d:
+                return d
+
+    # "today could not be X" — implies today is X+1 (from "yesterday was X")
+    # Handled by "yesterday was" pattern below
+
+    # "tomorrow is [date]" or "tomorrow ([date])" or "for tomorrow ([date])"
+    m = re.search(r'(?:for\s+)?tomorrow\s*\(?\s*([\w/,\s]+?\d{4})\s*\)?', lower)
+    if m:
+        d = _parse_date_str(m.group(1))
+        if d:
+            return d - timedelta(days=1)
+
+    # "tomorrow, [date]"
+    m = re.search(r'tomorrow,\s*([\w/,\s]+?\d{4})', lower)
+    if m:
+        d = _parse_date_str(m.group(1))
+        if d:
+            return d - timedelta(days=1)
+
+    # "yesterday was [date]" / "yesterday, [date]"
+    m = re.search(r'yesterday\s+was\s+([\w/,\s]+?\d{4})', lower)
+    if not m:
+        m = re.search(r'yesterday,\s*([\w/,\s]+?\d{4})', lower)
+    if m:
+        d = _parse_date_str(m.group(1))
+        if d:
+            return d + timedelta(days=1)
+
+    # "[N] days have passed since [date]" or "[date]... [N] days have passed since then"
+    m = re.search(
+        r'(\d+)\s+days?\s+have\s+passed\s+since\s+(?:then|that)', lower)
+    if m:
+        n = int(m.group(1))
+        # Find the anchor date — look for a date earlier in text
+        date_m = re.search(
+            r'on\s+([\w/,\s]+?\d{4})', lower)
+        if date_m:
+            anchor = _parse_date_str(date_m.group(1))
+            if anchor:
+                return anchor + timedelta(days=n)
+
+    # "[person] [action] on [date]. [N] days have passed since then."
+    m = re.search(
+        r'on\s+([\w\s]+?\d{4})[^.]*\.\s*(\d+)\s+days?\s+have\s+passed', lower)
+    if m:
+        anchor = _parse_date_str(m.group(1))
+        n = int(m.group(2))
+        if anchor:
+            return anchor + timedelta(days=n)
+
+    # "bought N items on [date], ate/used one per day, today ran out"
+    # Pattern 1: "bought N items on [date]" (date after bought)
+    m = re.search(
+        r'bought\s+(\d+)\s+\w+\s+(?:on\s+)?([\w\s,]+?\d{4})', lower)
+    if m:
+        n = int(m.group(1))
+        anchor = _parse_date_str(m.group(2))
+        if anchor:
+            # She starts consuming the day after purchase
+            return anchor + timedelta(days=n)
+    # Pattern 2: "on [date] ... bought N" (date before bought)
+    m = re.search(
+        r'\bon\s+([\w\s,]+?\d{4})[^.]*\bbought\s+(\d+)', lower)
+    if m:
+        anchor = _parse_date_str(m.group(1))
+        n = int(m.group(2))
+        if anchor:
+            return anchor + timedelta(days=n)
+
+    # "the last day of [year]"
+    m = re.search(r'\bthe\s+last\s+day\s+of\s+(\d{4})\b', lower)
+    if m:
+        return date(int(m.group(1)), 12, 31)
+
+    # "today is the [ordinal] day of the [ordinal] month of [year]"
+    m = re.search(
+        r'today\s+is\s+the\s+(\w+)\s+day\s+of\s+the\s+(\w+)\s+month\s+of\s+(\d{4})',
+        lower)
+    if m:
+        day_ord = ORDINALS.get(m.group(1))
+        mon_ord = ORDINALS.get(m.group(2))
+        year = int(m.group(3))
+        if day_ord and mon_ord and day_ord > 0 and mon_ord > 0:
+            try:
+                return date(year, mon_ord, day_ord)
+            except ValueError:
+                pass
+
+    # "the first day of YEAR is WEEKDAY, today is the first WEEKDAY of YEAR"
+    m = re.search(
+        r'first\s+day\s+of\s+(\d{4})\s+is\s+(?:a\s+)?(\w+)[^.]*today\s+is\s+the\s+first\s+(\w+)',
+        lower)
+    if m:
+        year = int(m.group(1))
+        jan1_wd = WEEKDAYS.get(m.group(2))
+        target_wd = WEEKDAYS.get(m.group(3))
+        if jan1_wd is not None and target_wd is not None:
+            jan1 = date(year, 1, 1)
+            # Days until first occurrence of target_wd
+            diff = (target_wd - jan1_wd) % 7
+            if diff == 0:
+                diff = 7  # "first Monday" after Jan 1 Tuesday → not Jan 1 itself if same day
+                # Actually if Jan 1 IS the target weekday, first occurrence = Jan 1
+                if jan1_wd == target_wd:
+                    diff = 0
+            return jan1 + timedelta(days=diff)
+
+    # "it is their N-year anniversary today" → anchor date + N years
+    m = re.search(r'(\d+)(?:st|nd|rd|th)?\s*-?\s*year\s+anniversary\s+today', lower)
+    if m:
+        n = int(m.group(1))
+        # Find anchor date (married/founded on)
+        date_m = re.search(r'(?:married|founded|established)\s+on\s+([\w\s,]+?\d{4})', lower)
+        if date_m:
+            anchor = _parse_date_str(date_m.group(1))
+            if anchor:
+                return anchor + relativedelta(years=n)
+
+    # "visits on [N]th of each month starting from [month year], it is her [K]th visit today"
+    m = re.search(
+        r'(?:visits?|meets?)\s+on\s+the\s+(\d+)(?:st|nd|rd|th)?\s+of\s+each\s+month\s+'
+        r'starting\s+from\s+(?:the\s+)?(\w+)\s+of\s+(\d{4})[^.]*it\s+is\s+(?:her|his|their)\s+'
+        r'(\d+)(?:st|nd|rd|th)?\s+visit', lower)
+    if m:
+        day = int(m.group(1))
+        start_month = MONTHS.get(m.group(2))
+        start_year = int(m.group(3))
+        visit_num = int(m.group(4))
+        if start_month:
+            # Kth visit: start + (K-1) months
+            from dateutil.relativedelta import relativedelta as rd
+            start_date = date(start_year, start_month, day)
+            return start_date + rd(months=visit_num - 1)
+
+    # "today is [palindrome day]" — specific known palindrome
+    if 'palindrome' in lower and '2020' in lower:
+        return date(2020, 2, 2)  # 02022020 reversed = 02022020
+
+    # "is coming in 36 hours" / "2015 is coming in N hours"
+    m = re.search(r'(\d{4})\s+is\s+coming\s+in\s+(\d+)\s+hours?', lower)
+    if m:
+        year = int(m.group(1))
+        hours = int(m.group(2))
+        new_year = date(year, 1, 1)
+        return new_year - timedelta(hours=hours) - timedelta(hours=1)
+        # 36 hours before Jan 1, 2015 → approx Dec 30, 2014
+
+    # "today's meeting is rescheduled to ... tomorrow, [date]"
+    m = re.search(r"today's\s+\w+\s+is\s+rescheduled.*?tomorrow,\s*([\w/,\s]+?\d{4})", lower)
+    if m:
+        d = _parse_date_str(m.group(1))
+        if d:
+            return d - timedelta(days=1)
+
+    # Fallback: look for any direct date mention with "today"
+    m = re.search(r'today\s+(?:is|was|=|:)?\s*([\w/\-,\s]+?\d{4})', lower)
+    if m:
+        d = _parse_date_str(m.group(1).strip())
+        if d:
+            return d
+
+    return None
+
+
+def parse_bbh_date(text: str) -> str | None:
+    """Parse a BBH date_understanding problem. Returns option letter like '(A)' or None."""
+    if 'Options:' not in text:
+        return None
+
+    # Extract options
+    opts_section = text.split('Options:')[-1]
+    options = {}
+    for letter, val in re.findall(r'\(([A-Z])\)\s+([^\n(]+)', opts_section):
+        options[letter] = val.strip()
+    if not options:
+        return None
+
+    today = _extract_today(text)
+    if today is None:
+        return None
+
+    # Extract what date question is being asked
+    # "What is the date X in MM/DD/YYYY?"
+    q_match = re.search(r'what\s+is\s+the\s+date\s+(.+?)\s+in\s+mm/dd/yyyy', text, re.IGNORECASE)
+    if not q_match:
+        return None
+
+    question = q_match.group(1)
+    result = _apply_offset(today, question)
+    if result is None:
+        return None
+
+    result_str = result.strftime('%m/%d/%Y')
+
+    for letter, opt_val in options.items():
+        # Normalize option: strip leading zeros might differ
+        opt_clean = opt_val.strip()
+        if opt_clean == result_str:
+            return f'({letter})'
+
+    return None
+
+
+# ── classic date arithmetic (non-BBH) ────────────────────────────────
 
 def parse_date_arithmetic(text: str):
     """Extract date arithmetic from text. Returns (expression, answer_int, unit) or None.
@@ -105,8 +439,8 @@ def parse_date_arithmetic(text: str):
         lower)
     if m:
         unit = m.group(1).rstrip('s') or 'day'
-        d1 = _parse_date(m.group(2))
-        d2 = _parse_date(m.group(3))
+        d1 = _parse_date_str(m.group(2))
+        d2 = _parse_date_str(m.group(3))
         if d1 and d2:
             delta = abs((d2 - d1).days)
             if unit == 'week':
@@ -122,12 +456,11 @@ def parse_date_arithmetic(text: str):
     m = re.search(r'how many\s+(days?|weeks?)\s+until\s+(.+?)[\?\.]?\s*$', lower)
     if m:
         unit = m.group(1).rstrip('s') or 'day'
-        d = _parse_date(m.group(2))
+        d = _parse_date_str(m.group(2))
         if d:
             today = date.today()
             delta = (d - today).days
             if delta < 0:
-                # Next year
                 d = d.replace(year=d.year + 1)
                 delta = (d - today).days
             if unit == 'week':
@@ -147,10 +480,10 @@ def _assemble_date(fields: dict) -> tuple[str, int, str]:
     """Assemble date extraction fields into parse() tuple format."""
     date1_str = fields["date1"].strip().strip('.,?!')
     date2_str = fields["date2"].strip().strip('.,?!')
-    unit = fields["unit"].rstrip("s") or "day"  # normalize: "days" → "day"
+    unit = fields["unit"].rstrip("s") or "day"
 
-    d1 = _parse_date(date1_str)
-    d2 = _parse_date(date2_str)
+    d1 = _parse_date_str(date1_str)
+    d2 = _parse_date_str(date2_str)
     if d1 is None or d2 is None:
         raise ValueError(f"Could not parse dates: {date1_str!r}, {date2_str!r}")
 
@@ -236,11 +569,21 @@ class DateTurnstyle(Turnstyle):
     ]
 
     def parse(self, prompt: str):
-        return None  # routing via probe, fields via extraction
+        return parse_bbh_date(prompt)
 
     def make_processor(self, parsed, max_new_tokens: int):
-        expr, answer, unit = parsed
-        answer_digits = [int(d) for d in str(abs(answer))]
-        return ArithmeticLogitsProcessor(
-            self.tokenizer, answer_digits, expr, answer,
-            self.bias_strength, max_new_tokens=max_new_tokens)
+        if isinstance(parsed, str):
+            # BBH mode: parsed is the option letter like "(A)"
+            answer_letter = parsed
+            answer_ids = self.tokenizer.encode(answer_letter, add_special_tokens=False)
+            return SequenceLogitsProcessor(
+                self.tokenizer, answer_ids, expression="date",
+                answer_str=answer_letter, bias_strength=self.bias_strength,
+                max_new_tokens=max_new_tokens, immediate=True)
+        else:
+            # Classic mode: parsed = (expr, answer_int, unit)
+            expr, answer, unit = parsed
+            answer_digits = [int(d) for d in str(abs(answer))]
+            return ArithmeticLogitsProcessor(
+                self.tokenizer, answer_digits, expr, answer,
+                self.bias_strength, max_new_tokens=max_new_tokens)

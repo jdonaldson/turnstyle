@@ -21,17 +21,21 @@ def parse_dyck(text: str) -> tuple[str, str, str] | None:
     """Extract a bracket sequence and compute the closing brackets.
 
     Returns (open_sequence, closing_sequence, full_result) or None.
+
+    Handles BBH format: "...Input: < [ { { ..."
     """
     lower = text.lower()
 
-    # "Complete the brackets: ( ( ) [ ]"
-    # "Close the brackets: { [ ( )"
-    m = re.search(
-        r'(?:complete|close|finish|balance)(?:\s+the)?\s+'
-        r'(?:brackets?|parenthes[ei]s|braces)\s*[:=]?\s*'
-        r'([\(\)\[\]\{\}<>\s]+)',
-        lower,
-    )
+    # BBH format: "Input: < [ { { ..." — extract everything after "Input:"
+    m = re.search(r'\binput:\s*([\(\)\[\]\{\}<>\s]+)', lower)
+    if not m:
+        # Generic format: "Complete the brackets: ( ( ) [ ]"
+        m = re.search(
+            r'(?:complete|close|finish|balance)(?:\s+the)?\s+'
+            r'(?:brackets?|parenthes[ei]s|braces)\s*[:=]?\s*'
+            r'([\(\)\[\]\{\}<>\s]+)',
+            lower,
+        )
     if not m:
         return None
 
@@ -57,8 +61,8 @@ def parse_dyck(text: str) -> tuple[str, str, str] | None:
         # Already balanced
         return None
 
-    # Close in reverse order (stack top first)
-    closing = "".join(_OPEN_TO_CLOSE[ch] for ch in reversed(stack))
+    # Close in reverse order (stack top first), space-separated to match BBH format
+    closing = " ".join(_OPEN_TO_CLOSE[ch] for ch in reversed(stack))
     open_seq = " ".join(brackets)
     return open_seq, closing, closing
 
@@ -153,7 +157,7 @@ class DyckTurnstyle(Turnstyle):
     ]
 
     def parse(self, prompt: str):
-        return None  # routing via probe, fields via extraction
+        return parse_dyck(prompt)
 
     def make_processor(self, parsed, max_new_tokens: int):
         open_seq, closing, closing_str = parsed
@@ -161,4 +165,4 @@ class DyckTurnstyle(Turnstyle):
         return SequenceLogitsProcessor(
             self.tokenizer, answer_ids, expression=open_seq,
             answer_str=closing_str, bias_strength=self.bias_strength,
-            max_new_tokens=max_new_tokens)
+            max_new_tokens=max_new_tokens, immediate=True)

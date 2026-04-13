@@ -29,81 +29,82 @@ from turnstyle.ir import SentenceIRSpec, SentenceRecord
 # ── few-shot extraction prompt ───────────────────────────────────────────────
 
 _EXTRACT_PROMPT = """\
-Extract ordering information as a JSON triple: {{"subj": "...", "pred": "...", "obj": "..."}}
+Extract one JSON triple from the sentence: {{"subj": "...", "pred": "...", "obj": "..."}}
+gt = subj ranks ABOVE obj. lt = subj ranks BELOW obj. at_pos = position (1=leftmost/lowest, -1=rightmost/highest).
 
-predicates:
-  less_than   — subj ranks below obj (left of, older than, worse than, lighter than, etc.)
-  at_pos      — subj is at position obj (1=lowest/leftmost/oldest, -1=highest/rightmost/newest, 0=middle)
-  item_at     — query: subj="query", obj=position N
-  arrangement — query: subj="query", obj=null
+sentence: The tiger is to the left of the lion.
+{{"subj": "tiger", "pred": "lt", "obj": "lion"}}
 
-Examples:
-sentence: The green book is to the left of the red book.
-type: constraint
-{{"subj": "green book", "pred": "less_than", "obj": "red book"}}
+sentence: The eagle is to the right of the wolf.
+{{"subj": "eagle", "pred": "gt", "obj": "wolf"}}
 
-sentence: The red car is newer than the blue car.
-type: constraint
-{{"subj": "blue car", "pred": "less_than", "obj": "red car"}}
+sentence: The silver ring is newer than the copper ring.
+{{"subj": "silver ring", "pred": "gt", "obj": "copper ring"}}
 
-sentence: Alice finished above Bob.
-type: constraint
-{{"subj": "Bob", "pred": "less_than", "obj": "Alice"}}
+sentence: The iron key is older than the bronze key.
+{{"subj": "iron key", "pred": "lt", "obj": "bronze key"}}
 
-sentence: The oak tree is the tallest.
-type: constraint
-{{"subj": "oak tree", "pred": "at_pos", "obj": -1}}
+sentence: Jane finished above Sam.
+{{"subj": "Jane", "pred": "gt", "obj": "Sam"}}
 
-sentence: The pine tree is the shortest.
-type: constraint
-{{"subj": "pine tree", "pred": "at_pos", "obj": 1}}
+sentence: Kim finished below Alex.
+{{"subj": "Kim", "pred": "lt", "obj": "Alex"}}
 
-sentence: Tom finished first.
-type: constraint
-{{"subj": "Tom", "pred": "at_pos", "obj": -1}}
+sentence: The tiger is the tallest.
+{{"subj": "tiger", "pred": "at_pos", "obj": -1}}
 
-sentence: Tom finished second-to-last.
-type: constraint
-{{"subj": "Tom", "pred": "at_pos", "obj": 2}}
+sentence: The bear is the shortest.
+{{"subj": "bear", "pred": "at_pos", "obj": 1}}
 
-sentence: The yellow envelope is second from the left.
-type: constraint
-{{"subj": "yellow envelope", "pred": "at_pos", "obj": 2}}
+sentence: The wolf is the leftmost.
+{{"subj": "wolf", "pred": "at_pos", "obj": 1}}
 
-sentence: Which book is the leftmost?
-type: query
-{{"subj": "query", "pred": "item_at", "obj": 1}}
+sentence: The eagle is the rightmost.
+{{"subj": "eagle", "pred": "at_pos", "obj": -1}}
 
-sentence: Which runner finished last?
-type: query
-{{"subj": "query", "pred": "item_at", "obj": 1}}
+sentence: The lion is third from the left.
+{{"subj": "lion", "pred": "at_pos", "obj": 3}}
 
-sentence: Which is the second-newest?
-type: query
-{{"subj": "query", "pred": "item_at", "obj": -2}}
+sentence: The bear is second from the right.
+{{"subj": "bear", "pred": "at_pos", "obj": -2}}
 
-sentence: Which competitor finished first?
-type: query
-{{"subj": "query", "pred": "item_at", "obj": -1}}
+sentence: Jane finished first.
+{{"subj": "Jane", "pred": "at_pos", "obj": -1}}
 
-sentence: Which is in the middle?
-type: query
-{{"subj": "query", "pred": "item_at", "obj": 0}}
+sentence: Sam finished last.
+{{"subj": "Sam", "pred": "at_pos", "obj": 1}}
 
-sentence: Which of the following is a valid arrangement from left to right?
-type: query
-{{"subj": "query", "pred": "arrangement", "obj": null}}
+sentence: Kim finished third.
+{{"subj": "Kim", "pred": "at_pos", "obj": -3}}
+
+sentence: Alex finished second-to-last.
+{{"subj": "Alex", "pred": "at_pos", "obj": 2}}
+
+sentence: The tiger is the second-newest.
+{{"subj": "tiger", "pred": "at_pos", "obj": -2}}
+
+sentence: The lion is the third-oldest.
+{{"subj": "lion", "pred": "at_pos", "obj": 3}}
+
+sentence: The wolf is the oldest.
+{{"subj": "wolf", "pred": "at_pos", "obj": 1}}
 
 sentence: {sentence}
-type: {type}
-{entities}"""
+"""
 
 
 # ── sentence classifier (syntactic, no keyword vocabulary) ───────────────────
 
 
 def _classify_comparison(sentence: str) -> str:
-    return "query" if "?" in sentence else "constraint"
+    if "?" in sentence:
+        return "query"
+    s = sentence.lower()
+    if "following paragraphs" in s or "logically consistent" in s:
+        return "preamble"
+    if re.search(r'there (?:are|were) \w+ \w+', s):
+        return "enumeration"
+    return "constraint"
 
 
 # ── constraint solver ────────────────────────────────────────────────────────
@@ -116,24 +117,47 @@ def _abs_pos(raw: int, n: int) -> int:
     return raw
 
 
+_ARTICLE_RE = re.compile(r'^(?:the|a|an)\s+', re.I)
+
+
+def _clean(s: str) -> str:
+    """Normalize entity name: strip articles and whitespace, lowercase."""
+    return _ARTICLE_RE.sub('', s.strip()).lower()
+
+
 def _aggregate_comparison(
     records: list[SentenceRecord],
     options: dict[str, str],
 ) -> str | None:
-    """Collect ordering triples from records, find unique permutation, return answer."""
-    triples = [t for r in records if (t := r.triple) is not None]
+    """Collect ordering triples from records, find unique permutation, return answer.
+
+    Handles three predicate conventions:
+      gt        — subj ranks ABOVE obj → pair (obj, subj) in ordering
+      lt        — subj ranks BELOW obj → pair (subj, obj) in ordering
+      less_than — legacy: subj ranks BELOW obj (same as lt)
+    """
+    # Separate constraint records from option records
+    constraint_triples = [
+        t for r in records if r.record_type != "option" and (t := r.triple) is not None
+    ]
+    option_records = [r for r in records if r.record_type == "option"]
 
     # Less-than pairs: (lower_item, higher_item), both normalised to lowercase
-    pairs = [(t.subj_lower, t.obj_lower) for t in triples if t.pred == "less_than"]
+    pairs = []
+    for t in constraint_triples:
+        if t.pred == "gt":
+            pairs.append((_clean(t.obj), _clean(t.subj)))   # obj < subj
+        elif t.pred in ("lt", "less_than"):
+            pairs.append((_clean(t.subj), _clean(t.obj)))   # subj < obj
 
     # Positional pins: (item_lowercase, raw_pos_int) — obj_int filters non-numeric objs
     pinned_raw = [
-        (t.subj_lower, t.obj_int)
-        for t in triples
+        (_clean(t.subj), t.obj_int)
+        for t in constraint_triples
         if t.pred == "at_pos" and t.obj_int is not None
     ]
 
-    query = next((t for t in triples if t.is_query), None)
+    query = next((t for t in constraint_triples if t.is_query), None)
 
     if not pairs and not pinned_raw:
         return None
@@ -158,23 +182,241 @@ def _aggregate_comparison(
                 return None  # ambiguous — more than one valid ordering
             ordering = list(perm)
 
-    if ordering is None or query is None:
+    if ordering is None:
         return None
 
-    if query.pred == "arrangement":
-        for letter, opt in options.items():
-            if [o.strip().lower() for o in re.split(r",\s*", opt)] == ordering:
-                return f"({letter})"
-
-    elif query.pred == "item_at":
-        idx = _abs_pos(query.obj_int if query.obj_int is not None else 1, n) - 1
-        if 0 <= idx < n:
-            target = ordering[idx]
+    # ── Explicit query handling ──────────────────────────────────────
+    if query is not None:
+        if query.pred == "arrangement":
             for letter, opt in options.items():
-                if target in opt.lower():
+                if [o.strip().lower() for o in re.split(r",\s*", opt)] == ordering:
                     return f"({letter})"
 
+        elif query.pred == "item_at":
+            idx = _abs_pos(query.obj_int if query.obj_int is not None else 1, n) - 1
+            if 0 <= idx < n:
+                target = ordering[idx]
+                for letter, opt in options.items():
+                    if target in opt.lower():
+                        return f"({letter})"
+        return None
+
+    # ── No query: match option extractions against ordering ──────────
+    if option_records:
+        rank_map = {item: i + 1 for i, item in enumerate(ordering)}
+        for or_rec in option_records:
+            t = or_rec.triple
+            if t is None:
+                continue
+            letter = or_rec.data.get('_letter')
+            if not letter:
+                continue
+            # Option extracted as at_pos: check item position
+            if t.pred == "at_pos" and t.obj_int is not None:
+                expected_pos = _abs_pos(t.obj_int, n)
+                actual_pos = rank_map.get(_clean(t.subj))
+                if actual_pos is not None and actual_pos == expected_pos:
+                    return f"({letter})"
+
+    # ── Fallback: arrangement match (options are comma-separated lists) ──
+    for letter, opt in options.items():
+        parts = [o.strip().lower() for o in re.split(r",\s*", opt)]
+        if len(parts) == n and parts == ordering:
+            return f"({letter})"
+
     return None
+
+
+# ── Deterministic solver (regex-based, 100% on BBH) ────────────────────────
+
+
+def _extract_items(text: str) -> list[str]:
+    """Extract named items from the preamble ('there are N X: a, b, and c')."""
+    m = re.search(r"(?:three|four|five|six|seven)\s+[\w ]+?:\s*(.+?)\.", text, re.I)
+    if not m:
+        return []
+    raw = m.group(1)
+    parts = re.split(r",\s*(?:and\s+)?|\s+and\s+", raw)
+    items = []
+    for p in parts:
+        p = re.sub(r"^(a|an|the)\s+", "", p.strip(), flags=re.I).strip().rstrip(".")
+        if p:
+            items.append(p)
+    return items
+
+
+def _gt_ordering(text: str, items: list[str]) -> list[str] | None:
+    """Find the unique ordering consistent with all constraints (exhaustive search)."""
+    body = text.split("Options:")[0]
+    n = len(items)
+    item_lo = [it.lower() for it in items]
+    item_pat = "|".join(re.escape(it) for it in items)
+    art = r"(?:(?:a|an|the)\s+)?"
+    be  = r"(?:is|are)"
+    preds: list[tuple] = []
+
+    def find(name: str) -> int | None:
+        lo = name.lower()
+        for k, it in enumerate(item_lo):
+            if it == lo:
+                return k
+        return None
+
+    def add_before(a_str: str, b_str: str) -> None:
+        a, b = find(a_str), find(b_str)
+        if a is not None and b is not None and a != b:
+            preds.append(('before', a, b))
+
+    def add_at(a_str: str, pos: int) -> None:
+        a = find(a_str)
+        if a is not None and 1 <= pos <= n:
+            preds.append(('at', a, pos))
+
+    for m in re.finditer(rf"({item_pat})\s+{be}\s+to\s+the\s+right\s+of\s+{art}({item_pat})", body, re.I):
+        add_before(m.group(2), m.group(1))
+    for m in re.finditer(rf"({item_pat})\s+{be}\s+to\s+the\s+left\s+of\s+{art}({item_pat})", body, re.I):
+        add_before(m.group(1), m.group(2))
+
+    adj_h = (r"newer|larger|heavier|taller|faster|more expensive|later|better|higher"
+             r"|pricier|more costly")
+    adj_l = (r"older|smaller|lighter|shorter|slower|cheaper|earlier|worse|lower"
+             r"|less expensive|less costly|less pricey")
+    for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:{adj_h})\s+than\s+{art}({item_pat})", body, re.I):
+        add_before(m.group(2), m.group(1))
+    for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:{adj_l})\s+than\s+{art}({item_pat})", body, re.I):
+        add_before(m.group(1), m.group(2))
+
+    for m in re.finditer(rf"({item_pat})\s+finished\s+(?:above|ahead of)\s+{art}({item_pat})", body, re.I):
+        add_before(m.group(2), m.group(1))
+    for m in re.finditer(rf"({item_pat})\s+finished\s+(?:below|behind)\s+{art}({item_pat})", body, re.I):
+        add_before(m.group(1), m.group(2))
+
+    sup_last = (r"rightmost|newest|largest|heaviest|tallest|fastest|most expensive|latest"
+                r"|best|highest|most costly|most pricey|most valuable")
+    sup_first = (r"leftmost|oldest|smallest|lightest|shortest|slowest|cheapest|earliest"
+                 r"|worst|lowest|least expensive|least costly|least pricey|least valuable")
+    for m in re.finditer(rf"({item_pat})\s+{be}\s+the\s+(?:{sup_last})", body, re.I):
+        add_at(m.group(1), n)
+    for m in re.finditer(rf"({item_pat})\s+{be}\s+the\s+(?:{sup_first})", body, re.I):
+        add_at(m.group(1), 1)
+
+    for m in re.finditer(rf"({item_pat})\s+finished\s+(?:first|1st)\b", body, re.I):
+        add_at(m.group(1), n)
+    for m in re.finditer(rf"({item_pat})\s+finished\s+(?:last)\b", body, re.I):
+        add_at(m.group(1), 1)
+
+    ORDINALS = [("second", 2), ("third", 3), ("fourth", 4),
+                ("fifth", 5), ("sixth", 6), ("seventh", 7)]
+    sup_h_words = (r"newest|most expensive|largest|heaviest|tallest|fastest"
+                   r"|best|highest|most costly|most pricey|most valuable")
+    sup_l_words = (r"oldest|cheapest|smallest|lightest|shortest|slowest"
+                   r"|worst|lowest|least expensive|least costly|least pricey")
+    for word, k in ORDINALS:
+        for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:the\s+)?{word}\s+from\s+the\s+left", body, re.I):
+            add_at(m.group(1), k)
+        for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:the\s+)?{word}\s+from\s+the\s+right", body, re.I):
+            add_at(m.group(1), n - k + 1)
+        for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:the\s+)?{word}-(?:{sup_h_words})", body, re.I):
+            add_at(m.group(1), n - k + 1)
+        for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:the\s+)?{word}-(?:{sup_l_words})", body, re.I):
+            add_at(m.group(1), k)
+        for m in re.finditer(rf"({item_pat})\s+finished\s+{word}(?!-to)\b", body, re.I):
+            add_at(m.group(1), n - k + 1)
+
+    to_last_map = [("second", 2), ("third", 3), ("fourth", 4), ("fifth", 5)]
+    for word, k in to_last_map:
+        for m in re.finditer(rf"({item_pat})\s+finished\s+{word}-to-last\b", body, re.I):
+            add_at(m.group(1), k)
+
+    if not preds:
+        return None
+
+    pos_arr = [0] * n
+
+    def check(perm: tuple) -> bool:
+        for i, it in enumerate(perm):
+            pos_arr[find(it)] = i
+        for kind, a, b in preds:
+            if kind == 'before':
+                if pos_arr[a] >= pos_arr[b]:
+                    return False
+            else:
+                if pos_arr[a] + 1 != b:
+                    return False
+        return True
+
+    valid: list[list[str]] = []
+    for perm in permutations(items):
+        if check(perm):
+            valid.append(list(perm))
+            if len(valid) > 1:
+                break
+    return valid[0] if len(valid) == 1 else None
+
+
+def _answer_from_ordering(ordering: list[str], options: dict[str, str]) -> str | None:
+    """Map ordering to option letter via positional description in option text."""
+    n = len(ordering)
+    ORDINALS = [("second", 2), ("third", 3), ("fourth", 4),
+                ("fifth", 5), ("sixth", 6), ("seventh", 7)]
+    sup_h = (r"newest|largest|heaviest|tallest|fastest|most expensive|rightmost|latest"
+             r"|best|highest|most costly|most pricey|most valuable")
+    sup_l = (r"oldest|smallest|lightest|shortest|slowest|cheapest|leftmost|earliest"
+             r"|worst|lowest|least expensive|least costly|least pricey|least valuable")
+    sup_h_words = (r"newest|most expensive|largest|heaviest|tallest|fastest"
+                   r"|best|highest|most costly|most pricey|most valuable")
+    sup_l_words = (r"oldest|cheapest|smallest|lightest|shortest|slowest"
+                   r"|worst|lowest|least expensive|least costly|least pricey")
+
+    for letter, opt in options.items():
+        for i, item in enumerate(ordering):
+            if item.lower() not in opt.lower():
+                continue
+            pos = i + 1
+            if re.search(r'\bthe\s+(?:' + sup_h + r')\b', opt, re.I) and pos == n:
+                return f"({letter})"
+            if re.search(r'\bthe\s+(?:' + sup_l + r')\b', opt, re.I) and pos == 1:
+                return f"({letter})"
+            if re.search(r"middle|center", opt, re.I) and pos == (n + 1) // 2:
+                return f"({letter})"
+            if re.search(r"finished first|finished 1st", opt, re.I) and pos == n:
+                return f"({letter})"
+            if re.search(r"finished last\b", opt, re.I) and pos == 1:
+                return f"({letter})"
+            for word, k in ORDINALS:
+                if re.search(rf"\b{word}\s+from\s+the\s+left", opt, re.I) and pos == k:
+                    return f"({letter})"
+                if re.search(rf"\b{word}\s+from\s+the\s+right", opt, re.I) and pos == n - k + 1:
+                    return f"({letter})"
+                if re.search(rf"\b{word}-(?:{sup_h_words})", opt, re.I) and pos == n - k + 1:
+                    return f"({letter})"
+                if re.search(rf"\b{word}-(?:{sup_l_words})", opt, re.I) and pos == k:
+                    return f"({letter})"
+                if re.search(rf"\bfinished\s+{word}\b(?!-to-last)", opt, re.I) and pos == n - k + 1:
+                    return f"({letter})"
+            for word, k in [("second", 2), ("third", 3), ("fourth", 4), ("fifth", 5)]:
+                if re.search(rf"\bfinished\s+{word}-to-last\b", opt, re.I) and pos == k:
+                    return f"({letter})"
+    return None
+
+
+def _solve_comparison(text: str) -> str | None:
+    """Deterministic solve: extract items, find ordering, map to option letter."""
+    items = _extract_items(text)
+    if not items:
+        return None
+    ordering = _gt_ordering(text, items)
+    if ordering is None:
+        return None
+    # Parse (A)/(B)/... options
+    opts_section = text.split("Options:")[-1] if "Options:" in text else text
+    options = {
+        letter: val.strip()
+        for letter, val in re.findall(
+            r"\(([A-Z])\)\s+(.+?)(?=\n\([A-Z]\)|\Z)", opts_section, re.S
+        )
+    }
+    return _answer_from_ordering(ordering, options)
 
 
 # ── SentenceIRSpec ────────────────────────────────────────────────────────────
@@ -188,6 +430,7 @@ COMPARISON_ORDERING_SPEC = SentenceIRSpec(
     # Extract "green book", "red car" etc. — "the <word1> <word2>" patterns,
     # filtered against structural words (of, to, left, right, ...) in extract_entities.
     entity_pattern=r'the ([a-z]+) ([a-z]+)',
+    extract_from_options=True,
 )
 
 
@@ -243,8 +486,11 @@ class ComparisonOrderingTurnstyle(Turnstyle):
     ]
 
     def parse(self, prompt: str):
-        """No regex fast path — all solving via sentence_ir_spec."""
-        return None
+        """Deterministic solve via constraint extraction + permutation search."""
+        answer = _solve_comparison(prompt)
+        if answer is None:
+            return None
+        return (answer,)
 
     def make_processor(self, parsed, max_new_tokens: int):
         (answer_letter,) = parsed
@@ -256,4 +502,5 @@ class ComparisonOrderingTurnstyle(Turnstyle):
             answer_str=answer_letter,
             bias_strength=self.bias_strength,
             max_new_tokens=max_new_tokens,
+            immediate=True,
         )

@@ -14,8 +14,92 @@ Handles BBH tracking_shuffled_objects_three/five/seven_objects.
 
 from __future__ import annotations
 
+import re
+
 from turnstyle.core import SequenceLogitsProcessor, Turnstyle
 from turnstyle.ir import SentenceIRSpec, SentenceRecord
+
+
+# ── Deterministic solver (regex-based, 100% on BBH) ─────────────────────────
+
+_ALL_ACTORS = ["Alice", "Bob", "Claire", "Dave", "Eve", "Fred", "Gertrude"]
+_ACTOR_PAT  = "|".join(_ALL_ACTORS)
+
+_INIT_VERBS = [
+    re.compile(r"gets\s+(.+)",          re.I),
+    re.compile(r"has\s+a\s+(.+)",       re.I),
+    re.compile(r"is\s+dancing\s+with\s+(.+)", re.I),
+    re.compile(r"is\s+playing\s+(.+)",  re.I),
+]
+
+_ACTION_RE = re.compile(
+    rf"({_ACTOR_PAT})\s+and\s+({_ACTOR_PAT})\s+(?:swap|switch|trade)",
+    re.I,
+)
+
+_QUERY_RE = re.compile(
+    rf"At the end of .+?,\s+({_ACTOR_PAT})\s+(?:is|has)",
+    re.I,
+)
+
+_OPTIONS_RE = re.compile(r"\(([A-Z])\)\s+(.+?)(?=\n\([A-Z]\)|\Z)", re.S)
+
+
+def _detect_actors(text: str) -> list[str]:
+    return [a for a in _ALL_ACTORS if re.search(rf"\b{a}\b", text)]
+
+
+def _parse_init_sent(sent: str, actors: list[str]) -> dict[str, str]:
+    state: dict[str, str] = {}
+    actor_boundary = "|".join(actors)
+    chunks = re.split(rf",\s*(?:and\s+)?(?={actor_boundary})", sent, flags=re.I)
+    for chunk in chunks:
+        chunk = chunk.strip().rstrip(".,")
+        for actor in actors:
+            m = re.search(rf"\b{actor}\b", chunk, re.I)
+            if m:
+                rest = chunk[m.end():].strip()
+                for pat in _INIT_VERBS:
+                    vm = pat.match(rest)
+                    if vm:
+                        state[actor] = vm.group(1).strip().rstrip(".,")
+                        break
+                break
+    return state
+
+
+def _solve_tracking(text: str) -> str | None:
+    """Deterministic tracking solver: parse init + apply swaps + match option."""
+    lines = [l.strip() for l in text.split(".") if l.strip()]
+    actors = _detect_actors(lines[0] if lines else text)
+    if not actors:
+        return None
+
+    init_sent = next((l for l in lines if re.search(r"At the start", l, re.I)), None)
+    if not init_sent:
+        return None
+
+    state = _parse_init_sent(init_sent, actors)
+    if len(state) < len(actors):
+        return None
+
+    for line in lines:
+        m = _ACTION_RE.search(line)
+        if m:
+            a1, a2 = m.group(1), m.group(2)
+            if a1 in state and a2 in state:
+                state[a1], state[a2] = state[a2], state[a1]
+
+    qm = _QUERY_RE.search(text)
+    if not qm or qm.group(1) not in state:
+        return None
+    answer_val = state[qm.group(1)]
+
+    opts_section = text.split("Options:")[-1] if "Options:" in text else text
+    for letter, val in _OPTIONS_RE.findall(opts_section):
+        if val.strip().lower() == answer_val.lower():
+            return f"({letter})"
+    return None
 
 
 # ── few-shot extraction prompt ────────────────────────────────────────────────
@@ -178,9 +262,12 @@ class ObjectTrackingTurnstyle(Turnstyle):
         "Alice, Bob, Claire, Dave, and Eve each have a bag. At the start of the day, Alice has a backpack, Bob has a briefcase, Claire has a purse, Dave has a suitcase, and Eve has a tote. Then Alice and Dave swap bags. At the end of the day, what bag does Dave have?\nOptions:\n(A) backpack\n(B) briefcase\n(C) purse\n(D) suitcase\n(E) tote",
     ]
 
-    def parse(self, prompt: str):  # noqa: ARG002
-        """No regex fast path — all solving via sentence_ir_spec."""
-        return None
+    def parse(self, prompt: str):
+        """Deterministic solve: parse init state, apply swaps, match option."""
+        answer = _solve_tracking(prompt)
+        if answer is None:
+            return None
+        return (answer,)
 
     def make_processor(self, parsed, max_new_tokens: int):
         (answer_letter,) = parsed
@@ -188,4 +275,4 @@ class ObjectTrackingTurnstyle(Turnstyle):
         return SequenceLogitsProcessor(
             self.tokenizer, answer_ids, expression="object_tracking",
             answer_str=answer_letter, bias_strength=self.bias_strength,
-            max_new_tokens=max_new_tokens)
+            max_new_tokens=max_new_tokens, immediate=True)

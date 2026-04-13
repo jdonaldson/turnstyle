@@ -315,6 +315,7 @@ class SentenceIRSpec:
     segment_max_tokens: int = 200
     max_tokens: int = 60
     entity_pattern: str | None = None  # regex with one capture group; None → capitalized names
+    extract_from_options: bool = False  # extract from option text when no query found
 
 
 # Common sentence-initial words that look like proper names but aren't entities
@@ -328,6 +329,7 @@ _NAME_STOPWORDS = frozenset({
 _NP_SECOND_SKIP = frozenset({
     "of", "to", "from", "at", "in", "on", "a", "an", "the",
     "left", "right", "middle", "end", "start", "way", "same",
+    "is", "are", "was", "were",
 })
 
 
@@ -495,10 +497,14 @@ def sentence_ir_solve(
     else:
         segs = Segments.from_scene(scene, spec, model, tokenizer, device)
 
-    # Extract entity names from all segments — used to ground the extraction prompt.
-    # Syntactic (no model): spec.entity_pattern controls what's extracted.
-    # Default: capitalized names (Alice, Bob). Custom: e.g. lowercase NPs for items.
-    entities = segs.extract_entities(pattern=spec.entity_pattern)
+    # Filter to extractable segment types — classify_fn may produce types outside
+    # sentence_types (e.g. "preamble") that should be skipped during extraction.
+    extract_types = set(spec.sentence_types)
+    extract_segs = Segments([s for s in segs if s.type in extract_types])
+
+    # Extract entity names from extractable segments only — avoids noise from
+    # preamble/enumeration sentences that mention no task entities.
+    entities = extract_segs.extract_entities(pattern=spec.entity_pattern)
     entities_hint = f"Known entities: {', '.join(entities)}\n\n" if entities else ""
 
     if diag is not None:
@@ -512,7 +518,7 @@ def sentence_ir_solve(
     records = []
     sentence_diags = []
 
-    for seg in segs:
+    for seg in extract_segs:
         # {entities} is optional in the prompt template — format_map with defaultdict
         # fills it if present, ignores it if absent.
         prompt = spec.extract_prompt.format_map(
@@ -548,6 +554,35 @@ def sentence_ir_solve(
                 data=data,
                 confidence=confidence,
             ))
+
+    # Option extraction: when no query found and spec requests it, extract from
+    # option text to determine the answer (handles tasks with no explicit question).
+    if spec.extract_from_options:
+        has_query = any(
+            t.is_query for r in records if (t := r.triple) is not None
+        )
+        if not has_query:
+            for letter, opt_text in options.items():
+                prompt = spec.extract_prompt.format_map(
+                    defaultdict(str, sentence=opt_text, type="constraint",
+                                entities=entities_hint)
+                )
+                response, confidence = generate_short(
+                    model, tokenizer, device, prompt, max_tokens=spec.max_tokens)
+                data = _parse_json(response)
+                s_diag = {
+                    "sentence": f"[opt_{letter}] {opt_text}",
+                    "type": "option",
+                    "response": response,
+                    "confidence": confidence,
+                    "parsed": data is not None,
+                }
+                sentence_diags.append(s_diag)
+                if isinstance(data, dict):
+                    data['_letter'] = letter
+                    records.append(SentenceRecord(
+                        sentence=opt_text, record_type="option",
+                        data=data, confidence=confidence))
 
     if diag is not None:
         diag["sentence_extractions"] = sentence_diags
@@ -750,11 +785,11 @@ class NavigateTurnstyle(Turnstyle):
 
     def make_processor(self, parsed, max_new_tokens: int):
         option_letter, answer_text = parsed
-        answer_ids = self.tokenizer.encode(option_letter, add_special_tokens=False)
+        answer_ids = self.tokenizer.encode(answer_text, add_special_tokens=False)
         return SequenceLogitsProcessor(
             self.tokenizer, answer_ids, expression="navigate",
-            answer_str=option_letter, bias_strength=self.bias_strength,
-            max_new_tokens=max_new_tokens)
+            answer_str=answer_text, bias_strength=self.bias_strength,
+            max_new_tokens=max_new_tokens, immediate=True)
 
 
 class WebOfLiesTurnstyle(Turnstyle):
@@ -815,8 +850,8 @@ class WebOfLiesTurnstyle(Turnstyle):
 
     def make_processor(self, parsed, max_new_tokens: int):
         option_letter, answer_text = parsed
-        answer_ids = self.tokenizer.encode(option_letter, add_special_tokens=False)
+        answer_ids = self.tokenizer.encode(answer_text, add_special_tokens=False)
         return SequenceLogitsProcessor(
             self.tokenizer, answer_ids, expression="web_of_lies",
-            answer_str=option_letter, bias_strength=self.bias_strength,
-            max_new_tokens=max_new_tokens)
+            answer_str=answer_text, bias_strength=self.bias_strength,
+            max_new_tokens=max_new_tokens, immediate=True)
