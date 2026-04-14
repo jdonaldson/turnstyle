@@ -23,7 +23,7 @@ def parse_sorting(text: str) -> tuple[list[str], list[str], str] | None:
     lower = text.lower()
 
     # BBH format: "Sort the following words alphabetically: List: w1 w2 ..."
-    m = re.search(r'list:\s+([a-z\'][a-z\' ]+[a-z\'])', lower)
+    m = re.search(r'list:\s+(\S[\S ]*\S)', lower)
     if m:
         raw = m.group(1)
         words = [w.strip() for w in raw.split() if w.strip()]
