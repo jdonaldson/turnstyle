@@ -5,6 +5,7 @@ Supports +, -, *, / (integer division).
 
 from __future__ import annotations
 
+import ast
 import re
 
 import torch
@@ -13,6 +14,7 @@ from transformers import LogitsProcessor
 from turnstyle.core import (
     CoprocessorDiagnostic,
     DigitAudit,
+    SequenceLogitsProcessor,
     Turnstyle,
 )
 
@@ -34,6 +36,80 @@ def parse_arithmetic(text: str) -> tuple[int, int, str, int] | None:
     if result is None:
         return None
     return a, b, op, result
+
+
+def _eval_node(node: ast.AST) -> int | None:
+    """Recursively evaluate an AST node. Returns int or None."""
+    if isinstance(node, ast.Expression):
+        return _eval_node(node.body)
+    if isinstance(node, ast.Constant):
+        return node.value if isinstance(node.value, int) else None
+    if isinstance(node, ast.UnaryOp):
+        operand = _eval_node(node.operand)
+        if operand is None:
+            return None
+        if isinstance(node.op, ast.USub):
+            return -operand
+        if isinstance(node.op, ast.UAdd):
+            return operand
+        return None
+    if isinstance(node, ast.BinOp):
+        left = _eval_node(node.left)
+        right = _eval_node(node.right)
+        if left is None or right is None:
+            return None
+        op = node.op
+        if isinstance(op, ast.Add):
+            return left + right
+        if isinstance(op, ast.Sub):
+            return left - right
+        if isinstance(op, ast.Mult):
+            return left * right
+        if isinstance(op, ast.Div):
+            return left // right if right != 0 else None
+        if isinstance(op, ast.FloorDiv):
+            return left // right if right != 0 else None
+        if isinstance(op, ast.Mod):
+            return left % right if right != 0 else None
+        if isinstance(op, ast.Pow):
+            return left ** right
+        return None
+    return None
+
+
+def safe_eval(expr_str: str) -> int | None:
+    """Evaluate an arithmetic expression safely. Returns int or None."""
+    try:
+        tree = ast.parse(expr_str, mode='eval')
+    except SyntaxError:
+        return None
+    return _eval_node(tree)
+
+
+def parse_expression(text: str) -> tuple[str, int] | None:
+    """Extract and evaluate a general arithmetic expression from text.
+
+    Returns (expression_str, result) or None.
+    Priority 1: BBH format ``<expr> =``
+    Priority 2: longest evaluable numeric sub-expression
+    """
+    # Priority 1 — BBH format: expression followed by =
+    m = re.search(r'([\d(][\d+\-*/() ]+)\s*=', text)
+    if m:
+        expr = m.group(1).strip()
+        result = safe_eval(expr)
+        if result is not None:
+            return expr, result
+
+    # Priority 2 — general: find all candidate sub-expressions, try longest first
+    candidates = re.findall(r'[\d(][\d+\-*/() ]+[\d)]', text)
+    candidates.sort(key=len, reverse=True)
+    for candidate in candidates:
+        result = safe_eval(candidate.strip())
+        if result is not None:
+            return candidate.strip(), result
+
+    return None
 
 
 class ArithmeticLogitsProcessor(LogitsProcessor):
@@ -186,6 +262,9 @@ class ArithmeticTurnstyle(Turnstyle):
     ]
 
     def parse(self, prompt: str):
+        result = parse_expression(prompt)
+        if result is not None:
+            return result
         return parse_arithmetic(prompt)
 
     def parse_from_hidden(self, hidden_state):
@@ -221,6 +300,16 @@ class ArithmeticTurnstyle(Turnstyle):
         return a, b, op, result
 
     def make_processor(self, parsed, max_new_tokens: int):
+        if len(parsed) == 2:
+            # General expression from parse_expression: (expr_str, result)
+            expression, answer = parsed
+            answer_str = str(answer)
+            answer_ids = self.tokenizer.encode(answer_str, add_special_tokens=False)
+            return SequenceLogitsProcessor(
+                self.tokenizer, answer_ids, expression=expression,
+                answer_str=answer_str, bias_strength=self.bias_strength,
+                max_new_tokens=max_new_tokens, immediate=True)
+        # Binary expression from parse_arithmetic: (a, b, op, answer)
         a, b, op, answer = parsed
         answer_digits = [int(d) for d in str(abs(answer))]
         expression = f"{a}{op}{b}"

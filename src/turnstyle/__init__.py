@@ -27,6 +27,8 @@ from turnstyle.arithmetic import (
     ArithmeticTurnstyle,
     ArithmeticLogitsProcessor,
     parse_arithmetic,
+    parse_expression,
+    safe_eval,
 )
 from turnstyle.dates import DateTurnstyle, parse_date_arithmetic
 from turnstyle.units import UnitTurnstyle, parse_unit_conversion
@@ -132,6 +134,8 @@ __all__ = [
     "ArithmeticTurnstyle",
     "ArithmeticLogitsProcessor",
     "parse_arithmetic",
+    "parse_expression",
+    "safe_eval",
     "DateTurnstyle",
     "parse_date_arithmetic",
     "UnitTurnstyle",

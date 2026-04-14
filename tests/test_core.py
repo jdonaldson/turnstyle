@@ -12,7 +12,12 @@ from turnstyle.core import (
 )
 from unittest.mock import MagicMock
 
-from turnstyle.arithmetic import ArithmeticTurnstyle, parse_arithmetic
+from turnstyle.arithmetic import (
+    ArithmeticTurnstyle,
+    parse_arithmetic,
+    parse_expression,
+    safe_eval,
+)
 from turnstyle.probe import IntentProbe, TurnstyleProbe
 
 
@@ -22,6 +27,73 @@ def test_parse_arithmetic():
     assert parse_arithmetic("100 / 4") == (100, 4, '/', 25)
     assert parse_arithmetic("500 - 501") == (500, 501, '-', -1)
     assert parse_arithmetic("no math here") is None
+
+
+def test_safe_eval():
+    # Basic arithmetic
+    assert safe_eval("1 + 2") == 3
+    assert safe_eval("3 * 4") == 12
+    assert safe_eval("10 - 20") == -10
+    assert safe_eval("10 // 3") == 3
+    # Nested
+    assert safe_eval("((-1 + 2 + 9 * 5) - (-2 + -4 + -4 * -7))") == 24
+    assert safe_eval("((3 * -3 * 6 + -5) - (-2 + -7 - 7 - -7))") == -50
+    # Rejects non-arithmetic
+    assert safe_eval("__import__('os').system('ls')") is None
+    assert safe_eval("import os") is None
+    assert safe_eval("open('/etc/passwd')") is None
+    # Rejects floats
+    assert safe_eval("1.5 + 2.5") is None
+    # Integer division that yields int is OK
+    assert safe_eval("10 // 2") == 5
+    # Empty / garbage
+    assert safe_eval("") is None
+    assert safe_eval("hello") is None
+
+
+def test_parse_expression():
+    # BBH format
+    result = parse_expression("((-1 + 2 + 9 * 5) - (-2 + -4 + -4 * -7)) =")
+    assert result is not None
+    expr, val = result
+    assert val == 24
+    assert "(-1 + 2 + 9 * 5)" in expr
+
+    # Negative result
+    result = parse_expression("((3 * -3 * 6 + -5) - (-2 + -7 - 7 - -7)) =")
+    assert result is not None
+    assert result[1] == -50
+
+    # Falls through to None on non-math
+    assert parse_expression("no math here") is None
+
+    # General format (no trailing =)
+    result = parse_expression("compute (3 + 4) now")
+    assert result is not None
+    assert result[1] == 7
+
+
+def test_arithmetic_turnstyle_nested():
+    """parse() returns 2-tuple for nested expressions, make_processor uses SequenceLogitsProcessor."""
+    t = ArithmeticTurnstyle(MagicMock(), MagicMock(), "cpu")
+    parsed = t.parse("((-1 + 2 + 9 * 5) - (-2 + -4 + -4 * -7)) =")
+    assert parsed is not None
+    assert len(parsed) == 2
+    expr, val = parsed
+    assert val == 24
+
+
+def test_arithmetic_turnstyle_binary_fallback():
+    """parse_arithmetic 4-tuple still works when parse_expression doesn't match."""
+    # parse_arithmetic handles "99 * 99" — parse_expression also handles it (2-tuple)
+    # but for pure "no parens, no =" the 4-tuple fallback only fires when
+    # parse_expression returns None. Verify via parse_arithmetic directly.
+    assert parse_arithmetic("What is 3 + 5?") == (3, 5, '+', 8)
+    # ArithmeticTurnstyle.parse prefers parse_expression (2-tuple) when it matches
+    t = ArithmeticTurnstyle(MagicMock(), MagicMock(), "cpu")
+    parsed = t.parse("What is 3 + 5?")
+    assert parsed is not None
+    assert parsed[1] == 8 if len(parsed) == 2 else parsed[3] == 8
 
 
 def test_extract_number():
