@@ -12,6 +12,27 @@ reproducible experiments that produced findings recorded in `CLAUDE.md` or memor
 | `objcount_accumulator_fix.py` | object_counting 73.6% → 100.0% (+26.4pp) via accumulator-side fix (no prompt change) | 2026-04-06 |
 | `ld_diag.py` | logical_deduction failure diagnostic: 51 failures at baseline 79.6% across 4 categories | 2026-04-07 |
 | `ld_accumulator_fix.py` | logical_deduction 79.6% → 93.2% (+13.6pp) via accumulator-side fix (field fallback + segment override + preamble skip) | 2026-04-07 |
+| `route_probe_sweep.py` | L1 last-token probe classifies 5 route types: 100% 5-fold CV, 92-100% LOO. Replaces keyword routing. | 2026-04-10 |
+| `bitnet_probe.py` | BitNet-2B partner=87.8%@L15, owner=100%@L17. Comparable to SmolLM2, requires bfloat16. | 2026-04-11 |
+| `hub_accuracy_test.py` | End-to-end RoutingTurnstyle validation on held-out BBH (indices 30-39). 11/11 routing accuracy. | 2026-04-12 |
+| `bbh_no_regex.py` | LLM fallback stress test: disables all regex fast paths, forces SmolLM2 JSON extraction. | 2026-04-13 |
+| `smol_capability_eval.py` | Full T0–T3 capability eval on SmolLM2. T0=100% (40/40). See `smol_capability_eval_report.md`. | 2026-04-14 |
+
+## Common Setup
+
+`common.py` provides shared model loading and solver initialization:
+
+```python
+from common import load_hub
+tok, mdl, solvers, hub = load_hub()
+```
+
+Functions:
+- `load_model(model_id=DEFAULT_MODEL)` → `(tok, mdl, device)` — auto-detects MPS/CPU
+- `make_solvers(mdl, tok, device)` → `list` — all 11 core solvers
+- `load_hub(model_id=DEFAULT_MODEL)` → `(tok, mdl, solvers, hub)` — full pipeline with routing
+
+Default model: `SmolLM2-1.7B-Instruct`.
 
 ## Running
 
@@ -19,5 +40,5 @@ reproducible experiments that produced findings recorded in `CLAUDE.md` or memor
 .venv/bin/python experiments/<script>.py
 ```
 
-Most scripts expect Qwen2.5-1.5B-Instruct and `BBH_CACHE` paths to be configured at
-the top of the file.
+Newer scripts (Apr 10+) use `common.py` and default to SmolLM2-1.7B-Instruct.
+Older scripts may expect Qwen2.5-1.5B-Instruct — check the top of each file.

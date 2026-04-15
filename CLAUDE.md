@@ -36,6 +36,7 @@ src/turnstyle/
 
 ## Current Frontier
 
+- **T0 eval: 100%** (2026-04-14): All 4 symbolic tasks at 40/40 on SmolLM2. `parse_expression()` handles nested arithmetic via `ast.parse` + `_eval_node` (no `eval()`), routed through `SequenceLogitsProcessor(immediate=True)`. Sorting regex broadened to `\S` for special chars (`it&t`). See `experiments/smol_capability_eval_report.md`.
 - **Scene/SolverResult API** (2026-04-10): `parse_scene()` returns `Scene(body, question, options)` — sentences-first, no keyword deps. `SolverResult(text, proof, solver, sentences)` is the structured output type. `RoutingTurnstyle.solve()` → `list[SolverResult]`; `generate()` preserved for compat. `_solve_one()` internal method tracks which solver handled the prompt.
 - **Solver generalization**: 7 tasks wired with SQL/IR fallback paths behind regex fast paths. Regex remains primary (100% on BBH); fallbacks activate on regex parse failure for out-of-distribution resilience. SQL-first: object_counting, colored_objects, tracking_shuffled (×3). IR extraction: navigate, web_of_lies. LLM_FALLBACK_TASKS: 20/27 tasks.
 - **IRSpec/IRSolver** (`ir.py`): generic infrastructure for single-pass JSON extraction via LLM + deterministic compute. Used by navigate (coordinate simulation) and web_of_lies (truth propagation).
