@@ -17,6 +17,10 @@ reproducible experiments that produced findings recorded in `CLAUDE.md` or memor
 | `hub_accuracy_test.py` | End-to-end RoutingTurnstyle validation on held-out BBH (indices 30-39). 11/11 routing accuracy. | 2026-04-12 |
 | `bbh_no_regex.py` | LLM fallback stress test: disables all regex fast paths, forces SmolLM2 JSON extraction. | 2026-04-13 |
 | `smol_capability_eval.py` | Full T0–T3 capability eval on SmolLM2. T0=100% (40/40). See `smol_capability_eval_report.md`. | 2026-04-14 |
+| `temporal_encoding_probe.py` | Exp 1: time-token RSA — linear ordinal encoding, peaks L8 (r=0.93). Exp 2: last-token answer decodability — 66.4% at L20. | 2026-04-19 |
+| `temporal_option_probe.py` | Option start-time token probe: 94.8% answer accuracy at L14 (vs 66.4% last-token, 25% chance). Mirrors entity-ordering probe pattern. | 2026-04-19 |
+| `temporal_probe_diagnostic.py` | Structural diagnostic: n_overlap=0 — free-slot start NEVER equals a constraint start in the dataset. Probe learns set-membership, not semantic reasoning. | 2026-04-19 |
+| `temporal_multimodel_probe.py` | Multi-model sweep: signal universal (93–99.2% across 5 models). Phi-4-mini 99.2% at L8 (25% depth). L/N varies 0.25–0.66; not architecture-invariant. | 2026-04-19 |
 
 ## Common Setup
 
