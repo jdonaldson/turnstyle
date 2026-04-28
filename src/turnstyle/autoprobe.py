@@ -25,6 +25,7 @@ from __future__ import annotations
 import re
 import time
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Callable, Optional
 
 import numpy as np
@@ -34,23 +35,29 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import StandardScaler
 
 
+_ARTIFACT_DIR = Path(__file__).parent / "data" / "structural_probes"
+_loaded_artifacts: dict = {}   # path → loaded artifact dict
+
+
 # ── Token finders ────────────────────────────────────────────────────────────
 
-# Each finder: (text, tokenizer, encoded) -> list[(token_idx, label)] | None
-# label is used for per-option mode (e.g., "A", "B"); "_LAST_" for single mode.
-TokenFinder = Callable[[str, object, dict], Optional[list[tuple[int, str]]]]
+# Each finder: (text, tokenizer, encoded, hidden=None) -> list[(token_idx, label)] | None
+# `hidden` is the model's per-layer hidden states tuple, or None if not yet
+# computed (some finders only work post-forward-pass — e.g., probe-based ones).
+# `label` is the per-option tag (e.g., "A", "B"); "_LAST_" for single-mode finders.
+TokenFinder = Callable[..., Optional[list[tuple[int, str]]]]
 
 DEFAULT_OPTION_RE = re.compile(r"\(([A-Z])\)\s+(.+?)(?=\n\(|\Z)", flags=re.S)
 
 
-def last_token_of_prompt(text, tokenizer, encoded):
+def last_token_of_prompt(text, tokenizer, encoded, hidden=None):
     """Single-mode finder: hidden state at the prompt's last token."""
     return [(len(encoded["input_ids"]) - 1, "_LAST_")]
 
 
 def per_option_last_token(option_re=DEFAULT_OPTION_RE) -> TokenFinder:
-    """Per-option finder factory: returns the last token of each option text."""
-    def finder(text, tokenizer, encoded):
+    """Per-option finder factory (regex-based): last token of each option text."""
+    def finder(text, tokenizer, encoded, hidden=None):
         offsets = encoded["offset_mapping"]
         positions = []
         for m in option_re.finditer(text):
@@ -67,11 +74,108 @@ def per_option_last_token(option_re=DEFAULT_OPTION_RE) -> TokenFinder:
     return finder
 
 
-# Default registry tried by autoprobe when finders are not specified.
-DEFAULT_FINDERS: dict[str, TokenFinder] = {
-    "per_option_last_token": per_option_last_token(),
-    "last_token_of_prompt": last_token_of_prompt,
-}
+def load_option_boundary_probe() -> Optional[dict]:
+    """Load the option-boundary structural probe artifact (per-token L1
+    classifier trained on a 7-format mix, generalizes to held-out formats).
+
+    Returns dict with keys (layer, mean, std, weights, bias, model_id,
+    train_formats), or None if artifact is missing.
+    """
+    path = _ARTIFACT_DIR / "option_boundary.npz"
+    if not path.exists():
+        return None
+    if path in _loaded_artifacts:
+        return _loaded_artifacts[path]
+    data = np.load(path, allow_pickle=False)
+    artifact = {
+        "layer": int(data["layer"].item()),
+        "mean": data["mean"].astype(np.float32),
+        "std": data["std"].astype(np.float32),
+        "weights": data["weights"].astype(np.float32),
+        "bias": float(data["bias"].item()),
+        "model_id": str(data["model_id"].item()),
+        "train_formats": list(data["train_formats"]),
+    }
+    _loaded_artifacts[path] = artifact
+    return artifact
+
+
+def per_option_last_token_probe(artifact=None) -> Optional[TokenFinder]:
+    """Per-option finder using the option-boundary structural probe instead
+    of regex. Format-agnostic — works on `(A)`, `A.`, `1.`, `Choice A:`, `[A]`,
+    `(a)`, `(i)`, and untrained formats with similar structural pattern.
+
+    Returns None if artifact is unavailable; caller should fall back.
+    """
+    if artifact is None:
+        artifact = load_option_boundary_probe()
+    if artifact is None:
+        return None
+
+    layer = artifact["layer"]
+    mean = artifact["mean"]
+    std = artifact["std"]
+    weights = artifact["weights"]
+    bias = artifact["bias"]
+
+    def finder(text, tokenizer, encoded, hidden=None):
+        if hidden is None:
+            return None   # probe needs hidden states from the forward pass
+
+        # Per-token P(option boundary) at the probe's layer
+        h = hidden[layer][0].float().cpu().numpy()
+        z = (h - mean) / (std + 1e-9)
+        scores = 1.0 / (1.0 + np.exp(-(z @ weights + bias)))
+
+        # Threshold — option-marker tokens have score > 0.5
+        positives = np.where(scores > 0.5)[0]
+        if len(positives) < 2:
+            return None
+
+        # Group adjacent positives into single option markers (handles cases
+        # where the marker tokenizes into multiple tokens, e.g., "(", "A", ")")
+        groups = [[positives[0]]]
+        for p in positives[1:]:
+            if p - groups[-1][-1] <= 3:
+                groups[-1].append(p)
+            else:
+                groups.append([p])
+        starts = [g[-1] for g in groups]   # last marker token for each group
+
+        # For each option, last-content-token = token before next marker (or end);
+        # walk back over whitespace tokens to land on actual content.
+        offsets = encoded["offset_mapping"]
+        n_tok = len(scores)
+        positions = []
+        for i, start in enumerate(starts):
+            end = starts[i + 1] - 1 if i + 1 < len(starts) else n_tok - 1
+            last_idx = end
+            while last_idx > start:
+                s, e = offsets[last_idx]
+                if s != e and text[s:e].strip():
+                    break
+                last_idx -= 1
+            label = chr(ord("A") + i)   # document-order labels (BBH convention)
+            positions.append((last_idx, label))
+
+        return positions if positions else None
+    return finder
+
+
+def _build_default_finders() -> dict[str, TokenFinder]:
+    """Default finder registry. Includes the probe-based per-option finder
+    if the artifact is present."""
+    finders = {
+        "per_option_last_token": per_option_last_token(),
+        "last_token_of_prompt": last_token_of_prompt,
+    }
+    probe_finder = per_option_last_token_probe()
+    if probe_finder is not None:
+        finders["per_option_last_token_probe"] = probe_finder
+    return finders
+
+
+DEFAULT_FINDERS = _build_default_finders()
 
 
 # ── Result types ─────────────────────────────────────────────────────────────
@@ -99,17 +203,19 @@ class ProbeArtifact:
         or None if the finder fails."""
         encoded = tokenizer(text, return_offsets_mapping=True,
                             add_special_tokens=True)
-        positions = self.finder(text, tokenizer, encoded)
-        if positions is None:
-            return None
-
         ids = {
             "input_ids": torch.tensor([encoded["input_ids"]]).to(device),
             "attention_mask": torch.tensor([encoded["attention_mask"]]).to(device),
         }
         with torch.no_grad():
             out = model(**ids, output_hidden_states=True)
-        h = out.hidden_states[self.layer][0]
+        hidden = out.hidden_states
+
+        # Finders may need hidden states (probe-based) or just the encoded text
+        positions = self.finder(text, tokenizer, encoded, hidden=hidden)
+        if positions is None:
+            return None
+        h = hidden[self.layer][0]
 
         if self.mode == "single":
             tok_idx = positions[0][0]
@@ -246,22 +352,7 @@ def _collect(examples, target_fn, target_fmt, target_meta,
         encoded = tokenizer(text, return_offsets_mapping=True,
                             add_special_tokens=True)
 
-        # Run each finder and merge positions, keyed by (finder_name, label)
-        positions_by_finder = {}
-        skip_this = False
-        for fname, finder in finders.items():
-            pos = finder(text, tokenizer, encoded)
-            if pos is None:
-                # That finder doesn't apply to this example; record None
-                positions_by_finder[fname] = None
-                continue
-            positions_by_finder[fname] = pos
-
-        if all(v is None for v in positions_by_finder.values()):
-            skipped += 1
-            continue
-
-        # Forward pass once
+        # Forward pass FIRST so finders can use hidden states (probe-based finders)
         ids = {
             "input_ids": torch.tensor([encoded["input_ids"]]).to(device),
             "attention_mask": torch.tensor([encoded["attention_mask"]]).to(device),
@@ -269,6 +360,19 @@ def _collect(examples, target_fn, target_fmt, target_meta,
         with torch.no_grad():
             out = model(**ids, output_hidden_states=True)
         hidden = out.hidden_states  # tuple of (1, seq, dim) per layer
+
+        # Then run each finder; pass hidden so probe-based finders can score per-token
+        positions_by_finder = {}
+        for fname, finder in finders.items():
+            pos = finder(text, tokenizer, encoded, hidden=hidden)
+            if pos is None:
+                positions_by_finder[fname] = None
+                continue
+            positions_by_finder[fname] = pos
+
+        if all(v is None for v in positions_by_finder.values()):
+            skipped += 1
+            continue
 
         # Capture per (finder, layer, position-label)
         per_finder_layer = {}
