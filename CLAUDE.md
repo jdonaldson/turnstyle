@@ -1,8 +1,5 @@
 # Turnstyle Project
 
-Neurosymbolic library for structured LLM intervention — logit biasing, hidden-state probes, and symbolic solvers that compose into generalizable pipelines.
-
-
 ## Design Philosophy
 
 **BBH is a test harness, not the objective.** The 27-task BBH suite provides ground-truth labels and structural variety for validating generalizable tools. Every component should work beyond BBH:

@@ -26,7 +26,7 @@ import re
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Any, Callable, Optional
 
 import numpy as np
 import torch
@@ -187,8 +187,8 @@ class ProbeArtifact:
     layer: int
     mode: str            # "single" | "per_option"
     classes: list        # for single: list of class labels; for per_option: ["positive"]
-    scaler: object
-    classifier: object
+    scaler: Any          # sklearn StandardScaler
+    classifier: Any      # sklearn LogisticRegression
     answer_format: str   # "letter_paren" → "(A)"; "letter" → "A"; "raw" → use class label as-is
 
     def _format(self, class_label):
