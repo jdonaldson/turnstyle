@@ -149,6 +149,17 @@ class Ctx:
 
 _OPTION_RE = re.compile(r"^\(([A-Z])\)", re.MULTILINE)
 
+# A value-solver (arithmetic/boolean) must EXPLAIN the prompt, not extract a
+# fragment — otherwise it trips on incidental numbers/keywords in prose (snarks,
+# causal_judgement). commitment = coverage = matched-span / prompt length.
+# See memory commitment_coverage_routing.
+_VALUE_COVERAGE = 0.5
+
+
+def _covers(span: str, prompt: str) -> bool:
+    p = prompt.strip()
+    return bool(p) and len(span) >= _VALUE_COVERAGE * len(p)
+
 
 # ── parse: raw prompt -> typed Task ("parse, don't validate") ─────────────────
 
@@ -165,13 +176,15 @@ def parse(prompt: str, ctx: Ctx) -> Task:
         return DateCalc(answer=letter)
 
     res = parse_expression(prompt)
-    if res is not None:
+    if res is not None and _covers(res[0], prompt):
         expr, value = res
         return Arithmetic(expr=expr, value=str(value))
     res = parse_arithmetic(prompt)
     if res is not None:
         a, b, op, value = res
-        return Arithmetic(expr=f"{a}{op}{b}", value=str(value))
+        expr = f"{a}{op}{b}"
+        if _covers(expr, prompt):
+            return Arithmetic(expr=expr, value=str(value))
 
     # other pure symbolic solvers — each returns its answer (or a tuple ending
     # in it) or None. Smart constructors: the variant only builds on success.
@@ -179,7 +192,7 @@ def parse(prompt: str, ctx: Ctx) -> Task:
     from turnstyle.dyck import parse_dyck
     from turnstyle.sorting import parse_sorting
 
-    if (r := parse_boolean(prompt)) is not None:
+    if (r := parse_boolean(prompt)) is not None and _covers(r[0], prompt):
         return Boolean(answer=r[2])
     if (r := parse_dyck(prompt)) is not None:
         return Dyck(answer=r[2])
