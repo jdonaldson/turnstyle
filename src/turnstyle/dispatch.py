@@ -81,11 +81,18 @@ class TruthChain:
 
 
 @dataclass(frozen=True)
+class Spatial:
+    """A navigate prompt. Deterministically simulated at parse time — holding
+    this means the path was walked and the answer is known."""
+    answer: str           # "Yes" / "No"
+
+
+@dataclass(frozen=True)
 class FreeForm:
     """No structured variant matched — delegate to the legacy blackboard."""
 
 
-Task = Arithmetic | MultipleChoice | TruthChain | FreeForm
+Task = Arithmetic | MultipleChoice | TruthChain | Spatial | FreeForm
 
 
 # ── Answer + Context ──────────────────────────────────────────────────────────
@@ -129,11 +136,14 @@ def parse(prompt: str, ctx: Ctx) -> Task:
 
     # truth-chain before multiple-choice: web_of_lies prompts often carry
     # (A) Yes / (B) No options, but the deterministic solver is more specific.
-    from turnstyle.ir import parse_scene, _wol_solve
+    from turnstyle.ir import parse_scene, _wol_solve, _navigate_solve
     scene = parse_scene(prompt)
     wol = _wol_solve(scene.body, scene.question)
     if wol is not None:
         return TruthChain(answer=wol, query=scene.question or "")
+    nav = _navigate_solve(scene.body)
+    if nav is not None:
+        return Spatial(answer=nav)
 
     letters = _OPTION_RE.findall(prompt)
     if len(letters) >= 2:
@@ -152,6 +162,9 @@ def solve(task: Task, prompt: str, ctx: Ctx) -> Answer:
         case TruthChain(answer, query):
             return Answer(text=answer, source="truth_chain",
                           proof=f"truth-propagation; query={query!r}")
+
+        case Spatial(answer):
+            return Answer(text=answer, source="navigate", proof="coordinate simulation")
 
         case MultipleChoice(options, gather, selection):
             return _solve_choice(prompt, options, gather, selection, ctx)
@@ -268,7 +281,7 @@ def _solve_freeform(prompt: str, ctx: Ctx) -> Answer:
 
 __all__ = [
     "Gather", "PriorLocked", "Deliberated", "SelectionShape",
-    "Arithmetic", "MultipleChoice", "TruthChain", "FreeForm", "Task",
+    "Arithmetic", "MultipleChoice", "TruthChain", "Spatial", "FreeForm", "Task",
     "Answer", "Ctx", "parse", "enrich", "solve", "run",
     "detect_selection_shape",
 ]
