@@ -73,11 +73,19 @@ class MultipleChoice:
 
 
 @dataclass(frozen=True)
+class TruthChain:
+    """A web-of-lies truth-propagation prompt. Deterministically solved at parse
+    time (like Arithmetic) — holding this means the answer is already known."""
+    answer: str           # "Yes" / "No"
+    query: str
+
+
+@dataclass(frozen=True)
 class FreeForm:
     """No structured variant matched — delegate to the legacy blackboard."""
 
 
-Task = Arithmetic | MultipleChoice | FreeForm
+Task = Arithmetic | MultipleChoice | TruthChain | FreeForm
 
 
 # ── Answer + Context ──────────────────────────────────────────────────────────
@@ -119,6 +127,14 @@ def parse(prompt: str, ctx: Ctx) -> Task:
         a, b, op, value = res
         return Arithmetic(expr=f"{a}{op}{b}", value=str(value))
 
+    # truth-chain before multiple-choice: web_of_lies prompts often carry
+    # (A) Yes / (B) No options, but the deterministic solver is more specific.
+    from turnstyle.ir import parse_scene, _wol_solve
+    scene = parse_scene(prompt)
+    wol = _wol_solve(scene.body, scene.question)
+    if wol is not None:
+        return TruthChain(answer=wol, query=scene.question or "")
+
     letters = _OPTION_RE.findall(prompt)
     if len(letters) >= 2:
         return MultipleChoice(options=letters)
@@ -132,6 +148,10 @@ def solve(task: Task, prompt: str, ctx: Ctx) -> Answer:
     match task:
         case Arithmetic(expr, value):
             return Answer(text=value, source="arithmetic", proof=f"{expr} = {value}")
+
+        case TruthChain(answer, query):
+            return Answer(text=answer, source="truth_chain",
+                          proof=f"truth-propagation; query={query!r}")
 
         case MultipleChoice(options, gather, selection):
             return _solve_choice(prompt, options, gather, selection, ctx)
@@ -248,7 +268,7 @@ def _solve_freeform(prompt: str, ctx: Ctx) -> Answer:
 
 __all__ = [
     "Gather", "PriorLocked", "Deliberated", "SelectionShape",
-    "Arithmetic", "MultipleChoice", "FreeForm", "Task",
+    "Arithmetic", "MultipleChoice", "TruthChain", "FreeForm", "Task",
     "Answer", "Ctx", "parse", "enrich", "solve", "run",
     "detect_selection_shape",
 ]
