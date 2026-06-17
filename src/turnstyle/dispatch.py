@@ -104,15 +104,19 @@ class Sorting:
 
 
 @dataclass(frozen=True)
+class DateCalc:
+    """Deterministic-SELECTION variant: parse_bbh_date computes the date and
+    matches it to an option, so the answer is an option letter, not a date."""
+    answer: str           # option letter, e.g. "(B)"
+
+
+@dataclass(frozen=True)
 class FreeForm:
     """No structured variant matched — delegate to the legacy blackboard."""
 
 
-# NOTE: date_understanding is NOT a pure-symbolic variant — it's multiple-choice
-# (compute the date, then match it to an option). It belongs as a future
-# deterministic-selection variant, not here.
 Task = (Arithmetic | MultipleChoice | TruthChain | Spatial
-        | Boolean | Dyck | Sorting | FreeForm)
+        | Boolean | Dyck | Sorting | DateCalc | FreeForm)
 
 
 # ── Answer + Context ──────────────────────────────────────────────────────────
@@ -145,6 +149,13 @@ def parse(prompt: str, ctx: Ctx) -> Task:
     Arithmetic is pure; multiple-choice is a structural marker check. The
     expensive model-based work (scoring, gather/selection classification)
     happens in solve(), not here."""
+    # dates first: parse_bbh_date is tightly guarded (needs Options: + a parseable
+    # "today" + the date question), and must precede arithmetic, which otherwise
+    # grabs the digits in a date prompt.
+    from turnstyle.dates import parse_bbh_date
+    if (letter := parse_bbh_date(prompt)) is not None:
+        return DateCalc(answer=letter)
+
     res = parse_expression(prompt)
     if res is not None:
         expr, value = res
@@ -205,6 +216,8 @@ def solve(task: Task, prompt: str, ctx: Ctx) -> Answer:
             return Answer(text=answer, source="dyck")
         case Sorting(answer):
             return Answer(text=answer, source="sorting")
+        case DateCalc(answer):
+            return Answer(text=answer, source="dates", proof="date computed, option matched")
 
         case MultipleChoice(options, gather, selection):
             return _solve_choice(prompt, options, gather, selection, ctx)
@@ -322,7 +335,7 @@ def _solve_freeform(prompt: str, ctx: Ctx) -> Answer:
 __all__ = [
     "Gather", "PriorLocked", "Deliberated", "SelectionShape",
     "Arithmetic", "MultipleChoice", "TruthChain", "Spatial",
-    "Boolean", "Dyck", "Sorting", "FreeForm", "Task",
+    "Boolean", "Dyck", "Sorting", "DateCalc", "FreeForm", "Task",
     "Answer", "Ctx", "parse", "enrich", "solve", "run",
     "detect_selection_shape",
 ]

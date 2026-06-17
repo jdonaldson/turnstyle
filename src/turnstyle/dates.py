@@ -131,6 +131,10 @@ def _apply_offset(today: date, text: str) -> date | None:
     """Compute the target date from offset description in question text."""
     lower = text.lower()
 
+    # bare "today" — the question asks for today's date with no shift
+    if lower.strip() in ("today", "today's date", "the date today"):
+        return today
+
     # "24 hours later" or "24 hours ago"
     m = re.search(r'(\d+)\s+hours?\s+(later|from\s+today)', lower)
     if m:
