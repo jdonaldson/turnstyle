@@ -1,5 +1,7 @@
 """Tests for SQL turnstyle infrastructure — no model needed."""
 
+import pytest
+
 from turnstyle.sql import (
     SchemaSpec,
     load_into_sqlite,
@@ -1550,6 +1552,7 @@ class TestDiagnosticInfrastructure:
 
     def test_solve_penguins_diag_tier_sql(self):
         """solve_penguins(diag={}) records tier='sql' on SQL success."""
+        pytest.importorskip("swollm")  # downstream package, not installed in CI
         from swollm.solvers.penguins import solve_penguins
 
         class FakeFallback:
@@ -1570,6 +1573,7 @@ class TestDiagnosticInfrastructure:
 
     def test_solve_penguins_diag_tier_none(self):
         """solve_penguins(diag={}) records tier='none' when all tiers fail."""
+        pytest.importorskip("swollm")  # downstream package, not installed in CI
         from swollm.solvers.penguins import solve_penguins
 
         class FakeFallback:
@@ -1584,6 +1588,7 @@ class TestDiagnosticInfrastructure:
 
     def test_solve_penguins_diag_no_fallback(self):
         """solve_penguins(diag={}) with no fallback records error."""
+        pytest.importorskip("swollm")  # downstream package, not installed in CI
         from swollm.solvers.penguins import solve_penguins
 
         diag = {}

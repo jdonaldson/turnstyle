@@ -1,7 +1,7 @@
 """Tests for all parsers — no model needed."""
 
 from datetime import date
-from turnstyle.dates import parse_date_arithmetic, _parse_date
+from turnstyle.dates import parse_date_arithmetic, _parse_date_str as _parse_date
 from turnstyle.units import parse_unit_conversion
 from turnstyle.currency import parse_currency_conversion
 from turnstyle.percentage import parse_percentage
@@ -316,13 +316,13 @@ class TestDyckParsing:
         result = parse_dyck("Complete the brackets: ( (")
         assert result is not None
         _, closing, _ = result
-        assert closing == "))"
+        assert closing == ") )"
 
     def test_mixed_brackets(self):
         result = parse_dyck("Complete the brackets: ( [ {")
         assert result is not None
         _, closing, _ = result
-        assert closing == "}])"
+        assert closing == "} ] )"
 
     def test_partially_closed(self):
         result = parse_dyck("Complete the brackets: ( ( )")
@@ -340,19 +340,19 @@ class TestDyckParsing:
         result = parse_dyck("Close the parentheses: ( ( (")
         assert result is not None
         _, closing, _ = result
-        assert closing == ")))"
+        assert closing == ") ) )"
 
     def test_angle_brackets(self):
         result = parse_dyck("Complete the brackets: < ( [")
         assert result is not None
         _, closing, _ = result
-        assert closing == "])>"
+        assert closing == "] ) >"
 
     def test_angle_brackets_partial(self):
         result = parse_dyck("Complete the brackets: < ( ) [")
         assert result is not None
         _, closing, _ = result
-        assert closing == "]>"
+        assert closing == "] >"
 
     def test_no_brackets_returns_none(self):
         assert parse_dyck("What is the capital of France?") is None

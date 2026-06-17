@@ -475,8 +475,11 @@ class TestExtractionSpecsExist:
         from turnstyle.core import Turnstyle
         assert Turnstyle.extraction_spec is None
 
-    def test_parse_returns_none_for_extraction_turnstyles(self):
-        """Turnstyles with extraction specs should return None from parse()."""
+    def test_parse_returns_none_for_non_matching_prompts(self):
+        """Each deterministic parser must return None on out-of-domain input
+        (the 'a parse() that cannot return None is a bug' rule). These
+        turnstyles now parse their own domain deterministically, so this checks
+        graceful failure rather than the old extraction-only premise."""
         from turnstyle.sorting import SortingTurnstyle
         from turnstyle.counting import CountingTurnstyle
         from turnstyle.boolean import BooleanTurnstyle
@@ -488,14 +491,12 @@ class TestExtractionSpecsExist:
         model = MagicMock()
         tokenizer = MagicMock()
         device = "cpu"
+        unrelated = "What is the capital of France?"
 
         for cls in [SortingTurnstyle, CountingTurnstyle, BooleanTurnstyle,
                     DyckTurnstyle, DateTurnstyle, PercentageTurnstyle]:
             t = cls(model, tokenizer, device)
-            assert t.parse("Sort the following words: banana apple cherry") is None
-            assert t.parse("True and False") is None
-            assert t.parse("How many days between 2026-01-01 and 2026-12-31?") is None
+            assert t.parse(unrelated) is None
 
-        # SandboxTurnstyle needs a backend
         t = SandboxTurnstyle(model, tokenizer, device, backend=MagicMock())
-        assert t.parse("What does `sum(range(101))` return?") is None
+        assert t.parse(unrelated) is None
