@@ -5,6 +5,12 @@ from unittest.mock import MagicMock, patch
 import pytest
 import torch
 
+# turnstyle/__init__ re-exports the `extract` function, shadowing the
+# turnstyle.extract submodule attribute; `import ... as` would bind the function
+# (attribute traversal), so grab the real module from sys.modules and patch that.
+import sys
+import turnstyle.extract  # noqa: F401  (ensure submodule is loaded)
+_extract_mod = sys.modules["turnstyle.extract"]
 from turnstyle.extract import (
     ExtractionMethod,
     ExtractionResult,
@@ -362,7 +368,7 @@ class TestConfidenceGating:
         )
 
         # Mock classify_token to return low confidence
-        with patch("turnstyle.extract.classify_token", return_value=(0, 0.1)):
+        with patch.object(_extract_mod, "classify_token", return_value=(0, 0.1)):
             result = extract("test input", ts, spec)
 
         assert result.method == ExtractionMethod.FAILED
@@ -389,7 +395,7 @@ class TestConfidenceGating:
             min_confidence=0.3,
         )
 
-        with patch("turnstyle.extract.classify_token", return_value=(0, 0.8)):
+        with patch.object(_extract_mod, "classify_token", return_value=(0, 0.8)):
             result = extract("test input", ts, spec)
 
         assert result.method == ExtractionMethod.LLM
@@ -422,7 +428,7 @@ class TestAssemblerErrors:
             min_confidence=0.0,
         )
 
-        with patch("turnstyle.extract.classify_token", return_value=(0, 0.8)):
+        with patch.object(_extract_mod, "classify_token", return_value=(0, 0.8)):
             result = extract("test input", ts, spec)
 
         assert result.method == ExtractionMethod.FAILED

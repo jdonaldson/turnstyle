@@ -2,6 +2,13 @@
 
 from unittest.mock import patch
 
+# turnstyle/__init__ re-exports the `extract` function, shadowing the
+# turnstyle.extract submodule attribute; `import ... as` would bind the function
+# (attribute traversal), so grab the real module from sys.modules and patch that.
+import sys
+import turnstyle.extract  # noqa: F401  (ensure submodule is loaded)
+_extract_mod = sys.modules["turnstyle.extract"]
+
 from turnstyle.ir import (
     Scene,
     SentenceIRSpec,
@@ -232,7 +239,7 @@ class TestSegmentViaLlm:
         """LLM returns well-formed JSON with valid types."""
         spec = _make_segment_spec()
         json_out = '[{"text": "Alice lies", "type": "fact"}, {"text": "Bob says Alice lies", "type": "claim"}]'
-        with patch("turnstyle.extract.generate_short", return_value=(json_out, 0.9)):
+        with patch.object(_extract_mod, "generate_short", return_value=(json_out, 0.9)):
             result = _segment_via_llm(None, None, None, "Alice lies. Bob says Alice lies", spec)
         assert result == [("Alice lies", "fact"), ("Bob says Alice lies", "claim")]
 
@@ -242,7 +249,7 @@ class TestSegmentViaLlm:
             classify_fn=lambda s: "claim" if "says" in s else "fact",
         )
         json_out = '[{"text": "Alice lies", "type": "statement"}, {"text": "Bob says Alice lies", "type": "assertion"}]'
-        with patch("turnstyle.extract.generate_short", return_value=(json_out, 0.9)):
+        with patch.object(_extract_mod, "generate_short", return_value=(json_out, 0.9)):
             result = _segment_via_llm(None, None, None, "test", spec)
         assert result == [("Alice lies", "fact"), ("Bob says Alice lies", "claim")]
 
@@ -250,21 +257,21 @@ class TestSegmentViaLlm:
         """Without classify_fn, items with unknown types are dropped."""
         spec = _make_segment_spec(classify_fn=None)
         json_out = '[{"text": "Alice lies", "type": "fact"}, {"text": "Bob says Alice lies", "type": "UNKNOWN"}]'
-        with patch("turnstyle.extract.generate_short", return_value=(json_out, 0.9)):
+        with patch.object(_extract_mod, "generate_short", return_value=(json_out, 0.9)):
             result = _segment_via_llm(None, None, None, "test", spec)
         assert result == [("Alice lies", "fact")]
 
     def test_garbage_response_returns_none(self):
         """Non-JSON response → None."""
         spec = _make_segment_spec()
-        with patch("turnstyle.extract.generate_short", return_value=("not json at all", 0.1)):
+        with patch.object(_extract_mod, "generate_short", return_value=("not json at all", 0.1)):
             result = _segment_via_llm(None, None, None, "test", spec)
         assert result is None
 
     def test_empty_array_returns_none(self):
         """Empty JSON array → None (no valid segments)."""
         spec = _make_segment_spec()
-        with patch("turnstyle.extract.generate_short", return_value=("[]", 0.5)):
+        with patch.object(_extract_mod, "generate_short", return_value=("[]", 0.5)):
             result = _segment_via_llm(None, None, None, "test", spec)
         assert result is None
 
@@ -272,7 +279,7 @@ class TestSegmentViaLlm:
         """Items with empty text are filtered out."""
         spec = _make_segment_spec()
         json_out = '[{"text": "", "type": "fact"}, {"text": "Alice lies", "type": "fact"}]'
-        with patch("turnstyle.extract.generate_short", return_value=(json_out, 0.9)):
+        with patch.object(_extract_mod, "generate_short", return_value=(json_out, 0.9)):
             result = _segment_via_llm(None, None, None, "test", spec)
         assert result == [("Alice lies", "fact")]
 
@@ -282,7 +289,7 @@ class TestSegmentViaLlm:
         # _parse_json tries object first ({...} → dict), so we need a pure array
         # with no bare objects. Use a nested array wrapping to ensure list parse.
         json_out = '[42, {"text": "Alice lies", "type": "fact"}, null]'
-        with patch("turnstyle.extract.generate_short", return_value=(json_out, 0.9)):
+        with patch.object(_extract_mod, "generate_short", return_value=(json_out, 0.9)):
             result = _segment_via_llm(None, None, None, "test", spec)
         # _parse_json finds the { first and returns a dict → not a list → None
         # This is expected: mixed arrays confuse _parse_json's heuristic
@@ -291,7 +298,7 @@ class TestSegmentViaLlm:
     def test_json_object_returns_none(self):
         """A JSON object (not array) → None."""
         spec = _make_segment_spec()
-        with patch("turnstyle.extract.generate_short", return_value=('{"text": "a", "type": "fact"}', 0.9)):
+        with patch.object(_extract_mod, "generate_short", return_value=('{"text": "a", "type": "fact"}', 0.9)):
             result = _segment_via_llm(None, None, None, "test", spec)
         assert result is None
 
