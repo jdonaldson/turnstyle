@@ -111,12 +111,20 @@ class DateCalc:
 
 
 @dataclass(frozen=True)
+class Ordering:
+    """logical_deduction: constraint extraction + permutation search yields the
+    unique ordering, mapped to an option letter. Deterministic-selection (the
+    entity-token probe is a research alternative, not the production path)."""
+    answer: str           # option letter
+
+
+@dataclass(frozen=True)
 class FreeForm:
     """No structured variant matched — delegate to the legacy blackboard."""
 
 
 Task = (Arithmetic | MultipleChoice | TruthChain | Spatial
-        | Boolean | Dyck | Sorting | DateCalc | FreeForm)
+        | Boolean | Dyck | Sorting | DateCalc | Ordering | FreeForm)
 
 
 # ── Answer + Context ──────────────────────────────────────────────────────────
@@ -178,6 +186,11 @@ def parse(prompt: str, ctx: Ctx) -> Task:
     if (r := parse_sorting(prompt)) is not None:
         return Sorting(answer=r[2])
 
+    # logical_deduction: deterministic constraint solve -> option letter
+    from turnstyle.comparison_ordering import _solve_comparison
+    if (letter := _solve_comparison(prompt)) is not None:
+        return Ordering(answer=letter)
+
     # truth-chain before multiple-choice: web_of_lies prompts often carry
     # (A) Yes / (B) No options, but the deterministic solver is more specific.
     from turnstyle.ir import parse_scene, _wol_solve, _navigate_solve
@@ -218,6 +231,9 @@ def solve(task: Task, prompt: str, ctx: Ctx) -> Answer:
             return Answer(text=answer, source="sorting")
         case DateCalc(answer):
             return Answer(text=answer, source="dates", proof="date computed, option matched")
+        case Ordering(answer):
+            return Answer(text=answer, source="logical_deduction",
+                          proof="constraint solve, unique ordering")
 
         case MultipleChoice(options, gather, selection):
             return _solve_choice(prompt, options, gather, selection, ctx)
@@ -335,7 +351,7 @@ def _solve_freeform(prompt: str, ctx: Ctx) -> Answer:
 __all__ = [
     "Gather", "PriorLocked", "Deliberated", "SelectionShape",
     "Arithmetic", "MultipleChoice", "TruthChain", "Spatial",
-    "Boolean", "Dyck", "Sorting", "DateCalc", "FreeForm", "Task",
+    "Boolean", "Dyck", "Sorting", "DateCalc", "Ordering", "FreeForm", "Task",
     "Answer", "Ctx", "parse", "enrich", "solve", "run",
     "detect_selection_shape",
 ]
