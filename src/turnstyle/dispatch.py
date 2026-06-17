@@ -22,7 +22,11 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Optional, assert_never
+from typing import Any, Optional
+try:
+    from typing import assert_never
+except ImportError:  # Python < 3.11
+    from typing_extensions import assert_never
 
 from turnstyle.arithmetic import parse_arithmetic, parse_expression
 
