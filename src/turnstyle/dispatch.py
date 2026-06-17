@@ -87,12 +87,32 @@ class Spatial:
     answer: str           # "Yes" / "No"
 
 
+# Pure symbolic variants — each evaluated at parse time by its shipped solver.
+@dataclass(frozen=True)
+class Boolean:
+    answer: str           # "True" / "False"
+
+
+@dataclass(frozen=True)
+class Dyck:
+    answer: str           # closing-bracket sequence
+
+
+@dataclass(frozen=True)
+class Sorting:
+    answer: str           # space-joined sorted words
+
+
 @dataclass(frozen=True)
 class FreeForm:
     """No structured variant matched — delegate to the legacy blackboard."""
 
 
-Task = Arithmetic | MultipleChoice | TruthChain | Spatial | FreeForm
+# NOTE: date_understanding is NOT a pure-symbolic variant — it's multiple-choice
+# (compute the date, then match it to an option). It belongs as a future
+# deterministic-selection variant, not here.
+Task = (Arithmetic | MultipleChoice | TruthChain | Spatial
+        | Boolean | Dyck | Sorting | FreeForm)
 
 
 # ── Answer + Context ──────────────────────────────────────────────────────────
@@ -134,6 +154,19 @@ def parse(prompt: str, ctx: Ctx) -> Task:
         a, b, op, value = res
         return Arithmetic(expr=f"{a}{op}{b}", value=str(value))
 
+    # other pure symbolic solvers — each returns its answer (or a tuple ending
+    # in it) or None. Smart constructors: the variant only builds on success.
+    from turnstyle.boolean import parse_boolean
+    from turnstyle.dyck import parse_dyck
+    from turnstyle.sorting import parse_sorting
+
+    if (r := parse_boolean(prompt)) is not None:
+        return Boolean(answer=r[2])
+    if (r := parse_dyck(prompt)) is not None:
+        return Dyck(answer=r[2])
+    if (r := parse_sorting(prompt)) is not None:
+        return Sorting(answer=r[2])
+
     # truth-chain before multiple-choice: web_of_lies prompts often carry
     # (A) Yes / (B) No options, but the deterministic solver is more specific.
     from turnstyle.ir import parse_scene, _wol_solve, _navigate_solve
@@ -165,6 +198,13 @@ def solve(task: Task, prompt: str, ctx: Ctx) -> Answer:
 
         case Spatial(answer):
             return Answer(text=answer, source="navigate", proof="coordinate simulation")
+
+        case Boolean(answer):
+            return Answer(text=answer, source="boolean")
+        case Dyck(answer):
+            return Answer(text=answer, source="dyck")
+        case Sorting(answer):
+            return Answer(text=answer, source="sorting")
 
         case MultipleChoice(options, gather, selection):
             return _solve_choice(prompt, options, gather, selection, ctx)
@@ -281,7 +321,8 @@ def _solve_freeform(prompt: str, ctx: Ctx) -> Answer:
 
 __all__ = [
     "Gather", "PriorLocked", "Deliberated", "SelectionShape",
-    "Arithmetic", "MultipleChoice", "TruthChain", "Spatial", "FreeForm", "Task",
+    "Arithmetic", "MultipleChoice", "TruthChain", "Spatial",
+    "Boolean", "Dyck", "Sorting", "FreeForm", "Task",
     "Answer", "Ctx", "parse", "enrich", "solve", "run",
     "detect_selection_shape",
 ]
