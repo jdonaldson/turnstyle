@@ -13,6 +13,7 @@ authors = [{ name = "Justin Donaldson" }]
 dependencies = [
     "torch>=2.0",
     "transformers>=4.30",
+    "python-dateutil>=2.8",
 ]
 
 [project.optional-dependencies]
