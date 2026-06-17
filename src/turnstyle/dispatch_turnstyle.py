@@ -32,6 +32,20 @@ class DispatchTurnstyle(Turnstyle):
                        choice_artifact=choice_artifact,
                        legacy_registry=legacy_registry)
 
+    def fit_choice(self, examples, target_fn=lambda ex: ex["target"].strip(),
+                   verbose: bool = False):
+        """Fit a per-option ChoiceProbe artifact for an MC task (via autoprobe) and
+        attach it, so MultipleChoice prompts route through the probe instead of
+        abstaining. Per-task: call once per MC task family. Returns the
+        AutoprobeResult (ship/cv/sweep); attaches only if it ships."""
+        from turnstyle.autoprobe import autoprobe
+        result = autoprobe(examples=examples, target_fn=target_fn,
+                           model=self.model, tokenizer=self.tokenizer,
+                           device=self.device, verbose=verbose)
+        if result.ship and result.fitted is not None:
+            self.ctx.choice_artifact = result.fitted
+        return result
+
     def parse(self, prompt: str):
         """Route+solve via the ADT. Returns the Answer, or None on abstain so the
         base class falls back to plain generation."""
