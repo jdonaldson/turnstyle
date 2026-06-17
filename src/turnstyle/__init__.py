@@ -116,6 +116,9 @@ try:
 except ImportError:
     pass
 
+# Typed Task ADT dispatch (the modern router) + its production consumer.
+from turnstyle.dispatch_turnstyle import DispatchTurnstyle
+
 __all__ = [
     "SYMBOL",
     "QED",
@@ -210,4 +213,5 @@ __all__ = [
     "intent_sweep",
     "SweepResult",
     "IntentSweepResult",
+    "DispatchTurnstyle",
 ]
