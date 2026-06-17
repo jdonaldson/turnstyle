@@ -137,6 +137,17 @@ class Answer:
     proof: Optional[str] = None
 
 
+@dataclass(frozen=True)
+class Abstain:
+    """No variant produced an answer — the consumer should escalate (fall back to
+    the model, try another solver, …). A real type rather than an empty Answer,
+    because a consumer now branches on got-an-answer-vs-not (see DispatchTurnstyle)."""
+    reason: str = ""
+
+
+Result = Answer | Abstain
+
+
 @dataclass
 class Ctx:
     """Runtime resources the model-touching leaves need."""
@@ -224,7 +235,7 @@ def parse(prompt: str, ctx: Ctx) -> Task:
 
 # ── solve: total dispatch over Task ───────────────────────────────────────────
 
-def solve(task: Task, prompt: str, ctx: Ctx) -> Answer:
+def solve(task: Task, prompt: str, ctx: Ctx) -> Result:
     match task:
         case Arithmetic(expr, value):
             return Answer(text=value, source="arithmetic", proof=f"{expr} = {value}")
@@ -258,7 +269,7 @@ def solve(task: Task, prompt: str, ctx: Ctx) -> Answer:
             assert_never(task)   # pyright errors here if a Task variant is unhandled
 
 
-def run(prompt: str, ctx: Ctx) -> Answer:
+def run(prompt: str, ctx: Ctx) -> Result:
     """parse → enrich → solve."""
     return solve(enrich(parse(prompt, ctx), prompt, ctx), prompt, ctx)
 
@@ -315,7 +326,7 @@ def detect_selection_shape(prompt: str, options: list[str],
 
 def _solve_choice(prompt: str, options: list[str],
                   gather: Optional[Gather], selection: Optional[SelectionShape],
-                  ctx: Ctx) -> Answer:
+                  ctx: Ctx) -> Result:
     if ctx.choice_artifact is None or ctx.model is None:
         return _solve_freeform(prompt, ctx)
 
@@ -346,9 +357,9 @@ def _solve_choice(prompt: str, options: list[str],
                   proof=f"scores={ans.payload['scores']} | {trust}")
 
 
-def _solve_freeform(prompt: str, ctx: Ctx) -> Answer:
+def _solve_freeform(prompt: str, ctx: Ctx) -> Result:
     if ctx.legacy_registry is None:
-        return Answer(text="", source="abstain", confidence=0.0)
+        return Abstain(reason="no_handler")
     from turnstyle.blackboard import Blackboard, dispatch as bb_dispatch
 
     bb = Blackboard(prompt=prompt, context={
@@ -356,7 +367,7 @@ def _solve_freeform(prompt: str, ctx: Ctx) -> Answer:
     bb_dispatch(bb, ctx.legacy_registry)
     ans = bb.terminal_answer()
     if ans is None:
-        return Answer(text="", source="abstain", confidence=0.0)
+        return Abstain(reason="legacy_empty")
     return Answer(text=ans.payload.get("answer", ""), source=ans.source,
                   confidence=ans.confidence)
 
@@ -365,7 +376,7 @@ __all__ = [
     "Gather", "PriorLocked", "Deliberated", "SelectionShape",
     "Arithmetic", "MultipleChoice", "TruthChain", "Spatial",
     "Boolean", "Dyck", "Sorting", "DateCalc", "Ordering", "FreeForm", "Task",
-    "Answer", "Ctx", "parse", "enrich", "solve", "run",
+    "Answer", "Abstain", "Result", "Ctx", "parse", "enrich", "solve", "run",
     "detect_selection_shape",
 ]
 

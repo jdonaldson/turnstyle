@@ -17,7 +17,7 @@ import sys
 from collections import Counter, defaultdict
 
 sys.path.insert(0, "/Users/jdonaldson/Projects/turnstyle/src")
-from turnstyle.dispatch import parse, run, Ctx  # noqa: E402
+from turnstyle.dispatch import parse, run, Ctx, Abstain  # noqa: E402
 
 BBH = "/Users/jdonaldson/Projects/swollm/data/bbh_cache"
 N_PER_TASK = 30
@@ -60,7 +60,7 @@ def main():
         ans = run(ex["input"], ctx)
         route[task][variant] += 1
         total[task] += 1
-        if ans.source == "abstain":
+        if isinstance(ans, Abstain):
             abstain[task] += 1
         elif ans.text == ex["target"]:
             correct[task] += 1

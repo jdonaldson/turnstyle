@@ -17,7 +17,7 @@ supplied; everything else falls through to the model unbiased.
 from __future__ import annotations
 
 from turnstyle.core import SequenceLogitsProcessor, Turnstyle
-from turnstyle.dispatch import Ctx, run as dispatch_run
+from turnstyle.dispatch import Answer, Ctx, run as dispatch_run
 
 
 class DispatchTurnstyle(Turnstyle):
@@ -36,7 +36,7 @@ class DispatchTurnstyle(Turnstyle):
         """Route+solve via the ADT. Returns the Answer, or None on abstain so the
         base class falls back to plain generation."""
         ans = dispatch_run(prompt, self.ctx)
-        return ans if ans.source != "abstain" else None
+        return ans if isinstance(ans, Answer) else None
 
     def make_processor(self, parsed, max_new_tokens: int):
         """`parsed` is a dispatch.Answer; bias generation toward its text."""
