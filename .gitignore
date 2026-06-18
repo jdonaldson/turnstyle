@@ -7,3 +7,5 @@ build/
 /data/
 experiments/data/
 experiments/*.npz
+src/turnstyle/data/bbh_cache/
+docs/bbh_frontier.png
