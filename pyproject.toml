@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "turnstyle"
-version = "0.3.0"
+version = "0.4.0"
 description = "⊢ Symbolic coprocessors for LLM generation — ground model outputs in exact computation"
 readme = "README.md"
 license = "MIT"
