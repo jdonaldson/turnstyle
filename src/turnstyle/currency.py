@@ -39,6 +39,10 @@ _DEFAULT_RATES: dict[str, float] = {
     'nzd': 1.63,
 }
 
+# TODO(no-keyword): _ALIASES is a synonym vocabulary list — breaks on unlisted
+# currencies or phrasings ("quid", "loonie", "greenback", etc.). Replace with
+# LLM extraction: model identifies (value, from_currency, to_currency) and
+# normalizes currency names; rate lookup and conversion run downstream.
 # ── currency name normalization ──────────────────────────────────────
 
 _ALIASES: dict[str, str] = {
@@ -117,6 +121,8 @@ class CurrencyTurnstyle(Turnstyle):
         t = CurrencyTurnstyle(model, tokenizer, device, rates=rates)
         text, proof = t.generate("How much is 100 USD in EUR?")
     """
+
+    probe_label = "currency"
 
     def __init__(self, model, tokenizer, device, bias_strength=15.0,
                  rates: dict[str, float] | None = None):
