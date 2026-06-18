@@ -211,7 +211,7 @@ dt.generate(snarks_prompt)[0]                     # "(B)"    — probe pick, gro
 
 Each prompt is parsed into a typed variant (`Task = Arithmetic | MultipleChoice | … | FreeForm`), solved, and grounded back into the model's output. Step-by-step walkthrough, one stage per cell:
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jdonaldson/turnstyle/blob/mc-selection-dispatch/experiments/dispatch_walkthrough_colab.ipynb) · or `experiments/dispatch_walkthrough.ipynb` locally.
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jdonaldson/turnstyle/blob/main/experiments/dispatch_walkthrough_colab.ipynb) · or `experiments/dispatch_walkthrough.ipynb` locally.
 
 ## Probe routing
 
