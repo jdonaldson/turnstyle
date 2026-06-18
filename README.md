@@ -76,6 +76,8 @@ flowchart LR
 | **INJECTING** | Adds `+15.0` to the correct digit's logit each step | → DONE on non-digit |
 | **DONE** | Counts any extra digits (model rambling) | terminal |
 
+This trigger-word state machine is the digit coprocessor (`ArithmeticLogitsProcessor`). The general-purpose `SequenceLogitsProcessor` takes `immediate=True` — it skips `WAITING`/`TRIGGERED` and biases from the first generated token, no trigger word needed (that's what the hello-world below uses).
+
 ### Logit biasing
 
 The coprocessor doesn't force tokens — it *biases* them. At each digit position, it adds a fixed offset (default `15.0`) to the logit of the correct digit:
@@ -179,7 +181,7 @@ class FibonacciTurnstyle(Turnstyle):
             self.tokenizer,
             answer_digits=[int(d) for d in str(answer)],
             expression=f"fib({n})",
-            answer=answer,
+            answer_value=answer,
             bias_strength=self.bias_strength,
             max_new_tokens=max_new_tokens,
         )
@@ -215,8 +217,9 @@ Each prompt is parsed into a typed variant (`Task = Arithmetic | MultipleChoice 
 
 ## Probe routing
 
-For novel phrasings that regex can't catch, `RoutingTurnstyle` uses a linear
-probe on model hidden states to detect which turnstyle should handle the prompt.
+`DispatchTurnstyle` (above) routes automatically via typed dispatch. The lower-level
+`RoutingTurnstyle` routes among a **custom set of turnstyles** using a linear probe on
+model hidden states — for novel phrasings that regex can't catch.
 
 Regex-first, probe-fallback: existing parse patterns are tried first. The probe
 only activates when no regex matches.
@@ -267,6 +270,11 @@ pip install turnstyle[sandbox]
 ```
 
 This installs `wasmtime` and auto-downloads CPython WASM on first use. Falls back to [Deno](https://deno.land) + Pyodide if wasmtime is unavailable.
+
+For probe routing and `DispatchTurnstyle.fit_choice` (the `autoprobe` sweep needs scikit-learn):
+```bash
+pip install turnstyle[sweep]
+```
 
 ## References
 
