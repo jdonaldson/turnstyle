@@ -119,7 +119,39 @@ Use `proof.inline(plain=True)` for annotation-free output.
 
 ## Build your own
 
-A turnstyle is any subclass of `Turnstyle` that implements two methods:
+A turnstyle is any subclass of `Turnstyle` that implements two methods: `parse()` runs your oracle, `make_processor()` wires the answer into logit biasing. If `parse()` returns `None`, the model generates freely — no biasing, no crash.
+
+**Hello world** — the smallest solver. `SequenceLogitsProcessor` steers the model toward any answer *string* (letters, a word, an option):
+
+```python
+import re
+from turnstyle.core import Turnstyle, SequenceLogitsProcessor
+
+class ReverseTurnstyle(Turnstyle):
+    """The model often flubs letter order; the oracle doesn't."""
+
+    def parse(self, prompt: str):
+        m = re.search(r"reverse(?:\s+the\s+word)?:?\s+(\w+)", prompt, re.I)
+        return m.group(1)[::-1] if m else None       # None -> the model generates freely
+
+    def make_processor(self, parsed, max_new_tokens: int):
+        answer_ids = self.tokenizer.encode(parsed, add_special_tokens=False)
+        return SequenceLogitsProcessor(
+            self.tokenizer, answer_ids,
+            expression="reverse", answer_str=parsed,
+            bias_strength=self.bias_strength,
+            max_new_tokens=max_new_tokens, immediate=True,
+        )
+```
+
+```python
+t = ReverseTurnstyle(model, tokenizer, device)
+text, _ = t.generate("Reverse the word: turnstyle")   # -> "elytsnrut"
+```
+
+`parse()` is your oracle — compute the answer however you like (regex, a library call, a simulation). `make_processor()` steers the model to emit it.
+
+**For numeric answers**, `ArithmeticLogitsProcessor` biases digit-by-digit and produces the audited `5̲97` trail:
 
 ```python
 from turnstyle.core import Turnstyle
@@ -160,6 +192,26 @@ t = FibonacciTurnstyle(model, tokenizer, device)
 text, proof = t.generate("What is the 10th Fibonacci number?")
 # proof.answer == 55
 ```
+
+## Routing many solvers: `DispatchTurnstyle`
+
+`DispatchTurnstyle` routes a prompt to the right solver automatically through a typed `Task` dispatch. Deterministic solvers (arithmetic, dates, web-of-lies, navigation, logical deduction) ground the answer exactly; multiple-choice tasks route through a per-option probe; anything it can't solve falls back to plain generation.
+
+```python
+from turnstyle import DispatchTurnstyle
+
+dt = DispatchTurnstyle(model, tokenizer, device)
+dt.generate("What is 3 * (4 + 5)?")[0]           # "27"     — deterministic, grounded
+dt.generate("Complete the brackets: ( ( [")[0]   # "] ) )"
+
+# Multiple choice: fit a per-option probe once (autoprobe), then route through it
+dt.fit_choice(snarks_examples)
+dt.generate(snarks_prompt)[0]                     # "(B)"    — probe pick, grounded
+```
+
+Each prompt is parsed into a typed variant (`Task = Arithmetic | MultipleChoice | … | FreeForm`), solved, and grounded back into the model's output. Step-by-step walkthrough, one stage per cell:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jdonaldson/turnstyle/blob/mc-selection-dispatch/experiments/dispatch_walkthrough_colab.ipynb) · or `experiments/dispatch_walkthrough.ipynb` locally.
 
 ## Probe routing
 
