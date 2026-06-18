@@ -20,6 +20,20 @@ len(primes)
 
 The code runs in a WASM sandbox — no network, no filesystem, no syscalls. The model can't hallucinate a number that the sandbox actually computed.
 
+## BBH, solved deterministically — no model
+
+`DispatchTurnstyle` routes each prompt to a typed solver and grounds the answer. On [BIG-Bench-Hard](https://github.com/suzgunmirac/BIG-Bench-Hard), the symbolic tasks are solved by *parsing and computing* — the LLM never runs:
+
+| BBH task | Accuracy (no model) |
+|---|---|
+| arithmetic · boolean · dyck · word-sorting · web-of-lies · logical-deduction (3 / 5 / 7) | **100%** |
+| navigate | 94.4% |
+| date_understanding | 44% — a deterministic *floor*; the NL tail **abstains** (→ defer to a model), never guesses |
+
+**2346 / 2500 = 93.8% across 10 BBH tasks, no model, in seconds.** Anything it can't parse, it abstains on — graceful fallback, never a wrong answer.
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jdonaldson/turnstyle/blob/main/experiments/bbh_eval_colab.ipynb) — run the eval yourself.
+
 ## Turnstyles
 
 Every turnstyle follows the same pattern: `parse()` runs an oracle, `make_processor()` wires the answer into logit biasing, `generate()` lets the model write freely while the coprocessor enforces correctness.
