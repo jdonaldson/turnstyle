@@ -140,19 +140,25 @@ def _word_vectors(model, tokenizer, device, words, layer, template) -> np.ndarra
 
 
 def fit_semantic_frame(model, tokenizer, device, axis_specs: dict, layer: int = 14,
-                       template: str = _TEMPLATE, orthogonalize: bool = False
-                       ) -> SemanticFrame:
+                       template: str = _TEMPLATE, surface_suppress: int = 3,
+                       orthogonalize: bool = False) -> SemanticFrame:
     """Fit one BipolarAxis per spec. `axis_specs` maps name → (high_words, low_words).
 
     All axes share ONE standardization (a common feature space) so their directions
-    are comparable. Two regimes (a real tradeoff, validated on SmolLM2 @L11):
-    - `orthogonalize=False` (default) — strongest per-axis cross-lingual transfer; use
-      when you want signed coordinates ("where is `caliente` on hot↔cold").
-    - `orthogonalize=True` — QR-orthonormalize the stacked directions to decorrelate
-      the axes; the projected space then clusters by MEANING over the dominant surface
-      signal (axis-NMI 0.19 > language-NMI 0.18, vs raw ≈0.005 ≪ 0.127), at a small
-      cost to individual-axis transfer. Use when handing the coordinates to dyf.
-    See [[concept_geometry_dyf_measurement]]."""
+    are comparable. `project()` is unchanged regardless of the options below — they
+    only reshape the fitted directions.
+
+    `surface_suppress=K` (default 3) projects each axis direction **orthogonal to the
+    top-K principal components** of the training activations. Surface/language is the
+    dominant variance ([[concept_geometry_dyf_measurement]]); removing it sharpens
+    BOTH cross-lingual transfer AND meaning-clustering. Validated on SmolLM2 @L11
+    (scalar template): raw axes already cluster by meaning (axis-NMI 0.44 ≫ lang 0.02,
+    transfer 0.96); K=3 lifts both (transfer 0.98, axis-NMI 0.48). K too large
+    (≥30) deletes the signal. The earlier "orthogonal-vs-transfer tension" was a
+    neutral-template artifact — it dissolves in the in-context scalar template.
+
+    `orthogonalize=True` additionally QR-decorrelates the axes from each other (no
+    measured benefit in the scalar template; kept for the dyf-clustering use)."""
     names = list(axis_specs)
     hv = {n: _word_vectors(model, tokenizer, device, axis_specs[n][0], layer, template)
           for n in names}
@@ -167,11 +173,17 @@ def fit_semantic_frame(model, tokenizer, device, axis_specs: dict, layer: int = 
         return (m - mean) / scale
 
     raw_dirs = np.vstack([z(hv[n]).mean(0) - z(lv[n]).mean(0) for n in names])
+
+    if surface_suppress > 0:
+        zc = z(allv)
+        _, _, Vt = np.linalg.svd(zc - zc.mean(0), full_matrices=False)
+        surf = Vt[:surface_suppress]                # top-K surface directions
+        raw_dirs = raw_dirs - (raw_dirs @ surf.T) @ surf
+
     if orthogonalize:
         Q, _ = np.linalg.qr(raw_dirs.T)             # (H, k) orthonormal
         dirs = Q.T[:len(names)]
-        # keep each direction pointing toward its own high pole
-        for i, n in enumerate(names):
+        for i, n in enumerate(names):               # point toward each high pole
             if (z(hv[n]).mean(0) - z(lv[n]).mean(0)) @ dirs[i] < 0:
                 dirs[i] = -dirs[i]
     else:
