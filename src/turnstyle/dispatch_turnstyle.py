@@ -40,7 +40,11 @@ class DispatchTurnstyle(Turnstyle):
         self.profile = profile
         self.ctx = Ctx(model=model, tokenizer=tokenizer, device=device,
                        choice_artifact=choice_artifact,
-                       legacy_registry=legacy_registry)
+                       legacy_registry=legacy_registry,
+                       pole_cache={})
+        # activate the model-level polarity probe for the Ordering path, if calibrated
+        if profile is not None:
+            self.ctx.polarity_probe = profile.get_polarity()
 
     @property
     def profile_tasks(self) -> list[str]:
@@ -79,6 +83,27 @@ class DispatchTurnstyle(Turnstyle):
                 self.profile.set_probe(task, result.fitted, result.chosen[0],
                                        accuracy=result.chosen[3])
         return result
+
+    def calibrate_polarity(self, verbose: bool = False):
+        """Calibrate the model-level adjective-polarity primitive (detect_polarity),
+        activate it for the Ordering path, and record it in the profile. The
+        Ordering solver then resolves scalar-adjective poles via the probe
+        (cross-lingual) instead of the regex lexicon. Call `persist()` to save."""
+        from turnstyle.polarity import detect_polarity
+        probe = detect_polarity(self.model, self.tokenizer, self.device)
+        self.ctx.polarity_probe = probe
+        self.ctx.pole_cache = {}
+        if self.profile is None:
+            from turnstyle.profile import ModelProfile, model_fingerprint
+            self.profile = ModelProfile(
+                fingerprint=model_fingerprint(self.model),
+                model_id=getattr(self.model.config, "_name_or_path", "") or "unknown")
+        self.profile.set_polarity(probe)
+        if verbose:
+            cap = probe.capability
+            print(f"[_polarity] {'SHIP' if cap and cap.ship else 'no-ship'} "
+                  f"@L{probe.layer} loo_axis={cap.loo_axis:.3f}")
+        return probe
 
     def persist(self):
         """Write the calibrated profile to the user cache (fingerprint-addressed).
