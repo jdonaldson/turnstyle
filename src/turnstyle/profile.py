@@ -129,11 +129,33 @@ class ModelProfile:
     components: dict = field(default_factory=dict)   # task -> serialized probe dict
     extraction: dict = field(default_factory=dict)   # task -> extraction profile (future)
     support: dict = field(default_factory=dict)      # task -> {method, accuracy, shipped}
+    polarity: dict = field(default_factory=dict)     # model-level adjective-polarity probe
 
     def get_probe(self, task: str):
         """Reconstruct the fitted ProbeArtifact for a task, or None if not shipped."""
         d = self.components.get(task)
         return _probe_from_dict(d) if d is not None else None
+
+    def get_polarity(self):
+        """Reconstruct the adjective-polarity primitive, or None if not calibrated.
+
+        Model-level (not per-task): a linear polarity direction + per-axis capability
+        map. See turnstyle.polarity / [[probe_locality_symbolic_global]]."""
+        if not self.polarity:
+            return None
+        from turnstyle.polarity import PolarityProbe
+        return PolarityProbe.from_dict(self.polarity)
+
+    def set_polarity(self, probe) -> None:
+        """Store a fitted PolarityProbe + a support entry recording where it ships."""
+        self.polarity = probe.to_dict()
+        cap = probe.capability
+        self.support["_polarity"] = {
+            "method": "polarity", "layer": probe.layer,
+            "loo_axis": None if cap is None else cap.loo_axis,
+            "shipped": bool(cap and cap.ship),
+            "axes": None if cap is None else cap.axes_shipping(),
+        }
 
     def set_probe(self, task: str, artifact, finder_name: str, accuracy=None) -> None:
         """Store a fitted ProbeArtifact for a task (serialized) + a support entry."""
@@ -148,7 +170,7 @@ class ModelProfile:
             "fingerprint": self.fingerprint, "model_id": self.model_id,
             "calibration_version": self.calibration_version, "created": self.created,
             "components": self.components, "extraction": self.extraction,
-            "support": self.support,
+            "support": self.support, "polarity": self.polarity,
         }
 
     def save(self, path: Path | str) -> Path:
@@ -190,11 +212,15 @@ def build_profile(
     tasks: dict[str, tuple[list, Callable]],
     model_id: str = "",
     verbose: bool = False,
+    with_polarity: bool = False,
 ) -> ModelProfile:
     """Calibrate a model over a set of probe tasks. `tasks` maps task name →
     (examples, target_fn). Each task runs through autoprobe's layer×finder×mode
     sweep + ship gate; shipped probes land in `components`, every task gets a
-    `support` entry (so non-shipped tasks are explicit, not silently missing)."""
+    `support` entry (so non-shipped tasks are explicit, not silently missing).
+
+    `with_polarity=True` also calibrates the model-level adjective-polarity
+    primitive (turnstyle.polarity.detect_polarity) and records where it ships."""
     from turnstyle.autoprobe import autoprobe
 
     prof = ModelProfile(
@@ -202,6 +228,14 @@ def build_profile(
         model_id=model_id or getattr(model.config, "_name_or_path", "") or "unknown",
         created=time.strftime("%Y-%m-%d"),
     )
+    if with_polarity:
+        from turnstyle.polarity import detect_polarity
+        pp = detect_polarity(model, tokenizer, device)
+        prof.set_polarity(pp)
+        if verbose:
+            cap = pp.capability
+            print(f"[_polarity] {'SHIP' if cap and cap.ship else 'no-ship'} "
+                  f"@L{pp.layer} loo_axis={cap.loo_axis:.3f} axes={cap.axes_shipping()}")
     for task, (examples, target_fn) in tasks.items():
         res = autoprobe(
             examples=examples, target_fn=target_fn,
