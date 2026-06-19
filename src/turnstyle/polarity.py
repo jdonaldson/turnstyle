@@ -170,6 +170,40 @@ def _collect(model, tok, device):
     return np.stack(acts), np.array(poles), np.array(axes)
 
 
+_RESOLVE_TEMPLATE = "In comparison, this object is very {w}."
+
+
+def word_poles(model, tok, device, words, probe: "PolarityProbe",
+               template: str = _RESOLVE_TEMPLATE) -> dict:
+    """Classify the pole of each adjective via the probe (one forward pass each).
+
+    Pole is a lexical property (more/less negation is handled structurally by the
+    caller), so a neutral template suffices and the result is context-independent
+    and reusable. Returns {word: +1/-1}. This is the cross-lingual, generalizing
+    replacement for a hardcoded adjective list — it works on any word the model's
+    polarity direction covers, in any language."""
+    import torch
+
+    out_map = {}
+    for w in dict.fromkeys(words):
+        sent = template.format(w=w)
+        content = w.split()[-1]
+        cs = sent.rfind(content)
+        ce = cs + len(content)
+        enc = tok(sent, return_offsets_mapping=True, return_tensors="pt")
+        offs = enc.pop("offset_mapping")[0].tolist()
+        enc = {k: v.to(device) for k, v in enc.items()}
+        with torch.no_grad():
+            hres = model(**enc, output_hidden_states=True)
+        h = hres.hidden_states[probe.layer][0]
+        tk = next((k for k, (s, e) in enumerate(offs) if e > cs and s < ce), None)
+        if tk is None:
+            continue
+        vec = h[tk].float().cpu().numpy()
+        out_map[w] = probe.pole(vec)
+    return out_map
+
+
 def _fit_linear(X, y, C=0.5):
     from sklearn.linear_model import LogisticRegression
     from sklearn.preprocessing import StandardScaler
