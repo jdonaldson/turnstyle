@@ -45,6 +45,27 @@ def test_fingerprint_deterministic():
     assert model_fingerprint(m) == model_fingerprint(m)
 
 
+def test_merge_profiles_user_wins_bundled_fills():
+    import numpy as np
+    from turnstyle.profile import _merge_profiles
+    from turnstyle.polarity import PolarityProbe
+
+    bundled = ModelProfile(fingerprint="fp", model_id="m")
+    bundled.set_polarity(PolarityProbe(layer=14, mean=np.zeros(2), scale=np.ones(2),
+                                       coef=np.array([1.0, 0.0]), intercept=0.0))
+    bundled.components = {"shared": {"x": "bundled"}}
+
+    user = ModelProfile(fingerprint="fp", model_id="m")
+    user.components = {"snarks": {"y": 1}, "shared": {"x": "user"}}
+
+    merged = _merge_profiles(bundled, user)
+    assert "snarks" in merged.components               # user-only task kept
+    assert merged.components["shared"]["x"] == "user"  # overlap → user wins
+    assert merged.get_polarity() is not None           # bundled gap filled
+    # if the user has no polarity but bundled does, the user still gets it
+    assert "_polarity" in merged.support
+
+
 def test_polarity_slot_roundtrip(tmp_path):
     import numpy as np
     from turnstyle.polarity import PolarityCapability, PolarityProbe

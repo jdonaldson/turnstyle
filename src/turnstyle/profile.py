@@ -187,17 +187,36 @@ class ModelProfile:
 
 # ── two-tier, fingerprint-addressed load/save ────────────────────────────────────
 
+def _merge_profiles(base: ModelProfile, overlay: ModelProfile) -> ModelProfile:
+    """Overlay (user cache) wins per key; base (bundled) fills the gaps. Lets a
+    shipped model-level capability (e.g. polarity) reach a user who has only
+    calibrated some task probes of their own."""
+    return ModelProfile(
+        fingerprint=overlay.fingerprint, model_id=overlay.model_id,
+        calibration_version=overlay.calibration_version, created=overlay.created,
+        components={**base.components, **overlay.components},
+        extraction={**base.extraction, **overlay.extraction},
+        support={**base.support, **overlay.support},
+        polarity=overlay.polarity or base.polarity,
+    )
+
+
 def load_profile(model) -> Optional[ModelProfile]:
-    """Find the profile matching this model's fingerprint: user cache first, then
-    bundled. Returns None (→ dispatch abstains) if nothing matches."""
+    """Find the profile matching this model's fingerprint. The bundled profile is
+    the base; a user-cache profile (if present) overlays it — user-tuned entries
+    win, bundled capabilities (e.g. polarity) fill gaps the user hasn't calibrated.
+    Returns None (→ dispatch abstains) if neither tier matches."""
     fp = model_fingerprint(model)
-    for d in (_USER_CACHE, _BUNDLED):
+    tiers = {}
+    for name, d in (("bundled", _BUNDLED), ("user", _USER_CACHE)):
         p = d / f"{fp}.json"
         if p.exists():
             prof = ModelProfile.load(p)
             if prof.calibration_version == CALIBRATION_VERSION:
-                return prof
-    return None
+                tiers[name] = prof
+    if "bundled" in tiers and "user" in tiers:
+        return _merge_profiles(tiers["bundled"], tiers["user"])
+    return tiers.get("user") or tiers.get("bundled")
 
 
 def save_profile(profile: ModelProfile) -> Path:
