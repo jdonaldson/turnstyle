@@ -187,24 +187,30 @@ def _adjective_roots(text: str) -> set[str]:
     return {r for r in roots if r}
 
 
-def make_pole_map(text, model=None, tokenizer=None, device=None, probe=None) -> dict:
+def make_pole_map(text, model=None, tokenizer=None, device=None, probe=None,
+                  cache: Optional[dict] = None) -> dict:
     """Resolve every adjective root in the prompt to a pole. Probe first
-    (cross-lingual, generalizing), regex lexicon as offline fallback."""
+    (cross-lingual, generalizing), regex lexicon as offline fallback.
+
+    `cache` (a {root: pole} dict) memoizes resolution across prompts — pole is a
+    global lexical property, so a root the probe already classified is never
+    re-run. Returns the poles for the roots in THIS prompt."""
     roots = _adjective_roots(text)
-    pole_map: dict[str, int] = {}
-    if probe is not None and model is not None:
+    store: dict[str, int] = cache if cache is not None else {}
+    pending = [r for r in roots if r not in store]
+    if pending and probe is not None and model is not None:
         from turnstyle.polarity import word_poles
         # ask the probe in a neutral template; pole is a lexical property
         try:
-            pole_map.update(word_poles(model, tokenizer, device, list(roots), probe))
+            store.update(word_poles(model, tokenizer, device, pending, probe))
         except Exception:  # noqa: BLE001 — fall back to regex on any probe failure
             pass
-    for r in roots:
-        if r not in pole_map:
+    for r in pending:
+        if r not in store:
             p = regex_pole(r)
             if p is not None:
-                pole_map[r] = p
-    return pole_map
+                store[r] = p
+    return {r: store[r] for r in roots if r in store}
 
 
 # ── stage 3: symbolic solver + answer mapping ────────────────────────────────
@@ -327,18 +333,19 @@ def map_answer(order, items, text, resolver):
 
 
 def solve_comparison(text, pole_map: Optional[dict] = None,
-                     model=None, tokenizer=None, device=None, probe=None
-                     ) -> Optional[str]:
+                     model=None, tokenizer=None, device=None, probe=None,
+                     pole_cache: Optional[dict] = None) -> Optional[str]:
     """Solve a logical_deduction prompt → option letter, or None.
 
     Supply a `pole_map` (root→pole) directly, or a (model, probe) pair to resolve
     poles via the polarity primitive. With neither, poles fall back to the regex
-    lexicon (offline / English)."""
+    lexicon (offline / English). `pole_cache` memoizes probe resolution across calls."""
     items = extract_items(text)
     if not items:
         return None
     if pole_map is None:
-        pole_map = make_pole_map(text, model, tokenizer, device, probe)
+        pole_map = make_pole_map(text, model, tokenizer, device, probe,
+                                 cache=pole_cache)
     resolver = _resolver(pole_map)
     cons = extract_frames(text, items)
     pairs, pins = constraints_to_pairs(cons, len(items), resolver)

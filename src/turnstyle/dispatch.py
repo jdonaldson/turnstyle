@@ -160,6 +160,8 @@ class Ctx:
     device: str = "cpu"
     choice_artifact: Any = None      # ProbeArtifact (mode="per_option")
     legacy_registry: Any = None      # blackboard Registry for FreeForm fallback
+    polarity_probe: Any = None       # PolarityProbe for the Ordering scalar-adjective poles
+    pole_cache: Any = None           # {root: pole} memo, reused across prompts
 
 
 _OPTION_RE = re.compile(r"^\(([A-Z])\)", re.MULTILINE)
@@ -214,9 +216,12 @@ def parse(prompt: str, ctx: Ctx) -> Task:
     if (r := parse_sorting(prompt)) is not None:
         return Sorting(answer=r[2])
 
-    # logical_deduction: deterministic constraint solve -> option letter
-    from turnstyle.comparison_ordering import _solve_comparison
-    if (letter := _solve_comparison(prompt)) is not None:
+    # logical_deduction: structural frames + symbolic solve; scalar-adjective poles
+    # come from the polarity probe (if calibrated) else the regex lexicon fallback.
+    from turnstyle.comparison_solver import solve_comparison
+    if (letter := solve_comparison(
+            prompt, model=ctx.model, tokenizer=ctx.tokenizer, device=ctx.device,
+            probe=ctx.polarity_probe, pole_cache=ctx.pole_cache)) is not None:
         return Ordering(answer=letter)
 
     # truth-chain before multiple-choice: web_of_lies prompts often carry
