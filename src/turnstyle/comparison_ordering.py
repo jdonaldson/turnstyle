@@ -227,196 +227,22 @@ def _aggregate_comparison(
     return None
 
 
-# ── Deterministic solver (regex-based, 100% on BBH) ────────────────────────
-
-
-def _extract_items(text: str) -> list[str]:
-    """Extract named items from the preamble ('there are N X: a, b, and c')."""
-    m = re.search(r"(?:three|four|five|six|seven)\s+[\w ]+?:\s*(.+?)\.", text, re.I)
-    if not m:
-        return []
-    raw = m.group(1)
-    parts = re.split(r",\s*(?:and\s+)?|\s+and\s+", raw)
-    items = []
-    for p in parts:
-        p = re.sub(r"^(a|an|the)\s+", "", p.strip(), flags=re.I).strip().rstrip(".")
-        if p:
-            items.append(p)
-    return items
-
-
-def _gt_ordering(text: str, items: list[str]) -> list[str] | None:
-    """Find the unique ordering consistent with all constraints (exhaustive search)."""
-    body = text.split("Options:")[0]
-    n = len(items)
-    item_lo = [it.lower() for it in items]
-    item_pat = "|".join(re.escape(it) for it in items)
-    art = r"(?:(?:a|an|the)\s+)?"
-    be  = r"(?:is|are)"
-    preds: list[tuple] = []
-
-    def find(name: str) -> int | None:
-        lo = name.lower()
-        for k, it in enumerate(item_lo):
-            if it == lo:
-                return k
-        return None
-
-    def add_before(a_str: str, b_str: str) -> None:
-        a, b = find(a_str), find(b_str)
-        if a is not None and b is not None and a != b:
-            preds.append(('before', a, b))
-
-    def add_at(a_str: str, pos: int) -> None:
-        a = find(a_str)
-        if a is not None and 1 <= pos <= n:
-            preds.append(('at', a, pos))
-
-    for m in re.finditer(rf"({item_pat})\s+{be}\s+to\s+the\s+right\s+of\s+{art}({item_pat})", body, re.I):
-        add_before(m.group(2), m.group(1))
-    for m in re.finditer(rf"({item_pat})\s+{be}\s+to\s+the\s+left\s+of\s+{art}({item_pat})", body, re.I):
-        add_before(m.group(1), m.group(2))
-
-    adj_h = (r"newer|larger|heavier|taller|faster|more expensive|later|better|higher"
-             r"|pricier|more costly")
-    adj_l = (r"older|smaller|lighter|shorter|slower|cheaper|earlier|worse|lower"
-             r"|less expensive|less costly|less pricey")
-    for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:{adj_h})\s+than\s+{art}({item_pat})", body, re.I):
-        add_before(m.group(2), m.group(1))
-    for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:{adj_l})\s+than\s+{art}({item_pat})", body, re.I):
-        add_before(m.group(1), m.group(2))
-
-    for m in re.finditer(rf"({item_pat})\s+finished\s+(?:above|ahead of)\s+{art}({item_pat})", body, re.I):
-        add_before(m.group(2), m.group(1))
-    for m in re.finditer(rf"({item_pat})\s+finished\s+(?:below|behind)\s+{art}({item_pat})", body, re.I):
-        add_before(m.group(1), m.group(2))
-
-    sup_last = (r"rightmost|newest|largest|heaviest|tallest|fastest|most expensive|latest"
-                r"|best|highest|most costly|most pricey|most valuable")
-    sup_first = (r"leftmost|oldest|smallest|lightest|shortest|slowest|cheapest|earliest"
-                 r"|worst|lowest|least expensive|least costly|least pricey|least valuable")
-    for m in re.finditer(rf"({item_pat})\s+{be}\s+the\s+(?:{sup_last})", body, re.I):
-        add_at(m.group(1), n)
-    for m in re.finditer(rf"({item_pat})\s+{be}\s+the\s+(?:{sup_first})", body, re.I):
-        add_at(m.group(1), 1)
-
-    for m in re.finditer(rf"({item_pat})\s+finished\s+(?:first|1st)\b", body, re.I):
-        add_at(m.group(1), n)
-    for m in re.finditer(rf"({item_pat})\s+finished\s+(?:last)\b", body, re.I):
-        add_at(m.group(1), 1)
-
-    ORDINALS = [("second", 2), ("third", 3), ("fourth", 4),
-                ("fifth", 5), ("sixth", 6), ("seventh", 7)]
-    sup_h_words = (r"newest|most expensive|largest|heaviest|tallest|fastest"
-                   r"|best|highest|most costly|most pricey|most valuable")
-    sup_l_words = (r"oldest|cheapest|smallest|lightest|shortest|slowest"
-                   r"|worst|lowest|least expensive|least costly|least pricey")
-    for word, k in ORDINALS:
-        for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:the\s+)?{word}\s+from\s+the\s+left", body, re.I):
-            add_at(m.group(1), k)
-        for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:the\s+)?{word}\s+from\s+the\s+right", body, re.I):
-            add_at(m.group(1), n - k + 1)
-        for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:the\s+)?{word}-(?:{sup_h_words})", body, re.I):
-            add_at(m.group(1), n - k + 1)
-        for m in re.finditer(rf"({item_pat})\s+{be}\s+(?:the\s+)?{word}-(?:{sup_l_words})", body, re.I):
-            add_at(m.group(1), k)
-        for m in re.finditer(rf"({item_pat})\s+finished\s+{word}(?!-to)\b", body, re.I):
-            add_at(m.group(1), n - k + 1)
-
-    to_last_map = [("second", 2), ("third", 3), ("fourth", 4), ("fifth", 5)]
-    for word, k in to_last_map:
-        for m in re.finditer(rf"({item_pat})\s+finished\s+{word}-to-last\b", body, re.I):
-            add_at(m.group(1), k)
-
-    if not preds:
-        return None
-
-    pos_arr = [0] * n
-
-    def check(perm: tuple) -> bool:
-        for i, it in enumerate(perm):
-            pos_arr[find(it)] = i
-        for kind, a, b in preds:
-            if kind == 'before':
-                if pos_arr[a] >= pos_arr[b]:
-                    return False
-            else:
-                if pos_arr[a] + 1 != b:
-                    return False
-        return True
-
-    valid: list[list[str]] = []
-    for perm in permutations(items):
-        if check(perm):
-            valid.append(list(perm))
-            if len(valid) > 1:
-                break
-    return valid[0] if len(valid) == 1 else None
-
-
-def _answer_from_ordering(ordering: list[str], options: dict[str, str]) -> str | None:
-    """Map ordering to option letter via positional description in option text."""
-    n = len(ordering)
-    ORDINALS = [("second", 2), ("third", 3), ("fourth", 4),
-                ("fifth", 5), ("sixth", 6), ("seventh", 7)]
-    sup_h = (r"newest|largest|heaviest|tallest|fastest|most expensive|rightmost|latest"
-             r"|best|highest|most costly|most pricey|most valuable")
-    sup_l = (r"oldest|smallest|lightest|shortest|slowest|cheapest|leftmost|earliest"
-             r"|worst|lowest|least expensive|least costly|least pricey|least valuable")
-    sup_h_words = (r"newest|most expensive|largest|heaviest|tallest|fastest"
-                   r"|best|highest|most costly|most pricey|most valuable")
-    sup_l_words = (r"oldest|cheapest|smallest|lightest|shortest|slowest"
-                   r"|worst|lowest|least expensive|least costly|least pricey")
-
-    for letter, opt in options.items():
-        for i, item in enumerate(ordering):
-            if item.lower() not in opt.lower():
-                continue
-            pos = i + 1
-            if re.search(r'\bthe\s+(?:' + sup_h + r')\b', opt, re.I) and pos == n:
-                return f"({letter})"
-            if re.search(r'\bthe\s+(?:' + sup_l + r')\b', opt, re.I) and pos == 1:
-                return f"({letter})"
-            if re.search(r"middle|center", opt, re.I) and pos == (n + 1) // 2:
-                return f"({letter})"
-            if re.search(r"finished first|finished 1st", opt, re.I) and pos == n:
-                return f"({letter})"
-            if re.search(r"finished last\b", opt, re.I) and pos == 1:
-                return f"({letter})"
-            for word, k in ORDINALS:
-                if re.search(rf"\b{word}\s+from\s+the\s+left", opt, re.I) and pos == k:
-                    return f"({letter})"
-                if re.search(rf"\b{word}\s+from\s+the\s+right", opt, re.I) and pos == n - k + 1:
-                    return f"({letter})"
-                if re.search(rf"\b{word}-(?:{sup_h_words})", opt, re.I) and pos == n - k + 1:
-                    return f"({letter})"
-                if re.search(rf"\b{word}-(?:{sup_l_words})", opt, re.I) and pos == k:
-                    return f"({letter})"
-                if re.search(rf"\bfinished\s+{word}\b(?!-to-last)", opt, re.I) and pos == n - k + 1:
-                    return f"({letter})"
-            for word, k in [("second", 2), ("third", 3), ("fourth", 4), ("fifth", 5)]:
-                if re.search(rf"\bfinished\s+{word}-to-last\b", opt, re.I) and pos == k:
-                    return f"({letter})"
-    return None
+# ── Offline deterministic solver (delegates to comparison_solver) ────────────
+# The adjective-list solver this file used to contain (_gt_ordering /
+# _answer_from_ordering, with adj_h/adj_l/sup_h/sup_l keyword lists — a duplicate
+# of sql.py's, flagged by the regex audit) is superseded by comparison_solver:
+# structural frames + the adjective-polarity probe. This thin wrapper preserves
+# the offline / no-model path via comparison_solver's regex lexicon fallback.
 
 
 def _solve_comparison(text: str) -> str | None:
-    """Deterministic solve: extract items, find ordering, map to option letter."""
-    items = _extract_items(text)
-    if not items:
-        return None
-    ordering = _gt_ordering(text, items)
-    if ordering is None:
-        return None
-    # Parse (A)/(B)/... options
-    opts_section = text.split("Options:")[-1] if "Options:" in text else text
-    options = {
-        letter: val.strip()
-        for letter, val in re.findall(
-            r"\(([A-Z])\)\s+(.+?)(?=\n\([A-Z]\)|\Z)", opts_section, re.S
-        )
-    }
-    return _answer_from_ordering(ordering, options)
+    """Offline regex-fallback solve — delegates to comparison_solver (no probe).
+
+    The cross-lingual probe path is wired in DispatchTurnstyle; this is the
+    no-model fallback (comparison_solver resolves poles from its regex lexicon)."""
+    from turnstyle.comparison_solver import solve_comparison
+    return solve_comparison(text)
+
 
 
 # ── SentenceIRSpec ────────────────────────────────────────────────────────────
