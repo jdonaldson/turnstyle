@@ -42,8 +42,8 @@ def test_out_of_lexicon_needs_pole_source():
 
 
 def test_pole_cache_drives_ordering():
-    # the polarity probe would populate pole_cache with these; simulate it
-    ctx = Ctx(pole_cache={"bright": 1, "dull": -1})
+    # the polarity probe would populate pole_cache with these surface forms
+    ctx = Ctx(pole_cache={"brighter": 1, "dullest": -1})
     task = parse(_SHINE, ctx)
     assert isinstance(task, Ordering)
     assert task.answer == "(C)"
@@ -53,4 +53,4 @@ def test_pole_cache_is_reused_across_prompts():
     # a fresh cache gets populated by the regex fallback and persists
     ctx = Ctx(pole_cache={})
     parse(_AGE, ctx)
-    assert ctx.pole_cache.get("new") == 1     # 'new' resolved + memoized
+    assert ctx.pole_cache.get("newer") == 1     # surface form resolved + memoized

@@ -13,12 +13,14 @@ def _q(body, options):
     return body + "\nOptions:\n" + "\n".join(options)
 
 
-def test_normalize_strips_morphology_and_negation():
-    assert normalize_phrase("newer") == ("new", 1)
-    assert normalize_phrase("oldest") == ("old", 1)
+def test_normalize_keeps_surface_form_no_lemmatization():
+    # NO -er/-est stripping (English morphology) — the probe classifies the
+    # comparative/superlative surface form directly. Only function words drop.
+    assert normalize_phrase("newer") == ("newer", 1)
+    assert normalize_phrase("oldest") == ("oldest", 1)
     assert normalize_phrase("more expensive") == ("expensive", 1)
     assert normalize_phrase("less expensive") == ("expensive", -1)
-    assert normalize_phrase("the second-cheapest") == ("cheap", 1)
+    assert normalize_phrase("the second-cheapest") == ("cheapest", 1)
     assert normalize_phrase("least valuable") == ("valuable", -1)
 
 
@@ -62,8 +64,8 @@ def test_explicit_pole_map_is_the_probe_path():
            ["(A) ruby", "(B) opal", "(C) jade"])
     # 'bright'/'dull' aren't in the regex lexicon → offline path can't solve it
     assert solve_comparison(p) is None
-    # but a probe that knows bright=HIGH / dull=LOW resolves it
-    pm = {"bright": HIGH, "dull": LOW}
+    # but a probe that knows the surface forms resolves it (no lemmatization)
+    pm = {"brighter": HIGH, "dullest": LOW}
     assert solve_comparison(p, pole_map=pm) == "(C)"
 
 
@@ -72,7 +74,7 @@ def test_make_pole_map_regex_fallback():
            "The sedan is newer than the coupe.\nWhich is the oldest?",
            ["(A) sedan", "(B) coupe", "(C) van"])
     pm = make_pole_map(p)            # no model → regex lexicon
-    assert pm["new"] == HIGH
+    assert pm["newer"] == HIGH       # surface form, no lemmatization
 
 
 def test_unsolvable_returns_none():

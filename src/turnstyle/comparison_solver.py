@@ -50,10 +50,15 @@ def _sentences(body: str) -> list[str]:
 
 
 def normalize_phrase(phrase: str) -> tuple[str, int]:
-    """Strip closed-class modifiers/morphology → (open-class root, sign_flip).
+    """Drop closed-class function words → (adjective surface form, sign_flip).
 
-    sign_flip = -1 for a less/least negation. The probe is only asked about the
-    root (new/old/expensive/...), never the modifier."""
+    sign_flip = -1 for a less/least negation. NO morphological lemmatization: the
+    adjective keeps its comparative/superlative form (newer / oldest / cheapest)
+    because the polarity probe is trained on those forms and classifies them
+    directly — stripping -er/-est would be English-specific and the probe does not
+    need it. Only the comparative/superlative MODIFIER words (more/most/less/least),
+    a leading article, and an ordinal prefix are removed (these are the closed-class
+    frame layer); less/least also flip the pole."""
     p = re.sub(r"^the\s+", "", phrase.strip().lower())
     p = _ORD_PREFIX.sub("", p)
     flip = 1
@@ -62,14 +67,6 @@ def normalize_phrase(phrase: str) -> tuple[str, int]:
         if m.group(1) in ("least", "less"):
             flip = -1
         p = m.group(2)
-    # naive -er/-est removal — covers regular stems (new/old/cheap, most/least X).
-    # Irregular morphology (y→i "shinier", doubling "biggest") is not lemmatized;
-    # for the probe path the polarity direction still covers many such words, but
-    # the resolved key is the stripped stem, so supply pole_map keys to match.
-    if p.endswith("est"):
-        p = p[:-3]
-    elif p.endswith("er"):
-        p = p[:-2]
     return p.strip(), flip
 
 
