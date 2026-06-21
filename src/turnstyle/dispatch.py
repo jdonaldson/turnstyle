@@ -131,13 +131,20 @@ class FormalFallacy:
 
 
 @dataclass(frozen=True)
+class Hyperbaton:
+    """hyperbaton: two adjective orderings (permutations); the correct one is sorted
+    by decreasing subjectivity. Deterministic-selection via the subjectivity axis."""
+    answer: str           # option letter
+
+
+@dataclass(frozen=True)
 class FreeForm:
     """No structured variant matched — delegate to the legacy blackboard."""
 
 
 Task = (Arithmetic | MultipleChoice | TruthChain | Spatial
         | Boolean | Dyck | Sorting | DateCalc | Ordering | FormalFallacy
-        | FreeForm)
+        | Hyperbaton | FreeForm)
 
 
 # ── Answer + Context ──────────────────────────────────────────────────────────
@@ -171,6 +178,7 @@ class Ctx:
     legacy_registry: Any = None      # blackboard Registry for FreeForm fallback
     polarity_probe: Any = None       # PolarityProbe for the Ordering scalar-adjective poles
     pole_cache: Any = None           # {root: pole} memo, reused across prompts
+    subjectivity_axis: Any = None    # BipolarAxis for the Hyperbaton adjective-ordering solve
 
 
 _OPTION_RE = re.compile(r"^\(([A-Z])\)", re.MULTILINE)
@@ -256,6 +264,14 @@ def parse(prompt: str, ctx: Ctx) -> Task:
     if verdict is not None:
         return FormalFallacy(answer=verdict)
 
+    # hyperbaton: a permutation-pair of adjective orderings. The cheap structural
+    # gate (same words, different order) runs before any model forward, so this is
+    # a no-op on other MC prompts. Needs the calibrated subjectivity axis.
+    from turnstyle.hyperbaton import solve_hyperbaton
+    if (letter := solve_hyperbaton(prompt, ctx.model, ctx.tokenizer, ctx.device,
+                                   ctx.subjectivity_axis)) is not None:
+        return Hyperbaton(answer=letter)
+
     letters = _OPTION_RE.findall(prompt)
     if len(letters) >= 2:
         return MultipleChoice(options=letters)
@@ -291,6 +307,9 @@ def solve(task: Task, prompt: str, ctx: Ctx) -> Result:
         case FormalFallacy(answer):
             return Answer(text=answer, source="formal_fallacies",
                           proof="FOL validity by interpretation enumeration")
+        case Hyperbaton(answer):
+            return Answer(text=answer, source="hyperbaton",
+                          proof="adjectives sorted by decreasing subjectivity")
 
         case MultipleChoice(options, gather, selection):
             return _solve_choice(prompt, options, gather, selection, ctx)
@@ -409,7 +428,7 @@ __all__ = [
     "Gather", "PriorLocked", "Deliberated", "SelectionShape",
     "Arithmetic", "MultipleChoice", "TruthChain", "Spatial",
     "Boolean", "Dyck", "Sorting", "DateCalc", "Ordering", "FormalFallacy",
-    "FreeForm", "Task",
+    "Hyperbaton", "FreeForm", "Task",
     "Answer", "Abstain", "Result", "Ctx", "parse", "enrich", "solve", "run",
     "detect_selection_shape",
 ]

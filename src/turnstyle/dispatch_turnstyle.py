@@ -42,9 +42,11 @@ class DispatchTurnstyle(Turnstyle):
                        choice_artifact=choice_artifact,
                        legacy_registry=legacy_registry,
                        pole_cache={})
-        # activate the model-level polarity probe for the Ordering path, if calibrated
+        # activate the model-level polarity probe (Ordering) + subjectivity axis
+        # (Hyperbaton) from the profile, if calibrated
         if profile is not None:
             self.ctx.polarity_probe = profile.get_polarity()
+            self.ctx.subjectivity_axis = profile.get_subjectivity()
 
     @property
     def profile_tasks(self) -> list[str]:
@@ -104,6 +106,26 @@ class DispatchTurnstyle(Turnstyle):
             print(f"[_polarity] {'SHIP' if cap and cap.ship else 'no-ship'} "
                   f"@L{probe.layer} loo_axis={cap.loo_axis:.3f}")
         return probe
+
+    def calibrate_subjectivity(self, layer: int | None = None, accuracy=None,
+                               verbose: bool = False):
+        """Fit the model-level subjectivity BipolarAxis (opinion vs material),
+        activate it for the Hyperbaton path, and record it in the profile. Call
+        `persist()` to save. Built on the same machinery as the polarity primitive."""
+        from turnstyle.hyperbaton import fit_subjectivity_axis, DEFAULT_LAYER
+        axis = fit_subjectivity_axis(self.model, self.tokenizer, self.device,
+                                     layer or DEFAULT_LAYER)
+        self.ctx.subjectivity_axis = axis
+        if self.profile is None:
+            from turnstyle.profile import ModelProfile, model_fingerprint
+            self.profile = ModelProfile(
+                fingerprint=model_fingerprint(self.model),
+                model_id=getattr(self.model.config, "_name_or_path", "") or "unknown")
+        self.profile.set_subjectivity(axis, accuracy=accuracy)
+        if verbose:
+            print(f"[_subjectivity] axis @L{axis.layer}"
+                  + (f" acc={accuracy:.3f}" if accuracy is not None else ""))
+        return axis
 
     def persist(self):
         """Write the calibrated profile to the user cache (fingerprint-addressed).
