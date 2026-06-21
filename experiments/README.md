@@ -21,6 +21,8 @@ reproducible experiments that produced findings recorded in `CLAUDE.md` or memor
 | `temporal_option_probe.py` | Option start-time token probe: 94.8% answer accuracy at L14 (vs 66.4% last-token, 25% chance). Mirrors entity-ordering probe pattern. | 2026-04-19 |
 | `temporal_probe_diagnostic.py` | Structural diagnostic: n_overlap=0 — free-slot start NEVER equals a constraint start in the dataset. Probe learns set-membership, not semantic reasoning. | 2026-04-19 |
 | `temporal_multimodel_probe.py` | Multi-model sweep: signal universal (93–99.2% across 5 models). Phi-4-mini 99.2% at L8 (25% depth). L/N varies 0.25–0.66; not architecture-invariant. | 2026-04-19 |
+| `temporal_rsa_pearson.py` | Weber's Law reanalysis with Pearson r (Spearman is rank-invariant, can't distinguish linear vs log). Result: log wins 17/25 layers — Weber encoding confirmed for clock time. Best L8: R²-lin=0.834, R²-log=0.847. | 2026-04-19 |
+| `social_affect_embedding.md` | **Design spec (not yet built):** Monkey-Sphere Affect Embedding — social emotion as perceived affect-flux on an affect-weighted relational graph (built on `SemanticFrame`). Transfer-operator spectral treatment, egocentric vs allocentric, monkey-sphere as a rank budget. First falsifier F1 = synthetic 3-node graphs. | 2026-06-21 |
 
 ## Common Setup
 
