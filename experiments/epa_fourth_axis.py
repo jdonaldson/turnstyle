@@ -155,6 +155,7 @@ def partial_corr(a, b, controls):
 
 def main(argv=None):
     p = argparse.ArgumentParser()
+    p.add_argument("--model", default=MODEL)
     p.add_argument("--layer", type=int, default=11)
     p.add_argument("--max-words", type=int, default=1200)
     p.add_argument("--output", default="experiments/data/epa_fourth_axis.json")
@@ -171,8 +172,8 @@ def main(argv=None):
 
     words = sorted(set(common) | set(NOVELTY[0]) | set(NOVELTY[1]))
     device = "mps" if torch.backends.mps.is_available() else "cpu"
-    tok = AutoTokenizer.from_pretrained(MODEL)
-    mdl = AutoModelForCausalLM.from_pretrained(MODEL, dtype=torch.float16).to(device)
+    tok = AutoTokenizer.from_pretrained(args.model)
+    mdl = AutoModelForCausalLM.from_pretrained(args.model, dtype=torch.float16).to(device)
     print(f"device={device}  collecting acts for {len(words)} words…", flush=True)
     acts = collect_acts(mdl, tok, device, words)
 

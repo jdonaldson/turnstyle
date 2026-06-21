@@ -113,6 +113,7 @@ def cv_scores(X, y):
 
 def main(argv=None):
     p = argparse.ArgumentParser()
+    p.add_argument("--model", default=MODEL)
     p.add_argument("--layers", help="comma-separated (default: all)")
     p.add_argument("--max-words", type=int, default=1000)
     p.add_argument("--output", default="experiments/data/epa_external_validation.json")
@@ -137,9 +138,9 @@ def main(argv=None):
         print(f"{f:7s} " + "  ".join(f"{C[i,j]:+.2f}" for j in range(len(FAC))))
 
     device = "mps" if torch.backends.mps.is_available() else "cpu"
-    tok = AutoTokenizer.from_pretrained(MODEL)
-    mdl = AutoModelForCausalLM.from_pretrained(MODEL, dtype=torch.float16).to(device)
-    print(f"\ndevice={device}  collecting acts for {len(common)} words…", flush=True)
+    tok = AutoTokenizer.from_pretrained(args.model)
+    mdl = AutoModelForCausalLM.from_pretrained(args.model, dtype=torch.float16).to(device)
+    print(f"\nmodel={args.model}  device={device}  collecting acts for {len(common)} words…", flush=True)
     acts = collect_acts(mdl, tok, device, common)
     n_layers = acts[common[0]].shape[0]
     layers = ([int(x) for x in args.layers.split(",")] if args.layers

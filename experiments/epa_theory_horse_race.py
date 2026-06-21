@@ -217,13 +217,14 @@ def analyze_layer(space):
 
 def main(argv=None):
     p = argparse.ArgumentParser()
+    p.add_argument("--model", default=MODEL)
     p.add_argument("--layers", help="comma-separated layer indices (default: all)")
     p.add_argument("--output", default="experiments/data/epa_theory_horse_race.json")
     args = p.parse_args(argv)
 
     device = "mps" if torch.backends.mps.is_available() else "cpu"
-    tok = AutoTokenizer.from_pretrained(MODEL)
-    mdl = AutoModelForCausalLM.from_pretrained(MODEL, dtype=torch.float16).to(device)
+    tok = AutoTokenizer.from_pretrained(args.model)
+    mdl = AutoModelForCausalLM.from_pretrained(args.model, dtype=torch.float16).to(device)
     words = _all_words()
     print(f"device={device}  unique anchor words={len(words)}  collecting acts…", flush=True)
     acts = collect_acts(mdl, tok, device, words)
