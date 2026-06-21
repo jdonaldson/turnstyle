@@ -213,7 +213,12 @@ def parse(prompt: str, ctx: Ctx) -> Task:
         return Boolean(answer=r[2])
     if (r := parse_dyck(prompt)) is not None:
         return Dyck(answer=r[2])
-    if (r := parse_sorting(prompt)) is not None:
+    # A prompt carrying (A)..(E) option lines is explained by the MultipleChoice
+    # frame; don't let a stray "in alphabetical order" phrase in such a table
+    # prompt (penguins) mis-commit to a Sorting answer. word_sorting is never MC.
+    # See commitment_coverage_routing.
+    is_mc = len(_OPTION_RE.findall(prompt)) >= 2
+    if not is_mc and (r := parse_sorting(prompt)) is not None:
         return Sorting(answer=r[2])
 
     # logical_deduction: structural frames + symbolic solve; scalar-adjective poles
