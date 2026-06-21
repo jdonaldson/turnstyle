@@ -123,12 +123,21 @@ class Ordering:
 
 
 @dataclass(frozen=True)
+class FormalFallacy:
+    """formal_fallacies: NL syllogism → FOL → validity check by interpretation
+    enumeration. valid/invalid is mapped to the prompt's option letter, so this
+    is deterministic-selection like DateCalc/Ordering."""
+    answer: str           # option letter
+
+
+@dataclass(frozen=True)
 class FreeForm:
     """No structured variant matched — delegate to the legacy blackboard."""
 
 
 Task = (Arithmetic | MultipleChoice | TruthChain | Spatial
-        | Boolean | Dyck | Sorting | DateCalc | Ordering | FreeForm)
+        | Boolean | Dyck | Sorting | DateCalc | Ordering | FormalFallacy
+        | FreeForm)
 
 
 # ── Answer + Context ──────────────────────────────────────────────────────────
@@ -240,6 +249,13 @@ def parse(prompt: str, ctx: Ctx) -> Task:
     if nav is not None:
         return Spatial(answer=nav)
 
+    # formal_fallacies: FOL validity check. BBH target is the word valid/invalid
+    # (options are dash-bullets, not (A)/(B)), so the verdict IS the answer.
+    from turnstyle.formal_fallacies import solve_formal_fallacy
+    verdict = solve_formal_fallacy(prompt)
+    if verdict is not None:
+        return FormalFallacy(answer=verdict)
+
     letters = _OPTION_RE.findall(prompt)
     if len(letters) >= 2:
         return MultipleChoice(options=letters)
@@ -272,6 +288,9 @@ def solve(task: Task, prompt: str, ctx: Ctx) -> Result:
         case Ordering(answer):
             return Answer(text=answer, source="logical_deduction",
                           proof="constraint solve, unique ordering")
+        case FormalFallacy(answer):
+            return Answer(text=answer, source="formal_fallacies",
+                          proof="FOL validity by interpretation enumeration")
 
         case MultipleChoice(options, gather, selection):
             return _solve_choice(prompt, options, gather, selection, ctx)
@@ -389,7 +408,8 @@ def _solve_freeform(prompt: str, ctx: Ctx) -> Result:
 __all__ = [
     "Gather", "PriorLocked", "Deliberated", "SelectionShape",
     "Arithmetic", "MultipleChoice", "TruthChain", "Spatial",
-    "Boolean", "Dyck", "Sorting", "DateCalc", "Ordering", "FreeForm", "Task",
+    "Boolean", "Dyck", "Sorting", "DateCalc", "Ordering", "FormalFallacy",
+    "FreeForm", "Task",
     "Answer", "Abstain", "Result", "Ctx", "parse", "enrich", "solve", "run",
     "detect_selection_shape",
 ]
