@@ -43,9 +43,9 @@ def main():
         print(f"  {w:10s} " + "  ".join(f"{n}={v:+.2f}" for n, v in top))
 
     from turnstyle.frame_library import save_library, load_library, _BUNDLED_FRAMES
-    # user cache (fingerprint-addressed) + a bundled copy that ships with the package
+    # user cache (fingerprint-addressed .npz) + a bundled .npz that ships in the package
     p = save_library(lib, mdl, model_id=mid)
-    bp = lib.save(_BUNDLED_FRAMES / f"{lib.fingerprint}.json")
+    bp = lib.save_npz(_BUNDLED_FRAMES / f"{lib.fingerprint}.npz")
     print(f"\nsaved -> user {p}\n      -> bundled {bp}  ({len(bp.read_bytes())//1024} KB)"
           f"  fingerprint {lib.fingerprint}")
     got = load_library(mdl)               # exercises the two-tier loader

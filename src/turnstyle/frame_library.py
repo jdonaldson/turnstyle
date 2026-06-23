@@ -265,6 +265,42 @@ class FrameLibrary:
     def load(cls, path) -> "FrameLibrary":
         return cls.from_dict(json.loads(Path(path).read_text()))
 
+    # -- compact binary store (.npz, float32; ~3x smaller than JSON, numpy-only) --
+    def save_npz(self, path) -> Path:
+        """Dense arrays as compressed float32; scalar metadata as a JSON blob. The
+        primary on-disk format (JSON save/load stays for human inspection)."""
+        p = Path(path)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        arrays, meta = {}, {"fingerprint": self.fingerprint, "model_id": self.model_id,
+                            "frames": {}}
+        for name, f in self.frames.items():
+            ax = f.axis
+            arrays[f"{name}|mean"] = ax.mean.astype(np.float32)
+            arrays[f"{name}|scale"] = ax.scale.astype(np.float32)
+            arrays[f"{name}|direction"] = ax.direction.astype(np.float32)
+            meta["frames"][name] = {
+                "low_label": ax.low_label, "high_label": ax.high_label,
+                "layer": int(ax.layer), "center": float(ax.center),
+                "template": f.template, "pool": f.pool, "cv_r": f.cv_r, "data": f.data}
+        arrays["__meta__"] = np.frombuffer(json.dumps(meta).encode(), dtype=np.uint8)
+        np.savez_compressed(p, **arrays)
+        return p if p.suffix == ".npz" else Path(str(p) + ".npz")
+
+    @classmethod
+    def load_npz(cls, path) -> "FrameLibrary":
+        z = np.load(Path(path), allow_pickle=False)            # no pickle: safe to ship
+        meta = json.loads(bytes(z["__meta__"]).decode())
+        frames = {}
+        for name, m in meta["frames"].items():
+            ax = BipolarAxis(name, m["low_label"], m["high_label"], m["layer"],
+                             np.asarray(z[f"{name}|mean"], float),
+                             np.asarray(z[f"{name}|scale"], float),
+                             np.asarray(z[f"{name}|direction"], float), float(m["center"]))
+            frames[name] = Frame(ax, template=m["template"], pool=m["pool"],
+                                 cv_r=m["cv_r"], data=m["data"])
+        return cls(frames=frames, fingerprint=meta.get("fingerprint", ""),
+                   model_id=meta.get("model_id", ""))
+
 
 # ── fingerprint-addressed store (two-tier: bundled base + user overlay) ────────
 
@@ -276,11 +312,21 @@ def _fingerprint(model_or_fp) -> str:
 
 
 def save_library(lib: FrameLibrary, model_or_fp, model_id: str = "") -> Path:
-    """Write a library to the user cache, addressed by model fingerprint."""
+    """Write a library to the user cache (compact .npz), addressed by fingerprint."""
     lib.fingerprint = _fingerprint(model_or_fp)
     if model_id:
         lib.model_id = model_id
-    return lib.save(_USER_FRAMES / f"{lib.fingerprint}.json")
+    return lib.save_npz(_USER_FRAMES / f"{lib.fingerprint}.npz")
+
+
+def _load_tier(base: Path, fp: str) -> "FrameLibrary | None":
+    """Load <fp>.npz (primary) or <fp>.json (fallback) from one store tier."""
+    npz, js = base / f"{fp}.npz", base / f"{fp}.json"
+    if npz.exists():
+        return FrameLibrary.load_npz(npz)
+    if js.exists():
+        return FrameLibrary.load(js)
+    return None
 
 
 def load_library(model_or_fp) -> "FrameLibrary | None":
@@ -289,9 +335,9 @@ def load_library(model_or_fp) -> "FrameLibrary | None":
     fp = _fingerprint(model_or_fp)
     tiers = {}
     for name, base in (("bundled", _BUNDLED_FRAMES), ("user", _USER_FRAMES)):
-        p = base / f"{fp}.json"
-        if p.exists():
-            tiers[name] = FrameLibrary.load(p)
+        t = _load_tier(base, fp)
+        if t is not None:
+            tiers[name] = t
     if "bundled" in tiers and "user" in tiers:
         merged = FrameLibrary(frames=dict(tiers["bundled"].frames), fingerprint=fp,
                               model_id=tiers["user"].model_id or tiers["bundled"].model_id)

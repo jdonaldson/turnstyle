@@ -72,6 +72,23 @@ def test_library_save_load(tmp_path):
     assert "age" in lib2 and len(lib2) == 1
 
 
+def test_npz_roundtrip_preserves_projection(tmp_path):
+    H = 12
+    rng = np.random.default_rng(3)
+    d = rng.standard_normal(H); d /= np.linalg.norm(d)
+    ax = BipolarAxis("size", "tiny", "huge", 7, rng.standard_normal(H),
+                     np.abs(rng.standard_normal(H)) + 0.1, d, 0.5)
+    lib = FrameLibrary(fingerprint="fp9", model_id="toy").add(
+        Frame(ax, template="It is a {w}.", pool="last", cv_r=0.9, data={"tiny": -1}))
+    p = lib.save_npz(tmp_path / "frames.npz")
+    lib2 = FrameLibrary.load_npz(p)
+    assert lib2.fingerprint == "fp9" and lib2.frames["size"].layer == 7
+    assert lib2.frames["size"].template == "It is a {w}." and lib2.frames["size"].cv_r == 0.9
+    v = rng.standard_normal(H)
+    # float32 storage → projections agree to float precision
+    assert abs(lib.frames["size"].project(v) - lib2.frames["size"].project(v)) < 1e-3
+
+
 def test_orthogonality_math_on_synthetic_axes():
     # two BipolarAxis with known orthogonal vs aligned directions, project-only check
     H = 10
