@@ -18,6 +18,11 @@ Probes come from a per-model ModelProfile (turnstyle.profile), fingerprint-loade
 on init: calibrate once (`fit_choice` + `persist`), then `use_probe(task)` activates
 a saved probe in later sessions with no re-fitting. The profile's component map is
 the multi-MC-task registry.
+
+A per-model FrameLibrary (turnstyle.frame_library) also auto-loads by fingerprint:
+`self.frames` / `frame_coordinates(word)` project any word onto the calibrated semantic
+frames (affect/size/age/.../number/time). It's a measurement surface — not part of
+solve() — and lives in its own .npz store, separate from the profile JSON.
 """
 from __future__ import annotations
 
@@ -47,11 +52,32 @@ class DispatchTurnstyle(Turnstyle):
         if profile is not None:
             self.ctx.polarity_probe = profile.get_polarity()
             self.ctx.subjectivity_axis = profile.get_subjectivity()
+        # Calibrated semantic frames (affect/size/age/.../number/time) — a separate
+        # fingerprint-addressed .npz store (kept OUT of the profile JSON). This is a
+        # measurement surface on the instance, not wired into solve(); use
+        # frame_coordinates() / self.frames. Auto-loads the bundled library by fingerprint.
+        self.frames = None
+        if load_profile_on_init:
+            from turnstyle.frame_library import load_library
+            self.frames = load_library(model)
 
     @property
     def profile_tasks(self) -> list[str]:
         """Tasks with a calibrated probe in the loaded profile (the MC registry)."""
         return sorted(self.profile.components) if self.profile else []
+
+    @property
+    def frame_names(self) -> list[str]:
+        """Names of the auto-loaded semantic frames, or [] if none for this model."""
+        return self.frames.names if self.frames else []
+
+    def frame_coordinates(self, word: str):
+        """Project a word onto every calibrated semantic frame (affect/size/age/shape/
+        space/material/number/time) → {name: signed coordinate}, or None if no
+        FrameLibrary is bundled for this model's fingerprint."""
+        if self.frames is None:
+            return None
+        return self.frames.project_word(word, self.model, self.tokenizer, self.device)
 
     def use_probe(self, task: str) -> bool:
         """Activate a calibrated probe from the loaded profile for the MC path —
