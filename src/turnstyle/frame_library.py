@@ -24,6 +24,7 @@ Design notes:
 from __future__ import annotations
 
 import json
+import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -32,6 +33,13 @@ import numpy as np
 from turnstyle.semantic_frame import BipolarAxis
 
 _DEFAULT_TEMPLATE = "It is a {w} object."
+
+# fingerprint-addressed library store (mirrors turnstyle.profile's two-tier loader):
+# a user cache overlays a bundled base, per-frame (user-fit frames win, bundled fills gaps).
+_USER_FRAMES = Path(
+    os.environ.get("XDG_CACHE_HOME", str(Path.home() / ".cache"))
+) / "turnstyle" / "frames"
+_BUNDLED_FRAMES = Path(__file__).parent / "data" / "frames"
 
 
 # ── numpy ridge (dual form: n words << H, so an n×n solve is cheap) ────────────
@@ -101,7 +109,11 @@ class Frame:
         return self.axis.project(vec)
 
     def to_dict(self) -> dict:
-        return {"axis": self.axis.to_dict(), "template": self.template,
+        ax = self.axis.to_dict()
+        for k in ("mean", "scale", "direction"):           # trim float bloat (6 dp is
+            ax[k] = [round(float(x), 6) for x in ax[k]]     # ample for unit dirs / z-stats)
+        ax["center"] = round(float(ax["center"]), 6)
+        return {"axis": ax, "template": self.template,
                 "pool": self.pool, "cv_r": self.cv_r, "data": self.data}
 
     @classmethod
@@ -138,6 +150,8 @@ def _collect(model, tokenizer, device, words, template, pool="last") -> dict:
 @dataclass
 class FrameLibrary:
     frames: dict = field(default_factory=dict)        # name -> Frame
+    fingerprint: str = ""                             # model fingerprint (set on save)
+    model_id: str = ""                                # human identity for inspection
 
     # -- introspection --
     @property
@@ -233,20 +247,57 @@ class FrameLibrary:
 
     # -- persistence --
     def to_dict(self) -> dict:
-        return {"frames": {n: f.to_dict() for n, f in self.frames.items()}}
+        return {"fingerprint": self.fingerprint, "model_id": self.model_id,
+                "frames": {n: f.to_dict() for n, f in self.frames.items()}}
 
     @classmethod
     def from_dict(cls, d: dict) -> "FrameLibrary":
-        return cls(frames={n: Frame.from_dict(fd) for n, fd in d["frames"].items()})
+        return cls(frames={n: Frame.from_dict(fd) for n, fd in d["frames"].items()},
+                   fingerprint=d.get("fingerprint", ""), model_id=d.get("model_id", ""))
 
     def save(self, path) -> Path:
         p = Path(path)
+        p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(json.dumps(self.to_dict()))
         return p
 
     @classmethod
     def load(cls, path) -> "FrameLibrary":
         return cls.from_dict(json.loads(Path(path).read_text()))
+
+
+# ── fingerprint-addressed store (two-tier: bundled base + user overlay) ────────
+
+def _fingerprint(model_or_fp) -> str:
+    if isinstance(model_or_fp, str):
+        return model_or_fp
+    from turnstyle.profile import model_fingerprint
+    return model_fingerprint(model_or_fp)
+
+
+def save_library(lib: FrameLibrary, model_or_fp, model_id: str = "") -> Path:
+    """Write a library to the user cache, addressed by model fingerprint."""
+    lib.fingerprint = _fingerprint(model_or_fp)
+    if model_id:
+        lib.model_id = model_id
+    return lib.save(_USER_FRAMES / f"{lib.fingerprint}.json")
+
+
+def load_library(model_or_fp) -> "FrameLibrary | None":
+    """Load the library matching this model's fingerprint: bundled base, user-cache
+    overlay (user-fit frames win per-name, bundled fills gaps). None if neither exists."""
+    fp = _fingerprint(model_or_fp)
+    tiers = {}
+    for name, base in (("bundled", _BUNDLED_FRAMES), ("user", _USER_FRAMES)):
+        p = base / f"{fp}.json"
+        if p.exists():
+            tiers[name] = FrameLibrary.load(p)
+    if "bundled" in tiers and "user" in tiers:
+        merged = FrameLibrary(frames=dict(tiers["bundled"].frames), fingerprint=fp,
+                              model_id=tiers["user"].model_id or tiers["bundled"].model_id)
+        merged.frames.update(tiers["user"].frames)            # user wins per-frame
+        return merged
+    return tiers.get("user") or tiers.get("bundled")
 
 
 # ── canonical family: the adjective-ordering rungs + number + time ────────────
@@ -282,4 +333,5 @@ CANONICAL_FRAMES = {
 }
 
 
-__all__ = ["Frame", "FrameLibrary", "CANONICAL_FRAMES"]
+__all__ = ["Frame", "FrameLibrary", "CANONICAL_FRAMES",
+           "save_library", "load_library"]

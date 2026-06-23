@@ -42,15 +42,15 @@ def main():
         top = sorted(c.items(), key=lambda kv: -abs(kv[1]))[:3]
         print(f"  {w:10s} " + "  ".join(f"{n}={v:+.2f}" for n, v in top))
 
-    from turnstyle.profile import model_fingerprint
-    fp = model_fingerprint(mdl)
-    out = Path("data/frames"); out.mkdir(parents=True, exist_ok=True)
-    p = lib.save(out / f"{fp}.json")
-    print(f"\nsaved -> {p}  (fingerprint {fp})")
-    # round-trip check
-    lib2 = FrameLibrary.load(p)
-    assert lib2.names == lib.names
-    print(f"reload OK: {len(lib2)} frames")
+    from turnstyle.frame_library import save_library, load_library, _BUNDLED_FRAMES
+    # user cache (fingerprint-addressed) + a bundled copy that ships with the package
+    p = save_library(lib, mdl, model_id=mid)
+    bp = lib.save(_BUNDLED_FRAMES / f"{lib.fingerprint}.json")
+    print(f"\nsaved -> user {p}\n      -> bundled {bp}  ({len(bp.read_bytes())//1024} KB)"
+          f"  fingerprint {lib.fingerprint}")
+    got = load_library(mdl)               # exercises the two-tier loader
+    assert got is not None and got.names == lib.names
+    print(f"load_library OK: {len(got)} frames, fp {got.fingerprint}")
 
 
 if __name__ == "__main__":

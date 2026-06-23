@@ -4,9 +4,16 @@ from __future__ import annotations
 
 import numpy as np
 
+import turnstyle.frame_library as fl
 from turnstyle.frame_library import (Frame, FrameLibrary, CANONICAL_FRAMES,
-                                     _ridge_dir, _cv_r, _axis_from_scalar)
+                                     _ridge_dir, _cv_r, _axis_from_scalar,
+                                     save_library, load_library)
 from turnstyle.semantic_frame import BipolarAxis
+
+
+def _mk_frame(name, layer=0, H=6):
+    ax = BipolarAxis(name, "-", "+", layer, np.zeros(H), np.ones(H), np.eye(H)[0], 0.0)
+    return Frame(ax, data={"a": 0, "b": 1})
 
 
 def test_ridge_dir_recovers_planted_direction():
@@ -74,6 +81,30 @@ def test_orthogonality_math_on_synthetic_axes():
     assert abs(float(a.direction @ b.direction)) < 1e-9      # orthogonal
     c = BipolarAxis("c", "-", "+", 0, np.zeros(H), np.ones(H), d0.copy(), 0.0)
     assert abs(float(a.direction @ c.direction)) > 0.99      # aligned
+
+
+def test_fingerprint_store_save_and_load(tmp_path, monkeypatch):
+    monkeypatch.setattr(fl, "_USER_FRAMES", tmp_path / "user")
+    monkeypatch.setattr(fl, "_BUNDLED_FRAMES", tmp_path / "bundled")
+    lib = FrameLibrary().add(_mk_frame("size"))
+    save_library(lib, "fp123", model_id="toy")
+    got = load_library("fp123")
+    assert got is not None and got.names == ["size"] and got.fingerprint == "fp123"
+    assert load_library("nope") is None
+
+
+def test_fingerprint_store_user_overlays_bundled(tmp_path, monkeypatch):
+    monkeypatch.setattr(fl, "_USER_FRAMES", tmp_path / "user")
+    monkeypatch.setattr(fl, "_BUNDLED_FRAMES", tmp_path / "bundled")
+    # bundled ships size+age; user re-fits size (layer 9) and adds color
+    bundled = FrameLibrary().add(_mk_frame("size", layer=1)).add(_mk_frame("age"))
+    bundled.save(tmp_path / "bundled" / "fp.json")
+    user = FrameLibrary().add(_mk_frame("size", layer=9)).add(_mk_frame("color"))
+    user.save(tmp_path / "user" / "fp.json")
+    merged = load_library("fp")
+    assert set(merged.names) == {"size", "age", "color"}     # union
+    assert merged.frames["size"].layer == 9                  # user wins per-frame
+    assert "age" in merged                                   # bundled fills the gap
 
 
 def test_canonical_frames_wellformed():
