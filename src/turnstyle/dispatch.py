@@ -138,13 +138,52 @@ class Hyperbaton:
 
 
 @dataclass(frozen=True)
+class Tabular:
+    """penguins_in_a_table: a bespoke data table + a query. Parsed structurally
+    (CSV records + add/delete mutations) into SQLite; the model writes the SQL,
+    which is executed and matched to an option. Holding this means the SQL solve
+    succeeded and the answer (option letter) is known. Knowledge questions (e.g.
+    'first name of a famous jazzman') fall through to FreeForm by abstaining."""
+    answer: str           # option letter, e.g. "(A)"
+
+
+@dataclass(frozen=True)
+class Tracking:
+    """tracking_shuffled_objects: initial actor→item assignments + a chain of
+    pairwise swaps. Deterministically simulated at parse time (regex parse of the
+    init state + swaps, final state matched to an option) — holding this means
+    the swap chain was walked and the answer (option letter) is known."""
+    answer: str           # option letter, e.g. "(A)"
+
+
+@dataclass(frozen=True)
+class ObjectCount:
+    """object_counting: 'I have a flute, … how many musical instruments?'. The item
+    list is parsed structurally (quantities from a closed number-word set); category
+    membership is decided by the MODEL's world knowledge (a yes/no scorer), not a
+    hardcoded category set; the count is deterministic. The integer answer is free-
+    form (no options)."""
+    answer: str           # integer as a string, e.g. "8"
+
+
+@dataclass(frozen=True)
+class ColoredObjects:
+    """reasoning_about_colored_objects: a row of colored objects + a spatial/color
+    query. Deterministically solved at parse time — color is parsed positionally
+    (no color list), the query operator is structural, the answer is mapped to an
+    option (color/count/yes-no) read from the prompt's own options."""
+    answer: str           # option letter, e.g. "(A)"
+
+
+@dataclass(frozen=True)
 class FreeForm:
     """No structured variant matched — delegate to the legacy blackboard."""
 
 
 Task = (Arithmetic | MultipleChoice | TruthChain | Spatial
         | Boolean | Dyck | Sorting | DateCalc | Ordering | FormalFallacy
-        | Hyperbaton | FreeForm)
+        | Hyperbaton | Tracking | Tabular | ColoredObjects | ObjectCount
+        | FreeForm)
 
 
 # ── Answer + Context ──────────────────────────────────────────────────────────
@@ -179,6 +218,7 @@ class Ctx:
     polarity_probe: Any = None       # PolarityProbe for the Ordering scalar-adjective poles
     pole_cache: Any = None           # {root: pole} memo, reused across prompts
     subjectivity_axis: Any = None    # BipolarAxis for the Hyperbaton adjective-ordering solve
+    sql_turnstyle: Any = None        # cached SQLTurnstyle for the Tabular (penguins) path
 
 
 _OPTION_RE = re.compile(r"^\(([A-Z])\)", re.MULTILINE)
@@ -237,6 +277,44 @@ def parse(prompt: str, ctx: Ctx) -> Task:
     is_mc = len(_OPTION_RE.findall(prompt)) >= 2
     if not is_mc and (r := parse_sorting(prompt)) is not None:
         return Sorting(answer=r[2])
+
+    # tracking_shuffled_objects: deterministic swap-chain simulation. The solver is
+    # tightly gated (needs known actor names + an "At the start" init it can fully
+    # parse + a query actor + a matching option), so it's a no-op on other prompts.
+    from turnstyle.object_tracking import _solve_tracking
+    if (letter := _solve_tracking(prompt)) is not None:
+        return Tracking(answer=letter)
+
+    # reasoning_about_colored_objects: deterministic positional-color + structural
+    # spatial query. Returns None unless it parses a colored-object scene AND a
+    # recognized query that maps to an option, so it's a no-op on other prompts.
+    from turnstyle.colored_objects import solve_colored_objects
+    if (letter := solve_colored_objects(prompt)) is not None:
+        return ColoredObjects(answer=letter)
+
+    # object_counting: cheap structural gate (does "how many X do I have" parse?)
+    # then model-classified category membership. Free-answer integer, no options.
+    from turnstyle.object_counting import parse_item_list, solve_object_counting
+    if parse_item_list(prompt) is not None and ctx.model is not None:
+        count = solve_object_counting(prompt, ctx.model, ctx.tokenizer, ctx.device)
+        if count is not None:
+            return ObjectCount(answer=count)
+
+    # penguins_in_a_table: cheap structural gate (does the bespoke table parse?)
+    # runs before the expensive model SQL solve, so this is a no-op on non-table
+    # prompts. The SQL solve abstains (None) on knowledge questions → FreeForm.
+    if ctx.model is not None:
+        from turnstyle.penguins import parse_penguins_tables, solve_penguins
+        if parse_penguins_tables(prompt) is not None:
+            if ctx.sql_turnstyle is None:
+                from turnstyle.sql import SQLTurnstyle
+                ctx.sql_turnstyle = SQLTurnstyle(
+                    ctx.model, ctx.tokenizer, ctx.device,
+                    parse_tables_fn=parse_penguins_tables, probe_label="penguins")
+            letter = solve_penguins(prompt, ctx.model, ctx.tokenizer, ctx.device,
+                                    sql_turnstyle=ctx.sql_turnstyle)
+            if letter is not None:
+                return Tabular(answer=letter)
 
     # logical_deduction: structural frames + symbolic solve; scalar-adjective poles
     # come from the polarity probe (if calibrated) else the regex lexicon fallback.
@@ -310,6 +388,18 @@ def solve(task: Task, prompt: str, ctx: Ctx) -> Result:
         case Hyperbaton(answer):
             return Answer(text=answer, source="hyperbaton",
                           proof="adjectives sorted by decreasing subjectivity")
+        case Tracking(answer):
+            return Answer(text=answer, source="object_tracking",
+                          proof="swap-chain simulation, final state matched")
+        case Tabular(answer):
+            return Answer(text=answer, source="penguins",
+                          proof="structural table parse + text-to-SQL")
+        case ColoredObjects(answer):
+            return Answer(text=answer, source="colored_objects",
+                          proof="positional-color scene + structural spatial query")
+        case ObjectCount(answer):
+            return Answer(text=answer, source="object_counting",
+                          proof="structural item parse + model-classified membership")
 
         case MultipleChoice(options, gather, selection):
             return _solve_choice(prompt, options, gather, selection, ctx)
@@ -428,7 +518,8 @@ __all__ = [
     "Gather", "PriorLocked", "Deliberated", "SelectionShape",
     "Arithmetic", "MultipleChoice", "TruthChain", "Spatial",
     "Boolean", "Dyck", "Sorting", "DateCalc", "Ordering", "FormalFallacy",
-    "Hyperbaton", "FreeForm", "Task",
+    "Hyperbaton", "Tracking", "Tabular", "ColoredObjects", "ObjectCount",
+    "FreeForm", "Task",
     "Answer", "Abstain", "Result", "Ctx", "parse", "enrich", "solve", "run",
     "detect_selection_shape",
 ]
