@@ -33,6 +33,7 @@ reproducible experiments that produced findings recorded in `CLAUDE.md` or memor
 | `affect_crosslingual_audit.py` | Audit: does the first→last token fix move AFFECT too? Fit EN Evaluation axis, project valence-signed adjectives (es/fr/de). **Yes — cross-lingual 0.47→0.91 (first→last), MID-STACK (L16).** Confirms the readout bug class understates all cross-lingual/multi-token transfer; affect (0.91) > color (0.75) but both were suppressed. | 2026-06-22 |
 | `size_frame.py` | A THIRD frame: SIZE (log physical magnitude). Recoverable **r=0.73 @L4** (shuffled folds — sorted dict + contiguous folds first gave a spurious −r). **Mutually orthogonal to affect AND color** (all axis cosines ~0.00–0.06) → the "family of orthogonal low-D frames" holds for 3. | 2026-06-22 |
 | `frame_family_matrix.py` | A FOURTH frame: NUMBER, + the full 4-frame |cos| matrix. **number recoverable r=0.95 @L4 (strongest of all frames)**; all cross-frame cosines ≈0 (only within-color L*·b*=0.31). **ATOM test: number·size ≈ 0 (0.006–0.038) → SmolLM2 does NOT share a magnitude axis between abstract number and physical size** (strong-ATOM refuted for this model). | 2026-06-22 |
+| `time_frame.py` | A FIFTH frame: TIME (duration, log seconds). Recoverable **r=0.91 @L2**. Completes the ATOM trio: **time·number, time·size, number·size all ≈0 (<0.09)** → number/size/time share NO magnitude axis (strong ATOM refuted across all three). 5 frames now mutually orthogonal. | 2026-06-22 |
 
 ## Common Setup
 
