@@ -230,9 +230,67 @@ class Ctx:
     ordering_classifier: Any = None  # OrderingClassifier for Hyperbaton (lazy-fit, cached)
     sql_turnstyle: Any = None        # cached SQLTurnstyle for the Tabular (penguins) path
     frame_library: Any = None        # FrameLibrary for the FrameOrdering implicit-attribute path
+    # Position-marginalized choice scoring: score each option over every slot it can
+    # occupy (cyclic shifts) and average, so the per-option probe's POSITION component
+    # cancels. The probe reads a contextualized last-token hidden state, so its score
+    # depends on option order (snarks: 100% natural-order but 37.5% reordered — order
+    # luck). Marginalizing makes the answer order-INVARIANT (snarks → 92.5% robustly).
+    # Surfaced by the perturbation harness reorder delta. Capped (O(N) passes).
+    marginalize_choice: bool = True
+    marginalize_cap: int = 8         # skip marginalization above this many options (cost)
 
 
 _OPTION_RE = re.compile(r"^\(([A-Z])\)", re.MULTILINE)
+
+# Marker-agnostic option intake. Every downstream parser assumes the canonical
+# "(A)" glyph; real prompts use many ("A.", "[A]", "A:", "1."). Canonicalize a
+# consecutive option block of any of these to "(A)" at the single dispatch entry so
+# the solvers generalize across surface format instead of abstaining on it. Purely
+# STRUCTURAL (consecutive labels starting at A/1 + a delimiter) — no keyword list;
+# idempotent on already-canonical prompts. Surfaced by the perturbation harness
+# (turnstyle.perturb): the committed BBH number was conditional on the "(A)" glyph.
+_OPT_CAND = re.compile(
+    r"^([ \t]*)(?:\(([A-Za-z\d]{1,2})\)|\[([A-Za-z\d]{1,2})\]|([A-Za-z\d]{1,2})[.:])\s+(.*)$")
+
+
+def _valid_label_seq(labels: list[str]) -> bool:
+    """True iff labels are A,B,C… (case-insensitive) or 1,2,3… in order."""
+    up = [l.upper() for l in labels]
+    if all(len(l) == 1 and l.isalpha() for l in up):
+        return up == [chr(ord("A") + k) for k in range(len(up))]
+    if all(l.isdigit() for l in labels):
+        return [int(l) for l in labels] == list(range(1, len(labels) + 1))
+    return False
+
+
+def normalize_option_markers(prompt: str) -> str:
+    """Rewrite a consecutive option block in any supported marker style to canonical
+    "(A) …". Returns the prompt unchanged if no valid block is found (idempotent)."""
+    lines = prompt.split("\n")
+    cand = {}
+    for i, ln in enumerate(lines):
+        m = _OPT_CAND.match(ln)
+        if m:
+            cand[i] = (m.group(2) or m.group(3) or m.group(4), m.group(5))
+    if not cand:
+        return prompt
+    idxs = sorted(cand)
+    best = None
+    j = 0
+    while j < len(idxs):                     # walk maximal contiguous runs
+        run = [idxs[j]]
+        k = j + 1
+        while k < len(idxs) and idxs[k] == run[-1] + 1:
+            run.append(idxs[k]); k += 1
+        if len(run) >= 2 and _valid_label_seq([cand[i][0] for i in run]) \
+                and (best is None or len(run) > len(best)):
+            best = run
+        j = k
+    if best is None:
+        return prompt
+    for pos, i in enumerate(best):
+        lines[i] = f"({chr(ord('A') + pos)}) {cand[i][1]}"
+    return "\n".join(lines)
 
 # A value-solver (arithmetic/boolean) must EXPLAIN the prompt, not extract a
 # fragment — otherwise it trips on incidental numbers/keywords in prose (snarks,
@@ -441,7 +499,9 @@ def solve(task: Task, prompt: str, ctx: Ctx) -> Result:
 
 
 def run(prompt: str, ctx: Ctx) -> Result:
-    """parse → enrich → solve."""
+    """parse → enrich → solve. Option markers are canonicalized to "(A)" first so
+    every parser is marker-agnostic (see normalize_option_markers)."""
+    prompt = normalize_option_markers(prompt)
     return solve(enrich(parse(prompt, ctx), prompt, ctx), prompt, ctx)
 
 
@@ -495,11 +555,68 @@ def detect_selection_shape(prompt: str, options: list[str],
 
 # ── Model-touching leaves: adapt the existing primitives ──────────────────────
 
+def _choice_scores(prompt: str, ctx: Ctx) -> Optional[dict]:
+    """One ChoiceProbe pass → {label: P(positive)}, or None if it didn't fire."""
+    from turnstyle.blackboard import Blackboard
+    from turnstyle.primitives.choice_probe import ChoiceProbe
+    bb = Blackboard(prompt=prompt, context={
+        "model": ctx.model, "tokenizer": ctx.tokenizer, "device": ctx.device})
+    ChoiceProbe(ctx.choice_artifact).fire(bb)
+    ans = bb.terminal_answer()
+    return ans.payload["scores"] if ans is not None else None
+
+
+def _split_canonical_options(prompt: str):
+    """Split a canonicalized prompt into (head, [contents]) for its (A).. block, or
+    None. Assumes normalize_option_markers already ran (markers are "(A)")."""
+    ms = list(_OPTION_RE.finditer(prompt))
+    if len(ms) < 2:
+        return None
+    head = prompt[: ms[0].start()]
+    contents = [prompt[m.end(): (ms[i + 1].start() if i + 1 < len(ms) else len(prompt))].strip()
+                for i, m in enumerate(ms)]
+    return head, contents
+
+
+def _score_choice_marginalized(prompt: str, ctx: Ctx):
+    """Position-marginalized scoring: present the options in N cyclic shifts (each
+    option lands in each slot once), average each option's P(positive) across the
+    slots it occupied, and pick the argmax. Returns (answer_text, {label: avg}) or
+    None. Order-invariant by construction → strips the probe's position component."""
+    parsed = _split_canonical_options(prompt)
+    if parsed is None:
+        return None
+    head, contents = parsed
+    n = len(contents)
+    agg = [0.0] * n
+    for k in range(n):                        # shift k: slot p holds content (p+k)%n
+        shifted = [contents[(p + k) % n] for p in range(n)]
+        sp = head + "\n".join(f"({chr(ord('A') + p)}) {c}" for p, c in enumerate(shifted))
+        scores = _choice_scores(sp, ctx)
+        if scores is None:
+            return None
+        for p in range(n):
+            agg[(p + k) % n] += scores.get(chr(ord("A") + p), 0.0)
+    avg = {chr(ord("A") + i): agg[i] / n for i in range(n)}
+    best = max(avg, key=lambda key: avg[key])
+    return ctx.choice_artifact._format(best), avg
+
+
 def _solve_choice(prompt: str, options: list[str],
                   gather: Optional[Gather], selection: Optional[SelectionShape],
                   ctx: Ctx) -> Result:
     if ctx.choice_artifact is None or ctx.model is None:
         return _solve_freeform(prompt, ctx)
+
+    # Position-marginalized path (default): order-invariant, O(N) passes, small N only.
+    if ctx.marginalize_choice and 2 <= len(options) <= ctx.marginalize_cap:
+        marg = _score_choice_marginalized(prompt, ctx)
+        if marg is not None:
+            answer_text, scores = marg
+            trust = _selection_trust(selection)
+            return Answer(text=answer_text, source="choice_probe",
+                          confidence=max(scores.values()),
+                          proof=f"position-marginalized scores={scores} | {trust}")
 
     from turnstyle.blackboard import Blackboard
     from turnstyle.primitives.choice_probe import ChoiceProbe
@@ -511,21 +628,24 @@ def _solve_choice(prompt: str, options: list[str],
     if ans is None:
         return _solve_freeform(prompt, ctx)
 
-    # selection shape modulates how much we trust the probe vs. the model:
-    # a prior-locked model contributes no real signal, so the probe stands alone;
-    # a deliberated model with a healthy margin corroborates it.
-    match selection:
-        case PriorLocked():
-            trust = "model prior-locked (native answer is bias-driven); probe stands alone"
-        case Deliberated(margin):
-            trust = f"model deliberated (margin={margin:.2f}); corroborates probe"
-        case None:
-            trust = "selection shape not detected"
-        case _:
-            assert_never(selection)
     return Answer(text=ans.payload["answer"], source="choice_probe",
                   confidence=ans.confidence,
-                  proof=f"scores={ans.payload['scores']} | {trust}")
+                  proof=f"scores={ans.payload['scores']} | {_selection_trust(selection)}")
+
+
+def _selection_trust(selection: Optional[SelectionShape]) -> str:
+    """How much to trust the probe vs. the model, given the selection shape: a
+    prior-locked model contributes no real signal (probe stands alone); a deliberated
+    model with a healthy margin corroborates it."""
+    match selection:
+        case PriorLocked():
+            return "model prior-locked (native answer is bias-driven); probe stands alone"
+        case Deliberated(margin):
+            return f"model deliberated (margin={margin:.2f}); corroborates probe"
+        case None:
+            return "selection shape not detected"
+        case _:
+            assert_never(selection)
 
 
 def _solve_freeform(prompt: str, ctx: Ctx) -> Result:
