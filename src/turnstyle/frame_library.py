@@ -431,9 +431,13 @@ CANONICAL_FRAMES = {
     "space": {"data": {"local": 0, "domestic": 1, "native": 1, "regional": 2,
         "national": 3, "foreign": 4, "distant": 5, "remote": 5, "exotic": 5,
         "faraway": 6, "alien": 7, "cosmic": 9}},
-    "material": {"data": {"soft": 0, "woolen": 0, "fluffy": 0, "papery": 1, "leathery": 1,
-        "rubbery": 1, "wooden": 2, "plastic": 2, "glassy": 3, "ceramic": 3, "stony": 4,
-        "concrete": 4, "metallic": 5, "iron": 5, "steely": 5, "golden": 5}},
+    # material as NATURALNESS (natural↔synthetic) — the axis SmolLM2 actually encodes
+    # cleanly + causally (recov 0.93, steer Δ+13). The earlier hardness ordinal was a
+    # poor 1D summary (recov 0.73, steer Δ+5) — see experiments/material_investigate.py.
+    "material": {"template": "It is made of {w}.", "data": {
+        "cotton": 1, "wool": 1, "wood": 1, "stone": 1, "leather": 1, "silk": 1,
+        "linen": 1, "clay": 1, "plastic": 0, "nylon": 0, "polyester": 0, "acrylic": 0,
+        "vinyl": 0, "rubber": 0, "foam": 0}},
     "number": {"template": "It is a {w}.", "data": {"one": 0.0, "two": 0.301,
         "three": 0.477, "four": 0.602, "five": 0.699, "six": 0.778, "seven": 0.845,
         "eight": 0.903, "nine": 0.954, "ten": 1.0, "twenty": 1.301, "fifty": 1.699,
