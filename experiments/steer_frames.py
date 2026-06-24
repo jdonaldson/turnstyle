@@ -19,7 +19,9 @@ import sys
 import numpy as np
 
 sys.path.insert(0, "experiments")
-from turnstyle.frame_library import load_library
+from turnstyle.frame_library import CANONICAL_FRAMES
+
+_DEFAULT_TEMPLATE = "It is a {w} object."
 
 # independent high/low word sets — VERIFIED DISJOINT from CANONICAL_FRAMES training
 # words (so the logit-diff metric isn't circular with the steering vector).
@@ -35,7 +37,8 @@ LEX = {
 }
 PROMPTS = ["The object is very", "It felt quite", "Honestly it was rather",
            "I would call it"]
-STEER_LAYERS = [3, 6, 9, 12, 15, 18]
+# steering layers as relative depths (models differ in layer count)
+_DEPTHS = (0.12, 0.25, 0.40, 0.50, 0.65, 0.75)
 
 
 def _first_ids(tok, words):
@@ -63,14 +66,15 @@ def collect(mdl, tok, dev, words, template, layer):
     return torch.stack(vecs).mean(0)
 
 
-def main(frames, scale):
+def main(frames, scale, mid):
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
-    mid = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
     dev = "mps" if torch.backends.mps.is_available() else "cpu"
     tok = AutoTokenizer.from_pretrained(mid)
     mdl = AutoModelForCausalLM.from_pretrained(mid, dtype=torch.float16).to(dev).eval()
-    lib = load_library(mdl)
+    n_layers = mdl.config.num_hidden_layers
+    steer_layers = sorted({max(1, int(d * n_layers)) for d in _DEPTHS})
+    print(f"MODEL: {mid}  ({n_layers} layers; steer layers {steer_layers})")
 
     state = {"alpha": 0.0, "v": None}
 
@@ -87,17 +91,19 @@ def main(frames, scale):
     enc = [tok(p, return_tensors="pt").to(dev) for p in PROMPTS]
 
     for fname in frames:
-        f = lib.frames[fname]
-        vals = sorted(f.data.values())
+        spec = CANONICAL_FRAMES[fname]
+        data = spec["data"]
+        template = spec.get("template", _DEFAULT_TEMPLATE)
+        vals = sorted(data.values())
         med = vals[len(vals) // 2]
-        hi = [w for w, v in f.data.items() if v > med]
-        lo = [w for w, v in f.data.items() if v < med]
+        hi = [w for w, v in data.items() if v > med]
+        lo = [w for w, v in data.items() if v < med]
         pos_ids, neg_ids = _first_ids(tok, LEX[fname][0]), _first_ids(tok, LEX[fname][1])
         print(f"\n===== FRAME {fname}  (steer-layer sweep; logit-diff hi-lo, independent) =====")
         best = None
-        for L in STEER_LAYERS:
-            v = collect(mdl, tok, dev, hi, f.template, L) - \
-                collect(mdl, tok, dev, lo, f.template, L)
+        for L in steer_layers:
+            v = collect(mdl, tok, dev, hi, template, L) - \
+                collect(mdl, tok, dev, lo, template, L)
             state["v"] = v / v.norm()
             handle = mdl.model.layers[L].register_forward_hook(hook)
             diffs = {}
@@ -131,6 +137,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--frames", default="opinion,size,age,material")  # adjective frames
     # (number/time omitted: the adjective-eliciting prompts don't fit count/duration words)
-    ap.add_argument("--scale", type=float, default=10.0)
+    ap.add_argument("--scale", type=float, default=4.0)
+    ap.add_argument("--model", default="HuggingFaceTB/SmolLM2-1.7B-Instruct")
     a = ap.parse_args()
-    main(a.frames.split(","), a.scale)
+    main(a.frames.split(","), a.scale, a.model)
