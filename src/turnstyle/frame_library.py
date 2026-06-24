@@ -76,6 +76,21 @@ def _cv_r(X: np.ndarray, y: np.ndarray, k: int = 5, alpha: float = 10.0,
     return float(np.corrcoef(pred, y)[0, 1])
 
 
+def _superlative_roots(word: str) -> set:
+    """Candidate base forms of a (possibly superlative) adjective — structural
+    morphology only (closed-class -est/-iest, consonant-doubling), no vocabulary.
+    e.g. biggest→{big}, heaviest→{heavy}, smallest→{small}, oldest→{old}."""
+    w = word.lower().strip()
+    out = {w}
+    if w.endswith("iest"):
+        out.add(w[:-4] + "y")
+    if w.endswith("est"):
+        out.add(w[:-3])
+        if len(w) > 4 and w[-4] == w[-5]:          # biggest → big (undo doubling)
+            out.add(w[:-4])
+    return out
+
+
 def _axis_from_scalar(name, X, y, layer, low_label, high_label) -> BipolarAxis:
     """Fit a BipolarAxis from graded (word→value) data at one layer (X = (N,H) acts)."""
     mean, scale = X.mean(0), X.std(0) + 1e-6
@@ -96,6 +111,7 @@ class Frame:
     pool: str = "last"
     cv_r: float | None = None
     data: dict | None = None        # training word→value, kept for refit/orthogonality
+    coord_scale: float = 1.0        # std of training-word projections (cross-frame compare)
 
     @property
     def name(self) -> str:
@@ -108,18 +124,23 @@ class Frame:
     def project(self, vec) -> float:
         return self.axis.project(vec)
 
+    def project_norm(self, vec) -> float:
+        """Projection in units of the frame's own spread — comparable across frames."""
+        return self.axis.project(vec) / (self.coord_scale or 1.0)
+
     def to_dict(self) -> dict:
         ax = self.axis.to_dict()
         for k in ("mean", "scale", "direction"):           # trim float bloat (6 dp is
             ax[k] = [round(float(x), 6) for x in ax[k]]     # ample for unit dirs / z-stats)
         ax["center"] = round(float(ax["center"]), 6)
-        return {"axis": ax, "template": self.template,
-                "pool": self.pool, "cv_r": self.cv_r, "data": self.data}
+        return {"axis": ax, "template": self.template, "pool": self.pool,
+                "cv_r": self.cv_r, "data": self.data, "coord_scale": self.coord_scale}
 
     @classmethod
     def from_dict(cls, d: dict) -> "Frame":
         return cls(axis=BipolarAxis.from_dict(d["axis"]), template=d["template"],
-                   pool=d.get("pool", "last"), cv_r=d.get("cv_r"), data=d.get("data"))
+                   pool=d.get("pool", "last"), cv_r=d.get("cv_r"), data=d.get("data"),
+                   coord_scale=d.get("coord_scale", 1.0))
 
 
 # ── model-touching collection (last-subword across all layers) ────────────────
@@ -194,7 +215,10 @@ class FrameLibrary:
                 best = (r, L, X)
         r, L, X = best
         axis = _axis_from_scalar(name, X, y, L, low_label, high_label)
-        frame = Frame(axis=axis, template=template, pool=pool, cv_r=r, data=data)
+        projs = np.array([axis.project(X[i]) for i in range(len(X))])
+        coord_scale = float(projs.std()) or 1.0
+        frame = Frame(axis=axis, template=template, pool=pool, cv_r=r, data=data,
+                      coord_scale=coord_scale)
         self.add(frame)
         return frame
 
@@ -224,6 +248,45 @@ class FrameLibrary:
     def coordinates(self, word, model, tokenizer, device) -> np.ndarray:
         c = self.project_word(word, model, tokenizer, device)
         return np.array([c[n] for n in self.names])
+
+    # -- frame-as-column: rank candidates / route an attribute to its frame --
+    def rank(self, candidates, frame_name, model, tokenizer, device, *,
+             descending: bool = True):
+        """Project candidates onto one frame → [(candidate, coord)] sorted. The frame
+        SYNTHESIZES a numeric column the data lacks (e.g. order colors by warmth)."""
+        f = self.frames[frame_name]
+        acts = _collect(model, tokenizer, device, list(candidates), f.template, f.pool)
+        scored = [(c, f.project(acts[c][f.layer])) for c in candidates]
+        return sorted(scored, key=lambda kv: kv[1], reverse=descending)
+
+    def route(self, word, model=None, tokenizer=None, device=None, *,
+              margin: float = 1.5):
+        """Which frame does an attribute word belong to, and at which pole?
+        Returns (frame_name, sign) — sign=+1 if the word names the HIGH pole.
+
+        Primary: MEMBERSHIP — if the word's (superlative-stripped) root is one of a
+        frame's defining words, route there (reliable; a frame IS its word-set).
+        Fallback (best-effort, only if a model is given): projection onto every frame,
+        most-extreme in own-spread units, must clear the runner-up by `margin`. Pure
+        projection is noisy (e.g. 'big'→shape), so it's the fallback, not the primary."""
+        roots = _superlative_roots(word)
+        for n, f in self.frames.items():
+            if not f.data:
+                continue
+            for r in roots:
+                if r in f.data:
+                    return (n, 1 if f.data[r] >= 0 else -1)
+        if model is None:
+            return None
+        coords = self.project_word(word, model, tokenizer, device)
+        norm = sorted(((n, coords[n] / (self.frames[n].coord_scale or 1.0))
+                       for n in coords), key=lambda kv: -abs(kv[1]))
+        if not norm:
+            return None
+        top, v = norm[0]
+        if len(norm) > 1 and abs(v) < margin * abs(norm[1][1]):
+            return None
+        return (top, 1 if v > 0 else -1)
 
     # -- orthogonality (refit each frame's direction at a common layer) --
     def orthogonality(self, model, tokenizer, device, layer: int = 8):
@@ -281,7 +344,8 @@ class FrameLibrary:
             meta["frames"][name] = {
                 "low_label": ax.low_label, "high_label": ax.high_label,
                 "layer": int(ax.layer), "center": float(ax.center),
-                "template": f.template, "pool": f.pool, "cv_r": f.cv_r, "data": f.data}
+                "template": f.template, "pool": f.pool, "cv_r": f.cv_r, "data": f.data,
+                "coord_scale": f.coord_scale}
         arrays["__meta__"] = np.frombuffer(json.dumps(meta).encode(), dtype=np.uint8)
         np.savez_compressed(p, **arrays)
         return p if p.suffix == ".npz" else Path(str(p) + ".npz")
@@ -297,7 +361,8 @@ class FrameLibrary:
                              np.asarray(z[f"{name}|scale"], float),
                              np.asarray(z[f"{name}|direction"], float), float(m["center"]))
             frames[name] = Frame(ax, template=m["template"], pool=m["pool"],
-                                 cv_r=m["cv_r"], data=m["data"])
+                                 cv_r=m["cv_r"], data=m["data"],
+                                 coord_scale=m.get("coord_scale", 1.0))
         return cls(frames=frames, fingerprint=meta.get("fingerprint", ""),
                    model_id=meta.get("model_id", ""))
 

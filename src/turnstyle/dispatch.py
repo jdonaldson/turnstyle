@@ -176,6 +176,15 @@ class ColoredObjects:
 
 
 @dataclass(frozen=True)
+class FrameOrdering:
+    """A superlative over an IMPLICIT perceptual attribute ('which is the biggest?')
+    with no numeric column — answered by synthesizing the column from a semantic frame
+    (FrameLibrary.rank). A fallback below the explicit-data solvers; commits only when
+    the attribute routes to a known frame. Deterministic-selection (answer = letter)."""
+    answer: str           # option letter, e.g. "(A)"
+
+
+@dataclass(frozen=True)
 class FreeForm:
     """No structured variant matched — delegate to the legacy blackboard."""
 
@@ -183,7 +192,7 @@ class FreeForm:
 Task = (Arithmetic | MultipleChoice | TruthChain | Spatial
         | Boolean | Dyck | Sorting | DateCalc | Ordering | FormalFallacy
         | Hyperbaton | Tracking | Tabular | ColoredObjects | ObjectCount
-        | FreeForm)
+        | FrameOrdering | FreeForm)
 
 
 # ── Answer + Context ──────────────────────────────────────────────────────────
@@ -219,6 +228,7 @@ class Ctx:
     pole_cache: Any = None           # {root: pole} memo, reused across prompts
     subjectivity_axis: Any = None    # BipolarAxis for the Hyperbaton adjective-ordering solve
     sql_turnstyle: Any = None        # cached SQLTurnstyle for the Tabular (penguins) path
+    frame_library: Any = None        # FrameLibrary for the FrameOrdering implicit-attribute path
 
 
 _OPTION_RE = re.compile(r"^\(([A-Z])\)", re.MULTILINE)
@@ -350,6 +360,16 @@ def parse(prompt: str, ctx: Ctx) -> Task:
                                    ctx.subjectivity_axis)) is not None:
         return Hyperbaton(answer=letter)
 
+    # frame-as-column: superlative over an implicit perceptual attribute, no numeric
+    # column (the explicit-data solvers above already committed if data was present).
+    # Gated on the attribute routing to a known frame, so it's a no-op otherwise.
+    if ctx.frame_library is not None and ctx.model is not None:
+        from turnstyle.frame_ordering import solve_frame_ordering
+        letter = solve_frame_ordering(prompt, ctx.frame_library,
+                                      ctx.model, ctx.tokenizer, ctx.device)
+        if letter is not None:
+            return FrameOrdering(answer=letter)
+
     letters = _OPTION_RE.findall(prompt)
     if len(letters) >= 2:
         return MultipleChoice(options=letters)
@@ -400,6 +420,9 @@ def solve(task: Task, prompt: str, ctx: Ctx) -> Result:
         case ObjectCount(answer):
             return Answer(text=answer, source="object_counting",
                           proof="structural item parse + model-classified membership")
+        case FrameOrdering(answer):
+            return Answer(text=answer, source="frame_ordering",
+                          proof="implicit attribute ranked via a semantic frame")
 
         case MultipleChoice(options, gather, selection):
             return _solve_choice(prompt, options, gather, selection, ctx)
@@ -519,7 +542,7 @@ __all__ = [
     "Arithmetic", "MultipleChoice", "TruthChain", "Spatial",
     "Boolean", "Dyck", "Sorting", "DateCalc", "Ordering", "FormalFallacy",
     "Hyperbaton", "Tracking", "Tabular", "ColoredObjects", "ObjectCount",
-    "FreeForm", "Task",
+    "FrameOrdering", "FreeForm", "Task",
     "Answer", "Abstain", "Result", "Ctx", "parse", "enrich", "solve", "run",
     "detect_selection_shape",
 ]

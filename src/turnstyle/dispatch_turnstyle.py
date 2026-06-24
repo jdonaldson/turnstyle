@@ -60,6 +60,7 @@ class DispatchTurnstyle(Turnstyle):
         if load_profile_on_init:
             from turnstyle.frame_library import load_library
             self.frames = load_library(model)
+        self.ctx.frame_library = self.frames      # enables the FrameOrdering solve path
 
     @property
     def profile_tasks(self) -> list[str]:
