@@ -168,6 +168,13 @@ class DispatchTurnstyle(Turnstyle):
         ans = dispatch_run(prompt, self.ctx)
         return ans if isinstance(ans, Answer) else None
 
+    def generate(self, prompt: str, max_new_tokens: int = 50):
+        """Canonicalize option markers before generation so the model sees the same
+        "(A)" form the parser commits on (grounding to a letter stays coherent) and
+        the abstain path gets a clean format. Idempotent on already-canonical input."""
+        from turnstyle.dispatch import normalize_option_markers
+        return super().generate(normalize_option_markers(prompt), max_new_tokens)
+
     def make_processor(self, parsed, max_new_tokens: int):
         """`parsed` is a dispatch.Answer; bias generation toward its text."""
         answer_ids = self.tokenizer.encode(parsed.text, add_special_tokens=False)

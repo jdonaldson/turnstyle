@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import json
 import os
+import random
 import re
 import time
 from pathlib import Path
@@ -94,16 +95,24 @@ def answer_matches(generated: str, target: str) -> bool:
 
 
 def evaluate(dt, tasks=None, cache_dir=None, limit=40, max_new_tokens=50,
-             verbose_first=3, progress=True):
+             verbose_first=3, progress=True, perturbations=None, seed=0):
     """Run DispatchTurnstyle end-to-end over BBH tasks.
 
     limit: examples per task (0 = all). Returns {task: stats} with an
     '_aggregate' entry. Inspectable: prints the first `verbose_first` examples of
-    each task verbosely, then a per-task summary line."""
+    each task verbosely, then a per-task summary line.
+
+    perturbations: optional list of `turnstyle.perturb.Perturbation`. When given, each
+    example is re-scored under every applicable answer-preserving variant; the report
+    gains a per-task `perturb` block {name: {n, base_acc, pert_acc, delta}} and the
+    aggregate gains `perturb` rolled up across tasks. `delta = pert_acc - base_acc` on
+    the SAME perturbable subset — it is the surface-fitting meter (≈0 = invariant)."""
     cache_dir = Path(cache_dir) if cache_dir else default_cache_dir()
     names = tasks or list_tasks(cache_dir)
     report = {}
     total_correct = total_n = 0
+    # global per-perturbation rollup: name -> [n, base_ok, pert_ok]
+    g_pert = {}
 
     for name in names:
         examples = load_task(name, cache_dir)
@@ -113,21 +122,37 @@ def evaluate(dt, tasks=None, cache_dir=None, limit=40, max_new_tokens=50,
         # (one choice_artifact slot; reset so a prior task's probe can't leak).
         dt.ctx.choice_artifact = None
         used_probe = dt.use_probe(name)
+        rng = random.Random(seed)
         t0 = time.time()
         correct = committed = committed_correct = 0
+        pert = {}  # name -> [n, base_ok, pert_ok] for this task
         for i, ex in enumerate(examples):
+            tgt = ex["target"].strip()
             parsed = dt.parse(ex["input"])           # Answer | None (committed?)
             gen, _ = dt.generate(ex["input"], max_new_tokens=max_new_tokens)
-            ok = answer_matches(gen, ex["target"].strip())
+            ok = answer_matches(gen, tgt)
             correct += ok
             if parsed is not None:
                 committed += 1
                 committed_correct += ok
+            pert_notes = []
+            for p in (perturbations or []):
+                var = p.apply(ex["input"], tgt, rng)
+                if var is None:
+                    continue
+                gv, _ = dt.generate(var.input, max_new_tokens=max_new_tokens)
+                okv = answer_matches(gv, var.target)
+                for acc in (pert, g_pert):
+                    s = acc.setdefault(p.name, [0, 0, 0])
+                    s[0] += 1; s[1] += int(ok); s[2] += int(okv)
+                if i < verbose_first:
+                    pert_notes.append(f"{p.name}:{'✓' if okv else '✗'}")
             if progress and i < verbose_first:
                 src = getattr(parsed, "source", None) or "abstain→gen"
+                extra = ("  " + " ".join(pert_notes)) if pert_notes else ""
                 print(f"  [{name} {i}] src={src:14s} "
                       f"gen={gen[:40]!r} tgt={ex['target']!r} "
-                      f"{'✓' if ok else '✗'}", flush=True)
+                      f"{'✓' if ok else '✗'}{extra}", flush=True)
         n = len(examples)
         acc = correct / n if n else 0.0
         report[name] = {
@@ -138,20 +163,42 @@ def evaluate(dt, tasks=None, cache_dir=None, limit=40, max_new_tokens=50,
             "used_probe": used_probe,
             "elapsed": time.time() - t0,
         }
+        if perturbations:
+            report[name]["perturb"] = _pert_block(pert)
         total_correct += correct
         total_n += n
         if progress:
             r = report[name]
             ca = "n/a" if r["committed_acc"] is None else f"{r['committed_acc']*100:.1f}%"
-            print(f"{name:42s} acc={acc*100:5.1f}%  "
-                  f"committed={committed}/{n} (grounded_acc={ca})  "
-                  f"{r['elapsed']:.1f}s", flush=True)
+            line = (f"{name:42s} acc={acc*100:5.1f}%  "
+                    f"committed={committed}/{n} (grounded_acc={ca})  ")
+            if perturbations:
+                pb = r["perturb"]
+                cov = max((v["n"] for v in pb.values()), default=0)
+                dmin = min((v["delta"] for v in pb.values()), default=0.0)
+                line += f"pert_cov={cov}/{n} worstΔ={dmin*100:+.1f}pp  "
+            line += f"{r['elapsed']:.1f}s"
+            print(line, flush=True)
 
     report["_aggregate"] = {
         "accuracy": total_correct / total_n if total_n else 0.0,
         "correct": total_correct, "n": total_n, "n_tasks": len(names),
     }
+    if perturbations:
+        report["_aggregate"]["perturb"] = _pert_block(g_pert)
     return report
+
+
+def _pert_block(acc: dict) -> dict:
+    """Convert {name: [n, base_ok, pert_ok]} → {name: {n, base_acc, pert_acc, delta}}."""
+    out = {}
+    for name, (n, b, p) in acc.items():
+        if not n:
+            continue
+        base, perturbed = b / n, p / n
+        out[name] = {"n": n, "base_acc": base, "pert_acc": perturbed,
+                     "delta": perturbed - base}
+    return out
 
 
 def _load_model(model_id, device):
@@ -173,6 +220,8 @@ def main(argv=None):
     p.add_argument("--limit", type=int, default=40, help="examples/task (0=all)")
     p.add_argument("--max-new-tokens", type=int, default=50)
     p.add_argument("--output", help="write report JSON here")
+    p.add_argument("--perturb", action="store_true",
+                   help="also score answer-preserving surface variants (overfit meter)")
     args = p.parse_args(argv)
 
     from turnstyle.dispatch_turnstyle import DispatchTurnstyle
@@ -184,13 +233,23 @@ def main(argv=None):
           f"probe_tasks: {dt.profile_tasks}", flush=True)
 
     tasks = args.tasks.split(",") if args.tasks else None
+    perturbations = None
+    if args.perturb:
+        from turnstyle.perturb import default_perturbations
+        perturbations = default_perturbations()
     report = evaluate(dt, tasks, limit=args.limit,
-                      max_new_tokens=args.max_new_tokens)
+                      max_new_tokens=args.max_new_tokens,
+                      perturbations=perturbations)
 
     agg = report["_aggregate"]
     print("-" * 70)
     print(f"AGGREGATE: {agg['accuracy']*100:.2f}%  "
           f"({agg['correct']}/{agg['n']} over {agg['n_tasks']} tasks)")
+    if "perturb" in agg:
+        print("INVARIANCE (answer-preserving surface variants; Δ≈0 = robust):")
+        for name, v in sorted(agg["perturb"].items()):
+            print(f"  {name:16s} n={v['n']:4d}  base={v['base_acc']*100:5.1f}%  "
+                  f"pert={v['pert_acc']*100:5.1f}%  Δ={v['delta']*100:+5.1f}pp")
     if args.output:
         Path(args.output).write_text(json.dumps(report, indent=2))
         print(f"wrote {args.output}")
