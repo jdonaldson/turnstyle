@@ -226,7 +226,8 @@ class Ctx:
     legacy_registry: Any = None      # blackboard Registry for FreeForm fallback
     polarity_probe: Any = None       # PolarityProbe for the Ordering scalar-adjective poles
     pole_cache: Any = None           # {root: pole} memo, reused across prompts
-    subjectivity_axis: Any = None    # BipolarAxis for the Hyperbaton adjective-ordering solve
+    subjectivity_axis: Any = None    # deprecated (old 1-axis hyperbaton); kept for profile back-compat
+    ordering_classifier: Any = None  # OrderingClassifier for Hyperbaton (lazy-fit, cached)
     sql_turnstyle: Any = None        # cached SQLTurnstyle for the Tabular (penguins) path
     frame_library: Any = None        # FrameLibrary for the FrameOrdering implicit-attribute path
 
@@ -355,10 +356,15 @@ def parse(prompt: str, ctx: Ctx) -> Task:
     # hyperbaton: a permutation-pair of adjective orderings. The cheap structural
     # gate (same words, different order) runs before any model forward, so this is
     # a no-op on other MC prompts. Needs the calibrated subjectivity axis.
-    from turnstyle.hyperbaton import solve_hyperbaton
-    if (letter := solve_hyperbaton(prompt, ctx.model, ctx.tokenizer, ctx.device,
-                                   ctx.subjectivity_axis)) is not None:
-        return Hyperbaton(answer=letter)
+    from turnstyle.hyperbaton import (is_hyperbaton, fit_ordering_classifier,
+                                      solve_hyperbaton)
+    if ctx.model is not None and is_hyperbaton(prompt):
+        if ctx.ordering_classifier is None:        # lazy-fit once, cache on ctx
+            ctx.ordering_classifier = fit_ordering_classifier(
+                ctx.model, ctx.tokenizer, ctx.device)
+        if (letter := solve_hyperbaton(prompt, ctx.model, ctx.tokenizer, ctx.device,
+                                       ctx.ordering_classifier)) is not None:
+            return Hyperbaton(answer=letter)
 
     # frame-as-column: superlative over an implicit perceptual attribute, no numeric
     # column (the explicit-data solvers above already committed if data was present).
