@@ -130,6 +130,7 @@ class ModelProfile:
     extraction: dict = field(default_factory=dict)   # task -> extraction profile (future)
     support: dict = field(default_factory=dict)      # task -> {method, accuracy, shipped}
     polarity: dict = field(default_factory=dict)     # model-level adjective-polarity probe
+    subjectivity: dict = field(default_factory=dict)  # model-level subjectivity BipolarAxis (hyperbaton)
 
     def get_probe(self, task: str):
         """Reconstruct the fitted ProbeArtifact for a task, or None if not shipped."""
@@ -157,6 +158,23 @@ class ModelProfile:
             "axes": None if cap is None else cap.axes_shipping(),
         }
 
+    def get_subjectivity(self):
+        """Reconstruct the model-level subjectivity BipolarAxis, or None. Drives the
+        hyperbaton solver (sort adjectives by decreasing subjectivity). Built on the
+        same BipolarAxis primitive as polarity."""
+        if not self.subjectivity:
+            return None
+        from turnstyle.semantic_frame import BipolarAxis
+        return BipolarAxis.from_dict(self.subjectivity)
+
+    def set_subjectivity(self, axis, accuracy=None) -> None:
+        """Store a fitted subjectivity BipolarAxis + a support entry."""
+        self.subjectivity = axis.to_dict()
+        self.support["_subjectivity"] = {
+            "method": "subjectivity_axis", "layer": int(axis.layer),
+            "accuracy": accuracy, "shipped": True,
+        }
+
     def set_probe(self, task: str, artifact, finder_name: str, accuracy=None) -> None:
         """Store a fitted ProbeArtifact for a task (serialized) + a support entry."""
         self.components[task] = _probe_to_dict(artifact, finder_name)
@@ -171,6 +189,7 @@ class ModelProfile:
             "calibration_version": self.calibration_version, "created": self.created,
             "components": self.components, "extraction": self.extraction,
             "support": self.support, "polarity": self.polarity,
+            "subjectivity": self.subjectivity,
         }
 
     def save(self, path: Path | str) -> Path:
@@ -198,6 +217,7 @@ def _merge_profiles(base: ModelProfile, overlay: ModelProfile) -> ModelProfile:
         extraction={**base.extraction, **overlay.extraction},
         support={**base.support, **overlay.support},
         polarity=overlay.polarity or base.polarity,
+        subjectivity=overlay.subjectivity or base.subjectivity,
     )
 
 

@@ -123,12 +123,76 @@ class Ordering:
 
 
 @dataclass(frozen=True)
+class FormalFallacy:
+    """formal_fallacies: NL syllogism → FOL → validity check by interpretation
+    enumeration. valid/invalid is mapped to the prompt's option letter, so this
+    is deterministic-selection like DateCalc/Ordering."""
+    answer: str           # option letter
+
+
+@dataclass(frozen=True)
+class Hyperbaton:
+    """hyperbaton: two adjective orderings (permutations); the correct one is sorted
+    by decreasing subjectivity. Deterministic-selection via the subjectivity axis."""
+    answer: str           # option letter
+
+
+@dataclass(frozen=True)
+class Tabular:
+    """penguins_in_a_table: a bespoke data table + a query. Parsed structurally
+    (CSV records + add/delete mutations) into SQLite; the model writes the SQL,
+    which is executed and matched to an option. Holding this means the SQL solve
+    succeeded and the answer (option letter) is known. Knowledge questions (e.g.
+    'first name of a famous jazzman') fall through to FreeForm by abstaining."""
+    answer: str           # option letter, e.g. "(A)"
+
+
+@dataclass(frozen=True)
+class Tracking:
+    """tracking_shuffled_objects: initial actor→item assignments + a chain of
+    pairwise swaps. Deterministically simulated at parse time (regex parse of the
+    init state + swaps, final state matched to an option) — holding this means
+    the swap chain was walked and the answer (option letter) is known."""
+    answer: str           # option letter, e.g. "(A)"
+
+
+@dataclass(frozen=True)
+class ObjectCount:
+    """object_counting: 'I have a flute, … how many musical instruments?'. The item
+    list is parsed structurally (quantities from a closed number-word set); category
+    membership is decided by the MODEL's world knowledge (a yes/no scorer), not a
+    hardcoded category set; the count is deterministic. The integer answer is free-
+    form (no options)."""
+    answer: str           # integer as a string, e.g. "8"
+
+
+@dataclass(frozen=True)
+class ColoredObjects:
+    """reasoning_about_colored_objects: a row of colored objects + a spatial/color
+    query. Deterministically solved at parse time — color is parsed positionally
+    (no color list), the query operator is structural, the answer is mapped to an
+    option (color/count/yes-no) read from the prompt's own options."""
+    answer: str           # option letter, e.g. "(A)"
+
+
+@dataclass(frozen=True)
+class FrameOrdering:
+    """A superlative over an IMPLICIT perceptual attribute ('which is the biggest?')
+    with no numeric column — answered by synthesizing the column from a semantic frame
+    (FrameLibrary.rank). A fallback below the explicit-data solvers; commits only when
+    the attribute routes to a known frame. Deterministic-selection (answer = letter)."""
+    answer: str           # option letter, e.g. "(A)"
+
+
+@dataclass(frozen=True)
 class FreeForm:
     """No structured variant matched — delegate to the legacy blackboard."""
 
 
 Task = (Arithmetic | MultipleChoice | TruthChain | Spatial
-        | Boolean | Dyck | Sorting | DateCalc | Ordering | FreeForm)
+        | Boolean | Dyck | Sorting | DateCalc | Ordering | FormalFallacy
+        | Hyperbaton | Tracking | Tabular | ColoredObjects | ObjectCount
+        | FrameOrdering | FreeForm)
 
 
 # ── Answer + Context ──────────────────────────────────────────────────────────
@@ -162,6 +226,9 @@ class Ctx:
     legacy_registry: Any = None      # blackboard Registry for FreeForm fallback
     polarity_probe: Any = None       # PolarityProbe for the Ordering scalar-adjective poles
     pole_cache: Any = None           # {root: pole} memo, reused across prompts
+    subjectivity_axis: Any = None    # BipolarAxis for the Hyperbaton adjective-ordering solve
+    sql_turnstyle: Any = None        # cached SQLTurnstyle for the Tabular (penguins) path
+    frame_library: Any = None        # FrameLibrary for the FrameOrdering implicit-attribute path
 
 
 _OPTION_RE = re.compile(r"^\(([A-Z])\)", re.MULTILINE)
@@ -213,8 +280,51 @@ def parse(prompt: str, ctx: Ctx) -> Task:
         return Boolean(answer=r[2])
     if (r := parse_dyck(prompt)) is not None:
         return Dyck(answer=r[2])
-    if (r := parse_sorting(prompt)) is not None:
+    # A prompt carrying (A)..(E) option lines is explained by the MultipleChoice
+    # frame; don't let a stray "in alphabetical order" phrase in such a table
+    # prompt (penguins) mis-commit to a Sorting answer. word_sorting is never MC.
+    # See commitment_coverage_routing.
+    is_mc = len(_OPTION_RE.findall(prompt)) >= 2
+    if not is_mc and (r := parse_sorting(prompt)) is not None:
         return Sorting(answer=r[2])
+
+    # tracking_shuffled_objects: deterministic swap-chain simulation. The solver is
+    # tightly gated (needs known actor names + an "At the start" init it can fully
+    # parse + a query actor + a matching option), so it's a no-op on other prompts.
+    from turnstyle.object_tracking import _solve_tracking
+    if (letter := _solve_tracking(prompt)) is not None:
+        return Tracking(answer=letter)
+
+    # reasoning_about_colored_objects: deterministic positional-color + structural
+    # spatial query. Returns None unless it parses a colored-object scene AND a
+    # recognized query that maps to an option, so it's a no-op on other prompts.
+    from turnstyle.colored_objects import solve_colored_objects
+    if (letter := solve_colored_objects(prompt)) is not None:
+        return ColoredObjects(answer=letter)
+
+    # object_counting: cheap structural gate (does "how many X do I have" parse?)
+    # then model-classified category membership. Free-answer integer, no options.
+    from turnstyle.object_counting import parse_item_list, solve_object_counting
+    if parse_item_list(prompt) is not None and ctx.model is not None:
+        count = solve_object_counting(prompt, ctx.model, ctx.tokenizer, ctx.device)
+        if count is not None:
+            return ObjectCount(answer=count)
+
+    # penguins_in_a_table: cheap structural gate (does the bespoke table parse?)
+    # runs before the expensive model SQL solve, so this is a no-op on non-table
+    # prompts. The SQL solve abstains (None) on knowledge questions → FreeForm.
+    if ctx.model is not None:
+        from turnstyle.penguins import parse_penguins_tables, solve_penguins
+        if parse_penguins_tables(prompt) is not None:
+            if ctx.sql_turnstyle is None:
+                from turnstyle.sql import SQLTurnstyle
+                ctx.sql_turnstyle = SQLTurnstyle(
+                    ctx.model, ctx.tokenizer, ctx.device,
+                    parse_tables_fn=parse_penguins_tables, probe_label="penguins")
+            letter = solve_penguins(prompt, ctx.model, ctx.tokenizer, ctx.device,
+                                    sql_turnstyle=ctx.sql_turnstyle)
+            if letter is not None:
+                return Tabular(answer=letter)
 
     # logical_deduction: structural frames + symbolic solve; scalar-adjective poles
     # come from the polarity probe (if calibrated) else the regex lexicon fallback.
@@ -234,6 +344,31 @@ def parse(prompt: str, ctx: Ctx) -> Task:
     nav = _navigate_solve(scene.body)
     if nav is not None:
         return Spatial(answer=nav)
+
+    # formal_fallacies: FOL validity check. BBH target is the word valid/invalid
+    # (options are dash-bullets, not (A)/(B)), so the verdict IS the answer.
+    from turnstyle.formal_fallacies import solve_formal_fallacy
+    verdict = solve_formal_fallacy(prompt)
+    if verdict is not None:
+        return FormalFallacy(answer=verdict)
+
+    # hyperbaton: a permutation-pair of adjective orderings. The cheap structural
+    # gate (same words, different order) runs before any model forward, so this is
+    # a no-op on other MC prompts. Needs the calibrated subjectivity axis.
+    from turnstyle.hyperbaton import solve_hyperbaton
+    if (letter := solve_hyperbaton(prompt, ctx.model, ctx.tokenizer, ctx.device,
+                                   ctx.subjectivity_axis)) is not None:
+        return Hyperbaton(answer=letter)
+
+    # frame-as-column: superlative over an implicit perceptual attribute, no numeric
+    # column (the explicit-data solvers above already committed if data was present).
+    # Gated on the attribute routing to a known frame, so it's a no-op otherwise.
+    if ctx.frame_library is not None and ctx.model is not None:
+        from turnstyle.frame_ordering import solve_frame_ordering
+        letter = solve_frame_ordering(prompt, ctx.frame_library,
+                                      ctx.model, ctx.tokenizer, ctx.device)
+        if letter is not None:
+            return FrameOrdering(answer=letter)
 
     letters = _OPTION_RE.findall(prompt)
     if len(letters) >= 2:
@@ -267,6 +402,27 @@ def solve(task: Task, prompt: str, ctx: Ctx) -> Result:
         case Ordering(answer):
             return Answer(text=answer, source="logical_deduction",
                           proof="constraint solve, unique ordering")
+        case FormalFallacy(answer):
+            return Answer(text=answer, source="formal_fallacies",
+                          proof="FOL validity by interpretation enumeration")
+        case Hyperbaton(answer):
+            return Answer(text=answer, source="hyperbaton",
+                          proof="adjectives sorted by decreasing subjectivity")
+        case Tracking(answer):
+            return Answer(text=answer, source="object_tracking",
+                          proof="swap-chain simulation, final state matched")
+        case Tabular(answer):
+            return Answer(text=answer, source="penguins",
+                          proof="structural table parse + text-to-SQL")
+        case ColoredObjects(answer):
+            return Answer(text=answer, source="colored_objects",
+                          proof="positional-color scene + structural spatial query")
+        case ObjectCount(answer):
+            return Answer(text=answer, source="object_counting",
+                          proof="structural item parse + model-classified membership")
+        case FrameOrdering(answer):
+            return Answer(text=answer, source="frame_ordering",
+                          proof="implicit attribute ranked via a semantic frame")
 
         case MultipleChoice(options, gather, selection):
             return _solve_choice(prompt, options, gather, selection, ctx)
@@ -384,7 +540,9 @@ def _solve_freeform(prompt: str, ctx: Ctx) -> Result:
 __all__ = [
     "Gather", "PriorLocked", "Deliberated", "SelectionShape",
     "Arithmetic", "MultipleChoice", "TruthChain", "Spatial",
-    "Boolean", "Dyck", "Sorting", "DateCalc", "Ordering", "FreeForm", "Task",
+    "Boolean", "Dyck", "Sorting", "DateCalc", "Ordering", "FormalFallacy",
+    "Hyperbaton", "Tracking", "Tabular", "ColoredObjects", "ObjectCount",
+    "FrameOrdering", "FreeForm", "Task",
     "Answer", "Abstain", "Result", "Ctx", "parse", "enrich", "solve", "run",
     "detect_selection_shape",
 ]
