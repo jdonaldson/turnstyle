@@ -40,6 +40,7 @@ reproducible experiments that produced findings recorded in `CLAUDE.md` or memor
 | `steer_frames.py` | Write-side: are frames CAUSAL? Diff-in-means steering + non-circular logit-diff. **opinion/size/age causal (r 0.95–0.99) in SmolLM2/Qwen/Phi** (`--model`); material causal only in Phi (capacity-dependent). Steerable layer (mid) ≠ decodable layer (early); fp32 hook (fp16 NaNs deep). | 2026-06-22 |
 | `material_investigate.py` | Why is material weakly steerable? It's the wrong scalar axis: **hardness recov 0.73/Δ+5 (weak), but naturalness 0.93/Δ+13 and density 0.93/Δ+14 (causal)**. SmolLM2 encodes material as natural↔synthetic & heavy↔light, not soft↔hard. Canonical material re-framed to naturalness. | 2026-06-22 |
 | `purpose_frame.py` | Is the last ordering rung a frame? **Categorical, not bipolar**: nearest-centroid 0.92 (5.5× chance) but ~4.6-dimensional (PR=4.58) — a multi-prototype category structure, not a scalar axis. A bipolar active↔passive sub-axis steers (Δ+24) but that's the Activity dimension, not purpose-specific. → purpose is the categorical outlier of the hierarchy. | 2026-06-22 |
+| `purpose_discover.py` | What ARE the purpose categories? Unsupervised k-means on 61 gerunds → **they're VERB-semantic classes** (Levin/VerbNet-style): NMI 0.87/ARI 0.71 vs seeded classes @L13, silhouette picks k=10 exactly. So the "purpose" rung is the model's verb/event space (deverbal gerunds), peaking MID-stack L13 (deeper than scalar attribute frames L2–4). | 2026-06-22 |
 
 ## Common Setup
 
