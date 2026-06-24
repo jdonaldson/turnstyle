@@ -238,6 +238,15 @@ class Ctx:
     # Surfaced by the perturbation harness reorder delta. Capped (O(N) passes).
     marginalize_choice: bool = True
     marginalize_cap: int = 8         # skip marginalization above this many options (cost)
+    # Zero-shot MC floor: when an MC prompt has NO calibrated probe (and no
+    # deterministic variant claimed it), score each option's CONTENT by domain-
+    # conditional PMI (logP(content|question) - logP(content|neutral)) and pick the
+    # argmax, instead of abstaining to ~chance free generation. Scores content not
+    # letters (no letter prior / surface-form competition) and is order-invariant by
+    # construction (each option scored as an isolated continuation). The generalizable
+    # replacement for swollm's BBH-specific 3-shot poll. O(2N) passes, capped.
+    zeroshot_floor: bool = True
+    zeroshot_floor_cap: int = 12
 
 
 _OPTION_RE = re.compile(r"^\(([A-Z])\)", re.MULTILINE)
@@ -602,10 +611,64 @@ def _score_choice_marginalized(prompt: str, ctx: Ctx):
     return ctx.choice_artifact._format(best), avg
 
 
+# Question-agnostic prior context for domain-conditional PMI: measures each option's
+# intrinsic likelihood (length/frequency) so it cancels out of the score.
+_PMI_NEUTRAL = "Answer with the correct option."
+
+
+def _lm_logprob(model, tokenizer, device, context_text: str, continuation: str) -> float:
+    """sum logP(continuation tokens | context_text). context_text is already
+    chat-templated; continuation is scored token-by-token conditioned on it."""
+    import torch
+    ctx_ids = tokenizer(context_text, return_tensors="pt").input_ids
+    cont_ids = tokenizer(continuation, add_special_tokens=False, return_tensors="pt").input_ids
+    if cont_ids.shape[1] == 0:
+        return 0.0
+    full = torch.cat([ctx_ids, cont_ids], dim=1).to(device)
+    with torch.no_grad():
+        logp = model(full).logits[0].float().log_softmax(-1)
+    n_ctx = ctx_ids.shape[1]
+    total = 0.0
+    for i in range(cont_ids.shape[1]):                 # logits[t] predicts token t+1
+        total += float(logp[n_ctx - 1 + i, cont_ids[0, i]])
+    return total
+
+
+def _score_options_pmi(prompt: str, ctx: Ctx):
+    """Domain-conditional PMI per option: logP(content|question) - logP(content|neutral),
+    argmax. Returns (answer_text, {label: pmi}) or None. Order-invariant (each option
+    scored as an isolated continuation, never inside the option list)."""
+    parsed = _split_canonical_options(prompt)
+    if parsed is None:
+        return None
+    head, contents = parsed
+    question = head.rsplit("Options:", 1)[0].strip() or head.strip()
+    tok = ctx.tokenizer
+    q_ctx = tok.apply_chat_template(
+        [{"role": "user", "content": question}], tokenize=False, add_generation_prompt=True)
+    n_ctx = tok.apply_chat_template(
+        [{"role": "user", "content": _PMI_NEUTRAL}], tokenize=False, add_generation_prompt=True)
+    pmis = {}
+    for i, c in enumerate(contents):
+        cont = " " + c
+        pmis[chr(ord("A") + i)] = (_lm_logprob(ctx.model, tok, ctx.device, q_ctx, cont)
+                                   - _lm_logprob(ctx.model, tok, ctx.device, n_ctx, cont))
+    best = max(pmis, key=lambda key: pmis[key])
+    return f"({best})", pmis
+
+
 def _solve_choice(prompt: str, options: list[str],
                   gather: Optional[Gather], selection: Optional[SelectionShape],
                   ctx: Ctx) -> Result:
     if ctx.choice_artifact is None or ctx.model is None:
+        # No calibrated probe → zero-shot content-PMI floor before abstaining.
+        if (ctx.zeroshot_floor and ctx.model is not None
+                and 2 <= len(options) <= ctx.zeroshot_floor_cap):
+            floor = _score_options_pmi(prompt, ctx)
+            if floor is not None:
+                answer_text, pmis = floor
+                return Answer(text=answer_text, source="pmi_floor", confidence=1.0,
+                              proof=f"zero-shot content-PMI scores={pmis}")
         return _solve_freeform(prompt, ctx)
 
     # Position-marginalized path (default): order-invariant, O(N) passes, small N only.
