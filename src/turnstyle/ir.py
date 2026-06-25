@@ -645,9 +645,16 @@ def _navigate_solve(body_sentences: list[str]) -> str | None:
     on non-navigate prompts).
     """
     body = " ".join(body_sentences)
-    # Guard: require at least one step or turn pattern
-    if not (_STEP_ABS_RE.search(body) or _STEP_REL_RE.search(body) or
-            _STEP_FWD_RE.search(body) or _TURN_RE.search(body)):
+    # Guard: require at least one navigation sentence. Checked PER-SENTENCE (anchored
+    # at the sentence start) rather than as a $-anchored search on the joined body —
+    # otherwise a trailing dash-bullet option block ("- Yes/- No", left in the body by
+    # parse_scene) defeats the $-anchored bare-step pattern, abstaining on the
+    # no-direction "Take N steps." case (a straight line → never returns → "No").
+    def _is_nav(s: str) -> bool:
+        s = s.strip()
+        return bool(_STEP_ABS_RE.match(s) or _STEP_REL_RE.match(s) or
+                    _STEP_FWD_RE.match(s) or _TURN_RE.match(s))
+    if not any(_is_nav(s) for s in body_sentences):
         return None
     x, y = 0, 0
     if "Always face forward" in body:
