@@ -185,6 +185,15 @@ class FrameOrdering:
 
 
 @dataclass(frozen=True)
+class GeometricShape:
+    """geometric_shapes: an SVG `<path d="…"/>` is classified deterministically by
+    modeling it as a graph (nodes=unique points, edges=typed line/arc) and reading the
+    shape off the walk (cycle length / edge kinds / 4-gon geometry). Purely structural;
+    the parser doubles as the coverage gate. Answer is an option letter."""
+    answer: str           # option letter, e.g. "(B)"
+
+
+@dataclass(frozen=True)
 class FreeForm:
     """No structured variant matched — delegate to the legacy blackboard."""
 
@@ -192,7 +201,7 @@ class FreeForm:
 Task = (Arithmetic | MultipleChoice | TruthChain | Spatial
         | Boolean | Dyck | Sorting | DateCalc | Ordering | FormalFallacy
         | Hyperbaton | Tracking | Tabular | ColoredObjects | ObjectCount
-        | FrameOrdering | FreeForm)
+        | FrameOrdering | GeometricShape | FreeForm)
 
 
 # ── Answer + Context ──────────────────────────────────────────────────────────
@@ -363,6 +372,13 @@ def parse(prompt: str, ctx: Ctx) -> Task:
     if (letter := _solve_tracking(prompt)) is not None:
         return Tracking(answer=letter)
 
+    # geometric_shapes: deterministic SVG-path classifier (no model). The parser IS the
+    # coverage gate — returns None unless a `d="…"` path parses to a shape present in the
+    # options, so it's a no-op on every other prompt.
+    from turnstyle.geometric_shapes import solve_geometric_shapes
+    if (letter := solve_geometric_shapes(prompt)) is not None:
+        return GeometricShape(answer=letter)
+
     # reasoning_about_colored_objects: deterministic positional-color + structural
     # spatial query. Returns None unless it parses a colored-object scene AND a
     # recognized query that maps to an option, so it's a no-op on other prompts.
@@ -496,6 +512,9 @@ def solve(task: Task, prompt: str, ctx: Ctx) -> Result:
         case FrameOrdering(answer):
             return Answer(text=answer, source="frame_ordering",
                           proof="implicit attribute ranked via a semantic frame")
+        case GeometricShape(answer):
+            return Answer(text=answer, source="geometric_shapes",
+                          proof="SVG path classified by graph-walk")
 
         case MultipleChoice(options, gather, selection):
             return _solve_choice(prompt, options, gather, selection, ctx)
