@@ -231,6 +231,30 @@ class ProbeArtifact:
                 )[0, 1]
             return self._format(max(scores, key=scores.get))
 
+    def class_probs(self, text, model, tokenizer, device):
+        """Single mode only: {raw_class_label: probability} at the finder token, or
+        None if the finder fails / mode != 'single'. Powers the order-robust
+        selection-probe dispatch path (marginalize a letter classifier over option
+        orderings). Class labels are raw (e.g. 'A'), not _format-wrapped."""
+        if self.mode != "single":
+            return None
+        encoded = tokenizer(text, return_offsets_mapping=True, add_special_tokens=True)
+        ids = {
+            "input_ids": torch.tensor([encoded["input_ids"]]).to(device),
+            "attention_mask": torch.tensor([encoded["attention_mask"]]).to(device),
+        }
+        with torch.no_grad():
+            out = model(**ids, output_hidden_states=True)
+        positions = self.finder(text, tokenizer, encoded, hidden=out.hidden_states)
+        if positions is None:
+            return None
+        vec = out.hidden_states[self.layer][0][positions[0][0]].float().cpu().numpy()
+        proba = self.classifier.predict_proba(self.scaler.transform([vec]))[0]
+        # classifier classes are integer indices into self.classes (see _fit_final's
+        # class_to_idx); map back to the raw labels predict() would emit.
+        return {self.classes[int(c)]: float(p)
+                for c, p in zip(self.classifier.classes_, proba)}
+
 
 @dataclass
 class AutoprobeResult:

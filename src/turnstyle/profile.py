@@ -183,6 +183,14 @@ class ModelProfile:
             "accuracy": accuracy, "shipped": True,
         }
 
+    def remove_probe(self, task: str) -> bool:
+        """Drop a task's probe (and its support entry). Returns True if one existed.
+        Used to evict a stale/incompatible probe when a re-calibration no longer ships."""
+        existed = task in self.components
+        self.components.pop(task, None)
+        self.support.pop(task, None)
+        return existed
+
     def to_dict(self) -> dict:
         return {
             "fingerprint": self.fingerprint, "model_id": self.model_id,

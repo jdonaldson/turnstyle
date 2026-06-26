@@ -30,6 +30,44 @@ from turnstyle.core import SequenceLogitsProcessor, Turnstyle
 from turnstyle.dispatch import Answer, Ctx, run as dispatch_run
 
 
+def _augment_option_orderings(examples, k: int = 6, seed: int = 0):
+    """Expand MC examples into k option orderings each (identity + random perms),
+    remapping the target letter, so a single-mode selection probe learns order-
+    invariant selection features instead of a letter-position prior. Examples that
+    don't parse as a canonical option block pass through unchanged."""
+    import random
+    import re
+    from turnstyle.dispatch import _split_canonical_options, normalize_option_markers
+    LET = re.compile(r"\(([A-Z])\)")
+    rng = random.Random(seed)
+    out = []
+    for ex in examples:
+        parsed = _split_canonical_options(normalize_option_markers(ex["input"]))
+        m = LET.search(ex.get("target", "") or "")
+        if parsed is None or m is None:
+            out.append(ex)
+            continue
+        head, contents = parsed
+        n = len(contents)
+        correct = ord(m.group(1)) - ord("A")
+        if not (0 <= correct < n):
+            out.append(ex)
+            continue
+        perms, seen, tries = [list(range(n))], {tuple(range(n))}, 0
+        while len(perms) < k and tries < 50:
+            p = list(range(n)); rng.shuffle(p)
+            if tuple(p) not in seen:
+                perms.append(p); seen.add(tuple(p))
+            tries += 1
+        for perm in perms:
+            new_contents = [contents[perm[s]] for s in range(n)]
+            slot = perm.index(correct)
+            new_input = head + "\n".join(f"({chr(ord('A') + s)}) {c}"
+                                         for s, c in enumerate(new_contents))
+            out.append({"input": new_input, "target": f"({chr(ord('A') + slot)})"})
+    return out
+
+
 class DispatchTurnstyle(Turnstyle):
     """Consumes the Task ADT and grounds generation in its Answer."""
 
@@ -92,15 +130,77 @@ class DispatchTurnstyle(Turnstyle):
         return True
 
     def fit_choice(self, examples, target_fn=lambda ex: ex["target"].strip(),
-                   task: str | None = None, verbose: bool = False):
+                   task: str | None = None, verbose: bool = False,
+                   ship_threshold_abs: float = 0.60,
+                   ship_threshold_lift: float = 0.10):
         """Fit a per-option ChoiceProbe artifact for an MC task (via autoprobe) and
         attach it, so MultipleChoice prompts route through the probe instead of
         abstaining. If `task` is given, the shipped probe is also recorded in the
-        profile (call `persist()` to save it). Returns the AutoprobeResult."""
-        from turnstyle.autoprobe import autoprobe
+        profile (call `persist()` to save it). Returns the AutoprobeResult.
+
+        The two ship thresholds gate whether the probe is recorded. They split into
+        a *validity* guard (`ship_threshold_lift` — the probe must beat the best cheap
+        baseline by this margin, i.e. it's real signal not noise) and a *trust* guard
+        (`ship_threshold_abs` — minimum absolute CV accuracy for standalone use). When
+        the goal is maximizing aggregate BBH score rather than deploying a trustworthy
+        standalone solver, set `ship_threshold_abs=0.0` to keep only the validity guard
+        — a recognition probe that beats the cheap baseline but lands <60% (e.g.
+        movie_recommendation 50.6%, salient 42.4%) still beats the generation fallback."""
+        from turnstyle.autoprobe import autoprobe, DEFAULT_FINDERS
+        # The MC dispatch path consumes a per_option ChoiceProbe (with order-marginalized
+        # scoring), so restrict the sweep to per_option finders — a single-mode letter
+        # classifier would win on some tasks (e.g. movie last_token_of_prompt) but can't
+        # be loaded by ChoiceProbe and bypasses the order-robustness guarantees.
+        per_option_finders = {n: f for n, f in DEFAULT_FINDERS.items()
+                              if n.startswith("per_option")}
         result = autoprobe(examples=examples, target_fn=target_fn,
                            model=self.model, tokenizer=self.tokenizer,
-                           device=self.device, verbose=verbose)
+                           device=self.device, verbose=verbose,
+                           finders=per_option_finders,
+                           ship_threshold_abs=ship_threshold_abs,
+                           ship_threshold_lift=ship_threshold_lift)
+        return self._record_probe_result(result, task)
+
+    def fit_selection(self, examples, target_fn=lambda ex: ex["target"].strip(),
+                      task: str | None = None, verbose: bool = False,
+                      ship_threshold_abs: float = 0.0,
+                      ship_threshold_lift: float = 0.10,
+                      augment_orderings: int = 6):
+        """Fit a SINGLE-mode SELECTION probe — a letter classifier read off the prompt's
+        final token (the model's own answer intent, the `mc_selection_two_stage`
+        "interrupt argmax and solve" readout). For MC tasks where per-option scoring
+        underperforms but the model still recognizes the answer late (e.g.
+        movie_recommendation: single 50.6% vs per_option no-ship vs generation 22.3%).
+        Dispatch routes single-mode artifacts through order-marginalized selection
+        scoring. Defaults to ship_threshold_abs=0.0 (these recognizers are often <60%
+        but still beat the generation fallback).
+
+        A single-mode probe reads the whole option arrangement, so it carries a letter-
+        position prior that inference-time cyclic marginalization can't fully cancel
+        (movie reorder Δ -15pp). `augment_orderings` > 1 trains on that many option
+        orderings per example (identity + random perms, target remapped), so the probe
+        learns order-INVARIANT selection features at the source. NOTE: with augmentation
+        the autoprobe CV is leaky (orderings of one example span folds) — judge order-
+        robustness by the perturbation harness reorder Δ, not the reported CV."""
+        from turnstyle.autoprobe import autoprobe, DEFAULT_FINDERS
+        single_finders = {n: f for n, f in DEFAULT_FINDERS.items()
+                          if not n.startswith("per_option")}
+        train_examples = (_augment_option_orderings(examples, augment_orderings)
+                          if augment_orderings > 1 else examples)
+        if verbose and augment_orderings > 1:
+            print(f"[fit_selection] order-augmented {len(examples)} -> "
+                  f"{len(train_examples)} training rows ({augment_orderings}x)", flush=True)
+        result = autoprobe(examples=train_examples, target_fn=target_fn,
+                           model=self.model, tokenizer=self.tokenizer,
+                           device=self.device, verbose=verbose,
+                           finders=single_finders,
+                           ship_threshold_abs=ship_threshold_abs,
+                           ship_threshold_lift=ship_threshold_lift)
+        return self._record_probe_result(result, task)
+
+    def _record_probe_result(self, result, task: str | None):
+        """Attach a shipped probe to ctx and (if task given) the profile; on no-ship,
+        evict any stale probe for that task so a re-calibration can't leave one behind."""
         if result.ship and result.fitted is not None and result.chosen is not None:
             self.ctx.choice_artifact = result.fitted
             if task is not None:
@@ -111,6 +211,8 @@ class DispatchTurnstyle(Turnstyle):
                         model_id=getattr(self.model.config, "_name_or_path", "") or "unknown")
                 self.profile.set_probe(task, result.fitted, result.chosen[0],
                                        accuracy=result.chosen[3])
+        elif task is not None and self.profile is not None:
+            self.profile.remove_probe(task)
         return result
 
     def calibrate_polarity(self, verbose: bool = False):
