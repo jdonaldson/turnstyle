@@ -676,6 +676,32 @@ def _score_options_pmi(prompt: str, ctx: Ctx):
     return f"({best})", pmis
 
 
+def _score_selection_marginalized(prompt: str, ctx: Ctx):
+    """Order-robust scoring for a SINGLE-mode selection probe (a letter classifier
+    read off the prompt's final token — the model's own answer intent, the
+    `mc_selection_two_stage` "interrupt argmax and solve" readout). The probe carries
+    a letter-position prior, so present the options in N cyclic shifts, read the
+    per-letter probabilities each time, map each slot-letter back to the underlying
+    option, and average. Returns (answer_text, {label: avg}) or None."""
+    parsed = _split_canonical_options(prompt)
+    if parsed is None:
+        return None
+    head, contents = parsed
+    n = len(contents)
+    agg = [0.0] * n
+    for k in range(n):                        # shift k: slot p holds content (p+k)%n
+        shifted = [contents[(p + k) % n] for p in range(n)]
+        sp = head + "\n".join(f"({chr(ord('A') + p)}) {c}" for p, c in enumerate(shifted))
+        probs = ctx.choice_artifact.class_probs(sp, ctx.model, ctx.tokenizer, ctx.device)
+        if probs is None:
+            return None
+        for p in range(n):                    # letter in slot p → underlying option (p+k)%n
+            agg[(p + k) % n] += probs.get(chr(ord("A") + p), 0.0)
+    avg = {chr(ord("A") + i): agg[i] / n for i in range(n)}
+    best = max(avg, key=lambda key: avg[key])
+    return ctx.choice_artifact._format(best), avg
+
+
 def _solve_choice(prompt: str, options: list[str],
                   gather: Optional[Gather], selection: Optional[SelectionShape],
                   ctx: Ctx) -> Result:
@@ -688,6 +714,20 @@ def _solve_choice(prompt: str, options: list[str],
                 answer_text, pmis = floor
                 return Answer(text=answer_text, source="pmi_floor", confidence=1.0,
                               proof=f"zero-shot content-PMI scores={pmis}")
+        return _solve_freeform(prompt, ctx)
+
+    # Single-mode selection probe (letter classifier at the final token) → its own
+    # order-marginalized path. ChoiceProbe handles only per_option artifacts, so a
+    # single-mode probe must not reach it.
+    if getattr(ctx.choice_artifact, "mode", None) == "single":
+        if ctx.marginalize_choice and 2 <= len(options) <= ctx.marginalize_cap:
+            sel = _score_selection_marginalized(prompt, ctx)
+            if sel is not None:
+                answer_text, scores = sel
+                return Answer(text=answer_text, source="selection_probe",
+                              confidence=max(scores.values()),
+                              proof=f"selection-marginalized scores={scores} | "
+                                    f"{_selection_trust(selection)}")
         return _solve_freeform(prompt, ctx)
 
     # Position-marginalized path (default): order-invariant, O(N) passes, small N only.

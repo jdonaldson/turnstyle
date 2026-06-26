@@ -39,6 +39,9 @@ def main():
                     help="trust guard: min absolute CV accuracy (0.0 disables it)")
     ap.add_argument("--ship-lift", type=float, default=0.10,
                     help="validity guard: min lift over best cheap baseline")
+    ap.add_argument("--selection", action="store_true",
+                    help="fit a single-mode SELECTION probe (final-token letter "
+                         "classifier) instead of a per_option choice probe")
     args = ap.parse_args()
     tasks = args.tasks or DEFAULT_TASKS
 
@@ -51,10 +54,12 @@ def main():
 
     for task in tasks:
         examples = load_task(task)
-        print(f"\n=== {task} (n={len(examples)}) — fitting ===", flush=True)
-        result = dt.fit_choice(examples, task=task, verbose=True,
-                               ship_threshold_abs=args.ship_abs,
-                               ship_threshold_lift=args.ship_lift)
+        mode = "selection" if args.selection else "choice"
+        print(f"\n=== {task} (n={len(examples)}) — fitting [{mode}] ===", flush=True)
+        fit = dt.fit_selection if args.selection else dt.fit_choice
+        result = fit(examples, task=task, verbose=True,
+                     ship_threshold_abs=args.ship_abs,
+                     ship_threshold_lift=args.ship_lift)
         chosen = result.chosen
         print(f"  ship={result.ship} "
               f"{'config=' + str(chosen[:3]) + f' acc={chosen[3]:.3f}' if chosen else ''}",
