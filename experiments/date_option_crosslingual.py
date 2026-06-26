@@ -59,6 +59,34 @@ TR = {
 }
 
 
+def wilson(k, n, z=1.96):
+    """Wilson score 95% CI for a binomial proportion. Returns (p, lo, hi)."""
+    if n == 0:
+        return 0.0, 0.0, 0.0
+    p = k / n
+    d = 1 + z * z / n
+    c = (p + z * z / (2 * n)) / d
+    h = z / d * ((p * (1 - p) / n + z * z / (4 * n * n)) ** 0.5)
+    return p, max(0.0, c - h), min(1.0, c + h)
+
+
+def mcnemar(a_hits, b_hits):
+    """Exact two-sided McNemar on two aligned hit lists (None entries skipped).
+    Returns (b, c, p) with b = a-right/b-wrong, c = b-right/a-wrong."""
+    from scipy.stats import binomtest
+    b = c = 0
+    for ha, hb in zip(a_hits, b_hits):
+        if ha is None or hb is None:
+            continue
+        if ha and not hb:
+            b += 1
+        elif hb and not ha:
+            c += 1
+    n = b + c
+    p = binomtest(min(b, c), n, 0.5).pvalue if n else 1.0
+    return b, c, p
+
+
 def parse_options(text):
     sec = text.split("Options:")[-1]
     return [(l, v.strip()) for l, v in re.findall(r'\(([A-Z])\)\s+([^\n(]+)', sec)]
@@ -171,31 +199,55 @@ def main():
     ck, cn = closest_acc(examples[:150])
     print(f"\nclosest-date control (n={cn}): {ck}/{cn} = {ck/cn:.3f}", flush=True)
 
-    def sel_acc(clf, sc, items, L):
-        ok = n = 0
+    def sel_hits(clf, sc, items, L):
+        """Per-item 1/0 hit list (None where the problem is unparseable), aligned across langs."""
+        hits = []
         for V, y, tgt in items:
             if V is None or y.sum() == 0:
-                continue
+                hits.append(None); continue
             prob = clf.predict_proba(sc.transform(V[:, L, :].astype(np.float32)))[:, 1]
-            ok += int(y[int(np.argmax(prob))] == 1); n += 1
-        return ok, n
+            hits.append(int(y[int(np.argmax(prob))] == 1))
+        return hits
 
-    print("\n=== cross-lingual selection (train EN[30:150], test 18 translated) ===")
+    def acc(hits):
+        h = [x for x in hits if x is not None]
+        return sum(h), len(h)
+
+    print(f"\n=== cross-lingual selection (train EN[30:150], test {len(TR)} translated) ===")
     print(f"  {'L':>3s} | {'EN':>5s} {'ES':>5s} {'FR':>5s}")
     best = (-9, -1)
+    fitted = {}
     for L in range(nL):
         sc = StandardScaler().fit(TRV[:, L, :])
         clf = LogisticRegression(C=0.3, max_iter=2000, class_weight="balanced")
         clf.fit(sc.transform(TRV[:, L, :]), TRY)
-        eo, en_ = sel_acc(clf, sc, test["en"], L)
-        so, sn = sel_acc(clf, sc, test["es"], L)
-        fo, fn = sel_acc(clf, sc, test["fr"], L)
+        fitted[L] = (clf, sc)
+        eh = sel_hits(clf, sc, test["en"], L)
+        sh = sel_hits(clf, sc, test["es"], L)
+        fh = sel_hits(clf, sc, test["fr"], L)
+        eo, en_ = acc(eh); so, sn = acc(sh); fo, fn = acc(fh)
         m = (so / sn + fo / fn) / 2
         if m > best[0]:
             best = (m, L)
         if L % 2 == 0 or L == nL - 1:
             print(f"  {L:>3d} | {eo/en_:>5.2f} {so/sn:>5.2f} {fo/fn:>5.2f}", flush=True)
     print(f"  >>> best mean ES/FR selection = {best[0]:.2f} @L{best[1]}  (chance ~0.17)")
+
+    bL = best[1]
+    clf, sc = fitted[bL]
+    eh = sel_hits(clf, sc, test["en"], bL)
+    sh = sel_hits(clf, sc, test["es"], bL)
+    fh = sel_hits(clf, sc, test["fr"], bL)
+    print(f"\n=== Wilson 95% CIs @L{bL} (N up to {len(TR)}; tiny — intervals are wide on purpose) ===")
+    for name, h in (("EN", eh), ("ES", sh), ("FR", fh)):
+        k, n = acc(h)
+        p, lo, hi = wilson(k, n)
+        print(f"  {name}: {p:.3f}  95% CI [{lo:.3f},{hi:.3f}]  (N={n})")
+    print("  --- paired McNemar vs EN (tests the 'no degradation' claim) ---")
+    for name, h in (("ES", sh), ("FR", fh)):
+        b, c, pv = mcnemar(eh, h)
+        verdict = "DEGRADES (p<0.05)" if pv < 0.05 else "no detectable degradation"
+        print(f"  EN vs {name}: b(EN-right/{name}-wrong)={b} c={c}  p={pv:.3f}  -> {verdict}")
 
 
 if __name__ == "__main__":
