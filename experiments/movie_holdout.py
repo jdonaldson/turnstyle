@@ -43,17 +43,22 @@ def main():
     mdl = AutoModelForCausalLM.from_pretrained(mid, dtype=torch.float16).to(dev)
     dt = DispatchTurnstyle(mdl, tok, dev)
 
+    import sys
+    K = int(sys.argv[1]) if len(sys.argv) > 1 else 6        # augment orderings
+    SEEDS = int(sys.argv[2]) if len(sys.argv) > 2 else 5    # reorder seeds to average
+
     exs = load_task("movie_recommendation")
     test, train = exs[:40], exs[40:]
-    print(f"train {len(train)} (augmented), held-out test {len(test)}", flush=True)
+    print(f"train {len(train)} (augmented k={K}), held-out test {len(test)}, "
+          f"reorder over {SEEDS} seeds", flush=True)
 
     # Fit the order-augmented selection probe on the DISJOINT train split (task=None
     # → don't touch the profile; just set ctx.choice_artifact to this held-out probe).
-    res = dt.fit_selection(train, task=None, verbose=True)
+    res = dt.fit_selection(train, task=None, verbose=True, augment_orderings=K)
     if not res.ship:
         print("did not ship on held-out train:", res.reason); return
 
-    def acc(items, label):
+    def acc(items):
         ok = n = 0
         for ex in items:
             sel = _score_selection_marginalized(ex["input"], dt.ctx)
@@ -61,13 +66,19 @@ def main():
                 continue
             n += 1
             ok += int(answer_matches(sel[0], ex["target"].strip()))
-        print(f"  {label}: {ok}/{n} = {ok/n:.3f}", flush=True)
-        return ok / n
+        return ok / n if n else 0.0
 
-    print("\n=== HELD-OUT movie (probe trained on [40:250], eval on [0:40]) ===")
-    a_nat = acc(test, "natural order")
-    a_reord = acc([reorder(ex, i) for i, ex in enumerate(test)], "reordered  ")
-    print(f"\n  reorder Δ = {(a_reord - a_nat)*100:+.1f}pp   (generation floor ~0.22)")
+    print(f"\n=== HELD-OUT movie (probe trained on [40:250] k={K}, eval on [0:40]) ===")
+    a_nat = acc(test)
+    print(f"  natural order: {a_nat:.3f}", flush=True)
+    reord_accs = []
+    for s in range(SEEDS):                       # distinct permutation per seed
+        a = acc([reorder(ex, s * 1000 + i) for i, ex in enumerate(test)])
+        reord_accs.append(a)
+        print(f"  reordered[seed {s}]: {a:.3f}", flush=True)
+    mean_reord = sum(reord_accs) / len(reord_accs)
+    print(f"\n  reordered mean = {mean_reord:.3f}  (over {SEEDS} seeds)")
+    print(f"  reorder Δ = {(mean_reord - a_nat)*100:+.1f}pp   (generation floor ~0.22)")
 
 
 if __name__ == "__main__":
