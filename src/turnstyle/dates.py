@@ -62,9 +62,12 @@ def _parse_date_str(text: str, reference_year: int | None = None) -> date | None
     text = text.strip().strip('.,?!)')
 
     lower = text.lower()
-    for name, (m, d) in HOLIDAYS.items():
+    # longest name first so "christmas eve" wins over the "christmas" substring
+    for name, (m, d) in sorted(HOLIDAYS.items(), key=lambda kv: -len(kv[0])):
         if name in lower:
-            year = reference_year or date.today().year
+            # Prefer an explicit year in the text ("Christmas Eve of 1937")
+            yr_m = re.search(r'\b(\d{4})\b', lower)
+            year = int(yr_m.group(1)) if yr_m else (reference_year or date.today().year)
             return date(year, m, d)
 
     # ISO: 2026-03-20
@@ -290,6 +293,14 @@ def _extract_today(text: str) -> date | None:
         if anchor:
             return anchor + timedelta(days=n)
 
+    # "the last day of [month] [year]"
+    m = re.search(r'\blast\s+day\s+of\s+([A-Za-z]+)\s+(\d{4})\b', lower)
+    if m:
+        mo = MONTHS.get(m.group(1))
+        if mo:
+            last = calendar.monthrange(int(m.group(2)), mo)[1]
+            return date(int(m.group(2)), mo, last)
+
     # "the last day of [year]"
     m = re.search(r'\bthe\s+last\s+day\s+of\s+(\d{4})\b', lower)
     if m:
@@ -341,8 +352,8 @@ def _extract_today(text: str) -> date | None:
 
     # "visits on [N]th of each month starting from [month year], it is her [K]th visit today"
     m = re.search(
-        r'(?:visits?|meets?)\s+on\s+the\s+(\d+)(?:st|nd|rd|th)?\s+of\s+each\s+month\s+'
-        r'starting\s+from\s+(?:the\s+)?(\w+)\s+of\s+(\d{4})[^.]*it\s+is\s+(?:her|his|their)\s+'
+        r'(?:visits?|meets?)\b[\s\S]*?\bon\s+the\s+(\d+)(?:st|nd|rd|th)?\s+of\s+each\s+month\s+'
+        r'starting\s+from\s+(?:the\s+)?(\w+)\s+of\s+(\d{4})[\s\S]*?it\s+is\s+(?:her|his|their)\s+'
         r'(\d+)(?:st|nd|rd|th)?\s+visit', lower)
     if m:
         day = int(m.group(1))
