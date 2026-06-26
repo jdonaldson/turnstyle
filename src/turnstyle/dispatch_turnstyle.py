@@ -92,15 +92,35 @@ class DispatchTurnstyle(Turnstyle):
         return True
 
     def fit_choice(self, examples, target_fn=lambda ex: ex["target"].strip(),
-                   task: str | None = None, verbose: bool = False):
+                   task: str | None = None, verbose: bool = False,
+                   ship_threshold_abs: float = 0.60,
+                   ship_threshold_lift: float = 0.10):
         """Fit a per-option ChoiceProbe artifact for an MC task (via autoprobe) and
         attach it, so MultipleChoice prompts route through the probe instead of
         abstaining. If `task` is given, the shipped probe is also recorded in the
-        profile (call `persist()` to save it). Returns the AutoprobeResult."""
-        from turnstyle.autoprobe import autoprobe
+        profile (call `persist()` to save it). Returns the AutoprobeResult.
+
+        The two ship thresholds gate whether the probe is recorded. They split into
+        a *validity* guard (`ship_threshold_lift` — the probe must beat the best cheap
+        baseline by this margin, i.e. it's real signal not noise) and a *trust* guard
+        (`ship_threshold_abs` — minimum absolute CV accuracy for standalone use). When
+        the goal is maximizing aggregate BBH score rather than deploying a trustworthy
+        standalone solver, set `ship_threshold_abs=0.0` to keep only the validity guard
+        — a recognition probe that beats the cheap baseline but lands <60% (e.g.
+        movie_recommendation 50.6%, salient 42.4%) still beats the generation fallback."""
+        from turnstyle.autoprobe import autoprobe, DEFAULT_FINDERS
+        # The MC dispatch path consumes a per_option ChoiceProbe (with order-marginalized
+        # scoring), so restrict the sweep to per_option finders — a single-mode letter
+        # classifier would win on some tasks (e.g. movie last_token_of_prompt) but can't
+        # be loaded by ChoiceProbe and bypasses the order-robustness guarantees.
+        per_option_finders = {n: f for n, f in DEFAULT_FINDERS.items()
+                              if n.startswith("per_option")}
         result = autoprobe(examples=examples, target_fn=target_fn,
                            model=self.model, tokenizer=self.tokenizer,
-                           device=self.device, verbose=verbose)
+                           device=self.device, verbose=verbose,
+                           finders=per_option_finders,
+                           ship_threshold_abs=ship_threshold_abs,
+                           ship_threshold_lift=ship_threshold_lift)
         if result.ship and result.fitted is not None and result.chosen is not None:
             self.ctx.choice_artifact = result.fitted
             if task is not None:
@@ -111,6 +131,10 @@ class DispatchTurnstyle(Turnstyle):
                         model_id=getattr(self.model.config, "_name_or_path", "") or "unknown")
                 self.profile.set_probe(task, result.fitted, result.chosen[0],
                                        accuracy=result.chosen[3])
+        elif task is not None and self.profile is not None:
+            # Re-calibration that no longer ships must evict any stale probe for this
+            # task (e.g. one shipped under a looser rule), else it lingers in the profile.
+            self.profile.remove_probe(task)
         return result
 
     def calibrate_polarity(self, verbose: bool = False):
