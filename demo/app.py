@@ -92,20 +92,30 @@ def compare(prompt: str, probe_task: str):
     prompt = (prompt or "").strip()
     if not prompt:
         return "", "", "_Enter a prompt._"
-    # Activate the per-task recognition probe (MC tasks), or reset to symbolic-only.
+    # Activate the per-task recognition probe (MC tasks), or reset to auto-routing.
     DT.ctx.choice_artifact = None
+    DT.ctx.last_route = None
     if probe_task and probe_task != AUTO:
         DT.use_probe(probe_task)
     vanilla = _vanilla(prompt)
     ans = DT.parse(prompt)
     grounded, _ = DT.generate(prompt, max_new_tokens=MAX_NEW)
+
+    # Show the route probe's decision (only when it auto-detected the probe).
+    router_line = ""
+    lr = DT.ctx.last_route
+    if lr and lr[0] is not None:
+        router_line = f"🧭 route probe → **{PROBE_LABELS.get(lr[0], lr[0])}** ({lr[1]:.0%})\n\n"
+
     if ans is None:
         trace = "○ **Turnstyle abstained** — no symbolic or probe route matched; plain generation."
+    elif ans.source == "pmi_floor":
+        trace = router_line + f"⊨ **best guess** `{ans.text}` (zero-shot PMI floor — no confident probe)"
     elif ans.source in PROBE_SOURCES:
         # ⊨ semantic entailment: the answer is *recognized* by a hidden-state probe.
-        trace = f"⊨ **recognized** via `{ans.source}` → **{ans.text}**"
-        if ans.proof:
-            trace += f"\n\n_{ans.proof}_"
+        # (Probe-confidence varies by probe type — per-option vs softmax — so it's not
+        # a clean cross-probe number; the router's task-confidence in the 🧭 line is.)
+        trace = router_line + f"⊨ **recognized** `{ans.text}`"
     else:
         # ⊢ syntactic turnstile: the answer is *proved* by a deterministic solver.
         trace = f"⊢ **proved** by `{ans.source}` → **{ans.text}**"

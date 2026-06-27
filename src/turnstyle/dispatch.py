@@ -234,6 +234,7 @@ class Ctx:
     choice_artifact: Any = None      # ProbeArtifact (mode="per_option")
     router: Any = None               # RouteProbe: auto-select which probe for an MC prompt
     route_lookup: Any = None         # callable(task) -> ProbeArtifact | None (profile.get_probe)
+    last_route: Any = None           # (task, confidence) from the last auto-route (for display)
     legacy_registry: Any = None      # blackboard Registry for FreeForm fallback
     polarity_probe: Any = None       # PolarityProbe for the Ordering scalar-adjective poles
     pole_cache: Any = None           # {root: pole} memo, reused across prompts
@@ -719,6 +720,7 @@ def _solve_choice(prompt: str, options: list[str],
             and ctx.router is not None and ctx.route_lookup is not None
             and 2 <= len(options) <= ctx.marginalize_cap):
         task, _conf = ctx.router.route(prompt, ctx.model, ctx.tokenizer, ctx.device)
+        ctx.last_route = (task, _conf)
         if task is not None:
             art = ctx.route_lookup(task)
             if art is not None:
