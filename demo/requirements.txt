@@ -7,3 +7,4 @@ transformers>=4.40,<5
 scikit-learn        # probe reconstruction (StandardScaler + LogisticRegression params)
 numpy
 gradio>=4.0
+audioop-lts; python_version >= "3.13"   # audioop removed from stdlib in 3.13 (pydub/gradio need it)
