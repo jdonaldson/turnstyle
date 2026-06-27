@@ -131,6 +131,18 @@ class ModelProfile:
     support: dict = field(default_factory=dict)      # task -> {method, accuracy, shipped}
     polarity: dict = field(default_factory=dict)     # model-level adjective-polarity probe
     subjectivity: dict = field(default_factory=dict)  # model-level subjectivity BipolarAxis (hyperbaton)
+    router: dict = field(default_factory=dict)       # model-level route-classification probe
+
+    def get_router(self):
+        """Reconstruct the route-classification probe (auto-selects which recognition
+        probe to apply to an MC prompt), or None. Model-level. See turnstyle.route."""
+        if not self.router:
+            return None
+        from turnstyle.route import RouteProbe
+        return RouteProbe.from_dict(self.router)
+
+    def set_router(self, probe) -> None:
+        self.router = probe.to_dict()
 
     def get_probe(self, task: str):
         """Reconstruct the fitted ProbeArtifact for a task, or None if not shipped."""
@@ -197,7 +209,7 @@ class ModelProfile:
             "calibration_version": self.calibration_version, "created": self.created,
             "components": self.components, "extraction": self.extraction,
             "support": self.support, "polarity": self.polarity,
-            "subjectivity": self.subjectivity,
+            "subjectivity": self.subjectivity, "router": self.router,
         }
 
     def save(self, path: Path | str) -> Path:
@@ -226,6 +238,7 @@ def _merge_profiles(base: ModelProfile, overlay: ModelProfile) -> ModelProfile:
         support={**base.support, **overlay.support},
         polarity=overlay.polarity or base.polarity,
         subjectivity=overlay.subjectivity or base.subjectivity,
+        router=overlay.router or base.router,
     )
 
 

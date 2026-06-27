@@ -90,6 +90,10 @@ class DispatchTurnstyle(Turnstyle):
         if profile is not None:
             self.ctx.polarity_probe = profile.get_polarity()
             self.ctx.subjectivity_axis = profile.get_subjectivity()
+            # auto-route MC prompts to the right recognition probe (when no explicit
+            # use_probe is set): the router predicts the task, route_lookup loads it.
+            self.ctx.router = profile.get_router()
+            self.ctx.route_lookup = profile.get_probe
         # Calibrated semantic frames (affect/size/age/.../number/time) — a separate
         # fingerprint-addressed .npz store (kept OUT of the profile JSON). This is a
         # measurement surface on the instance, not wired into solve(); use
@@ -128,6 +132,27 @@ class DispatchTurnstyle(Turnstyle):
             return False
         self.ctx.choice_artifact = art
         return True
+
+    def calibrate_router(self, tasks=None, threshold: float = 0.9, n: int = 60,
+                         verbose: bool = False):
+        """Calibrate the route-classification probe over the profile's MC probe tasks,
+        activate it (so MC prompts auto-select their probe), and record it in the
+        profile. Call persist() to save. Returns the 7-way CV accuracy."""
+        from turnstyle.route import calibrate_route_probe
+        from turnstyle.profile import ModelProfile, model_fingerprint
+        tasks = tasks or sorted(self.profile_tasks)
+        probe, acc = calibrate_route_probe(self.model, self.tokenizer, self.device,
+                                           tasks, n=n, threshold=threshold, verbose=verbose)
+        self.ctx.router = probe
+        self.ctx.route_lookup = (self.profile.get_probe if self.profile else None)
+        if self.profile is None:
+            self.profile = ModelProfile(
+                fingerprint=model_fingerprint(self.model),
+                model_id=getattr(self.model.config, "_name_or_path", "") or "unknown")
+        self.profile.set_router(probe)
+        if self.ctx.route_lookup is None:
+            self.ctx.route_lookup = self.profile.get_probe
+        return acc
 
     def fit_choice(self, examples, target_fn=lambda ex: ex["target"].strip(),
                    task: str | None = None, verbose: bool = False,
