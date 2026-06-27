@@ -31,7 +31,19 @@ DT = DispatchTurnstyle(MDL, TOK, DEVICE)
 print(f"turnstyle ready. probe tasks: {DT.profile_tasks}", flush=True)
 
 AUTO = "(auto — symbolic / deterministic)"
-PROBE_TASKS = [AUTO] + sorted(DT.profile_tasks)
+# Friendly labels for the recognition-probe picker. The *value* stays the calibrated
+# task key (use_probe() looks it up by that key); only the displayed label is clean.
+PROBE_LABELS = {
+    "snarks": "sarcasm",
+    "movie_recommendation": "movie similarity",
+    "ruin_names": "humorous name edit",
+    "disambiguation_qa": "pronoun reference",
+    "salient_translation_error_detection": "translation error type",
+    "temporal_sequences": "temporal ordering",
+    "date_understanding": "date selection",
+}
+PROBE_CHOICES = [(AUTO, AUTO)] + [(PROBE_LABELS.get(t, t), t)
+                                  for t in sorted(DT.profile_tasks)]
 
 # (prompt, probe_task). All verified to TRIP vanilla SmolLM2 (wrong answer) while
 # turnstyle gets it right. Deterministic tasks use AUTO; probe tasks tag their task.
@@ -61,10 +73,9 @@ EXAMPLES = [
     ["Which statement is sarcastic?\nOptions:\n(A) He's a generous person, trying to "
      "promote a charity stream that has raised millions to help kids in need\n(B) He's a "
      "terrible person, trying to promote a charity stream that has raised millions to help "
-     "kids in need", "snarks"],
+     "kids in need", AUTO],
     ["Find a movie similar to Batman, The Mask, The Fugitive, Pretty Woman:\nOptions:\n"
-     "(A) The Front Page\n(B) Maelstrom\n(C) The Lion King\n(D) Lamerica",
-     "movie_recommendation"],
+     "(A) The Front Page\n(B) Maelstrom\n(C) The Lion King\n(D) Lamerica", AUTO],
 ]
 
 
@@ -116,10 +127,11 @@ with gr.Blocks(title="Turnstyle: neurosymbolic SmolLM2") as demo:
     )
     inp = gr.Textbox(label="Prompt", lines=4,
                      placeholder="Try an arithmetic expression, a date question, a logic puzzle…")
-    task = gr.Dropdown(PROBE_TASKS, value=AUTO, label="Recognition probe",
+    task = gr.Dropdown(PROBE_CHOICES, value=AUTO, label="Recognition probe (override)",
                        allow_custom_value=True,
-                       info="Symbolic/deterministic tasks need nothing here. Probe tasks "
-                            "(sarcasm, movie) are per-task calibrated — pick one to activate it.")
+                       info="Leave on auto — a route probe detects which recognition probe "
+                            "to use (or none) from the prompt's hidden state. Override only "
+                            "to force a specific one.")
     with gr.Row():
         btn = gr.Button("Compare", variant="primary")
         clr = gr.Button("Clear")

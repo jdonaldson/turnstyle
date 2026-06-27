@@ -232,6 +232,8 @@ class Ctx:
     tokenizer: Any = None
     device: str = "cpu"
     choice_artifact: Any = None      # ProbeArtifact (mode="per_option")
+    router: Any = None               # RouteProbe: auto-select which probe for an MC prompt
+    route_lookup: Any = None         # callable(task) -> ProbeArtifact | None (profile.get_probe)
     legacy_registry: Any = None      # blackboard Registry for FreeForm fallback
     polarity_probe: Any = None       # PolarityProbe for the Ordering scalar-adjective poles
     pole_cache: Any = None           # {root: pole} memo, reused across prompts
@@ -708,6 +710,30 @@ def _score_selection_marginalized(prompt: str, ctx: Ctx):
 def _solve_choice(prompt: str, options: list[str],
                   gather: Optional[Gather], selection: Optional[SelectionShape],
                   ctx: Ctx) -> Result:
+    """Auto-route to a recognition probe when none is explicitly active. The route
+    probe's confidence is the coverage gate: route only when confident, else fall
+    through to the zero-shot floor. Transient — the routed probe is cleared after,
+    so it can't leak into the next prompt."""
+    auto_routed = False
+    if (ctx.choice_artifact is None and ctx.model is not None
+            and ctx.router is not None and ctx.route_lookup is not None
+            and 2 <= len(options) <= ctx.marginalize_cap):
+        task, _conf = ctx.router.route(prompt, ctx.model, ctx.tokenizer, ctx.device)
+        if task is not None:
+            art = ctx.route_lookup(task)
+            if art is not None:
+                ctx.choice_artifact = art
+                auto_routed = True
+    try:
+        return _choice_dispatch(prompt, options, gather, selection, ctx)
+    finally:
+        if auto_routed:
+            ctx.choice_artifact = None
+
+
+def _choice_dispatch(prompt: str, options: list[str],
+                     gather: Optional[Gather], selection: Optional[SelectionShape],
+                     ctx: Ctx) -> Result:
     if ctx.choice_artifact is None or ctx.model is None:
         # No calibrated probe → zero-shot content-PMI floor before abstaining.
         if (ctx.zeroshot_floor and ctx.model is not None
