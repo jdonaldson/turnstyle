@@ -104,6 +104,7 @@ with gr.Blocks(title="Turnstyle: neurosymbolic SmolLM2") as demo:
     inp = gr.Textbox(label="Prompt", lines=4,
                      placeholder="Try an arithmetic expression, a date question, a logic puzzle…")
     task = gr.Dropdown(PROBE_TASKS, value=AUTO, label="Recognition probe",
+                       allow_custom_value=True,
                        info="Symbolic/deterministic tasks need nothing here. Probe tasks "
                             "(sarcasm, movie) are per-task calibrated — pick one to activate it.")
     with gr.Row():
@@ -126,4 +127,4 @@ with gr.Blocks(title="Turnstyle: neurosymbolic SmolLM2") as demo:
 
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(server_name="0.0.0.0", server_port=7860)

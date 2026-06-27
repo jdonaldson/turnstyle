@@ -4,10 +4,11 @@ emoji: 🌀
 colorFrom: indigo
 colorTo: green
 sdk: gradio
-sdk_version: 4.44.0
+sdk_version: 5.50.0
+python_version: "3.12"
 app_file: app.py
 pinned: false
-short_description: SmolLM2-1.7B, vanilla vs. with turnstyle's symbolic+probe grounding
+short_description: Vanilla SmolLM2 vs. turnstyle symbolic+probe grounding
 ---
 
 # 🌀 Turnstyle — a 1.7B model that stops guessing
