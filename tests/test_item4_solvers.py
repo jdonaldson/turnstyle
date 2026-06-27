@@ -6,7 +6,7 @@ from __future__ import annotations
 from turnstyle.colored_objects import solve_colored_objects
 from turnstyle.object_counting import parse_item_list, solve_object_counting, _singular
 from turnstyle.penguins import parse_penguins_tables
-from turnstyle.dispatch import parse, Ctx, ColoredObjects, Tracking
+from turnstyle.dispatch import parse, Ctx, SceneQuery, StateTracking
 
 
 # ── colored_objects: deterministic, no model, no hardcoded color list ──────────
@@ -104,7 +104,7 @@ def test_penguins_parse_delete():
 def test_dispatch_colored_commits_without_model():
     s = ("On the desk, you see a red pen, a blue cup, and a green book. "
          "What color is the cup?\nOptions:\n(A) red\n(B) blue\n(C) green")
-    assert parse(s, Ctx()) == ColoredObjects(answer="(B)")
+    assert parse(s, Ctx()) == SceneQuery(answer="(B)")
 
 
 def test_dispatch_tracking_commits_without_model():
@@ -112,4 +112,4 @@ def test_dispatch_tracking_commits_without_model():
          "a yellow ball, Bob has a white ball, and Claire has a green ball. Then, Alice "
          "and Bob swap balls. At the end of the day, Alice has\n"
          "Options:\n(A) yellow ball\n(B) white ball\n(C) green ball")
-    assert parse(s, Ctx()) == Tracking(answer="(B)")
+    assert parse(s, Ctx()) == StateTracking(answer="(B)")

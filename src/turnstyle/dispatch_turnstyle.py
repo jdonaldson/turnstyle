@@ -86,7 +86,7 @@ class DispatchTurnstyle(Turnstyle):
                        legacy_registry=legacy_registry,
                        pole_cache={})
         # activate the model-level polarity probe (Ordering) + subjectivity axis
-        # (Hyperbaton) from the profile, if calibrated
+        # (AdjectiveOrder) from the profile, if calibrated
         if profile is not None:
             self.ctx.polarity_probe = profile.get_polarity()
             self.ctx.subjectivity_axis = profile.get_subjectivity()
@@ -239,7 +239,7 @@ class DispatchTurnstyle(Turnstyle):
     def calibrate_subjectivity(self, layer: int | None = None, accuracy=None,
                                verbose: bool = False):
         """Fit the model-level subjectivity BipolarAxis (opinion vs material),
-        activate it for the Hyperbaton path, and record it in the profile. Call
+        activate it for the AdjectiveOrder path, and record it in the profile. Call
         `persist()` to save. Built on the same machinery as the polarity primitive."""
         from turnstyle.hyperbaton import fit_subjectivity_axis, DEFAULT_LAYER
         axis = fit_subjectivity_axis(self.model, self.tokenizer, self.device,

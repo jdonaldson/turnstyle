@@ -32,7 +32,7 @@ def test_ordering_run_returns_answer():
     ans = run(_AGE, Ctx())
     assert isinstance(ans, Answer)
     assert ans.text == "(C)"
-    assert ans.source == "logical_deduction"
+    assert ans.source == "ordering"
 
 
 def test_out_of_lexicon_needs_pole_source():

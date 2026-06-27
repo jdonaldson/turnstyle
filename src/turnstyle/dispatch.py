@@ -85,7 +85,7 @@ class TruthChain:
 
 
 @dataclass(frozen=True)
-class Spatial:
+class SpatialSim:
     """A navigate prompt. Deterministically simulated at parse time — holding
     this means the path was walked and the answer is known."""
     answer: str           # "Yes" / "No"
@@ -98,7 +98,7 @@ class Boolean:
 
 
 @dataclass(frozen=True)
-class Dyck:
+class BracketMatch:
     answer: str           # closing-bracket sequence
 
 
@@ -123,7 +123,7 @@ class Ordering:
 
 
 @dataclass(frozen=True)
-class FormalFallacy:
+class FolValidity:
     """formal_fallacies: NL syllogism → FOL → validity check by interpretation
     enumeration. valid/invalid is mapped to the prompt's option letter, so this
     is deterministic-selection like DateCalc/Ordering."""
@@ -131,14 +131,14 @@ class FormalFallacy:
 
 
 @dataclass(frozen=True)
-class Hyperbaton:
+class AdjectiveOrder:
     """hyperbaton: two adjective orderings (permutations); the correct one is sorted
     by decreasing subjectivity. Deterministic-selection via the subjectivity axis."""
     answer: str           # option letter
 
 
 @dataclass(frozen=True)
-class Tabular:
+class TableQuery:
     """penguins_in_a_table: a bespoke data table + a query. Parsed structurally
     (CSV records + add/delete mutations) into SQLite; the model writes the SQL,
     which is executed and matched to an option. Holding this means the SQL solve
@@ -148,7 +148,7 @@ class Tabular:
 
 
 @dataclass(frozen=True)
-class Tracking:
+class StateTracking:
     """tracking_shuffled_objects: initial actor→item assignments + a chain of
     pairwise swaps. Deterministically simulated at parse time (regex parse of the
     init state + swaps, final state matched to an option) — holding this means
@@ -167,7 +167,7 @@ class ObjectCount:
 
 
 @dataclass(frozen=True)
-class ColoredObjects:
+class SceneQuery:
     """reasoning_about_colored_objects: a row of colored objects + a spatial/color
     query. Deterministically solved at parse time — color is parsed positionally
     (no color list), the query operator is structural, the answer is mapped to an
@@ -185,7 +185,7 @@ class FrameOrdering:
 
 
 @dataclass(frozen=True)
-class GeometricShape:
+class SvgPath:
     """geometric_shapes: an SVG `<path d="…"/>` is classified deterministically by
     modeling it as a graph (nodes=unique points, edges=typed line/arc) and reading the
     shape off the walk (cycle length / edge kinds / 4-gon geometry). Purely structural;
@@ -198,10 +198,10 @@ class FreeForm:
     """No structured variant matched — delegate to the legacy blackboard."""
 
 
-Task = (Arithmetic | MultipleChoice | TruthChain | Spatial
-        | Boolean | Dyck | Sorting | DateCalc | Ordering | FormalFallacy
-        | Hyperbaton | Tracking | Tabular | ColoredObjects | ObjectCount
-        | FrameOrdering | GeometricShape | FreeForm)
+Task = (Arithmetic | MultipleChoice | TruthChain | SpatialSim
+        | Boolean | BracketMatch | Sorting | DateCalc | Ordering | FolValidity
+        | AdjectiveOrder | StateTracking | TableQuery | SceneQuery | ObjectCount
+        | FrameOrdering | SvgPath | FreeForm)
 
 
 # ── Answer + Context ──────────────────────────────────────────────────────────
@@ -236,8 +236,8 @@ class Ctx:
     polarity_probe: Any = None       # PolarityProbe for the Ordering scalar-adjective poles
     pole_cache: Any = None           # {root: pole} memo, reused across prompts
     subjectivity_axis: Any = None    # deprecated (old 1-axis hyperbaton); kept for profile back-compat
-    ordering_classifier: Any = None  # OrderingClassifier for Hyperbaton (lazy-fit, cached)
-    sql_turnstyle: Any = None        # cached SQLTurnstyle for the Tabular (penguins) path
+    ordering_classifier: Any = None  # OrderingClassifier for AdjectiveOrder (lazy-fit, cached)
+    sql_turnstyle: Any = None        # cached SQLTurnstyle for the TableQuery (penguins) path
     frame_library: Any = None        # FrameLibrary for the FrameOrdering implicit-attribute path
     # Position-marginalized choice scoring: score each option over every slot it can
     # occupy (cyclic shifts) and average, so the per-option probe's POSITION component
@@ -356,7 +356,7 @@ def parse(prompt: str, ctx: Ctx) -> Task:
     if (r := parse_boolean(prompt)) is not None and _covers(r[0], prompt):
         return Boolean(answer=r[2])
     if (r := parse_dyck(prompt)) is not None:
-        return Dyck(answer=r[2])
+        return BracketMatch(answer=r[2])
     # A prompt carrying (A)..(E) option lines is explained by the MultipleChoice
     # frame; don't let a stray "in alphabetical order" phrase in such a table
     # prompt (penguins) mis-commit to a Sorting answer. word_sorting is never MC.
@@ -370,21 +370,21 @@ def parse(prompt: str, ctx: Ctx) -> Task:
     # parse + a query actor + a matching option), so it's a no-op on other prompts.
     from turnstyle.object_tracking import _solve_tracking
     if (letter := _solve_tracking(prompt)) is not None:
-        return Tracking(answer=letter)
+        return StateTracking(answer=letter)
 
     # geometric_shapes: deterministic SVG-path classifier (no model). The parser IS the
     # coverage gate — returns None unless a `d="…"` path parses to a shape present in the
     # options, so it's a no-op on every other prompt.
     from turnstyle.geometric_shapes import solve_geometric_shapes
     if (letter := solve_geometric_shapes(prompt)) is not None:
-        return GeometricShape(answer=letter)
+        return SvgPath(answer=letter)
 
     # reasoning_about_colored_objects: deterministic positional-color + structural
     # spatial query. Returns None unless it parses a colored-object scene AND a
     # recognized query that maps to an option, so it's a no-op on other prompts.
     from turnstyle.colored_objects import solve_colored_objects
     if (letter := solve_colored_objects(prompt)) is not None:
-        return ColoredObjects(answer=letter)
+        return SceneQuery(answer=letter)
 
     # object_counting: cheap structural gate (does "how many X do I have" parse?)
     # then model-classified category membership. Free-answer integer, no options.
@@ -408,7 +408,7 @@ def parse(prompt: str, ctx: Ctx) -> Task:
             letter = solve_penguins(prompt, ctx.model, ctx.tokenizer, ctx.device,
                                     sql_turnstyle=ctx.sql_turnstyle)
             if letter is not None:
-                return Tabular(answer=letter)
+                return TableQuery(answer=letter)
 
     # logical_deduction: structural frames + symbolic solve; scalar-adjective poles
     # come from the polarity probe (if calibrated) else the regex lexicon fallback.
@@ -427,14 +427,14 @@ def parse(prompt: str, ctx: Ctx) -> Task:
         return TruthChain(answer=wol, query=scene.question or "")
     nav = _navigate_solve(scene.body)
     if nav is not None:
-        return Spatial(answer=nav)
+        return SpatialSim(answer=nav)
 
     # formal_fallacies: FOL validity check. BBH target is the word valid/invalid
     # (options are dash-bullets, not (A)/(B)), so the verdict IS the answer.
     from turnstyle.formal_fallacies import solve_formal_fallacy
     verdict = solve_formal_fallacy(prompt)
     if verdict is not None:
-        return FormalFallacy(answer=verdict)
+        return FolValidity(answer=verdict)
 
     # hyperbaton: a permutation-pair of adjective orderings. The cheap structural
     # gate (same words, different order) runs before any model forward, so this is
@@ -447,7 +447,7 @@ def parse(prompt: str, ctx: Ctx) -> Task:
                 ctx.model, ctx.tokenizer, ctx.device)
         if (letter := solve_hyperbaton(prompt, ctx.model, ctx.tokenizer, ctx.device,
                                        ctx.ordering_classifier)) is not None:
-            return Hyperbaton(answer=letter)
+            return AdjectiveOrder(answer=letter)
 
     # frame-as-column: superlative over an implicit perceptual attribute, no numeric
     # column (the explicit-data solvers above already committed if data was present).
@@ -469,51 +469,54 @@ def parse(prompt: str, ctx: Ctx) -> Task:
 # ── solve: total dispatch over Task ───────────────────────────────────────────
 
 def solve(task: Task, prompt: str, ctx: Ctx) -> Result:
+    from turnstyle import proofs
     match task:
         case Arithmetic(expr, value):
-            return Answer(text=value, source="arithmetic", proof=f"{expr} = {value}")
+            return Answer(text=value, source="arithmetic",
+                          proof=proofs.explain(task, prompt) or f"{expr} = {value}")
 
         case TruthChain(answer, query):
             return Answer(text=answer, source="truth_chain",
                           proof=f"truth-propagation; query={query!r}")
 
-        case Spatial(answer):
-            return Answer(text=answer, source="navigate", proof="coordinate simulation")
+        case SpatialSim(answer):
+            return Answer(text=answer, source="spatial_sim", proof="coordinate simulation")
 
         case Boolean(answer):
             return Answer(text=answer, source="boolean")
-        case Dyck(answer):
-            return Answer(text=answer, source="dyck")
+        case BracketMatch(answer):
+            return Answer(text=answer, source="bracket_match", proof=proofs.explain(task, prompt))
         case Sorting(answer):
             return Answer(text=answer, source="sorting")
         case DateCalc(answer):
-            return Answer(text=answer, source="dates", proof="date computed, option matched")
+            return Answer(text=answer, source="date_calc", proof="date computed, option matched")
         case Ordering(answer):
-            return Answer(text=answer, source="logical_deduction",
+            return Answer(text=answer, source="ordering",
                           proof="constraint solve, unique ordering")
-        case FormalFallacy(answer):
-            return Answer(text=answer, source="formal_fallacies",
+        case FolValidity(answer):
+            return Answer(text=answer, source="fol_validity",
                           proof="FOL validity by interpretation enumeration")
-        case Hyperbaton(answer):
-            return Answer(text=answer, source="hyperbaton",
+        case AdjectiveOrder(answer):
+            return Answer(text=answer, source="adjective_order",
                           proof="adjectives sorted by decreasing subjectivity")
-        case Tracking(answer):
-            return Answer(text=answer, source="object_tracking",
-                          proof="swap-chain simulation, final state matched")
-        case Tabular(answer):
-            return Answer(text=answer, source="penguins",
+        case StateTracking(answer):
+            return Answer(text=answer, source="state_tracking",
+                          proof=proofs.explain(task, prompt)
+                          or "swap-chain simulation, final state matched")
+        case TableQuery(answer):
+            return Answer(text=answer, source="table_query",
                           proof="structural table parse + text-to-SQL")
-        case ColoredObjects(answer):
-            return Answer(text=answer, source="colored_objects",
+        case SceneQuery(answer):
+            return Answer(text=answer, source="scene_query",
                           proof="positional-color scene + structural spatial query")
         case ObjectCount(answer):
-            return Answer(text=answer, source="object_counting",
+            return Answer(text=answer, source="object_count",
                           proof="structural item parse + model-classified membership")
         case FrameOrdering(answer):
             return Answer(text=answer, source="frame_ordering",
                           proof="implicit attribute ranked via a semantic frame")
-        case GeometricShape(answer):
-            return Answer(text=answer, source="geometric_shapes",
+        case SvgPath(answer):
+            return Answer(text=answer, source="svg_path",
                           proof="SVG path classified by graph-walk")
 
         case MultipleChoice(options, gather, selection):
@@ -787,9 +790,9 @@ def _solve_freeform(prompt: str, ctx: Ctx) -> Result:
 
 __all__ = [
     "Gather", "PriorLocked", "Deliberated", "SelectionShape",
-    "Arithmetic", "MultipleChoice", "TruthChain", "Spatial",
-    "Boolean", "Dyck", "Sorting", "DateCalc", "Ordering", "FormalFallacy",
-    "Hyperbaton", "Tracking", "Tabular", "ColoredObjects", "ObjectCount",
+    "Arithmetic", "MultipleChoice", "TruthChain", "SpatialSim",
+    "Boolean", "BracketMatch", "Sorting", "DateCalc", "Ordering", "FolValidity",
+    "AdjectiveOrder", "StateTracking", "TableQuery", "SceneQuery", "ObjectCount",
     "FrameOrdering", "FreeForm", "Task",
     "Answer", "Abstain", "Result", "Ctx", "parse", "enrich", "solve", "run",
     "detect_selection_shape",
