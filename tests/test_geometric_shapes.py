@@ -2,7 +2,7 @@
 
 Real `d`-strings from the BBH cache for the tricky shapes (arc-based + 4-gons), and
 generated regular polygons for the vertex-count ladder. Also checks the parser-as-gate
-(declines on non-path / malformed input) and dispatch routing to the GeometricShape ADT.
+(declines on non-path / malformed input) and dispatch routing to the SvgPath ADT.
 """
 import math
 
@@ -71,11 +71,11 @@ def test_solve_abstains_when_shape_not_in_options():
 
 
 def test_dispatch_routes_to_geometric_shape():
-    from turnstyle.dispatch import Ctx, GeometricShape, parse
+    from turnstyle.dispatch import Ctx, SvgPath, parse
     prompt = (f'<path d="{ngon(8)}"/> draws a\n'
               "Options:\n(A) circle\n(B) octagon\n(C) line")
     task = parse(prompt, Ctx())                     # no model needed
-    assert isinstance(task, GeometricShape) and task.answer == "(B)"
+    assert isinstance(task, SvgPath) and task.answer == "(B)"
 
 
 if __name__ == "__main__":
