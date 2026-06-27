@@ -1,0 +1,9 @@
+# SmolLM2 + Turnstyle demo (HuggingFace Space)
+# turnstyle ships its bundled SmolLM2 profile (recognition probes) inside the wheel,
+# so installing from git is enough — no extra data files to fetch.
+turnstyle @ git+https://github.com/jdonaldson/turnstyle.git@main
+torch
+transformers>=4.40,<5
+scikit-learn        # probe reconstruction (StandardScaler + LogisticRegression params)
+numpy
+gradio>=4.0
