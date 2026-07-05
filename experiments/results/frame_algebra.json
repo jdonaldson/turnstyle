@@ -1,0 +1,71 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "recoverability": {
+    "weight": {
+      "raw": {
+        "r": 0.775,
+        "layer": 10
+      },
+      "zipf_res": {
+        "r": 0.776,
+        "layer": 10
+      }
+    },
+    "density": {
+      "raw": {
+        "r": 0.673,
+        "layer": 15
+      },
+      "zipf_res": {
+        "r": -0.002,
+        "layer": 15
+      }
+    },
+    "size": {
+      "raw": {
+        "r": 0.981,
+        "layer": 1
+      },
+      "zipf_res": {
+        "r": 0.981,
+        "layer": 1
+      }
+    },
+    "opinion": {
+      "raw": {
+        "r": 0.992,
+        "layer": 4
+      },
+      "zipf_res": {
+        "r": 0.989,
+        "layer": 1
+      }
+    }
+  },
+  "label_zipf": {
+    "weight": 0.062,
+    "density": 0.698,
+    "size": 0.006,
+    "opinion": 0.127
+  },
+  "algebra": {
+    "L8": {
+      "cos_weight_span": 0.164,
+      "alpha_size": 0.148,
+      "beta_density": 0.058,
+      "cos_weight_size": 0.153,
+      "cos_weight_density": 0.073,
+      "cos_size_density": 0.103,
+      "control_cos_opinion_span": 0.027
+    },
+    "L12": {
+      "cos_weight_span": 0.186,
+      "alpha_size": 0.14,
+      "beta_density": 0.121,
+      "cos_weight_size": 0.142,
+      "cos_weight_density": 0.123,
+      "cos_size_density": 0.018,
+      "control_cos_opinion_span": 0.072
+    }
+  }
+}
