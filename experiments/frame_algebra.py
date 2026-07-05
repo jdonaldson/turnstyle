@@ -31,9 +31,14 @@ T_OBJ = "It is a {w} object."
 WEIGHT = {"weightless": -3, "featherlight": -3, "feathery": -2, "light": -1,
           "lightweight": -1, "portable": -1, "heavy": 1, "hefty": 2, "weighty": 2,
           "cumbersome": 2, "leaden": 3, "ponderous": 3}
-DENSITY = {"airy": -3, "foamy": -2, "fluffy": -2, "hollow": -2, "sparse": -2,
-           "porous": -1, "thick": 1, "concentrated": 2, "compact": 2, "solid": 2,
-           "dense": 3}
+# v2 density: my adjective lexicon (airy/foamy <-> dense/solid) DIED the frequency
+# death (label|zipf +0.70, residualized -0.002). Replaced with the material-noun
+# density from material_investigate.py, which recovered 0.93 there: light vs dense
+# MATERIALS, template "It is made of {w}." — label|zipf near zero by construction
+# (foam/paper common-light, lead/steel common-dense).
+DENSITY = {"foam": 0, "feather": 0, "paper": 0, "cork": 0, "balsa": 0, "straw": 0,
+           "lead": 1, "steel": 1, "gold": 1, "iron": 1, "granite": 1, "concrete": 1}
+T_MATERIAL = "It is made of {w}."
 
 
 def main():
@@ -48,7 +53,7 @@ def main():
     opinion = CANONICAL_FRAMES["opinion"]
     pools = {
         "weight": (list(WEIGHT), np.array(list(WEIGHT.values()), dtype=float), T_OBJ),
-        "density": (list(DENSITY), np.array(list(DENSITY.values()), dtype=float), T_OBJ),
+        "density": (list(DENSITY), np.array(list(DENSITY.values()), dtype=float), T_MATERIAL),
         "size": (list(size["data"]), np.array(list(size["data"].values()), dtype=float),
                  size.get("template", T_OBJ)),
         "opinion": (list(opinion["data"]),

@@ -13,12 +13,12 @@
     },
     "density": {
       "raw": {
-        "r": 0.673,
-        "layer": 15
+        "r": 0.927,
+        "layer": 24
       },
       "zipf_res": {
-        "r": -0.002,
-        "layer": 15
+        "r": 0.677,
+        "layer": 24
       }
     },
     "size": {
@@ -44,28 +44,28 @@
   },
   "label_zipf": {
     "weight": 0.062,
-    "density": 0.698,
+    "density": 0.586,
     "size": 0.006,
     "opinion": 0.127
   },
   "algebra": {
     "L8": {
-      "cos_weight_span": 0.164,
-      "alpha_size": 0.148,
-      "beta_density": 0.058,
-      "cos_weight_size": 0.153,
-      "cos_weight_density": 0.073,
-      "cos_size_density": 0.103,
-      "control_cos_opinion_span": 0.027
+      "cos_weight_span": 0.224,
+      "alpha_size": 0.139,
+      "beta_density": 0.167,
+      "cos_weight_size": 0.15,
+      "cos_weight_density": 0.176,
+      "cos_size_density": 0.066,
+      "control_cos_opinion_span": 0.041
     },
     "L12": {
-      "cos_weight_span": 0.186,
-      "alpha_size": 0.14,
-      "beta_density": 0.121,
-      "cos_weight_size": 0.142,
-      "cos_weight_density": 0.123,
-      "cos_size_density": 0.018,
-      "control_cos_opinion_span": 0.072
+      "cos_weight_span": 0.223,
+      "alpha_size": 0.119,
+      "beta_density": 0.179,
+      "cos_weight_size": 0.135,
+      "cos_weight_density": 0.189,
+      "cos_size_density": 0.089,
+      "control_cos_opinion_span": 0.069
     }
   }
 }

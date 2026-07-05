@@ -446,6 +446,40 @@ CANONICAL_FRAMES = {
     "time": {"template": "It lasted a {w}.", "data": {"millisecond": -3.0, "second": 0.0,
         "minute": 1.78, "hour": 3.56, "day": 4.94, "week": 5.78, "month": 6.42,
         "year": 7.5, "decade": 8.5, "century": 9.5, "millennium": 10.5}},
+    # concreteness (abstract <-> concrete), Brysbaert et al. (2014) norms — an
+    # 80-noun stratified sample (deterministic; see experiments/concreteness_frame.py).
+    # Audited: 0.882 @L16 raw, 0.878 zipf-residualized; orthogonal to
+    # opinion/size/certainty (max |cos| 0.04).
+    "concreteness": {"template": "They talked about the {w}.", "data": {
+        'belief': 1.19, 'loyalty': 1.57, 'sustainability': 1.69, 'creativity': 1.80, 'awe': 1.89,
+        'madness': 1.97, 'diplomacy': 2.04, 'premium': 2.11, 'triumph': 2.17, 'agreement': 2.22,
+        'ethics': 2.28, 'enthusiasm': 2.34, 'confirmation': 2.39, 'ranking': 2.43, 'propaganda': 2.48,
+        'expression': 2.54, 'hierarchy': 2.59, 'scam': 2.64, 'networking': 2.69, 'boycott': 2.76,
+        'tempo': 2.81, 'insurance': 2.86, 'mission': 2.90, 'expedition': 2.96, 'friction': 3.00,
+        'warfare': 3.03, 'member': 3.07, 'depth': 3.11, 'anniversary': 3.15, 'premises': 3.20,
+        'accident': 3.26, 'meeting': 3.31, 'refuge': 3.37, 'nitrogen': 3.41, 'allies': 3.48,
+        'broadcasting': 3.52, 'sentence': 3.57, 'disco': 3.63, 'object': 3.66, 'payroll': 3.70,
+        'suburb': 3.76, 'borough': 3.81, 'slice': 3.85, 'flagship': 3.89, 'gallon': 3.92,
+        'glucose': 3.96, 'natives': 4.00, 'flat': 4.07, 'fare': 4.11, 'tribe': 4.14,
+        'contractor': 4.20, 'prosecutor': 4.24, 'opera': 4.28, 'outlet': 4.31, 'buyer': 4.36,
+        'president': 4.40, 'referee': 4.43, 'packet': 4.46, 'plantation': 4.50, 'tornado': 4.53,
+        'site': 4.56, 'lightning': 4.59, 'rim': 4.62, 'shelter': 4.64, 'spa': 4.67,
+        'chess': 4.70, 'person': 4.72, 'head': 4.75, 'organ': 4.77, 'sea': 4.79,
+        'salmon': 4.81, 'mall': 4.83, 'snow': 4.85, 'wheel': 4.86, 'basement': 4.89,
+        'belt': 4.90, 'sofa': 4.90, 'fist': 4.93, 'arm': 4.96, 'thumb': 4.96}},
+    # animacy hierarchy (inanimate -> plant -> invertebrate -> vertebrate -> human),
+    # size-balanced by construction (mountain/whale big, coin/mouse small at both
+    # ends). Audited: 0.944 @L17 raw, 0.942 zipf-residualized; |cos| vs size 0.02.
+    # See experiments/animacy_frame.py.
+    "animacy": {"template": "They looked at the {w}.", "data": {
+        "rock": 0, "stone": 0, "hammer": 0, "table": 0, "bottle": 0, "mountain": 0,
+        "coin": 0, "boulder": 0, "pebble": 0,
+        "tree": 1, "flower": 1, "moss": 1, "fern": 1, "bush": 1, "vine": 1,
+        "worm": 2, "snail": 2, "beetle": 2, "spider": 2, "jellyfish": 2, "clam": 2,
+        "dog": 3, "cat": 3, "horse": 3, "dolphin": 3, "eagle": 3, "rabbit": 3,
+        "whale": 3, "mouse": 3, "elephant": 3,
+        "child": 4, "woman": 4, "man": 4, "farmer": 4, "teacher": 4, "doctor": 4,
+        "baby": 4}},
     # epistemic certainty (impossible <-> certain), late-stack (peak ~L19).
     # Audited: zipf-residualized 0.93, morphological-negation-residualized 0.93
     # (lexicon prefix-balanced by construction: UNdeniable/INdisputable at +3),
