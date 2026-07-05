@@ -1,0 +1,42 @@
+{
+  "layer": 19,
+  "model": "HuggingFaceTB/SmolLM2-360M-Instruct",
+  "keys": [
+    "discount",
+    "cancelled",
+    "is_late",
+    "escalated",
+    "status",
+    "refunded",
+    "notified",
+    "credit"
+  ],
+  "goalable": [
+    "ApplyDiscount",
+    "CancelOrder",
+    "CheckShipping",
+    "EscalateToHuman",
+    "GetOrderStatus",
+    "IssueRefund",
+    "NotifyCustomer",
+    "OfferCredit"
+  ],
+  "checks": [
+    "CheckPriorCredits",
+    "CheckRefundEligibility",
+    "CheckShipping"
+  ],
+  "key_of": {
+    "ApplyDiscount": "discount",
+    "CancelOrder": "cancelled",
+    "CheckShipping": "is_late",
+    "EscalateToHuman": "escalated",
+    "GetOrderStatus": "status",
+    "IssueRefund": "refunded",
+    "NotifyCustomer": "notified",
+    "OfferCredit": "credit"
+  },
+  "held_out_set_exact": 0.5671641791044776,
+  "arm_assign_acc": 1.0,
+  "transfer_acc": 0.9048507462686567
+}
