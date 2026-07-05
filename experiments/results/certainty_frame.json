@@ -1,0 +1,31 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "template": "It is {w} that it happened.",
+  "n_words": 22,
+  "label_zipf_r": 0.037,
+  "label_prefix_r": -0.276,
+  "recoverability": {
+    "raw": {
+      "r": 0.921,
+      "layer": 19
+    },
+    "zipf_res": {
+      "r": 0.926,
+      "layer": 19
+    },
+    "pfx_res": {
+      "r": 0.934,
+      "layer": 16
+    }
+  },
+  "orthogonality": {
+    "L8": {
+      "opinion": 0.101,
+      "size": 0.045
+    },
+    "L12": {
+      "opinion": 0.103,
+      "size": 0.041
+    }
+  }
+}

@@ -446,6 +446,18 @@ CANONICAL_FRAMES = {
     "time": {"template": "It lasted a {w}.", "data": {"millisecond": -3.0, "second": 0.0,
         "minute": 1.78, "hour": 3.56, "day": 4.94, "week": 5.78, "month": 6.42,
         "year": 7.5, "decade": 8.5, "century": 9.5, "millennium": 10.5}},
+    # epistemic certainty (impossible <-> certain), late-stack (peak ~L19).
+    # Audited: zipf-residualized 0.93, morphological-negation-residualized 0.93
+    # (lexicon prefix-balanced by construction: UNdeniable/INdisputable at +3),
+    # |cos| vs opinion 0.10 — certainty is not Evaluation. See
+    # experiments/certainty_frame.py.
+    "certainty": {"template": "It is {w} that it happened.", "data": {
+        "impossible": -3, "inconceivable": -3, "unlikely": -2, "implausible": -2,
+        "doubtful": -2, "dubious": -2, "questionable": -1, "uncertain": -1,
+        "unclear": -1, "possible": 0, "conceivable": 0, "plausible": 1,
+        "credible": 1, "likely": 2, "probable": 2, "evident": 2, "obvious": 2,
+        "certain": 3, "definite": 3, "undeniable": 3, "indisputable": 3,
+        "unquestionable": 3}},
 }
 
 
