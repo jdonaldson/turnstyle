@@ -42,13 +42,22 @@ def main():
         top = sorted(c.items(), key=lambda kv: -abs(kv[1]))[:3]
         print(f"  {w:10s} " + "  ".join(f"{n}={v:+.2f}" for n, v in top))
 
-    from turnstyle.frame_library import save_library, load_library, _BUNDLED_FRAMES
-    # user cache (fingerprint-addressed .npz) + a bundled .npz that ships in the package
+    from turnstyle.frame_library import (save_library, load_library,
+                                         _BUNDLED_FRAMES, _HUB_FRAMES_REPO)
+    # user cache always (fingerprint-addressed .npz). Only the DEFAULT backbone is
+    # bundled into the package; other models are hosted on the hub tier and
+    # downloaded on demand (see load_library).
+    BUNDLE_DEFAULT = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
     p = save_library(lib, mdl, model_id=mid)
-    bp = lib.save_npz(_BUNDLED_FRAMES / f"{lib.fingerprint}.npz")
-    print(f"\nsaved -> user {p}\n      -> bundled {bp}  ({len(bp.read_bytes())//1024} KB)"
-          f"  fingerprint {lib.fingerprint}")
-    got = load_library(mdl)               # exercises the two-tier loader
+    print(f"\nsaved -> user {p}  fingerprint {lib.fingerprint}")
+    if mid == BUNDLE_DEFAULT:
+        bp = lib.save_npz(_BUNDLED_FRAMES / f"{lib.fingerprint}.npz")
+        print(f"      -> bundled {bp}  ({len(bp.read_bytes())//1024} KB)")
+    else:
+        print(f"      (not bundled — upload to the hub tier with:\n"
+              f"       hf upload {_HUB_FRAMES_REPO} {p} {lib.fingerprint}.npz "
+              f"--repo-type dataset)")
+    got = load_library(mdl)               # exercises the tiered loader
     assert got is not None and got.names == lib.names
     print(f"load_library OK: {len(got)} frames, fp {got.fingerprint}")
 

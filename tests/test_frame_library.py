@@ -124,6 +124,26 @@ def test_fingerprint_store_user_overlays_bundled(tmp_path, monkeypatch):
     assert "age" in merged                                   # bundled fills the gap
 
 
+def test_hub_tier_used_only_on_full_local_miss(tmp_path, monkeypatch):
+    monkeypatch.setattr(fl, "_USER_FRAMES", tmp_path / "user")
+    monkeypatch.setattr(fl, "_BUNDLED_FRAMES", tmp_path / "bundled")
+    calls = []
+
+    def fake_hub(fp):
+        calls.append(fp)
+        return FrameLibrary(fingerprint=fp).add(_mk_frame("size"))
+
+    monkeypatch.setattr(fl, "_load_hub_tier", fake_hub)
+    # full local miss -> hub tier consulted and its library returned
+    got = load_library("fp-remote")
+    assert got is not None and "size" in got and calls == ["fp-remote"]
+    # local user hit -> hub NOT consulted
+    FrameLibrary().add(_mk_frame("age")).save(tmp_path / "user" / "fp-local.json")
+    calls.clear()
+    got2 = load_library("fp-local")
+    assert got2 is not None and "age" in got2 and calls == []
+
+
 def test_canonical_frames_wellformed():
     # "space" removed 2026-07-05: collapsed under frequency residualization
     # (experiments/freq_residual.py, 0.886 -> 0.162) — it measured word rarity.
