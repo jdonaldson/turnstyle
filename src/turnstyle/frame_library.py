@@ -394,21 +394,40 @@ def _load_tier(base: Path, fp: str) -> "FrameLibrary | None":
     return None
 
 
+# Hub tier: fingerprint-addressed .npz artifacts on a HF dataset repo, so the
+# package only bundles the default backbone and other models download on demand.
+# huggingface_hub is already a transitive dep (via transformers); downloads land
+# in the standard HF cache (with HF_HUB_OFFLINE=1 a prior download still resolves
+# from cache; a cold miss returns None instead of raising).
+_HUB_FRAMES_REPO = os.environ.get("TURNSTYLE_FRAMES_REPO", "jdonaldson/turnstyle-frames")
+
+
+def _load_hub_tier(fp: str) -> "FrameLibrary | None":
+    try:
+        from huggingface_hub import hf_hub_download
+        path = hf_hub_download(repo_id=_HUB_FRAMES_REPO, filename=f"{fp}.npz",
+                               repo_type="dataset")
+        return FrameLibrary.load_npz(path)
+    except Exception:
+        return None
+
+
 def load_library(model_or_fp) -> "FrameLibrary | None":
-    """Load the library matching this model's fingerprint: bundled base, user-cache
-    overlay (user-fit frames win per-name, bundled fills gaps). None if neither exists."""
+    """Load the library matching this model's fingerprint. Three tiers:
+    user cache (wins per-frame) > bundled (default backbone, ships in the
+    package) > hub (HF dataset repo, downloaded on demand). The network is only
+    touched on a full local miss. None if no tier has it."""
     fp = _fingerprint(model_or_fp)
-    tiers = {}
-    for name, base in (("bundled", _BUNDLED_FRAMES), ("user", _USER_FRAMES)):
-        t = _load_tier(base, fp)
-        if t is not None:
-            tiers[name] = t
-    if "bundled" in tiers and "user" in tiers:
-        merged = FrameLibrary(frames=dict(tiers["bundled"].frames), fingerprint=fp,
-                              model_id=tiers["user"].model_id or tiers["bundled"].model_id)
-        merged.frames.update(tiers["user"].frames)            # user wins per-frame
+    user = _load_tier(_USER_FRAMES, fp)
+    base = _load_tier(_BUNDLED_FRAMES, fp)
+    if base is None and user is None:
+        base = _load_hub_tier(fp)          # cold miss everywhere local -> hub
+    if base is not None and user is not None:
+        merged = FrameLibrary(frames=dict(base.frames), fingerprint=fp,
+                              model_id=user.model_id or base.model_id)
+        merged.frames.update(user.frames)                     # user wins per-frame
         return merged
-    return tiers.get("user") or tiers.get("bundled")
+    return user or base
 
 
 # ── canonical family: the adjective-ordering rungs + number + time ────────────
