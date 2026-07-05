@@ -1,0 +1,47 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "layers": {
+    "L8": {
+      "sanity_size_r": 0.505,
+      "sanity_density_r": 0.858,
+      "weight_vs_gt_r": 0.509,
+      "R2_additive": 0.383,
+      "R2_bilinear": 0.476,
+      "delta_R2": 0.093,
+      "cell_means_w": {
+        "s-1d-1": -2.69,
+        "s-1d+1": -0.12,
+        "s+1d-1": -2.16,
+        "s+1d+1": 0.58
+      }
+    },
+    "L12": {
+      "sanity_size_r": 0.597,
+      "sanity_density_r": 0.857,
+      "weight_vs_gt_r": 0.549,
+      "R2_additive": 0.412,
+      "R2_bilinear": 0.566,
+      "delta_R2": 0.154,
+      "cell_means_w": {
+        "s-1d-1": -2.7,
+        "s-1d+1": 0.31,
+        "s+1d-1": -2.68,
+        "s+1d+1": 0.93
+      }
+    },
+    "L16": {
+      "sanity_size_r": 0.632,
+      "sanity_density_r": 0.829,
+      "weight_vs_gt_r": 0.45,
+      "R2_additive": 0.342,
+      "R2_bilinear": 0.53,
+      "delta_R2": 0.188,
+      "cell_means_w": {
+        "s-1d-1": -1.83,
+        "s-1d+1": 0.83,
+        "s+1d-1": -1.91,
+        "s+1d+1": 0.93
+      }
+    }
+  }
+}

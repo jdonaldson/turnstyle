@@ -30,10 +30,15 @@ T_PERSON = "They are a {w} person."
 WARMTH = {"hostile": -3, "cruel": -3, "cold": -2, "unfriendly": -2, "harsh": -2,
           "distant": -1, "aloof": -1, "polite": 1, "pleasant": 1, "friendly": 2,
           "warm": 2, "gentle": 2, "kind": 3, "caring": 3, "affectionate": 3}
-COMPETENCE = {"incompetent": -3, "inept": -3, "useless": -2, "clumsy": -2,
-              "careless": -1, "mediocre": -1, "capable": 1, "competent": 2,
-              "skilled": 2, "efficient": 2, "expert": 3, "brilliant": 3,
-              "masterful": 3}
+# v2 lexicon: v1 had label|zipf +0.49 (rare negatives, common positives) and
+# took a residualization haircut (0.933 -> 0.628). Rebalanced: COMMON negatives
+# (useless, hopeless, lazy, sloppy) and RARE positives (masterful, adept, deft)
+# alongside the originals, targeting label|zipf ~ 0.
+COMPETENCE = {"incompetent": -3, "inept": -3, "hopeless": -3, "useless": -2,
+              "sloppy": -2, "clumsy": -2, "lazy": -2, "careless": -1,
+              "mediocre": -1, "capable": 1, "competent": 2, "skilled": 2,
+              "efficient": 2, "adept": 2, "deft": 2, "expert": 3,
+              "brilliant": 3, "masterful": 3, "virtuosic": 3}
 POTENCY = {"weak": -3, "feeble": -3, "frail": -2, "helpless": -2, "powerless": -2,
            "timid": -1, "assertive": 1, "strong": 2, "powerful": 2, "forceful": 2,
            "mighty": 3, "dominant": 3}

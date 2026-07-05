@@ -13,12 +13,12 @@
     },
     "competence": {
       "raw": {
-        "r": 0.933,
-        "layer": 13
+        "r": 0.926,
+        "layer": 20
       },
       "zipf_res": {
-        "r": 0.628,
-        "layer": 12
+        "r": 0.925,
+        "layer": 20
       }
     },
     "potency": {
@@ -44,26 +44,26 @@
   },
   "label_zipf": {
     "warmth": 0.258,
-    "competence": 0.494,
+    "competence": 0.018,
     "potency": 0.37,
     "evaluation": 0.127
   },
   "cos": {
     "L8": {
-      "warmth|competence": 0.234,
-      "warmth|potency": 0.073,
+      "warmth|competence": 0.241,
+      "warmth|potency": 0.074,
       "warmth|evaluation": 0.314,
-      "competence|potency": 0.394,
-      "competence|evaluation": 0.302,
-      "potency|evaluation": 0.145
+      "competence|potency": 0.396,
+      "competence|evaluation": 0.322,
+      "potency|evaluation": 0.143
     },
     "L12": {
-      "warmth|competence": 0.153,
-      "warmth|potency": 0.023,
-      "warmth|evaluation": 0.313,
-      "competence|potency": 0.42,
-      "competence|evaluation": 0.252,
-      "potency|evaluation": 0.121
+      "warmth|competence": 0.155,
+      "warmth|potency": 0.024,
+      "warmth|evaluation": 0.314,
+      "competence|potency": 0.408,
+      "competence|evaluation": 0.254,
+      "potency|evaluation": 0.12
     }
   }
 }
