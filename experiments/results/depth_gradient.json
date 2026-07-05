@@ -1,0 +1,179 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "frames": {
+    "opinion": {
+      "n": 14,
+      "mean_lexicon_concreteness": 2.04,
+      "conc_coverage": "14/14",
+      "raw": {
+        "r": 0.992,
+        "layer": 4
+      },
+      "residualized": {
+        "r": 0.989,
+        "layer": 1
+      }
+    },
+    "size": {
+      "n": 12,
+      "mean_lexicon_concreteness": 3.04,
+      "conc_coverage": "12/12",
+      "raw": {
+        "r": 0.981,
+        "layer": 1
+      },
+      "residualized": {
+        "r": 0.981,
+        "layer": 1
+      }
+    },
+    "age": {
+      "n": 12,
+      "mean_lexicon_concreteness": 2.86,
+      "conc_coverage": "12/12",
+      "raw": {
+        "r": 0.905,
+        "layer": 2
+      },
+      "residualized": {
+        "r": 0.828,
+        "layer": 14
+      }
+    },
+    "shape": {
+      "n": 13,
+      "mean_lexicon_concreteness": 3.7,
+      "conc_coverage": "13/13",
+      "raw": {
+        "r": 0.932,
+        "layer": 4
+      },
+      "residualized": {
+        "r": 0.88,
+        "layer": 4
+      }
+    },
+    "material": {
+      "n": 15,
+      "mean_lexicon_concreteness": 4.72,
+      "conc_coverage": "15/15",
+      "raw": {
+        "r": 0.921,
+        "layer": 19
+      },
+      "residualized": {
+        "r": 0.902,
+        "layer": 11
+      }
+    },
+    "number": {
+      "n": 16,
+      "mean_lexicon_concreteness": 3.61,
+      "conc_coverage": "16/16",
+      "raw": {
+        "r": 0.937,
+        "layer": 4
+      },
+      "residualized": {
+        "r": 0.976,
+        "layer": 4
+      }
+    },
+    "time": {
+      "n": 11,
+      "mean_lexicon_concreteness": 3.24,
+      "conc_coverage": "11/11",
+      "raw": {
+        "r": 0.944,
+        "layer": 2
+      },
+      "residualized": {
+        "r": 0.95,
+        "layer": 17
+      }
+    },
+    "concreteness": {
+      "n": 80,
+      "mean_lexicon_concreteness": 3.6,
+      "conc_coverage": "80/80",
+      "raw": {
+        "r": 0.882,
+        "layer": 16
+      },
+      "residualized": {
+        "r": 0.878,
+        "layer": 16
+      }
+    },
+    "animacy": {
+      "n": 37,
+      "mean_lexicon_concreteness": 4.86,
+      "conc_coverage": "37/37",
+      "raw": {
+        "r": 0.944,
+        "layer": 17
+      },
+      "residualized": {
+        "r": 0.942,
+        "layer": 17
+      }
+    },
+    "certainty": {
+      "n": 22,
+      "mean_lexicon_concreteness": 1.79,
+      "conc_coverage": "22/22",
+      "raw": {
+        "r": 0.921,
+        "layer": 19
+      },
+      "residualized": {
+        "r": 0.926,
+        "layer": 19
+      }
+    },
+    "warmth": {
+      "n": 15,
+      "mean_lexicon_concreteness": 2.34,
+      "conc_coverage": "15/15",
+      "raw": {
+        "r": 0.934,
+        "layer": 13
+      },
+      "residualized": {
+        "r": 0.926,
+        "layer": 14
+      }
+    },
+    "potency": {
+      "n": 12,
+      "mean_lexicon_concreteness": 2.34,
+      "conc_coverage": "12/12",
+      "raw": {
+        "r": 0.952,
+        "layer": 19
+      },
+      "residualized": {
+        "r": 0.939,
+        "layer": 19
+      }
+    },
+    "weight": {
+      "n": 12,
+      "mean_lexicon_concreteness": 3.03,
+      "conc_coverage": "10/12",
+      "raw": {
+        "r": 0.775,
+        "layer": 10
+      },
+      "residualized": {
+        "r": 0.776,
+        "layer": 10
+      }
+    }
+  },
+  "conc_vs_depth": {
+    "n": 13,
+    "pearson": -0.032,
+    "spearman": -0.104
+  }
+}
