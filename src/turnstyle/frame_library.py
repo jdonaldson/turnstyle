@@ -480,6 +480,35 @@ CANONICAL_FRAMES = {
         "whale": 3, "mouse": 3, "elephant": 3,
         "child": 4, "woman": 4, "man": 4, "farmer": 4, "teacher": 4, "doctor": 4,
         "baby": 4}},
+    # social-judgment pair (Fiske SCM) — OBLIQUE to EPA, not reused: warmth|evaluation
+    # 0.31, competence|potency 0.41. warmth 0.934@L13; competence v2 lexicon is
+    # zipf-rebalanced (label|zipf +0.02, was +0.49) 0.926 raw / 0.925 residualized,
+    # honest peak L20 (the deep social-power cluster, next to potency).
+    # See experiments/warmth_competence.py.
+    "warmth": {"template": "They are a {w} person.", "data": {
+        "hostile": -3, "cruel": -3, "cold": -2, "unfriendly": -2, "harsh": -2,
+        "distant": -1, "aloof": -1, "polite": 1, "pleasant": 1, "friendly": 2,
+        "warm": 2, "gentle": 2, "kind": 3, "caring": 3, "affectionate": 3}},
+    "competence": {"template": "They are a {w} person.", "data": {
+        "incompetent": -3, "inept": -3, "hopeless": -3, "useless": -2,
+        "sloppy": -2, "clumsy": -2, "lazy": -2, "careless": -1, "mediocre": -1,
+        "capable": 1, "competent": 2, "skilled": 2, "efficient": 2, "adept": 2,
+        "deft": 2, "expert": 3, "brilliant": 3, "masterful": 3, "virtuosic": 3}},
+    # Osgood Potency (weak <-> mighty), 0.952@L19 raw / 0.939 residualized —
+    # completes the EPA trio alongside opinion(Evaluation); the affect Activity
+    # axis remains in the epa experiments. See experiments/warmth_competence.py.
+    "potency": {"template": "They are a {w} person.", "data": {
+        "weak": -3, "feeble": -3, "frail": -2, "helpless": -2, "powerless": -2,
+        "timid": -1, "assertive": 1, "strong": 2, "powerful": 2, "forceful": 2,
+        "mighty": 3, "dominant": 3}},
+    # felt heaviness (weightless <-> ponderous), 0.775@L10, zipf-clean, nearly
+    # orthogonal to size (0.15). Coordinate-level bilinear composition with
+    # size x density (a big anvil is heavy, a big balloon is not) — see
+    # experiments/{frame_algebra,bilinear_weight}.py.
+    "weight": {"data": {
+        "weightless": -3, "featherlight": -3, "feathery": -2, "light": -1,
+        "lightweight": -1, "portable": -1, "heavy": 1, "hefty": 2, "weighty": 2,
+        "cumbersome": 2, "leaden": 3, "ponderous": 3}},
     # epistemic certainty (impossible <-> certain), late-stack (peak ~L19).
     # Audited: zipf-residualized 0.93, morphological-negation-residualized 0.93
     # (lexicon prefix-balanced by construction: UNdeniable/INdisputable at +3),
