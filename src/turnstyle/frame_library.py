@@ -428,9 +428,10 @@ CANONICAL_FRAMES = {
     "shape": {"data": {"round": 0, "circular": 0, "spherical": 0, "oval": 1, "curved": 1,
         "square": 2, "rectangular": 2, "boxy": 2, "flat": 2, "long": 3, "thin": 3,
         "narrow": 3, "elongated": 3}},
-    "space": {"data": {"local": 0, "domestic": 1, "native": 1, "regional": 2,
-        "national": 3, "foreign": 4, "distant": 5, "remote": 5, "exotic": 5,
-        "faraway": 6, "alien": 7, "cosmic": 9}},
+    # "space" REMOVED (2026-07-05): the space/origin scalar collapsed under frequency
+    # residualization (CV r 0.886 → 0.162; labels corr −0.69 with zipf frequency —
+    # local/national are common words, remote/exotic/cosmic rare). The probe was
+    # reading word RARITY, not remoteness. See experiments/freq_{control,residual}.py.
     # material as NATURALNESS (natural↔synthetic) — the axis SmolLM2 actually encodes
     # cleanly + causally (recov 0.93, steer Δ+13). The earlier hardness ordinal was a
     # poor 1D summary (recov 0.73, steer Δ+5) — see experiments/material_investigate.py.

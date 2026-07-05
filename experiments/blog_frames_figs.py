@@ -45,26 +45,48 @@ RUNG_COLOR = {"opinion": VIOLET, "size": BLUE, "age": CYAN, "shape": GREEN,
 
 
 # --- F1: recoverability bars --------------------------------------------------
+# space: shown at its frequency-RESIDUALIZED r (the honest number) with a ghost
+# outline at the raw fit — the raw 0.89 was word rarity (freq_residual.py).
+# color: scalar shown; the hue-ring result (color_ring.py) annotated.
 def fig_recoverability():
     rec = RES["recoverability"]
+    resid = json.load(open(os.path.join(HERE, "results", "freq_residual.json")))
+    ring = json.load(open(os.path.join(HERE, "results", "color_ring.json")))
+    space_res = resid["rungs"]["space"]["residualized"]["r"]
+    space_raw = resid["rungs"]["space"]["raw"]["r"]
+    ring_R = ring["peaks"]["ring_R"]["value"]
+    ring_L = ring["peaks"]["ring_R"]["layer"]
     cats = sorted(rec, key=lambda c: ORDER_POS[c])
-    rs = [rec[c]["r"] for c in cats]
-    layers = [rec[c]["layer"] for c in cats]
-    fig, ax = plt.subplots(figsize=(8, 4.2))
-    bars = ax.bar(range(len(cats)), rs, color=[RUNG_COLOR[c] for c in cats],
-                  width=0.62, zorder=3)
-    for i, (r, L) in enumerate(zip(rs, layers)):
+    fig, ax = plt.subplots(figsize=(8, 4.4))
+    for i, c in enumerate(cats):
+        r, L = rec[c]["r"], rec[c]["layer"]
+        if c == "space":
+            ax.bar(i, space_raw, color="none", edgecolor=BASE1, ls="--", lw=1.4,
+                   width=0.62, zorder=2)
+            ax.bar(i, space_res, color=BASE1, width=0.62, zorder=3)
+            ax.text(i, space_raw + 0.02, f"raw {space_raw:.2f}", ha="center",
+                    fontsize=8.5, color=BASE01, style="italic")
+            ax.text(i, space_res + 0.02, f"{space_res:.2f}", ha="center",
+                    fontsize=10.5, fontweight="bold", color=BASE02)
+            ax.text(i, 0.52, "fails frequency control", ha="center", va="center",
+                    fontsize=8.5, color=RED, fontweight="bold", rotation=90)
+            continue
+        ax.bar(i, r, color=RUNG_COLOR[c], width=0.62, zorder=3)
         ax.text(i, r + 0.02, f"{r:.2f}", ha="center", fontsize=10.5,
                 fontweight="bold", color=BASE02)
         ax.text(i, 0.04, f"L{L}", ha="center", fontsize=9, color=BASE3
                 if r > 0.12 else BASE01, fontweight="bold")
+        if c == "color":
+            ax.annotate(f"scalar read — as a\nhue RING: R={ring_R:.2f} @L{ring_L}",
+                        (i - 0.35, r + 0.09), ha="right", fontsize=8.5, color=ORANGE,
+                        fontweight="bold")
     ax.set_xticks(range(len(cats)))
     ax.set_xticklabels([f"{c}\n(rung {ORDER_POS[c]})" for c in cats], fontsize=10)
     ax.set_ylim(0, 1.12)
     ax.set_ylabel("held-out CV r (5-fold, shuffled)")
     ax.axhline(0.8, color=BASE1, lw=1, ls="--", zorder=2)
     ax.text(len(cats) - 0.45, 0.815, "r = 0.8", fontsize=9, color=BASE01)
-    ax.set_title("Each adjective-ordering rung is a recoverable scalar frame\n"
+    ax.set_title("Five rungs recover as scalar frames; two need a closer look\n"
                  "SmolLM2-1.7B · linear read of the hidden state · label = peak layer",
                  fontsize=12, loc="left", color=BASE02)
     fig.tight_layout()
@@ -74,8 +96,16 @@ def fig_recoverability():
 
 # --- F2: orthogonality heatmap -------------------------------------------------
 def fig_orthogonality(layer_key="L8"):
+    # space dropped (fails the frequency control); stats recomputed over the
+    # remaining 6x6 from the same fresh run.
     cm = RES["cos_matrix"][layer_key]
     cats = RES["categories"]
+    keep = [i for i, c in enumerate(cats) if c != "space"]
+    cats = [cats[i] for i in keep]
+    full = np.array(cm["matrix"])[np.ix_(keep, keep)]
+    offdiag = full[~np.eye(len(cats), dtype=bool)]
+    cm = {"matrix": full.tolist(), "mean_offdiag": float(offdiag.mean()),
+          "max_offdiag": float(offdiag.max())}
     order = sorted(range(len(cats)), key=lambda i: ORDER_POS[cats[i]])
     labels = [cats[i] for i in order]
     M = np.array(cm["matrix"])[np.ix_(order, order)]
@@ -105,8 +135,11 @@ def fig_orthogonality(layer_key="L8"):
 
 # --- F3: rung position vs peak layer -------------------------------------------
 def fig_depth():
+    # space dropped (frequency, not depth); age flagged — its frequency-clean
+    # peak moves L2->L14 (freq_residual.py), so the early cluster is softer
+    # than the raw peaks suggest.
     rec = RES["recoverability"]
-    cats = sorted(rec, key=lambda c: ORDER_POS[c])
+    cats = [c for c in sorted(rec, key=lambda c: ORDER_POS[c]) if c != "space"]
     xs = [ORDER_POS[c] for c in cats]
     ys = [rec[c]["layer"] for c in cats]
     fig, ax = plt.subplots(figsize=(8, 4.2))
@@ -115,6 +148,13 @@ def fig_depth():
                    edgecolor=BASE02, linewidth=0.8)
         ax.annotate(c, (x, y), textcoords="offset points", xytext=(0, 13),
                     ha="center", fontsize=10.5, color=BASE02, fontweight="bold")
+        if c == "age":
+            ax.scatter(x, 14, s=90, facecolor="none", edgecolor=RUNG_COLOR[c],
+                       ls="--", zorder=2)
+            ax.annotate("age, frequency-\ncontrolled: L14", (x, 14),
+                        textcoords="offset points", xytext=(38, -4),
+                        ha="left", va="center", fontsize=8, color=BASE01,
+                        style="italic")
     z = np.polyfit(xs, ys, 1)
     xr = np.linspace(0.6, 7.4, 10)
     ax.plot(xr, np.polyval(z, xr), color=BASE1, lw=1.4, ls="--", zorder=2)
@@ -123,7 +163,7 @@ def fig_depth():
     ax.set_xticks(list(range(1, 8)))
     ax.set_title("Suggestive: rung position tracks network depth\n"
                  "early rungs peak in early layers, late rungs deep in the stack "
-                 "(n=7, correlational)", fontsize=12, loc="left", color=BASE02)
+                 "(n=6, correlational)", fontsize=12, loc="left", color=BASE02)
     fig.tight_layout()
     fig.savefig(os.path.join(OUT, "frames_depth.png"), dpi=160)
     plt.close(fig)

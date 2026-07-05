@@ -1,0 +1,49 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "rungs": {
+    "space": {
+      "raw": {
+        "r": 0.886,
+        "layer": 17
+      },
+      "residualized": {
+        "r": 0.162,
+        "layer": 13
+      },
+      "label_zipf_r": -0.686
+    },
+    "age": {
+      "raw": {
+        "r": 0.905,
+        "layer": 2
+      },
+      "residualized": {
+        "r": 0.828,
+        "layer": 14
+      },
+      "label_zipf_r": -0.293
+    },
+    "material": {
+      "raw": {
+        "r": 0.795,
+        "layer": 18
+      },
+      "residualized": {
+        "r": 0.788,
+        "layer": 18
+      },
+      "label_zipf_r": 0.33
+    },
+    "opinion": {
+      "raw": {
+        "r": 0.992,
+        "layer": 4
+      },
+      "residualized": {
+        "r": 0.989,
+        "layer": 1
+      },
+      "label_zipf_r": 0.127
+    }
+  }
+}
