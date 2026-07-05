@@ -125,8 +125,11 @@ def test_fingerprint_store_user_overlays_bundled(tmp_path, monkeypatch):
 
 
 def test_canonical_frames_wellformed():
-    assert {"opinion", "size", "age", "shape", "space", "material",
+    # "space" removed 2026-07-05: collapsed under frequency residualization
+    # (experiments/freq_residual.py, 0.886 -> 0.162) — it measured word rarity.
+    assert {"opinion", "size", "age", "shape", "material",
             "number", "time"} <= set(CANONICAL_FRAMES)
+    assert "space" not in CANONICAL_FRAMES
     for name, spec in CANONICAL_FRAMES.items():
         assert len(spec["data"]) >= 8                         # enough words to CV
         assert len(set(spec["data"].values())) >= 2           # a real gradient

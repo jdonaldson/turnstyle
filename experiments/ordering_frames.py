@@ -98,6 +98,9 @@ def main():
     n_layers = acts[allw[0]].shape[0]
 
     print("\n=== recoverability (held-out 5-fold CV r, shuffled, last-token) ===")
+    results = {"model": mid, "categories": cats,
+               "n_words": {c: len(words[c]) for c in cats},
+               "recoverability": {}, "cos_matrix": {}}
     best_layer = {}
     for c in cats:
         best = (-9, -9)
@@ -107,6 +110,7 @@ def main():
             if r > best[0]:
                 best = (r, layer)
         best_layer[c] = best[1]
+        results["recoverability"][c] = {"r": round(best[0], 4), "layer": best[1]}
         print(f"  {c:9s} n={len(words[c]):2d}  r={best[0]:+.3f} @L{best[1]}")
 
     for L0 in (8, 12):
@@ -121,6 +125,18 @@ def main():
         offdiag = [abs(float(dirs[a] @ dirs[b])) for i, a in enumerate(cats)
                    for b in cats[i + 1:]]
         print(f"  mean off-diagonal |cos| = {np.mean(offdiag):.3f}  max = {np.max(offdiag):.3f}")
+        results["cos_matrix"][f"L{L0}"] = {
+            "matrix": [[round(abs(float(dirs[a] @ dirs[b])), 4) for b in cats] for a in cats],
+            "mean_offdiag": round(float(np.mean(offdiag)), 4),
+            "max_offdiag": round(float(np.max(offdiag)), 4)}
+
+    import json, os
+    out = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                       "results", "ordering_frames.json")
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    with open(out, "w") as f:
+        json.dump(results, f, indent=2)
+    print(f"\nwrote {out}")
 
 
 if __name__ == "__main__":

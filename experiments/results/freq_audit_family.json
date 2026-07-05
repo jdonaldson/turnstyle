@@ -1,0 +1,57 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "frames": {
+    "number": {
+      "n": 16,
+      "template": "It is a {w}.",
+      "label_zipf_r": -0.367,
+      "raw": {
+        "r": 0.937,
+        "layer": 4
+      },
+      "residualized": {
+        "r": 0.976,
+        "layer": 4
+      }
+    },
+    "time": {
+      "n": 11,
+      "template": "It lasted a {w}.",
+      "label_zipf_r": 0.245,
+      "raw": {
+        "r": 0.944,
+        "layer": 2
+      },
+      "residualized": {
+        "r": 0.95,
+        "layer": 17
+      }
+    },
+    "material": {
+      "n": 15,
+      "template": "It is made of {w}.",
+      "label_zipf_r": 0.506,
+      "raw": {
+        "r": 0.921,
+        "layer": 19
+      },
+      "residualized": {
+        "r": 0.902,
+        "layer": 11
+      }
+    },
+    "size": {
+      "n": 12,
+      "template": "It is a {w} object.",
+      "label_zipf_r": 0.006,
+      "raw": {
+        "r": 0.981,
+        "layer": 1
+      },
+      "residualized": {
+        "r": 0.981,
+        "layer": 1
+      }
+    }
+  }
+}
