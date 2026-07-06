@@ -1,0 +1,3053 @@
+{
+  "model": "mistralai/Mistral-7B-Instruct-v0.3",
+  "n_words": 793,
+  "transitions": {
+    "L0->1": {
+      "median_move": 0.938,
+      "top_movers": [
+        {
+          "w": "budget",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.37
+        },
+        {
+          "w": "disease",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.36
+        },
+        {
+          "w": "chicken",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.31
+        },
+        {
+          "w": "fear",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.3
+        },
+        {
+          "w": "fish",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.28
+        },
+        {
+          "w": "spirit",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.27
+        },
+        {
+          "w": "metal",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.27
+        },
+        {
+          "w": "attack",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.27
+        },
+        {
+          "w": "violence",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.27
+        },
+        {
+          "w": "dress",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.27
+        },
+        {
+          "w": "medicine",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.26
+        },
+        {
+          "w": "crime",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.26
+        },
+        {
+          "w": "apple",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.26
+        },
+        {
+          "w": "title",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.26
+        },
+        {
+          "w": "memory",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.25
+        }
+      ]
+    },
+    "L1->2": {
+      "median_move": 1.058,
+      "top_movers": [
+        {
+          "w": "Ottawa",
+          "tag": "geo",
+          "churn": 1.0,
+          "rearr": 1.57
+        },
+        {
+          "w": "beauty",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.56
+        },
+        {
+          "w": "tea",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.54
+        },
+        {
+          "w": "debt",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.52
+        },
+        {
+          "w": "apple",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.51
+        },
+        {
+          "w": "glass",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.5
+        },
+        {
+          "w": "spirit",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.5
+        },
+        {
+          "w": "suit",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.5
+        },
+        {
+          "w": "talent",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.5
+        },
+        {
+          "w": "bar",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.49
+        },
+        {
+          "w": "disease",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.49
+        },
+        {
+          "w": "relationship",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.48
+        },
+        {
+          "w": "violence",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.48
+        },
+        {
+          "w": "sex",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.46
+        },
+        {
+          "w": "republican",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.46
+        }
+      ]
+    },
+    "L2->3": {
+      "median_move": 0.959,
+      "top_movers": [
+        {
+          "w": "chicken",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.52
+        },
+        {
+          "w": "surgery",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.4
+        },
+        {
+          "w": "library",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.39
+        },
+        {
+          "w": "species",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.38
+        },
+        {
+          "w": "population",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.38
+        },
+        {
+          "w": "competition",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.38
+        },
+        {
+          "w": "apple",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.37
+        },
+        {
+          "w": "fish",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.37
+        },
+        {
+          "w": "emergency",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.36
+        },
+        {
+          "w": "operation",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.36
+        },
+        {
+          "w": "iron",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.36
+        },
+        {
+          "w": "injury",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.33
+        },
+        {
+          "w": "boss",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.33
+        },
+        {
+          "w": "republican",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.33
+        },
+        {
+          "w": "disease",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.33
+        }
+      ]
+    },
+    "L3->4": {
+      "median_move": 1.109,
+      "top_movers": [
+        {
+          "w": "labor",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.71
+        },
+        {
+          "w": "union",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.65
+        },
+        {
+          "w": "network",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.64
+        },
+        {
+          "w": "movement",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.63
+        },
+        {
+          "w": "estate",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.62
+        },
+        {
+          "w": "status",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.62
+        },
+        {
+          "w": "office",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.61
+        },
+        {
+          "w": "emergency",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.6
+        },
+        {
+          "w": "border",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.6
+        },
+        {
+          "w": "camp",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.58
+        },
+        {
+          "w": "engine",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.57
+        },
+        {
+          "w": "bank",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.56
+        },
+        {
+          "w": "aid",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.55
+        },
+        {
+          "w": "council",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.55
+        },
+        {
+          "w": "library",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.55
+        }
+      ]
+    },
+    "L4->5": {
+      "median_move": 0.866,
+      "top_movers": [
+        {
+          "w": "status",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.44
+        },
+        {
+          "w": "star",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.44
+        },
+        {
+          "w": "control",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.38
+        },
+        {
+          "w": "service",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.33
+        },
+        {
+          "w": "rest",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.33
+        },
+        {
+          "w": "union",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.31
+        },
+        {
+          "w": "park",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.3
+        },
+        {
+          "w": "damage",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.3
+        },
+        {
+          "w": "division",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.3
+        },
+        {
+          "w": "ring",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.28
+        },
+        {
+          "w": "labor",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.28
+        },
+        {
+          "w": "chain",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.27
+        },
+        {
+          "w": "border",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.27
+        },
+        {
+          "w": "corner",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.26
+        },
+        {
+          "w": "core",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.26
+        }
+      ]
+    },
+    "L5->6": {
+      "median_move": 0.504,
+      "top_movers": [
+        {
+          "w": "support",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.21
+        },
+        {
+          "w": "choice",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 1.17
+        },
+        {
+          "w": "chain",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.02
+        },
+        {
+          "w": "surprise",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 1.01
+        },
+        {
+          "w": "minimum",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.97
+        },
+        {
+          "w": "department",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.96
+        },
+        {
+          "w": "spot",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.95
+        },
+        {
+          "w": "service",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.92
+        },
+        {
+          "w": "office",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.91
+        },
+        {
+          "w": "emergency",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.9
+        },
+        {
+          "w": "sense",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 0.89
+        },
+        {
+          "w": "interest",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.88
+        },
+        {
+          "w": "experience",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.88
+        },
+        {
+          "w": "majority",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.88
+        },
+        {
+          "w": "justice",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.87
+        }
+      ]
+    },
+    "L6->7": {
+      "median_move": 0.571,
+      "top_movers": [
+        {
+          "w": "file",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.25
+        },
+        {
+          "w": "talent",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.14
+        },
+        {
+          "w": "studio",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.13
+        },
+        {
+          "w": "commission",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.1
+        },
+        {
+          "w": "behavior",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.05
+        },
+        {
+          "w": "title",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.04
+        },
+        {
+          "w": "track",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.02
+        },
+        {
+          "w": "command",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 1.0
+        },
+        {
+          "w": "session",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.0
+        },
+        {
+          "w": "administration",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.98
+        },
+        {
+          "w": "award",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.97
+        },
+        {
+          "w": "classes",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.96
+        },
+        {
+          "w": "limit",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.96
+        },
+        {
+          "w": "practice",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.95
+        },
+        {
+          "w": "line",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.95
+        }
+      ]
+    },
+    "L7->8": {
+      "median_move": 0.464,
+      "top_movers": [
+        {
+          "w": "spot",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.12
+        },
+        {
+          "w": "command",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.07
+        },
+        {
+          "w": "quality",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 1.06
+        },
+        {
+          "w": "event",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.03
+        },
+        {
+          "w": "entry",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.03
+        },
+        {
+          "w": "sides",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 1.01
+        },
+        {
+          "w": "bowl",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.01
+        },
+        {
+          "w": "camp",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 0.99
+        },
+        {
+          "w": "partner",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.99
+        },
+        {
+          "w": "damage",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.98
+        },
+        {
+          "w": "support",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.98
+        },
+        {
+          "w": "movement",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.95
+        },
+        {
+          "w": "attack",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.95
+        },
+        {
+          "w": "thanks",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.95
+        },
+        {
+          "w": "training",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.93
+        }
+      ]
+    },
+    "L8->9": {
+      "median_move": 0.36,
+      "top_movers": [
+        {
+          "w": "variety",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.97
+        },
+        {
+          "w": "division",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.89
+        },
+        {
+          "w": "population",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.81
+        },
+        {
+          "w": "damage",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.81
+        },
+        {
+          "w": "ability",
+          "tag": "",
+          "churn": 0.33,
+          "rearr": 0.8
+        },
+        {
+          "w": "challenge",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.78
+        },
+        {
+          "w": "assistant",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.78
+        },
+        {
+          "w": "strength",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.77
+        },
+        {
+          "w": "thanks",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.76
+        },
+        {
+          "w": "material",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.69
+        },
+        {
+          "w": "training",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.68
+        },
+        {
+          "w": "attempt",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.59
+        },
+        {
+          "w": "entry",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.57
+        },
+        {
+          "w": "value",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.74
+        },
+        {
+          "w": "benefit",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.74
+        }
+      ]
+    },
+    "L9->10": {
+      "median_move": 0.333,
+      "top_movers": [
+        {
+          "w": "account",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.72
+        },
+        {
+          "w": "connection",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.74
+        },
+        {
+          "w": "population",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.68
+        },
+        {
+          "w": "number",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.51
+        },
+        {
+          "w": "length",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.37
+        },
+        {
+          "w": "relationship",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.5
+        },
+        {
+          "w": "exchange",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.62
+        },
+        {
+          "w": "impact",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.67
+        },
+        {
+          "w": "thanks",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.66
+        },
+        {
+          "w": "presence",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.63
+        },
+        {
+          "w": "view",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.62
+        },
+        {
+          "w": "pain",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.61
+        },
+        {
+          "w": "hero",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.6
+        },
+        {
+          "w": "institute",
+          "tag": "",
+          "churn": 0.33,
+          "rearr": 0.6
+        },
+        {
+          "w": "copy",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.6
+        }
+      ]
+    },
+    "L10->11": {
+      "median_move": 0.333,
+      "top_movers": [
+        {
+          "w": "record",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.69
+        },
+        {
+          "w": "agreement",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.68
+        },
+        {
+          "w": "acts",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.52
+        },
+        {
+          "w": "choice",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.65
+        },
+        {
+          "w": "thanks",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.63
+        },
+        {
+          "w": "flow",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.6
+        },
+        {
+          "w": "equipment",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.39
+        },
+        {
+          "w": "coach",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.21
+        },
+        {
+          "w": "market",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.39
+        },
+        {
+          "w": "material",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.45
+        },
+        {
+          "w": "partner",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.35
+        },
+        {
+          "w": "performance",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.26
+        },
+        {
+          "w": "thing",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.26
+        },
+        {
+          "w": "information",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.28
+        },
+        {
+          "w": "command",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.28
+        }
+      ]
+    },
+    "L11->12": {
+      "median_move": 0.182,
+      "top_movers": [
+        {
+          "w": "committee",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.25
+        },
+        {
+          "w": "population",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.43
+        },
+        {
+          "w": "transfer",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.35
+        },
+        {
+          "w": "growth",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.23
+        },
+        {
+          "w": "value",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.31
+        },
+        {
+          "w": "company",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.25
+        },
+        {
+          "w": "service",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.32
+        },
+        {
+          "w": "event",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.19
+        },
+        {
+          "w": "collection",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.47
+        },
+        {
+          "w": "rest",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.44
+        },
+        {
+          "w": "proof",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.21
+        },
+        {
+          "w": "confidence",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.32
+        },
+        {
+          "w": "food",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.12
+        },
+        {
+          "w": "task",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.4
+        },
+        {
+          "w": "town",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.5
+        }
+      ]
+    },
+    "L12->13": {
+      "median_move": 0.26,
+      "top_movers": [
+        {
+          "w": "performance",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.67
+        },
+        {
+          "w": "foundation",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.49
+        },
+        {
+          "w": "collection",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.62
+        },
+        {
+          "w": "agency",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.63
+        },
+        {
+          "w": "acts",
+          "tag": "",
+          "churn": 0.33,
+          "rearr": 0.62
+        },
+        {
+          "w": "description",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.62
+        },
+        {
+          "w": "enemy",
+          "tag": "",
+          "churn": 0.33,
+          "rearr": 0.61
+        },
+        {
+          "w": "exchange",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.59
+        },
+        {
+          "w": "majority",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.39
+        },
+        {
+          "w": "practice",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.55
+        },
+        {
+          "w": "agreement",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.45
+        },
+        {
+          "w": "population",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.45
+        },
+        {
+          "w": "commission",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.41
+        },
+        {
+          "w": "trial",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.34
+        },
+        {
+          "w": "press",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.36
+        }
+      ]
+    },
+    "L13->14": {
+      "median_move": 0.333,
+      "top_movers": [
+        {
+          "w": "condition",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.76
+        },
+        {
+          "w": "surprise",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.74
+        },
+        {
+          "w": "series",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.67
+        },
+        {
+          "w": "training",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.38
+        },
+        {
+          "w": "flow",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.59
+        },
+        {
+          "w": "division",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.61
+        },
+        {
+          "w": "apple",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.4
+        },
+        {
+          "w": "interest",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.47
+        },
+        {
+          "w": "majority",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.52
+        },
+        {
+          "w": "description",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.63
+        },
+        {
+          "w": "construction",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.67
+        },
+        {
+          "w": "youth",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.65
+        },
+        {
+          "w": "exchange",
+          "tag": "",
+          "churn": 0.33,
+          "rearr": 0.64
+        },
+        {
+          "w": "capital",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.64
+        },
+        {
+          "w": "aid",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.61
+        }
+      ]
+    },
+    "L14->15": {
+      "median_move": 0.462,
+      "top_movers": [
+        {
+          "w": "border",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 1.07
+        },
+        {
+          "w": "construction",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.87
+        },
+        {
+          "w": "treatment",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.87
+        },
+        {
+          "w": "performance",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.87
+        },
+        {
+          "w": "community",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.83
+        },
+        {
+          "w": "service",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.82
+        },
+        {
+          "w": "balance",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.82
+        },
+        {
+          "w": "taste",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.82
+        },
+        {
+          "w": "award",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.81
+        },
+        {
+          "w": "equipment",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.79
+        },
+        {
+          "w": "memory",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.79
+        },
+        {
+          "w": "acts",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.79
+        },
+        {
+          "w": "court",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.78
+        },
+        {
+          "w": "reference",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.78
+        },
+        {
+          "w": "funds",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.77
+        }
+      ]
+    },
+    "L15->16": {
+      "median_move": 0.462,
+      "top_movers": [
+        {
+          "w": "task",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.01
+        },
+        {
+          "w": "story",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.86
+        },
+        {
+          "w": "rest",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.85
+        },
+        {
+          "w": "world",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.84
+        },
+        {
+          "w": "award",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.83
+        },
+        {
+          "w": "agency",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.83
+        },
+        {
+          "w": "assistant",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.82
+        },
+        {
+          "w": "partner",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.82
+        },
+        {
+          "w": "value",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.82
+        },
+        {
+          "w": "flow",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.81
+        },
+        {
+          "w": "safety",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.81
+        },
+        {
+          "w": "middle",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.78
+        },
+        {
+          "w": "reaction",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.78
+        },
+        {
+          "w": "talent",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.77
+        },
+        {
+          "w": "update",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.77
+        }
+      ]
+    },
+    "L16->17": {
+      "median_move": 0.525,
+      "top_movers": [
+        {
+          "w": "secret",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.09
+        },
+        {
+          "w": "basis",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.09
+        },
+        {
+          "w": "record",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.07
+        },
+        {
+          "w": "rest",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.06
+        },
+        {
+          "w": "future",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.05
+        },
+        {
+          "w": "winner",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.04
+        },
+        {
+          "w": "date",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.03
+        },
+        {
+          "w": "rate",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.01
+        },
+        {
+          "w": "interest",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.01
+        },
+        {
+          "w": "base",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.01
+        },
+        {
+          "w": "acts",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.01
+        },
+        {
+          "w": "present",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 1.0
+        },
+        {
+          "w": "concern",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 1.0
+        },
+        {
+          "w": "labor",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 0.99
+        },
+        {
+          "w": "trial",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.98
+        }
+      ]
+    },
+    "L17->18": {
+      "median_move": 0.996,
+      "top_movers": [
+        {
+          "w": "republican",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.49
+        },
+        {
+          "w": "account",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.49
+        },
+        {
+          "w": "smile",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.48
+        },
+        {
+          "w": "injury",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.48
+        },
+        {
+          "w": "chain",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.47
+        },
+        {
+          "w": "winner",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.47
+        },
+        {
+          "w": "crowd",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.46
+        },
+        {
+          "w": "cash",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.43
+        },
+        {
+          "w": "interest",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.43
+        },
+        {
+          "w": "point",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.43
+        },
+        {
+          "w": "dream",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.43
+        },
+        {
+          "w": "drink",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.42
+        },
+        {
+          "w": "shirt",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.42
+        },
+        {
+          "w": "exchange",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.41
+        },
+        {
+          "w": "damage",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.4
+        }
+      ]
+    },
+    "L18->19": {
+      "median_move": 1.404,
+      "top_movers": [
+        {
+          "w": "estate",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.75
+        },
+        {
+          "w": "flat",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.75
+        },
+        {
+          "w": "understanding",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.74
+        },
+        {
+          "w": "birth",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.74
+        },
+        {
+          "w": "advance",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.74
+        },
+        {
+          "w": "loan",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.74
+        },
+        {
+          "w": "interest",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.73
+        },
+        {
+          "w": "view",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.73
+        },
+        {
+          "w": "map",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.73
+        },
+        {
+          "w": "source",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.72
+        },
+        {
+          "w": "period",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.72
+        },
+        {
+          "w": "gift",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.72
+        },
+        {
+          "w": "point",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.71
+        },
+        {
+          "w": "command",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.71
+        },
+        {
+          "w": "fault",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.71
+        }
+      ]
+    },
+    "L19->20": {
+      "median_move": 1.238,
+      "top_movers": [
+        {
+          "w": "understanding",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.74
+        },
+        {
+          "w": "thanks",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.73
+        },
+        {
+          "w": "statement",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.71
+        },
+        {
+          "w": "practice",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.69
+        },
+        {
+          "w": "line",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.69
+        },
+        {
+          "w": "attention",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.69
+        },
+        {
+          "w": "entry",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.68
+        },
+        {
+          "w": "brand",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.67
+        },
+        {
+          "w": "foundation",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.67
+        },
+        {
+          "w": "schedule",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.66
+        },
+        {
+          "w": "comment",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.66
+        },
+        {
+          "w": "fault",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.66
+        },
+        {
+          "w": "fund",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.65
+        },
+        {
+          "w": "labor",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.65
+        },
+        {
+          "w": "result",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.65
+        }
+      ]
+    },
+    "L20->21": {
+      "median_move": 0.808,
+      "top_movers": [
+        {
+          "w": "surprise",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.57
+        },
+        {
+          "w": "title",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.54
+        },
+        {
+          "w": "model",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.53
+        },
+        {
+          "w": "smile",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.52
+        },
+        {
+          "w": "emergency",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.51
+        },
+        {
+          "w": "record",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.48
+        },
+        {
+          "w": "joke",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.46
+        },
+        {
+          "w": "report",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.44
+        },
+        {
+          "w": "transfer",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.44
+        },
+        {
+          "w": "dream",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.43
+        },
+        {
+          "w": "fault",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.43
+        },
+        {
+          "w": "exchange",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.43
+        },
+        {
+          "w": "search",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.41
+        },
+        {
+          "w": "master",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.41
+        },
+        {
+          "w": "apple",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.39
+        }
+      ]
+    },
+    "L21->22": {
+      "median_move": 0.462,
+      "top_movers": [
+        {
+          "w": "hole",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.2
+        },
+        {
+          "w": "deal",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.1
+        },
+        {
+          "w": "model",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 1.09
+        },
+        {
+          "w": "smile",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.07
+        },
+        {
+          "w": "limit",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.04
+        },
+        {
+          "w": "line",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.04
+        },
+        {
+          "w": "test",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.03
+        },
+        {
+          "w": "account",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 1.02
+        },
+        {
+          "w": "record",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.99
+        },
+        {
+          "w": "radio",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.98
+        },
+        {
+          "w": "title",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.97
+        },
+        {
+          "w": "cell",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.97
+        },
+        {
+          "w": "screen",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.96
+        },
+        {
+          "w": "material",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.96
+        },
+        {
+          "w": "job",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.94
+        }
+      ]
+    },
+    "L22->23": {
+      "median_move": 0.333,
+      "top_movers": [
+        {
+          "w": "field",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.98
+        },
+        {
+          "w": "fun",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.93
+        },
+        {
+          "w": "pool",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.92
+        },
+        {
+          "w": "star",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.91
+        },
+        {
+          "w": "bed",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.84
+        },
+        {
+          "w": "rose",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.83
+        },
+        {
+          "w": "ring",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.82
+        },
+        {
+          "w": "ride",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.81
+        },
+        {
+          "w": "wall",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.79
+        },
+        {
+          "w": "rest",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.78
+        },
+        {
+          "w": "traffic",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.77
+        },
+        {
+          "w": "shot",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.77
+        },
+        {
+          "w": "bay",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.75
+        },
+        {
+          "w": "background",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.67
+        },
+        {
+          "w": "record",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.55
+        }
+      ]
+    },
+    "L23->24": {
+      "median_move": 0.333,
+      "top_movers": [
+        {
+          "w": "star",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.95
+        },
+        {
+          "w": "card",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.88
+        },
+        {
+          "w": "sky",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.87
+        },
+        {
+          "w": "record",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.84
+        },
+        {
+          "w": "market",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.83
+        },
+        {
+          "w": "republican",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.83
+        },
+        {
+          "w": "field",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.8
+        },
+        {
+          "w": "host",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.79
+        },
+        {
+          "w": "number",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.77
+        },
+        {
+          "w": "test",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.76
+        },
+        {
+          "w": "ring",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.76
+        },
+        {
+          "w": "air",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.76
+        },
+        {
+          "w": "base",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.75
+        },
+        {
+          "w": "way",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.6
+        },
+        {
+          "w": "block",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.74
+        }
+      ]
+    },
+    "L24->25": {
+      "median_move": 0.248,
+      "top_movers": [
+        {
+          "w": "bar",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.9
+        },
+        {
+          "w": "wall",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.85
+        },
+        {
+          "w": "bay",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.83
+        },
+        {
+          "w": "term",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.82
+        },
+        {
+          "w": "cell",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.82
+        },
+        {
+          "w": "cup",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.81
+        },
+        {
+          "w": "air",
+          "tag": "",
+          "churn": 0.33,
+          "rearr": 0.79
+        },
+        {
+          "w": "word",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.78
+        },
+        {
+          "w": "bag",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.73
+        },
+        {
+          "w": "ring",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.69
+        },
+        {
+          "w": "coast",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.67
+        },
+        {
+          "w": "line",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.45
+        },
+        {
+          "w": "band",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.44
+        },
+        {
+          "w": "camera",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.24
+        },
+        {
+          "w": "press",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.44
+        }
+      ]
+    },
+    "L25->26": {
+      "median_move": 0.182,
+      "top_movers": [
+        {
+          "w": "port",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.89
+        },
+        {
+          "w": "term",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.75
+        },
+        {
+          "w": "body",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.65
+        },
+        {
+          "w": "ring",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.61
+        },
+        {
+          "w": "end",
+          "tag": "",
+          "churn": 0.33,
+          "rearr": 0.61
+        },
+        {
+          "w": "mouth",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.59
+        },
+        {
+          "w": "side",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.59
+        },
+        {
+          "w": "miss",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.57
+        },
+        {
+          "w": "kind",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.56
+        },
+        {
+          "w": "field",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.35
+        },
+        {
+          "w": "bit",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.31
+        },
+        {
+          "w": "host",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.5
+        },
+        {
+          "w": "quarter",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.45
+        },
+        {
+          "w": "chair",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.44
+        },
+        {
+          "w": "pro",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.45
+        }
+      ]
+    },
+    "L26->27": {
+      "median_move": 0.182,
+      "top_movers": [
+        {
+          "w": "host",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.67
+        },
+        {
+          "w": "cell",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.3
+        },
+        {
+          "w": "fun",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.25
+        },
+        {
+          "w": "hand",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.58
+        },
+        {
+          "w": "cup",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.54
+        },
+        {
+          "w": "end",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.42
+        },
+        {
+          "w": "target",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.27
+        },
+        {
+          "w": "hero",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.22
+        },
+        {
+          "w": "ride",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.41
+        },
+        {
+          "w": "head",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.52
+        },
+        {
+          "w": "ball",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.43
+        },
+        {
+          "w": "line",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.34
+        },
+        {
+          "w": "sun",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.27
+        },
+        {
+          "w": "part",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.34
+        },
+        {
+          "w": "advance",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.23
+        }
+      ]
+    },
+    "L27->28": {
+      "median_move": 0.182,
+      "top_movers": [
+        {
+          "w": "end",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.82
+        },
+        {
+          "w": "leg",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.5
+        },
+        {
+          "w": "cent",
+          "tag": "",
+          "churn": 0.33,
+          "rearr": 0.57
+        },
+        {
+          "w": "plant",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.57
+        },
+        {
+          "w": "rock",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.33
+        },
+        {
+          "w": "heart",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.46
+        },
+        {
+          "w": "card",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.32
+        },
+        {
+          "w": "reaction",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.37
+        },
+        {
+          "w": "door",
+          "tag": "",
+          "churn": 0.33,
+          "rearr": 0.49
+        },
+        {
+          "w": "arm",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.48
+        },
+        {
+          "w": "sun",
+          "tag": "",
+          "churn": 0.33,
+          "rearr": 0.47
+        },
+        {
+          "w": "foot",
+          "tag": "",
+          "churn": 0.33,
+          "rearr": 0.46
+        },
+        {
+          "w": "law",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.26
+        },
+        {
+          "w": "screen",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.32
+        },
+        {
+          "w": "pool",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.24
+        }
+      ]
+    },
+    "L28->29": {
+      "median_move": 0.182,
+      "top_movers": [
+        {
+          "w": "quarter",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.83
+        },
+        {
+          "w": "bar",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.78
+        },
+        {
+          "w": "square",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.67
+        },
+        {
+          "w": "card",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.61
+        },
+        {
+          "w": "surprise",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.47
+        },
+        {
+          "w": "ring",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.53
+        },
+        {
+          "w": "guard",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.35
+        },
+        {
+          "w": "middle",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.61
+        },
+        {
+          "w": "net",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.62
+        },
+        {
+          "w": "post",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.58
+        },
+        {
+          "w": "cent",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.56
+        },
+        {
+          "w": "spot",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.34
+        },
+        {
+          "w": "understanding",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.33
+        },
+        {
+          "w": "period",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.34
+        },
+        {
+          "w": "job",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.23
+        }
+      ]
+    },
+    "L29->30": {
+      "median_move": 0.193,
+      "top_movers": [
+        {
+          "w": "bottom",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.73
+        },
+        {
+          "w": "chair",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.69
+        },
+        {
+          "w": "bed",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.65
+        },
+        {
+          "w": "ring",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.54
+        },
+        {
+          "w": "purchase",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.39
+        },
+        {
+          "w": "wall",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.64
+        },
+        {
+          "w": "net",
+          "tag": "",
+          "churn": 0.33,
+          "rearr": 0.61
+        },
+        {
+          "w": "port",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.59
+        },
+        {
+          "w": "amount",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.2
+        },
+        {
+          "w": "bay",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.29
+        },
+        {
+          "w": "hall",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.49
+        },
+        {
+          "w": "population",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.17
+        },
+        {
+          "w": "corner",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.23
+        },
+        {
+          "w": "crowd",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.28
+        },
+        {
+          "w": "job",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.47
+        }
+      ]
+    },
+    "L30->31": {
+      "median_move": 0.182,
+      "top_movers": [
+        {
+          "w": "heart",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 0.44
+        },
+        {
+          "w": "cell",
+          "tag": "",
+          "churn": 0.67,
+          "rearr": 0.65
+        },
+        {
+          "w": "square",
+          "tag": "",
+          "churn": 0.46,
+          "rearr": 0.65
+        },
+        {
+          "w": "self",
+          "tag": "",
+          "churn": 0.33,
+          "rearr": 0.65
+        },
+        {
+          "w": "term",
+          "tag": "",
+          "churn": 0.33,
+          "rearr": 0.61
+        },
+        {
+          "w": "fact",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.27
+        },
+        {
+          "w": "period",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.5
+        },
+        {
+          "w": "foot",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.38
+        },
+        {
+          "w": "result",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.11
+        },
+        {
+          "w": "night",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.23
+        },
+        {
+          "w": "ass",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.28
+        },
+        {
+          "w": "leg",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.49
+        },
+        {
+          "w": "pool",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.33
+        },
+        {
+          "w": "spirit",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.22
+        },
+        {
+          "w": "record",
+          "tag": "",
+          "churn": 0.57,
+          "rearr": 0.44
+        }
+      ]
+    },
+    "L31->32": {
+      "median_move": 0.571,
+      "top_movers": [
+        {
+          "w": "air",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.46
+        },
+        {
+          "w": "quarter",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.46
+        },
+        {
+          "w": "square",
+          "tag": "",
+          "churn": 1.0,
+          "rearr": 1.44
+        },
+        {
+          "w": "bottom",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.43
+        },
+        {
+          "w": "flat",
+          "tag": "",
+          "churn": 0.95,
+          "rearr": 1.41
+        },
+        {
+          "w": "cent",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.36
+        },
+        {
+          "w": "ass",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.35
+        },
+        {
+          "w": "card",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.35
+        },
+        {
+          "w": "kind",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.33
+        },
+        {
+          "w": "self",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.32
+        },
+        {
+          "w": "post",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.32
+        },
+        {
+          "w": "ground",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.31
+        },
+        {
+          "w": "corner",
+          "tag": "",
+          "churn": 0.82,
+          "rearr": 1.31
+        },
+        {
+          "w": "end",
+          "tag": "",
+          "churn": 0.89,
+          "rearr": 1.3
+        },
+        {
+          "w": "box",
+          "tag": "",
+          "churn": 0.75,
+          "rearr": 1.29
+        }
+      ]
+    }
+  },
+  "validation": {
+    "L1-4": "  L1-4     weekday=5%  month=1%  number=2%  geo=38%",
+    "L8-12": "  L8-12    weekday=21%  month=5%  number=7%  geo=29%",
+    "L18-22": "  L18-22   weekday=5%  month=2%  number=4%  geo=14%",
+    "L26-30": "  L26-30   weekday=23%  month=5%  number=9%  geo=22%",
+    "L31-32": "  L31-32   weekday=7%  month=2%  number=8%  geo=21%"
+  }
+}
