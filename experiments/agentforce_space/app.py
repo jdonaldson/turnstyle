@@ -417,6 +417,9 @@ EXAMPLES = [
     "If they are ineligible for a refund, hand the case to a person; otherwise give the customer their money back.",
     "Report where the order stands.",
     "Translate the order confirmation into French.",
+    "Please send the order OA-1142 a free gift if the user is a VIP customer, "
+    "else if order OA-1142 is not a VIP customer and they are a repeat customer "
+    "apply a 20% discount to the order, else not do not do anything to the order.",
 ]
 
 INTRO = """
@@ -437,7 +440,12 @@ Nodes link to the relevant public Salesforce Agentforce docs (this demo is a
 research prototype from the [turnstyle](https://github.com/jdonaldson/turnstyle)
 project and is not affiliated with Salesforce). Try example 1: *"on track"*
 flips the branch polarity with **no negation word** — a keyword system cannot
-see it; the probe reads it 9/9 on held-out antonym negations.
+see it; the probe reads it 9/9 on held-out antonym negations. The last two
+examples **abstain by design**: one asks for an action outside the closed
+library, the other (a real stakeholder requirement) is a 3-arm elif chain over
+two checks (VIP, repeat-customer) that the current single-check recognizer
+can't yet read — it routes to human review instead of guessing. (The Agent
+Script backend already compiles n-ary ladders; the recognizer is the open end.)
 """
 
 def build_ui():
