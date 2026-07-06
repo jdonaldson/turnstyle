@@ -23,7 +23,7 @@ import json, os, re
 
 import numpy as np
 
-from agentscript_gen import agentscript_source
+from agentscript_gen import agentscript_source, emit_ladder
 
 # ---------------------------------------------------------------------------
 # Closed action library (Agentforce-style: typed reads/writes over state keys).
@@ -41,6 +41,11 @@ ACTIONS: dict[str, tuple[tuple[str, ...], tuple[str, ...]]] = {
     "CancelOrder":            (("order",),              ("cancelled",)),
     "DraftReply":             (("order",),              ("reply",)),
     "NotifyCustomer":         (("reply",),              ("notified",)),
+    # Mock enrollments (no probe heads yet): used only by the hand-built n-ary
+    # preview for the bundled VIP example — the recognizer cannot demand these.
+    "CheckVIP":               (("order",),              ("is_vip",)),
+    "CheckRepeatCustomer":    (("order",),              ("is_repeat",)),
+    "SendFreeGift":           (("order",),              ("gift",)),
 }
 PRODUCERS = {k: n for n, (_, w) in ACTIONS.items() for k in w}
 INITIAL_KEYS = {"order_ref", "requested_amount"}
@@ -57,6 +62,9 @@ DOCS = {
     "IssueRefund":   (DOC_CUSTOM, "Custom agent actions (Agent Script guide)"),
     "OfferCredit":   (DOC_CUSTOM, "Custom agent actions (Agent Script guide)"),
     "ApplyDiscount": (DOC_CUSTOM, "Custom agent actions (Agent Script guide)"),
+    "CheckVIP":            (DOC_CUSTOM, "Custom agent actions (Agent Script guide)"),
+    "CheckRepeatCustomer": (DOC_CUSTOM, "Custom agent actions (Agent Script guide)"),
+    "SendFreeGift":        (DOC_CUSTOM, "Custom agent actions (Agent Script guide)"),
 }
 def doc_for(action: str):
     return DOCS.get(action, (DOC_INDEX, "Standard Agent Action Reference"))
@@ -222,8 +230,8 @@ NW, NH, XGAP, YGAP = 168, 44, 70, 26
 
 def render_svg(res: dict) -> str:
     plan, edges = res["plan"], set(res["edges"])
-    guard_edges = []
-    if res.get("check"):
+    guard_edges = list(res.get("nary_guard_edges") or [])
+    if not guard_edges and res.get("check"):
         gk = ACTIONS[res["check"]][1][0]
         for world, arm in (("True", "true"), ("False", "false")):
             arm_nodes = res["arm_nodes"][arm]
@@ -234,6 +242,8 @@ def render_svg(res: dict) -> str:
     depth = topo_depth(plan, edges | {(a, b) for a, b, *_ in guard_edges})
     cols: dict[int, list] = {}
     def lane_rank(n):
+        if res.get("lanes") is not None:
+            return res["lanes"].get(n, 0)
         if res.get("check"):
             if n in res["arm_nodes"]["true"]: return 1
             if n in res["arm_nodes"]["false"]: return 2
@@ -275,7 +285,8 @@ def render_svg(res: dict) -> str:
                      f'font-size="11" font-weight="600" fill="{c}">{esc(label)}</text>')
     for n in plan:
         x, y = pos[n]
-        is_sink, is_check = n in res["sinks"], n == res.get("check")
+        is_sink = n in res["sinks"]
+        is_check = n == res.get("check") or n in res.get("check_nodes", ())
         fill = S["check"] if is_check else (S["sink"] if is_sink else S["glue"])
         tcol = "#fdf6e3" if (is_sink or is_check) else S["text"]
         url, doc_label = doc_for(n)
@@ -399,11 +410,146 @@ def burr_source(res: dict) -> str:
     return "\n".join(lines)
 
 
+# ---------------------------------------------------------------------------
+# MOCK n-ary preview — recognition bypassed, decision table supplied by hand.
+# The k-check recognizer doesn't exist yet; this shows, for the ONE bundled
+# VIP example, what the symbolic half will emit once it does. Everything below
+# the hand-built table (plan, edges, lanes, both codegens) is derived, not
+# hand-written.
+# ---------------------------------------------------------------------------
+MOCK_NARY = {
+    "agent": "Order_Gifting",
+    "checks": (("CheckVIP", "is_vip"), ("CheckRepeatCustomer", "is_repeat")),
+    "rows": (
+        {"cond": (("is_vip", True),),                       "keys": ("gift",)},
+        {"cond": (("is_vip", False), ("is_repeat", True)),  "keys": ("discount",)},
+        {"cond": (("is_vip", False), ("is_repeat", False)), "keys": ()},
+    ),
+}
+
+def _norm_ws(s: str) -> str:
+    return " ".join(s.split())
+
+def is_mock_example(req: str) -> bool:
+    return _norm_ws(req) == _norm_ws(EXAMPLES[-1])
+
+def mock_nary_result(req: str) -> dict:
+    checks = [c for c, _ in MOCK_NARY["checks"]]
+    flag_of = dict(MOCK_NARY["checks"])
+    shared = regress({checks[0]})
+    arms, lanes, guard_edges = [], {}, []
+    for i, row in enumerate(MOCK_NARY["rows"]):
+        goals = {PRODUCERS[k] for k in row["keys"]}
+        arm = regress(goals) - shared - set(checks) if goals else frozenset()
+        arms.append(arm)
+        for n in arm:
+            lanes[n] = i + 1
+    for i, c in enumerate(checks[1:], start=1):
+        lanes[c] = i + 1
+    plan = regress(set(checks) | {a for arm in arms for a in arm})
+    edges = dataflow_edges(plan)
+    depth = topo_depth(plan, edges)
+    for i, row in enumerate(MOCK_NARY["rows"]):
+        flag, val = row["cond"][-1]
+        check = next(c for c, f in MOCK_NARY["checks"] if f == flag)
+        entries = sorted(arms[i], key=lambda n: depth[n])
+        if entries:
+            guard_edges.append((check, entries[0], f"{flag} = {val}", val))
+    for (c1, f1), (c2, _) in zip(MOCK_NARY["checks"], MOCK_NARY["checks"][1:]):
+        guard_edges.append((c1, c2, f"{f1} = False", False))
+    consumed = {k for a in plan for k in ACTIONS[a][0]}
+    consumed |= {k for c in checks for k in ACTIONS[c][1]}
+    return {"req": req, "plan": plan, "edges": edges, "key_p": {},
+            "sinks": {a for a in plan if not (set(ACTIONS[a][1]) & consumed)},
+            "check_nodes": set(checks), "lanes": lanes,
+            "nary_guard_edges": guard_edges, "arms_actions": arms,
+            "flag_of": flag_of, "shared": shared}
+
+def mock_table_html(m: dict) -> str:
+    esc = html_mod.escape
+    td = 'style="padding:6px 12px;border-bottom:1px solid #eee8d5;vertical-align:top"'
+    rows = []
+    for row in MOCK_NARY["rows"]:
+        cond = " AND ".join(f"{f} = {v}" for f, v in row["cond"])
+        chips = " ".join(
+            f'<span style="background:#6c71c4;color:#fdf6e3;border-radius:6px;'
+            f'padding:2px 8px;font-size:12px">{esc(k)}</span>' for k in row["keys"]
+        ) or '<span style="color:#93a1a1">∅ (leave the order alone)</span>'
+        rows.append(f'<tr><td {td}><code>{esc(cond)}</code></td><td {td}>{chips}</td></tr>')
+    return (
+        f'<div style="background:#fdf6e3;border-left:6px solid #b58900;border-radius:10px;'
+        f'padding:12px 16px;color:#073642;margin-top:10px">'
+        f'<b>MOCK PREVIEW — nothing below was recognized.</b> The k-check recognizer '
+        f'is not built yet; this decision table was supplied by hand for this one '
+        f'bundled example. The DAG and both emitted programs ARE derived from it '
+        f'symbolically — this is the n-ary artifact the recognizer extension will '
+        f'produce (checks CheckVIP / CheckRepeatCustomer and action SendFreeGift are '
+        f'mock enrollments with no probe heads).'
+        f'<table style="border-collapse:collapse;font-family:ui-sans-serif,system-ui;'
+        f'font-size:14px;margin-top:8px"><tr><th {td}>world (path condition)</th>'
+        f'<th {td}>demanded keys</th></tr>{"".join(rows)}</table></div>')
+
+def burr_nary_source(m: dict) -> str:
+    plan, edges = m["plan"], m["edges"]
+    depth = topo_depth(plan, edges)
+    order = sorted(plan, key=lambda n: (depth[n], n))
+    lines = ["from burr.core import ApplicationBuilder, State, action, when", ""]
+    for n in order:
+        r, w = ACTIONS[n]
+        lines += [f"@action(reads={list(r)}, writes={list(w)})",
+                  f"def {n.lower()}(state: State) -> State:",
+                  f"    return state.update(**_{n.lower()}_backend(state))", ""]
+    names = {n: n.lower() for n in order}
+    shared = [n for n in order if n in m["shared"]]
+    tr = [f'        ("{names[a]}", "{names[b]}"),' for a, b in zip(shared, shared[1:])]
+    # Burr evaluates transitions in order, so an elif chain is natively
+    # expressible: guard the True-arm, then fall through when(flag=False).
+    for i, row in enumerate(MOCK_NARY["rows"]):
+        flag, val = row["cond"][-1]
+        check = next(c for c, f in MOCK_NARY["checks"] if f == flag)
+        arm = sorted(m["arms_actions"][i], key=lambda n: depth[n])
+        if arm:
+            tr.append(f'        ("{names[check]}", "{names[arm[0]]}", when({flag}={val})),')
+            tr += [f'        ("{names[a]}", "{names[b]}"),' for a, b in zip(arm, arm[1:])]
+    for (c1, f1), (c2, _) in zip(MOCK_NARY["checks"], MOCK_NARY["checks"][1:]):
+        tr.append(f'        ("{names[c1]}", "{names[c2]}", when({f1}=False)),')
+    lines += ["app = (", "    ApplicationBuilder()",
+              f"    .with_actions({', '.join(f'{v}={v}' for v in names.values())})",
+              "    .with_transitions(", *tr, "    )",
+              f'    .with_entrypoint("{names[shared[0]]}")', "    .build()", ")"]
+    return "\n".join(lines)
+
+def agentscript_nary_source(m: dict) -> str:
+    """Each table row carries its FULL path condition, so its guard literals
+    read straight off `cond`; a row's check runs lazily, guarded by the
+    condition prefix (everything but the row's own flag)."""
+    def lit(f, v):
+        return f"@variables.{f}" if v else f"not @variables.{f}"
+    depth = topo_depth(m["plan"], m["edges"])
+    shared = sorted(m["shared"], key=lambda n: (depth[n], n))
+    rows: list[tuple[list[str], list[str]]] = []
+    seen_checks = set(shared)
+    for i, row in enumerate(MOCK_NARY["rows"]):
+        flag = row["cond"][-1][0]
+        check = next(c for c, f in MOCK_NARY["checks"] if f == flag)
+        if check not in seen_checks:
+            rows.append(([lit(f, v) for f, v in row["cond"][:-1]], [check]))
+            seen_checks.add(check)
+        arm = sorted(m["arms_actions"][i], key=lambda n: depth[n])
+        rows.append(([lit(f, v) for f, v in row["cond"]], arm))
+    desc = m["req"].replace('"', "'")[:160]
+    return emit_ladder(shared, rows, ACTIONS, MOCK_NARY["agent"], desc, INITIAL_KEYS)
+
+
 def run_pipeline(req: str):
     if not req or not req.strip():
         return "<p>Enter a requirement.</p>", "", "", ""
     res = analyze(req)
     if res["abstain"]:
+        if is_mock_example(req):
+            m = mock_nary_result(req.strip()[:400])
+            return (abstain_html(res) + mock_table_html(m), render_svg(m),
+                    burr_nary_source(m), agentscript_nary_source(m))
         return (abstain_html(res), "", "# abstained — no workflow emitted",
                 "# abstained — no workflow emitted")
     return (table_html(res), render_svg(res), burr_source(res),
@@ -444,8 +590,11 @@ see it; the probe reads it 9/9 on held-out antonym negations. The last two
 examples **abstain by design**: one asks for an action outside the closed
 library, the other (a real stakeholder requirement) is a 3-arm elif chain over
 two checks (VIP, repeat-customer) that the current single-check recognizer
-can't yet read — it routes to human review instead of guessing. (The Agent
-Script backend already compiles n-ary ladders; the recognizer is the open end.)
+can't yet read — it routes to human review instead of guessing. For that last
+example the abstain is followed by a clearly-labeled **mock preview**: the
+decision table is supplied by hand, and the n-ary DAG + Burr + Agent Script
+artifacts are derived from it symbolically — what the recognizer extension
+will produce end-to-end.
 """
 
 def build_ui():

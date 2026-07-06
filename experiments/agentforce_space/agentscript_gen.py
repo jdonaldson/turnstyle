@@ -25,7 +25,7 @@ from __future__ import annotations
 
 # state keys that are naturally boolean flags; everything else is a string
 BOOL_KEYS = {"is_late", "eligible", "already_credited", "refunded", "notified",
-             "escalated", "cancelled"}
+             "escalated", "cancelled", "is_vip", "is_repeat"}
 
 ACTION_DESCS = {
     "LookupOrder":            "Resolve an order reference to an order record",
@@ -40,6 +40,9 @@ ACTION_DESCS = {
     "CancelOrder":            "Cancel the order",
     "DraftReply":             "Draft a reply to the customer",
     "NotifyCustomer":         "Send the drafted reply to the customer",
+    "CheckVIP":               "Check whether the ordering customer is a VIP",
+    "CheckRepeatCustomer":    "Check whether this customer has ordered before",
+    "SendFreeGift":           "Attach a free gift to the order",
 }
 
 IND = "    "
