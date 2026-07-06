@@ -1,0 +1,4278 @@
+{
+  "model": "mistralai/Mistral-7B-Instruct-v0.3",
+  "n_words": 823,
+  "layers": {
+    "0": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 1.0,
+        "geo": 0.67,
+        "taxonomy": 0.57,
+        "kinship": 0.71,
+        "zodiac": 0.67
+      },
+      "loop_clusters": [
+        {
+          "size": 16,
+          "H1": 7.318,
+          "z": 11.2,
+          "members": [
+            "computer",
+            "content",
+            "data",
+            "equipment",
+            "information",
+            "intelligence",
+            "internet",
+            "knowledge",
+            "machine",
+            "material",
+            "media",
+            "radio",
+            "software",
+            "stuff"
+          ]
+        },
+        {
+          "size": 19,
+          "H1": 5.746,
+          "z": 7.0,
+          "members": [
+            "aunt",
+            "brother",
+            "child",
+            "children",
+            "dad",
+            "daughter",
+            "father",
+            "friend",
+            "grandfather",
+            "grandmother",
+            "mom",
+            "mother",
+            "religion",
+            "sister"
+          ]
+        },
+        {
+          "size": 47,
+          "H1": 4.16,
+          "z": 3.8,
+          "members": [
+            "advance",
+            "advantage",
+            "advice",
+            "agreement",
+            "amount",
+            "appeal",
+            "argument",
+            "attempt",
+            "attention",
+            "basis",
+            "benefit",
+            "cause",
+            "challenge",
+            "choice"
+          ]
+        },
+        {
+          "size": 21,
+          "H1": 4.278,
+          "z": 3.8,
+          "members": [
+            "agent",
+            "artist",
+            "attorney",
+            "church",
+            "college",
+            "commission",
+            "committee",
+            "congress",
+            "council",
+            "court",
+            "hospital",
+            "judge",
+            "lawyer",
+            "museum"
+          ]
+        }
+      ],
+      "tracked": {
+        "kinship": {
+          "z": 7.0,
+          "H1": 5.746,
+          "contained": 10,
+          "cluster_size": 19
+        },
+        "number": {
+          "z": 0.1,
+          "H1": 0.657,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "geo": {
+          "z": 3.0,
+          "H1": 2.778,
+          "contained": 8,
+          "cluster_size": 8
+        },
+        "weekday": {
+          "z": 2.3,
+          "H1": 1.367,
+          "contained": 7,
+          "cluster_size": 9
+        },
+        "taxonomy": {
+          "z": -1.5,
+          "H1": 0.0,
+          "contained": 8,
+          "cluster_size": 24
+        },
+        "zodiac": {
+          "z": -1.5,
+          "H1": 0.0,
+          "contained": 8,
+          "cluster_size": 24
+        },
+        "month": {
+          "z": 0.5,
+          "H1": 0.899,
+          "contained": 12,
+          "cluster_size": 12
+        }
+      }
+    },
+    "1": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 0.92,
+        "geo": 0.83,
+        "taxonomy": 0.57,
+        "kinship": 1.0,
+        "zodiac": 0.92
+      },
+      "loop_clusters": [
+        {
+          "size": 19,
+          "H1": 3.864,
+          "z": 3.4,
+          "members": [
+            "activity",
+            "dream",
+            "event",
+            "friend",
+            "gift",
+            "goal",
+            "job",
+            "location",
+            "place",
+            "player",
+            "position",
+            "role",
+            "shot",
+            "situation"
+          ]
+        },
+        {
+          "size": 29,
+          "H1": 4.081,
+          "z": 3.2,
+          "members": [
+            "abuse",
+            "access",
+            "advance",
+            "advantage",
+            "aid",
+            "attack",
+            "benefit",
+            "cause",
+            "contact",
+            "control",
+            "damage",
+            "difference",
+            "effect",
+            "effects"
+          ]
+        }
+      ],
+      "tracked": {
+        "month": {
+          "z": -2.1,
+          "H1": 2.214,
+          "contained": 12,
+          "cluster_size": 36
+        },
+        "kinship": {
+          "z": 1.0,
+          "H1": 3.915,
+          "contained": 14,
+          "cluster_size": 24
+        },
+        "weekday": {
+          "z": 1.6,
+          "H1": 0.615,
+          "contained": 7,
+          "cluster_size": 7
+        },
+        "taxonomy": {
+          "z": -1.8,
+          "H1": 0.569,
+          "contained": 8,
+          "cluster_size": 24
+        },
+        "zodiac": {
+          "z": -1.8,
+          "H1": 0.569,
+          "contained": 11,
+          "cluster_size": 24
+        },
+        "number": {
+          "z": -1.6,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "geo": {
+          "z": -0.3,
+          "H1": 0.433,
+          "contained": 10,
+          "cluster_size": 11
+        }
+      }
+    },
+    "2": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 0.92,
+        "geo": 0.83,
+        "taxonomy": 0.64,
+        "kinship": 1.0,
+        "zodiac": 0.83
+      },
+      "loop_clusters": [
+        {
+          "size": 18,
+          "H1": 6.001,
+          "z": 7.0,
+          "members": [
+            "adult",
+            "baby",
+            "boy",
+            "children",
+            "couple",
+            "dude",
+            "girl",
+            "guy",
+            "kid",
+            "kids",
+            "ladies",
+            "lady",
+            "man",
+            "men"
+          ]
+        },
+        {
+          "size": 19,
+          "H1": 3.833,
+          "z": 4.3,
+          "members": [
+            "administration",
+            "community",
+            "country",
+            "county",
+            "culture",
+            "economy",
+            "environment",
+            "generation",
+            "industry",
+            "market",
+            "nation",
+            "planet",
+            "policy",
+            "population"
+          ]
+        }
+      ],
+      "tracked": {
+        "weekday": {
+          "z": -4.3,
+          "H1": 0.0,
+          "contained": 7,
+          "cluster_size": 27
+        },
+        "kinship": {
+          "z": -0.4,
+          "H1": 3.562,
+          "contained": 14,
+          "cluster_size": 20
+        },
+        "zodiac": {
+          "z": -1.0,
+          "H1": 0.0,
+          "contained": 10,
+          "cluster_size": 13
+        },
+        "geo": {
+          "z": -1.2,
+          "H1": 0.0,
+          "contained": 10,
+          "cluster_size": 10
+        },
+        "month": {
+          "z": 0.3,
+          "H1": 0.573,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "number": {
+          "z": -1.7,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "taxonomy": {
+          "z": -0.9,
+          "H1": 0.0,
+          "contained": 9,
+          "cluster_size": 11
+        }
+      }
+    },
+    "3": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 1.0,
+        "geo": 0.92,
+        "taxonomy": 0.79,
+        "kinship": 1.0,
+        "zodiac": 1.0
+      },
+      "loop_clusters": [
+        {
+          "size": 15,
+          "H1": 6.365,
+          "z": 6.5,
+          "members": [
+            "baby",
+            "bitch",
+            "boy",
+            "child",
+            "children",
+            "dude",
+            "girl",
+            "guy",
+            "kid",
+            "kids",
+            "ladies",
+            "man",
+            "men",
+            "people"
+          ]
+        },
+        {
+          "size": 28,
+          "H1": 5.426,
+          "z": 5.3,
+          "members": [
+            "app",
+            "band",
+            "blog",
+            "brand",
+            "camera",
+            "campaign",
+            "company",
+            "computer",
+            "device",
+            "drug",
+            "game",
+            "group",
+            "internet",
+            "machine"
+          ]
+        },
+        {
+          "size": 41,
+          "H1": 4.496,
+          "z": 3.4,
+          "members": [
+            "accident",
+            "age",
+            "attention",
+            "birth",
+            "confidence",
+            "damage",
+            "death",
+            "duty",
+            "experience",
+            "failure",
+            "fault",
+            "fear",
+            "freedom",
+            "honor"
+          ]
+        }
+      ],
+      "tracked": {
+        "kinship": {
+          "z": -0.9,
+          "H1": 2.617,
+          "contained": 14,
+          "cluster_size": 20
+        },
+        "weekday": {
+          "z": -4.8,
+          "H1": 0.466,
+          "contained": 7,
+          "cluster_size": 30
+        },
+        "month": {
+          "z": -4.8,
+          "H1": 0.466,
+          "contained": 12,
+          "cluster_size": 30
+        },
+        "taxonomy": {
+          "z": -1.7,
+          "H1": 0.253,
+          "contained": 11,
+          "cluster_size": 24
+        },
+        "number": {
+          "z": -1.3,
+          "H1": 0.0,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "geo": {
+          "z": -1.0,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "zodiac": {
+          "z": -1.6,
+          "H1": 0.526,
+          "contained": 12,
+          "cluster_size": 17
+        }
+      }
+    },
+    "4": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 1.0,
+        "geo": 1.0,
+        "taxonomy": 0.57,
+        "kinship": 1.0,
+        "zodiac": 0.92
+      },
+      "loop_clusters": [
+        {
+          "size": 12,
+          "H1": 2.342,
+          "z": 7.9,
+          "members": [
+            "April",
+            "August",
+            "December",
+            "February",
+            "January",
+            "July",
+            "June",
+            "March",
+            "May",
+            "November",
+            "October",
+            "September"
+          ]
+        },
+        {
+          "size": 35,
+          "H1": 4.82,
+          "z": 4.5,
+          "members": [
+            "art",
+            "beauty",
+            "business",
+            "community",
+            "crime",
+            "culture",
+            "education",
+            "exercise",
+            "faith",
+            "family",
+            "fashion",
+            "football",
+            "health",
+            "identity"
+          ]
+        },
+        {
+          "size": 33,
+          "H1": 3.622,
+          "z": 3.2,
+          "members": [
+            "address",
+            "appeal",
+            "attempt",
+            "charge",
+            "deal",
+            "exchange",
+            "file",
+            "joke",
+            "journey",
+            "loan",
+            "map",
+            "match",
+            "message",
+            "model"
+          ]
+        },
+        {
+          "size": 33,
+          "H1": 2.862,
+          "z": 3.0,
+          "members": [
+            "age",
+            "amount",
+            "appearance",
+            "balance",
+            "capacity",
+            "degree",
+            "design",
+            "direction",
+            "distance",
+            "flow",
+            "form",
+            "function",
+            "length",
+            "movement"
+          ]
+        }
+      ],
+      "tracked": {
+        "taxonomy": {
+          "z": -0.7,
+          "H1": 0.864,
+          "contained": 8,
+          "cluster_size": 15
+        },
+        "kinship": {
+          "z": 0.2,
+          "H1": 2.597,
+          "contained": 14,
+          "cluster_size": 19
+        },
+        "month": {
+          "z": 7.9,
+          "H1": 2.342,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "weekday": {
+          "z": -4.0,
+          "H1": 0.027,
+          "contained": 7,
+          "cluster_size": 16
+        },
+        "number": {
+          "z": -1.4,
+          "H1": 0.0,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "zodiac": {
+          "z": -0.9,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "geo": {
+          "z": 2.8,
+          "H1": 2.851,
+          "contained": 12,
+          "cluster_size": 12
+        }
+      }
+    },
+    "5": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 1.0,
+        "geo": 0.92,
+        "taxonomy": 0.93,
+        "kinship": 1.0,
+        "zodiac": 0.92
+      },
+      "loop_clusters": [
+        {
+          "size": 24,
+          "H1": 5.226,
+          "z": 5.6,
+          "members": [
+            "audience",
+            "battle",
+            "camp",
+            "candidate",
+            "club",
+            "crew",
+            "crowd",
+            "driver",
+            "enemy",
+            "fan",
+            "group",
+            "member",
+            "message",
+            "patient"
+          ]
+        },
+        {
+          "size": 12,
+          "H1": 1.968,
+          "z": 4.6,
+          "members": [
+            "April",
+            "August",
+            "December",
+            "February",
+            "January",
+            "July",
+            "June",
+            "March",
+            "May",
+            "November",
+            "October",
+            "September"
+          ]
+        },
+        {
+          "size": 19,
+          "H1": 7.746,
+          "z": 4.4,
+          "members": [
+            "aunt",
+            "brother",
+            "dad",
+            "daughter",
+            "family",
+            "father",
+            "friend",
+            "granddaughter",
+            "grandfather",
+            "grandmother",
+            "grandson",
+            "mom",
+            "mother",
+            "nephew"
+          ]
+        },
+        {
+          "size": 18,
+          "H1": 4.055,
+          "z": 4.2,
+          "members": [
+            "baby",
+            "bitch",
+            "boy",
+            "child",
+            "children",
+            "dude",
+            "girl",
+            "girlfriend",
+            "guy",
+            "kid",
+            "kids",
+            "ladies",
+            "lady",
+            "man"
+          ]
+        }
+      ],
+      "tracked": {
+        "taxonomy": {
+          "z": -1.8,
+          "H1": 0.989,
+          "contained": 13,
+          "cluster_size": 19
+        },
+        "kinship": {
+          "z": 4.4,
+          "H1": 7.746,
+          "contained": 14,
+          "cluster_size": 19
+        },
+        "weekday": {
+          "z": -0.6,
+          "H1": 0.0,
+          "contained": 7,
+          "cluster_size": 7
+        },
+        "number": {
+          "z": 2.3,
+          "H1": 0.579,
+          "contained": 12,
+          "cluster_size": 13
+        },
+        "zodiac": {
+          "z": -1.1,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "geo": {
+          "z": 1.2,
+          "H1": 1.933,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "month": {
+          "z": 4.6,
+          "H1": 1.968,
+          "contained": 12,
+          "cluster_size": 12
+        }
+      }
+    },
+    "6": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 1.0,
+        "geo": 1.0,
+        "taxonomy": 0.93,
+        "kinship": 1.0,
+        "zodiac": 1.0
+      },
+      "loop_clusters": [
+        {
+          "size": 14,
+          "H1": 5.858,
+          "z": 4.9,
+          "members": [
+            "administration",
+            "camp",
+            "club",
+            "company",
+            "crew",
+            "group",
+            "leader",
+            "leadership",
+            "management",
+            "manager",
+            "squad",
+            "staff",
+            "studio",
+            "team"
+          ]
+        },
+        {
+          "size": 21,
+          "H1": 5.028,
+          "z": 3.8,
+          "members": [
+            "aunt",
+            "brother",
+            "dad",
+            "daughter",
+            "father",
+            "fellow",
+            "friend",
+            "granddaughter",
+            "grandfather",
+            "grandmother",
+            "grandson",
+            "mom",
+            "mother",
+            "nephew"
+          ]
+        },
+        {
+          "size": 16,
+          "H1": 5.846,
+          "z": 3.4,
+          "members": [
+            "abuse",
+            "battle",
+            "crime",
+            "damage",
+            "defense",
+            "drink",
+            "drug",
+            "drugs",
+            "gun",
+            "injury",
+            "prison",
+            "safety",
+            "security",
+            "surgery"
+          ]
+        }
+      ],
+      "tracked": {
+        "kinship": {
+          "z": 3.8,
+          "H1": 5.028,
+          "contained": 14,
+          "cluster_size": 21
+        },
+        "taxonomy": {
+          "z": 0.1,
+          "H1": 2.598,
+          "contained": 13,
+          "cluster_size": 21
+        },
+        "number": {
+          "z": -1.1,
+          "H1": 0.0,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "geo": {
+          "z": 2.6,
+          "H1": 2.933,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "weekday": {
+          "z": -3.2,
+          "H1": 0.0,
+          "contained": 7,
+          "cluster_size": 13
+        },
+        "zodiac": {
+          "z": -1.1,
+          "H1": 0.0,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "month": {
+          "z": -1.4,
+          "H1": 0.0,
+          "contained": 12,
+          "cluster_size": 16
+        }
+      }
+    },
+    "7": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 1.0,
+        "geo": 1.0,
+        "taxonomy": 0.43,
+        "kinship": 1.0,
+        "zodiac": 0.92
+      },
+      "loop_clusters": [
+        {
+          "size": 8,
+          "H1": 6.068,
+          "z": 11.2,
+          "members": [
+            "ability",
+            "action",
+            "activity",
+            "acts",
+            "behavior",
+            "performance",
+            "powers",
+            "talent"
+          ]
+        },
+        {
+          "size": 45,
+          "H1": 6.27,
+          "z": 7.7,
+          "members": [
+            "authority",
+            "choice",
+            "communication",
+            "community",
+            "competition",
+            "confidence",
+            "conflict",
+            "connection",
+            "conversation",
+            "description",
+            "difference",
+            "drama",
+            "duty",
+            "effort"
+          ]
+        },
+        {
+          "size": 15,
+          "H1": 9.73,
+          "z": 7.4,
+          "members": [
+            "assistant",
+            "bitch",
+            "boss",
+            "coach",
+            "crew",
+            "hero",
+            "leader",
+            "leadership",
+            "management",
+            "manager",
+            "master",
+            "owner",
+            "pair",
+            "squad"
+          ]
+        },
+        {
+          "size": 21,
+          "H1": 5.13,
+          "z": 4.0,
+          "members": [
+            "artist",
+            "attorney",
+            "audience",
+            "author",
+            "candidate",
+            "couple",
+            "crowd",
+            "director",
+            "doctor",
+            "fan",
+            "lawyer",
+            "member",
+            "officer",
+            "patient"
+          ]
+        }
+      ],
+      "tracked": {
+        "geo": {
+          "z": 2.4,
+          "H1": 4.624,
+          "contained": 12,
+          "cluster_size": 19
+        },
+        "weekday": {
+          "z": -3.7,
+          "H1": 0.749,
+          "contained": 7,
+          "cluster_size": 19
+        },
+        "month": {
+          "z": -3.7,
+          "H1": 0.749,
+          "contained": 12,
+          "cluster_size": 19
+        },
+        "kinship": {
+          "z": 1.9,
+          "H1": 4.167,
+          "contained": 14,
+          "cluster_size": 20
+        },
+        "number": {
+          "z": -4.1,
+          "H1": 0.427,
+          "contained": 12,
+          "cluster_size": 21
+        },
+        "zodiac": {
+          "z": -0.8,
+          "H1": 0.069,
+          "contained": 11,
+          "cluster_size": 11
+        }
+      }
+    },
+    "8": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 1.0,
+        "geo": 1.0,
+        "taxonomy": 0.5,
+        "kinship": 1.0,
+        "zodiac": 0.83
+      },
+      "loop_clusters": [
+        {
+          "size": 31,
+          "H1": 5.809,
+          "z": 12.1,
+          "members": [
+            "account",
+            "app",
+            "application",
+            "computer",
+            "device",
+            "drug",
+            "event",
+            "feature",
+            "file",
+            "fund",
+            "internet",
+            "machine",
+            "market",
+            "network"
+          ]
+        },
+        {
+          "size": 65,
+          "H1": 7.174,
+          "z": 9.5,
+          "members": [
+            "advice",
+            "authority",
+            "balance",
+            "beauty",
+            "challenge",
+            "choice",
+            "command",
+            "competition",
+            "confidence",
+            "conflict",
+            "connection",
+            "control",
+            "defense",
+            "direction"
+          ]
+        },
+        {
+          "size": 12,
+          "H1": 6.237,
+          "z": 6.0,
+          "members": [
+            "Cairo",
+            "Canada",
+            "Egypt",
+            "France",
+            "Italy",
+            "Japan",
+            "Madrid",
+            "Ottawa",
+            "Paris",
+            "Rome",
+            "Spain",
+            "Tokyo"
+          ]
+        },
+        {
+          "size": 24,
+          "H1": 3.595,
+          "z": 4.5,
+          "members": [
+            "article",
+            "association",
+            "award",
+            "collection",
+            "comment",
+            "commission",
+            "conference",
+            "edition",
+            "exchange",
+            "foundation",
+            "guide",
+            "institute",
+            "link",
+            "links"
+          ]
+        }
+      ],
+      "tracked": {
+        "taxonomy": {
+          "z": 3.6,
+          "H1": 3.727,
+          "contained": 7,
+          "cluster_size": 30
+        },
+        "zodiac": {
+          "z": -3.3,
+          "H1": 0.0,
+          "contained": 10,
+          "cluster_size": 22
+        },
+        "month": {
+          "z": -0.2,
+          "H1": 0.679,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "kinship": {
+          "z": 0.7,
+          "H1": 2.761,
+          "contained": 14,
+          "cluster_size": 19
+        },
+        "geo": {
+          "z": 6.0,
+          "H1": 6.237,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "number": {
+          "z": -1.6,
+          "H1": 0.0,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "weekday": {
+          "z": -1.8,
+          "H1": 0.0,
+          "contained": 7,
+          "cluster_size": 13
+        }
+      }
+    },
+    "9": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 0.92,
+        "number": 0.92,
+        "geo": 1.0,
+        "taxonomy": 0.71,
+        "kinship": 0.93,
+        "zodiac": 0.83
+      },
+      "loop_clusters": [
+        {
+          "size": 33,
+          "H1": 8.626,
+          "z": 6.9,
+          "members": [
+            "ability",
+            "appearance",
+            "art",
+            "attention",
+            "beauty",
+            "behavior",
+            "character",
+            "class",
+            "communication",
+            "conversation",
+            "culture",
+            "description",
+            "design",
+            "fashion"
+          ]
+        },
+        {
+          "size": 32,
+          "H1": 5.371,
+          "z": 3.8,
+          "members": [
+            "agent",
+            "aid",
+            "appeal",
+            "benefit",
+            "collection",
+            "commission",
+            "company",
+            "contact",
+            "contract",
+            "degree",
+            "department",
+            "estate",
+            "exchange",
+            "industry"
+          ]
+        },
+        {
+          "size": 29,
+          "H1": 5.303,
+          "z": 3.6,
+          "members": [
+            "access",
+            "administration",
+            "business",
+            "capacity",
+            "capital",
+            "classes",
+            "data",
+            "development",
+            "distribution",
+            "economy",
+            "engineering",
+            "equipment",
+            "facilities",
+            "government"
+          ]
+        },
+        {
+          "size": 23,
+          "H1": 4.128,
+          "z": 3.4,
+          "members": [
+            "book",
+            "camera",
+            "dress",
+            "email",
+            "journal",
+            "letter",
+            "magazine",
+            "mail",
+            "media",
+            "movie",
+            "news",
+            "phone",
+            "photo",
+            "picture"
+          ]
+        }
+      ],
+      "tracked": {
+        "weekday": {
+          "z": -1.3,
+          "H1": 2.675,
+          "contained": 7,
+          "cluster_size": 18
+        },
+        "month": {
+          "z": -1.3,
+          "H1": 2.675,
+          "contained": 11,
+          "cluster_size": 18
+        },
+        "kinship": {
+          "z": -0.5,
+          "H1": 2.503,
+          "contained": 13,
+          "cluster_size": 16
+        },
+        "geo": {
+          "z": 3.0,
+          "H1": 3.213,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "number": {
+          "z": -1.1,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "zodiac": {
+          "z": -0.8,
+          "H1": 0.0,
+          "contained": 10,
+          "cluster_size": 10
+        },
+        "taxonomy": {
+          "z": 0.6,
+          "H1": 1.528,
+          "contained": 10,
+          "cluster_size": 12
+        }
+      }
+    },
+    "10": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 0.92,
+        "geo": 0.92,
+        "taxonomy": 0.43,
+        "kinship": 1.0,
+        "zodiac": 0.75
+      },
+      "loop_clusters": [
+        {
+          "size": 12,
+          "H1": 0.619,
+          "z": 22.7,
+          "members": [
+            "eight",
+            "eleven",
+            "five",
+            "four",
+            "nine",
+            "seven",
+            "six",
+            "ten",
+            "three",
+            "town",
+            "twelve",
+            "two"
+          ]
+        },
+        {
+          "size": 8,
+          "H1": 6.805,
+          "z": 9.5,
+          "members": [
+            "chapter",
+            "chief",
+            "episode",
+            "game",
+            "scene",
+            "season",
+            "series",
+            "song"
+          ]
+        },
+        {
+          "size": 34,
+          "H1": 5.409,
+          "z": 8.0,
+          "members": [
+            "abuse",
+            "art",
+            "business",
+            "climate",
+            "crime",
+            "death",
+            "disease",
+            "drugs",
+            "education",
+            "exercise",
+            "family",
+            "fashion",
+            "finance",
+            "football"
+          ]
+        },
+        {
+          "size": 55,
+          "H1": 7.974,
+          "z": 7.6,
+          "members": [
+            "advantage",
+            "advice",
+            "attention",
+            "authority",
+            "balance",
+            "beauty",
+            "challenge",
+            "choice",
+            "command",
+            "competition",
+            "confidence",
+            "connection",
+            "control",
+            "difference"
+          ]
+        }
+      ],
+      "tracked": {
+        "kinship": {
+          "z": -2.5,
+          "H1": 1.803,
+          "contained": 14,
+          "cluster_size": 24
+        },
+        "zodiac": {
+          "z": -1.5,
+          "H1": 0.0,
+          "contained": 9,
+          "cluster_size": 9
+        },
+        "geo": {
+          "z": 1.6,
+          "H1": 2.426,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "number": {
+          "z": 22.7,
+          "H1": 0.619,
+          "contained": 11,
+          "cluster_size": 12
+        },
+        "month": {
+          "z": 0.3,
+          "H1": 1.658,
+          "contained": 12,
+          "cluster_size": 15
+        },
+        "weekday": {
+          "z": -3.1,
+          "H1": 0.515,
+          "contained": 7,
+          "cluster_size": 17
+        }
+      }
+    },
+    "11": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 1.0,
+        "geo": 1.0,
+        "taxonomy": 0.64,
+        "kinship": 0.93,
+        "zodiac": 0.75
+      },
+      "loop_clusters": [
+        {
+          "size": 38,
+          "H1": 5.972,
+          "z": 6.0,
+          "members": [
+            "airport",
+            "apartment",
+            "bag",
+            "bank",
+            "bed",
+            "bus",
+            "camera",
+            "car",
+            "chair",
+            "door",
+            "driver",
+            "engine",
+            "floor",
+            "hospital"
+          ]
+        },
+        {
+          "size": 48,
+          "H1": 5.845,
+          "z": 5.0,
+          "members": [
+            "ability",
+            "access",
+            "action",
+            "activity",
+            "behavior",
+            "capacity",
+            "cause",
+            "character",
+            "class",
+            "community",
+            "description",
+            "direction",
+            "effort",
+            "experience"
+          ]
+        },
+        {
+          "size": 33,
+          "H1": 6.527,
+          "z": 4.4,
+          "members": [
+            "advice",
+            "authority",
+            "balance",
+            "choice",
+            "concern",
+            "confidence",
+            "connection",
+            "control",
+            "duty",
+            "failure",
+            "faith",
+            "fear",
+            "freedom",
+            "growth"
+          ]
+        },
+        {
+          "size": 8,
+          "H1": 4.391,
+          "z": 4.3,
+          "members": [
+            "boss",
+            "capital",
+            "command",
+            "leader",
+            "leadership",
+            "management",
+            "master",
+            "target"
+          ]
+        }
+      ],
+      "tracked": {
+        "weekday": {
+          "z": -3.2,
+          "H1": 0.982,
+          "contained": 7,
+          "cluster_size": 19
+        },
+        "month": {
+          "z": -3.2,
+          "H1": 0.982,
+          "contained": 12,
+          "cluster_size": 19
+        },
+        "taxonomy": {
+          "z": -0.7,
+          "H1": 2.294,
+          "contained": 9,
+          "cluster_size": 36
+        },
+        "zodiac": {
+          "z": -1.7,
+          "H1": 0.0,
+          "contained": 9,
+          "cluster_size": 9
+        },
+        "kinship": {
+          "z": -1.4,
+          "H1": 1.696,
+          "contained": 13,
+          "cluster_size": 18
+        },
+        "number": {
+          "z": -1.4,
+          "H1": 3.197,
+          "contained": 12,
+          "cluster_size": 29
+        },
+        "geo": {
+          "z": 2.1,
+          "H1": 2.462,
+          "contained": 12,
+          "cluster_size": 12
+        }
+      }
+    },
+    "12": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 1.0,
+        "geo": 1.0,
+        "taxonomy": 0.57,
+        "kinship": 0.57,
+        "zodiac": 0.75
+      },
+      "loop_clusters": [
+        {
+          "size": 32,
+          "H1": 8.811,
+          "z": 7.1,
+          "members": [
+            "attention",
+            "authority",
+            "balance",
+            "choice",
+            "confidence",
+            "connection",
+            "control",
+            "duty",
+            "failure",
+            "fear",
+            "freedom",
+            "hero",
+            "honor",
+            "influence"
+          ]
+        },
+        {
+          "size": 6,
+          "H1": 1.762,
+          "z": 5.6,
+          "members": [
+            "Libra",
+            "acts",
+            "classes",
+            "effects",
+            "powers",
+            "sides"
+          ]
+        },
+        {
+          "size": 28,
+          "H1": 6.308,
+          "z": 5.5,
+          "members": [
+            "beginning",
+            "building",
+            "day",
+            "end",
+            "ending",
+            "fellow",
+            "fun",
+            "future",
+            "kind",
+            "lack",
+            "life",
+            "lot",
+            "meeting",
+            "opening"
+          ]
+        },
+        {
+          "size": 31,
+          "H1": 5.656,
+          "z": 5.3,
+          "members": [
+            "address",
+            "agency",
+            "application",
+            "association",
+            "capital",
+            "cash",
+            "charge",
+            "collection",
+            "commission",
+            "debt",
+            "degree",
+            "exchange",
+            "foundation",
+            "fund"
+          ]
+        }
+      ],
+      "tracked": {
+        "weekday": {
+          "z": -1.8,
+          "H1": 1.258,
+          "contained": 7,
+          "cluster_size": 19
+        },
+        "month": {
+          "z": -1.8,
+          "H1": 1.258,
+          "contained": 12,
+          "cluster_size": 19
+        },
+        "taxonomy": {
+          "z": -1.6,
+          "H1": 0.0,
+          "contained": 8,
+          "cluster_size": 12
+        },
+        "kinship": {
+          "z": -1.5,
+          "H1": 0.191,
+          "contained": 8,
+          "cluster_size": 11
+        },
+        "geo": {
+          "z": 4.8,
+          "H1": 4.768,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "number": {
+          "z": -1.6,
+          "H1": 0.194,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "zodiac": {
+          "z": 0.2,
+          "H1": 0.829,
+          "contained": 9,
+          "cluster_size": 9
+        }
+      }
+    },
+    "13": {
+      "purity": {
+        "weekday": 0.86,
+        "month": 1.0,
+        "number": 1.0,
+        "geo": 1.0,
+        "taxonomy": 0.64,
+        "kinship": 1.0,
+        "zodiac": 0.83
+      },
+      "loop_clusters": [
+        {
+          "size": 20,
+          "H1": 7.801,
+          "z": 6.3,
+          "members": [
+            "artist",
+            "attorney",
+            "author",
+            "boss",
+            "captain",
+            "chairman",
+            "chief",
+            "coach",
+            "director",
+            "doctor",
+            "governor",
+            "host",
+            "judge",
+            "lawyer"
+          ]
+        },
+        {
+          "size": 40,
+          "H1": 6.747,
+          "z": 5.0,
+          "members": [
+            "attention",
+            "authority",
+            "choice",
+            "confidence",
+            "connection",
+            "control",
+            "conversation",
+            "difference",
+            "duty",
+            "failure",
+            "faith",
+            "family",
+            "fear",
+            "freedom"
+          ]
+        },
+        {
+          "size": 21,
+          "H1": 6.085,
+          "z": 4.9,
+          "members": [
+            "enemy",
+            "fellow",
+            "future",
+            "key",
+            "life",
+            "news",
+            "past",
+            "path",
+            "people",
+            "present",
+            "shit",
+            "shop",
+            "steps",
+            "stuff"
+          ]
+        },
+        {
+          "size": 18,
+          "H1": 5.517,
+          "z": 4.3,
+          "members": [
+            "acts",
+            "advantage",
+            "appeal",
+            "cause",
+            "damage",
+            "effect",
+            "effects",
+            "fact",
+            "fault",
+            "impact",
+            "proof",
+            "reaction",
+            "reality",
+            "response"
+          ]
+        }
+      ],
+      "tracked": {
+        "weekday": {
+          "z": -3.4,
+          "H1": 0.0,
+          "contained": 6,
+          "cluster_size": 23
+        },
+        "geo": {
+          "z": -1.8,
+          "H1": 2.709,
+          "contained": 12,
+          "cluster_size": 26
+        },
+        "zodiac": {
+          "z": -1.8,
+          "H1": 2.709,
+          "contained": 10,
+          "cluster_size": 26
+        },
+        "kinship": {
+          "z": -2.5,
+          "H1": 1.042,
+          "contained": 14,
+          "cluster_size": 21
+        },
+        "number": {
+          "z": -3.2,
+          "H1": 0.272,
+          "contained": 12,
+          "cluster_size": 23
+        },
+        "month": {
+          "z": 1.0,
+          "H1": 1.166,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "taxonomy": {
+          "z": -1.6,
+          "H1": 0.0,
+          "contained": 9,
+          "cluster_size": 14
+        }
+      }
+    },
+    "14": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 0.92,
+        "geo": 1.0,
+        "taxonomy": 0.64,
+        "kinship": 0.86,
+        "zodiac": 0.75
+      },
+      "loop_clusters": [
+        {
+          "size": 31,
+          "H1": 7.445,
+          "z": 5.7,
+          "members": [
+            "attempt",
+            "award",
+            "event",
+            "feature",
+            "goal",
+            "group",
+            "hole",
+            "idea",
+            "issue",
+            "map",
+            "message",
+            "option",
+            "plan",
+            "problem"
+          ]
+        },
+        {
+          "size": 20,
+          "H1": 10.529,
+          "z": 5.1,
+          "members": [
+            "aunt",
+            "baby",
+            "brother",
+            "dad",
+            "daughter",
+            "doctor",
+            "father",
+            "girlfriend",
+            "granddaughter",
+            "grandfather",
+            "grandmother",
+            "grandson",
+            "mom",
+            "nephew"
+          ]
+        },
+        {
+          "size": 35,
+          "H1": 4.221,
+          "z": 4.4,
+          "members": [
+            "animal",
+            "bay",
+            "beach",
+            "bear",
+            "bird",
+            "chair",
+            "chicken",
+            "coast",
+            "dog",
+            "eagle",
+            "earth",
+            "farm",
+            "fern",
+            "forest"
+          ]
+        },
+        {
+          "size": 48,
+          "H1": 5.696,
+          "z": 4.4,
+          "members": [
+            "ability",
+            "access",
+            "advantage",
+            "age",
+            "attention",
+            "authority",
+            "balance",
+            "capacity",
+            "challenge",
+            "character",
+            "choice",
+            "class",
+            "connection",
+            "control"
+          ]
+        }
+      ],
+      "tracked": {
+        "weekday": {
+          "z": 4.1,
+          "H1": 9.622,
+          "contained": 7,
+          "cluster_size": 23
+        },
+        "month": {
+          "z": 4.1,
+          "H1": 9.622,
+          "contained": 12,
+          "cluster_size": 23
+        },
+        "number": {
+          "z": -3.0,
+          "H1": 0.613,
+          "contained": 11,
+          "cluster_size": 17
+        },
+        "geo": {
+          "z": 1.9,
+          "H1": 3.202,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "taxonomy": {
+          "z": 4.4,
+          "H1": 4.221,
+          "contained": 9,
+          "cluster_size": 35
+        },
+        "kinship": {
+          "z": 5.1,
+          "H1": 10.529,
+          "contained": 12,
+          "cluster_size": 20
+        },
+        "zodiac": {
+          "z": -0.9,
+          "H1": 0.0,
+          "contained": 9,
+          "cluster_size": 9
+        }
+      }
+    },
+    "15": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 0.92,
+        "geo": 1.0,
+        "taxonomy": 0.43,
+        "kinship": 0.93,
+        "zodiac": 0.92
+      },
+      "loop_clusters": [
+        {
+          "size": 37,
+          "H1": 5.718,
+          "z": 4.9,
+          "members": [
+            "authority",
+            "balance",
+            "choice",
+            "confidence",
+            "control",
+            "direction",
+            "duty",
+            "effort",
+            "evidence",
+            "experience",
+            "freedom",
+            "growth",
+            "honor",
+            "influence"
+          ]
+        }
+      ],
+      "tracked": {
+        "kinship": {
+          "z": -2.2,
+          "H1": 1.756,
+          "contained": 13,
+          "cluster_size": 16
+        },
+        "month": {
+          "z": 0.8,
+          "H1": 0.751,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "geo": {
+          "z": 1.8,
+          "H1": 2.868,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "zodiac": {
+          "z": -0.8,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "number": {
+          "z": -1.4,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "weekday": {
+          "z": -3.9,
+          "H1": 0.0,
+          "contained": 7,
+          "cluster_size": 14
+        }
+      }
+    },
+    "16": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 1.0,
+        "geo": 1.0,
+        "taxonomy": 0.86,
+        "kinship": 0.86,
+        "zodiac": 0.75
+      },
+      "loop_clusters": [
+        {
+          "size": 25,
+          "H1": 6.583,
+          "z": 10.2,
+          "members": [
+            "area",
+            "association",
+            "audience",
+            "club",
+            "company",
+            "conference",
+            "crew",
+            "crowd",
+            "enemy",
+            "fan",
+            "game",
+            "group",
+            "industry",
+            "market"
+          ]
+        },
+        {
+          "size": 40,
+          "H1": 6.258,
+          "z": 4.1,
+          "members": [
+            "authority",
+            "balance",
+            "beauty",
+            "choice",
+            "communication",
+            "confidence",
+            "connection",
+            "control",
+            "duty",
+            "failure",
+            "faith",
+            "fear",
+            "flow",
+            "freedom"
+          ]
+        },
+        {
+          "size": 28,
+          "H1": 6.607,
+          "z": 3.9,
+          "members": [
+            "actor",
+            "agent",
+            "artist",
+            "assistant",
+            "attorney",
+            "author",
+            "candidate",
+            "captain",
+            "chairman",
+            "chief",
+            "coach",
+            "director",
+            "driver",
+            "fellow"
+          ]
+        },
+        {
+          "size": 33,
+          "H1": 5.148,
+          "z": 3.7,
+          "members": [
+            "administration",
+            "aid",
+            "community",
+            "construction",
+            "culture",
+            "development",
+            "disease",
+            "distribution",
+            "economy",
+            "education",
+            "environment",
+            "equipment",
+            "exercise",
+            "facilities"
+          ]
+        }
+      ],
+      "tracked": {
+        "taxonomy": {
+          "z": -0.5,
+          "H1": 2.594,
+          "contained": 12,
+          "cluster_size": 37
+        },
+        "weekday": {
+          "z": -1.1,
+          "H1": 3.415,
+          "contained": 7,
+          "cluster_size": 19
+        },
+        "month": {
+          "z": -1.1,
+          "H1": 3.415,
+          "contained": 12,
+          "cluster_size": 19
+        },
+        "zodiac": {
+          "z": -0.8,
+          "H1": 0.0,
+          "contained": 9,
+          "cluster_size": 11
+        },
+        "number": {
+          "z": -1.5,
+          "H1": 0.29,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "geo": {
+          "z": 3.2,
+          "H1": 3.456,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "kinship": {
+          "z": 0.4,
+          "H1": 3.575,
+          "contained": 12,
+          "cluster_size": 19
+        }
+      }
+    },
+    "17": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 1.0,
+        "geo": 1.0,
+        "taxonomy": 0.71,
+        "kinship": 0.5,
+        "zodiac": 0.75
+      },
+      "loop_clusters": [
+        {
+          "size": 23,
+          "H1": 9.451,
+          "z": 11.8,
+          "members": [
+            "acts",
+            "battle",
+            "birth",
+            "classes",
+            "day",
+            "days",
+            "fun",
+            "kind",
+            "life",
+            "miss",
+            "part",
+            "past",
+            "shit",
+            "shop"
+          ]
+        },
+        {
+          "size": 71,
+          "H1": 6.799,
+          "z": 5.6,
+          "members": [
+            "ability",
+            "age",
+            "attention",
+            "authority",
+            "balance",
+            "beauty",
+            "capacity",
+            "character",
+            "choice",
+            "confidence",
+            "conflict",
+            "connection",
+            "control",
+            "culture"
+          ]
+        },
+        {
+          "size": 12,
+          "H1": 5.195,
+          "z": 4.4,
+          "members": [
+            "April",
+            "August",
+            "December",
+            "February",
+            "January",
+            "July",
+            "June",
+            "March",
+            "May",
+            "November",
+            "October",
+            "September"
+          ]
+        },
+        {
+          "size": 22,
+          "H1": 6.07,
+          "z": 3.7,
+          "members": [
+            "actor",
+            "agent",
+            "artist",
+            "assistant",
+            "attorney",
+            "author",
+            "candidate",
+            "director",
+            "driver",
+            "fan",
+            "lawyer",
+            "leader",
+            "manager",
+            "member"
+          ]
+        }
+      ],
+      "tracked": {
+        "number": {
+          "z": -2.1,
+          "H1": 0.712,
+          "contained": 12,
+          "cluster_size": 17
+        },
+        "zodiac": {
+          "z": -1.7,
+          "H1": 1.599,
+          "contained": 9,
+          "cluster_size": 18
+        },
+        "weekday": {
+          "z": -2.5,
+          "H1": 0.0,
+          "contained": 7,
+          "cluster_size": 14
+        },
+        "month": {
+          "z": 4.4,
+          "H1": 5.195,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "kinship": {
+          "z": -0.6,
+          "H1": 0.0,
+          "contained": 7,
+          "cluster_size": 7
+        },
+        "taxonomy": {
+          "z": 1.4,
+          "H1": 3.149,
+          "contained": 10,
+          "cluster_size": 16
+        },
+        "geo": {
+          "z": 0.6,
+          "H1": 1.785,
+          "contained": 12,
+          "cluster_size": 12
+        }
+      }
+    },
+    "18": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 0.92,
+        "geo": 1.0,
+        "taxonomy": 0.93,
+        "kinship": 0.86,
+        "zodiac": 0.83
+      },
+      "loop_clusters": [
+        {
+          "size": 21,
+          "H1": 7.231,
+          "z": 12.1,
+          "members": [
+            "animal",
+            "apple",
+            "bear",
+            "bird",
+            "cat",
+            "dog",
+            "eagle",
+            "fern",
+            "horse",
+            "oak",
+            "ocean",
+            "penguin",
+            "pine",
+            "plant"
+          ]
+        },
+        {
+          "size": 13,
+          "H1": 7.829,
+          "z": 11.2,
+          "members": [
+            "Cairo",
+            "Canada",
+            "Egypt",
+            "France",
+            "Italy",
+            "Japan",
+            "Madrid",
+            "Ottawa",
+            "Paris",
+            "Rome",
+            "Spain",
+            "Tokyo",
+            "trouble"
+          ]
+        },
+        {
+          "size": 44,
+          "H1": 6.248,
+          "z": 5.4,
+          "members": [
+            "ability",
+            "authority",
+            "capacity",
+            "choice",
+            "confidence",
+            "connection",
+            "control",
+            "duty",
+            "effort",
+            "experience",
+            "failure",
+            "faith",
+            "fear",
+            "growth"
+          ]
+        },
+        {
+          "size": 42,
+          "H1": 6.674,
+          "z": 3.6,
+          "members": [
+            "art",
+            "beauty",
+            "beer",
+            "business",
+            "clothes",
+            "dad",
+            "death",
+            "dogs",
+            "drugs",
+            "fashion",
+            "finance",
+            "fish",
+            "food",
+            "football"
+          ]
+        }
+      ],
+      "tracked": {
+        "weekday": {
+          "z": -3.5,
+          "H1": 0.388,
+          "contained": 7,
+          "cluster_size": 21
+        },
+        "month": {
+          "z": -3.5,
+          "H1": 0.388,
+          "contained": 12,
+          "cluster_size": 21
+        },
+        "taxonomy": {
+          "z": 12.1,
+          "H1": 7.231,
+          "contained": 13,
+          "cluster_size": 21
+        },
+        "zodiac": {
+          "z": -1.8,
+          "H1": 0.0,
+          "contained": 10,
+          "cluster_size": 14
+        },
+        "number": {
+          "z": -1.7,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "geo": {
+          "z": 11.2,
+          "H1": 7.829,
+          "contained": 12,
+          "cluster_size": 13
+        },
+        "kinship": {
+          "z": 3.1,
+          "H1": 5.767,
+          "contained": 12,
+          "cluster_size": 15
+        }
+      }
+    },
+    "19": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 0.92,
+        "geo": 0.83,
+        "taxonomy": 0.93,
+        "kinship": 0.79,
+        "zodiac": 0.75
+      },
+      "loop_clusters": [
+        {
+          "size": 36,
+          "H1": 4.447,
+          "z": 3.1,
+          "members": [
+            "art",
+            "beer",
+            "business",
+            "clothes",
+            "death",
+            "design",
+            "dogs",
+            "drugs",
+            "education",
+            "engineering",
+            "fashion",
+            "finance",
+            "food",
+            "football"
+          ]
+        }
+      ],
+      "tracked": {
+        "weekday": {
+          "z": -3.3,
+          "H1": 1.386,
+          "contained": 7,
+          "cluster_size": 20
+        },
+        "geo": {
+          "z": 0.8,
+          "H1": 0.836,
+          "contained": 10,
+          "cluster_size": 10
+        },
+        "kinship": {
+          "z": 1.1,
+          "H1": 3.23,
+          "contained": 11,
+          "cluster_size": 17
+        },
+        "number": {
+          "z": -1.1,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "month": {
+          "z": -2.5,
+          "H1": 0.107,
+          "contained": 12,
+          "cluster_size": 23
+        },
+        "taxonomy": {
+          "z": 1.0,
+          "H1": 3.171,
+          "contained": 13,
+          "cluster_size": 34
+        },
+        "zodiac": {
+          "z": -0.1,
+          "H1": 0.186,
+          "contained": 9,
+          "cluster_size": 10
+        }
+      }
+    },
+    "20": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 0.92,
+        "geo": 1.0,
+        "taxonomy": 0.64,
+        "kinship": 0.71,
+        "zodiac": 0.83
+      },
+      "loop_clusters": [
+        {
+          "size": 23,
+          "H1": 8.314,
+          "z": 5.8,
+          "members": [
+            "baby",
+            "bitch",
+            "boy",
+            "child",
+            "children",
+            "dad",
+            "dude",
+            "eyes",
+            "father",
+            "girl",
+            "grandmother",
+            "guy",
+            "kid",
+            "kids"
+          ]
+        },
+        {
+          "size": 26,
+          "H1": 6.597,
+          "z": 5.3,
+          "members": [
+            "Leo",
+            "adult",
+            "aunt",
+            "boss",
+            "brother",
+            "chief",
+            "couple",
+            "daughter",
+            "friend",
+            "girlfriend",
+            "granddaughter",
+            "grandfather",
+            "grandson",
+            "king"
+          ]
+        },
+        {
+          "size": 49,
+          "H1": 4.092,
+          "z": 4.0,
+          "members": [
+            "ability",
+            "attention",
+            "authority",
+            "capacity",
+            "character",
+            "choice",
+            "concern",
+            "confidence",
+            "duty",
+            "effort",
+            "experience",
+            "failure",
+            "fear",
+            "force"
+          ]
+        },
+        {
+          "size": 36,
+          "H1": 4.49,
+          "z": 4.0,
+          "members": [
+            "administration",
+            "advice",
+            "analysis",
+            "association",
+            "balance",
+            "collection",
+            "communication",
+            "competition",
+            "connection",
+            "construction",
+            "control",
+            "defense",
+            "description",
+            "development"
+          ]
+        }
+      ],
+      "tracked": {
+        "kinship": {
+          "z": 5.3,
+          "H1": 6.597,
+          "contained": 10,
+          "cluster_size": 26
+        },
+        "weekday": {
+          "z": -4.0,
+          "H1": 0.335,
+          "contained": 7,
+          "cluster_size": 21
+        },
+        "month": {
+          "z": -4.0,
+          "H1": 0.335,
+          "contained": 12,
+          "cluster_size": 21
+        },
+        "geo": {
+          "z": -1.6,
+          "H1": 0.0,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "number": {
+          "z": -1.1,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 13
+        },
+        "taxonomy": {
+          "z": 0.1,
+          "H1": 1.308,
+          "contained": 9,
+          "cluster_size": 16
+        },
+        "zodiac": {
+          "z": 0.5,
+          "H1": 0.693,
+          "contained": 10,
+          "cluster_size": 10
+        }
+      }
+    },
+    "21": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 0.92,
+        "geo": 0.92,
+        "taxonomy": 0.64,
+        "kinship": 1.0,
+        "zodiac": 0.83
+      },
+      "loop_clusters": [
+        {
+          "size": 45,
+          "H1": 6.635,
+          "z": 7.1,
+          "members": [
+            "animal",
+            "app",
+            "application",
+            "article",
+            "author",
+            "book",
+            "brand",
+            "camera",
+            "chapter",
+            "computer",
+            "device",
+            "dress",
+            "drug",
+            "engine"
+          ]
+        },
+        {
+          "size": 40,
+          "H1": 5.037,
+          "z": 6.7,
+          "members": [
+            "air",
+            "arm",
+            "arms",
+            "ass",
+            "battle",
+            "blood",
+            "body",
+            "bottom",
+            "cat",
+            "earth",
+            "eye",
+            "eyes",
+            "face",
+            "fire"
+          ]
+        },
+        {
+          "size": 34,
+          "H1": 5.487,
+          "z": 5.0,
+          "members": [
+            "art",
+            "beer",
+            "business",
+            "clothes",
+            "crime",
+            "death",
+            "drugs",
+            "education",
+            "fashion",
+            "finance",
+            "food",
+            "football",
+            "hell",
+            "magic"
+          ]
+        },
+        {
+          "size": 27,
+          "H1": 4.901,
+          "z": 5.0,
+          "members": [
+            "area",
+            "army",
+            "band",
+            "block",
+            "club",
+            "company",
+            "country",
+            "county",
+            "court",
+            "department",
+            "industry",
+            "island",
+            "line",
+            "nation"
+          ]
+        }
+      ],
+      "tracked": {
+        "taxonomy": {
+          "z": -1.6,
+          "H1": 0.841,
+          "contained": 9,
+          "cluster_size": 18
+        },
+        "weekday": {
+          "z": -1.8,
+          "H1": 1.412,
+          "contained": 7,
+          "cluster_size": 28
+        },
+        "kinship": {
+          "z": -1.8,
+          "H1": 1.412,
+          "contained": 14,
+          "cluster_size": 28
+        },
+        "geo": {
+          "z": -1.3,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "month": {
+          "z": -1.0,
+          "H1": 0.0,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "zodiac": {
+          "z": -0.1,
+          "H1": 0.206,
+          "contained": 10,
+          "cluster_size": 11
+        },
+        "number": {
+          "z": -1.2,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        }
+      }
+    },
+    "22": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 0.92,
+        "geo": 0.92,
+        "taxonomy": 0.93,
+        "kinship": 0.93,
+        "zodiac": 0.67
+      },
+      "loop_clusters": [
+        {
+          "size": 23,
+          "H1": 6.14,
+          "z": 5.3,
+          "members": [
+            "article",
+            "book",
+            "charge",
+            "drug",
+            "feature",
+            "game",
+            "gun",
+            "journey",
+            "match",
+            "mission",
+            "movie",
+            "photo",
+            "rate",
+            "ride"
+          ]
+        },
+        {
+          "size": 25,
+          "H1": 5.763,
+          "z": 5.1,
+          "members": [
+            "amount",
+            "area",
+            "block",
+            "date",
+            "fact",
+            "file",
+            "letter",
+            "level",
+            "number",
+            "page",
+            "part",
+            "phase",
+            "plan",
+            "point"
+          ]
+        },
+        {
+          "size": 35,
+          "H1": 4.946,
+          "z": 4.7,
+          "members": [
+            "access",
+            "activity",
+            "advice",
+            "appeal",
+            "attention",
+            "behavior",
+            "contact",
+            "data",
+            "debt",
+            "effect",
+            "effects",
+            "energy",
+            "evidence",
+            "growth"
+          ]
+        },
+        {
+          "size": 23,
+          "H1": 4.587,
+          "z": 4.6,
+          "members": [
+            "air",
+            "blood",
+            "earth",
+            "fire",
+            "flight",
+            "foot",
+            "fun",
+            "hair",
+            "land",
+            "mail",
+            "moon",
+            "rain",
+            "skin",
+            "sky"
+          ]
+        }
+      ],
+      "tracked": {
+        "taxonomy": {
+          "z": 1.6,
+          "H1": 2.901,
+          "contained": 13,
+          "cluster_size": 22
+        },
+        "kinship": {
+          "z": 2.3,
+          "H1": 3.579,
+          "contained": 13,
+          "cluster_size": 16
+        },
+        "geo": {
+          "z": -1.1,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "zodiac": {
+          "z": -0.7,
+          "H1": 0.0,
+          "contained": 8,
+          "cluster_size": 8
+        },
+        "weekday": {
+          "z": -3.0,
+          "H1": 0.0,
+          "contained": 7,
+          "cluster_size": 14
+        },
+        "number": {
+          "z": -0.9,
+          "H1": 0.115,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "month": {
+          "z": -2.1,
+          "H1": 0.392,
+          "contained": 12,
+          "cluster_size": 17
+        }
+      }
+    },
+    "23": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 0.92,
+        "geo": 1.0,
+        "taxonomy": 1.0,
+        "kinship": 0.93,
+        "zodiac": 0.92
+      },
+      "loop_clusters": [
+        {
+          "size": 44,
+          "H1": 5.895,
+          "z": 8.9,
+          "members": [
+            "advantage",
+            "argument",
+            "attempt",
+            "battle",
+            "cause",
+            "challenge",
+            "charge",
+            "concept",
+            "concern",
+            "conflict",
+            "decision",
+            "dream",
+            "example",
+            "fact"
+          ]
+        },
+        {
+          "size": 32,
+          "H1": 5.503,
+          "z": 7.3,
+          "members": [
+            "account",
+            "card",
+            "chain",
+            "command",
+            "copy",
+            "email",
+            "file",
+            "guard",
+            "guide",
+            "image",
+            "letter",
+            "link",
+            "links",
+            "list"
+          ]
+        },
+        {
+          "size": 25,
+          "H1": 7.082,
+          "z": 7.0,
+          "members": [
+            "beach",
+            "coast",
+            "earth",
+            "emergency",
+            "estate",
+            "farm",
+            "forest",
+            "garden",
+            "heart",
+            "island",
+            "lake",
+            "moon",
+            "mountain",
+            "ocean"
+          ]
+        },
+        {
+          "size": 17,
+          "H1": 4.299,
+          "z": 6.5,
+          "members": [
+            "access",
+            "appeal",
+            "approach",
+            "attack",
+            "benefit",
+            "contact",
+            "damage",
+            "effect",
+            "effects",
+            "entry",
+            "impact",
+            "reaction",
+            "response",
+            "result"
+          ]
+        }
+      ],
+      "tracked": {
+        "weekday": {
+          "z": -3.1,
+          "H1": 0.453,
+          "contained": 7,
+          "cluster_size": 19
+        },
+        "month": {
+          "z": -3.1,
+          "H1": 0.453,
+          "contained": 12,
+          "cluster_size": 19
+        },
+        "taxonomy": {
+          "z": 0.6,
+          "H1": 3.04,
+          "contained": 14,
+          "cluster_size": 23
+        },
+        "kinship": {
+          "z": 2.1,
+          "H1": 2.862,
+          "contained": 13,
+          "cluster_size": 15
+        },
+        "geo": {
+          "z": -3.0,
+          "H1": 0.0,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "zodiac": {
+          "z": -0.6,
+          "H1": 0.596,
+          "contained": 11,
+          "cluster_size": 13
+        },
+        "number": {
+          "z": -0.3,
+          "H1": 0.192,
+          "contained": 11,
+          "cluster_size": 11
+        }
+      }
+    },
+    "24": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 0.92,
+        "geo": 1.0,
+        "taxonomy": 1.0,
+        "kinship": 0.93,
+        "zodiac": 0.83
+      },
+      "loop_clusters": [
+        {
+          "size": 22,
+          "H1": 5.389,
+          "z": 6.8,
+          "members": [
+            "Leo",
+            "aunt",
+            "boss",
+            "brother",
+            "chief",
+            "daughter",
+            "father",
+            "granddaughter",
+            "grandfather",
+            "grandson",
+            "king",
+            "lady",
+            "lord",
+            "mother"
+          ]
+        },
+        {
+          "size": 45,
+          "H1": 6.121,
+          "z": 4.9,
+          "members": [
+            "animal",
+            "app",
+            "application",
+            "blog",
+            "boat",
+            "book",
+            "brand",
+            "bus",
+            "camera",
+            "car",
+            "computer",
+            "device",
+            "drug",
+            "engine"
+          ]
+        },
+        {
+          "size": 16,
+          "H1": 5.578,
+          "z": 3.9,
+          "members": [
+            "accident",
+            "battle",
+            "charge",
+            "conflict",
+            "contact",
+            "date",
+            "event",
+            "fire",
+            "flight",
+            "heat",
+            "match",
+            "rain",
+            "ride",
+            "snow"
+          ]
+        },
+        {
+          "size": 29,
+          "H1": 4.468,
+          "z": 3.6,
+          "members": [
+            "advance",
+            "ass",
+            "bar",
+            "beginning",
+            "bit",
+            "east",
+            "end",
+            "ending",
+            "fault",
+            "lack",
+            "lot",
+            "meeting",
+            "middle",
+            "miss"
+          ]
+        }
+      ],
+      "tracked": {
+        "weekday": {
+          "z": -3.5,
+          "H1": 0.0,
+          "contained": 7,
+          "cluster_size": 16
+        },
+        "kinship": {
+          "z": 6.8,
+          "H1": 5.389,
+          "contained": 13,
+          "cluster_size": 22
+        },
+        "taxonomy": {
+          "z": -4.6,
+          "H1": 0.349,
+          "contained": 14,
+          "cluster_size": 22
+        },
+        "zodiac": {
+          "z": -0.8,
+          "H1": 0.0,
+          "contained": 10,
+          "cluster_size": 10
+        },
+        "number": {
+          "z": -1.8,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 17
+        },
+        "month": {
+          "z": -0.0,
+          "H1": 0.564,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "geo": {
+          "z": -1.1,
+          "H1": 0.0,
+          "contained": 12,
+          "cluster_size": 14
+        }
+      }
+    },
+    "25": {
+      "purity": {
+        "weekday": 0.86,
+        "month": 0.92,
+        "number": 0.83,
+        "geo": 0.92,
+        "taxonomy": 0.5,
+        "kinship": 0.93,
+        "zodiac": 0.83
+      },
+      "loop_clusters": [
+        {
+          "size": 35,
+          "H1": 5.924,
+          "z": 8.7,
+          "members": [
+            "advice",
+            "agreement",
+            "aid",
+            "analysis",
+            "construction",
+            "conversation",
+            "debate",
+            "development",
+            "discussion",
+            "distribution",
+            "evidence",
+            "flight",
+            "investigation",
+            "investment"
+          ]
+        },
+        {
+          "size": 17,
+          "H1": 6.165,
+          "z": 5.3,
+          "members": [
+            "adult",
+            "baby",
+            "bitch",
+            "boy",
+            "child",
+            "couple",
+            "dude",
+            "friend",
+            "girl",
+            "guy",
+            "hero",
+            "kid",
+            "lady",
+            "man"
+          ]
+        },
+        {
+          "size": 13,
+          "H1": 5.379,
+          "z": 4.9,
+          "members": [
+            "audience",
+            "crew",
+            "crowd",
+            "fan",
+            "group",
+            "patient",
+            "police",
+            "room",
+            "squad",
+            "staff",
+            "student",
+            "team",
+            "user"
+          ]
+        },
+        {
+          "size": 34,
+          "H1": 5.073,
+          "z": 4.9,
+          "members": [
+            "battle",
+            "beauty",
+            "birth",
+            "blood",
+            "chicken",
+            "dinner",
+            "drink",
+            "fire",
+            "fish",
+            "glass",
+            "gold",
+            "hair",
+            "health",
+            "heat"
+          ]
+        }
+      ],
+      "tracked": {
+        "month": {
+          "z": -0.3,
+          "H1": 0.045,
+          "contained": 11,
+          "cluster_size": 13
+        },
+        "taxonomy": {
+          "z": -0.7,
+          "H1": 0.59,
+          "contained": 7,
+          "cluster_size": 12
+        },
+        "zodiac": {
+          "z": -0.9,
+          "H1": 0.0,
+          "contained": 10,
+          "cluster_size": 10
+        },
+        "number": {
+          "z": -1.5,
+          "H1": 0.0,
+          "contained": 10,
+          "cluster_size": 10
+        },
+        "geo": {
+          "z": -2.7,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 12
+        },
+        "weekday": {
+          "z": -1.0,
+          "H1": 1.82,
+          "contained": 6,
+          "cluster_size": 15
+        },
+        "kinship": {
+          "z": 1.2,
+          "H1": 2.202,
+          "contained": 13,
+          "cluster_size": 17
+        }
+      }
+    },
+    "26": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 1.0,
+        "geo": 0.83,
+        "taxonomy": 0.43,
+        "kinship": 1.0,
+        "zodiac": 0.83
+      },
+      "loop_clusters": [
+        {
+          "size": 34,
+          "H1": 7.067,
+          "z": 7.4,
+          "members": [
+            "app",
+            "article",
+            "blog",
+            "book",
+            "brand",
+            "content",
+            "data",
+            "device",
+            "email",
+            "engine",
+            "event",
+            "image",
+            "information",
+            "internet"
+          ]
+        },
+        {
+          "size": 44,
+          "H1": 5.651,
+          "z": 6.5,
+          "members": [
+            "accident",
+            "agreement",
+            "challenge",
+            "charge",
+            "copy",
+            "deal",
+            "decision",
+            "dream",
+            "evidence",
+            "fact",
+            "fault",
+            "feature",
+            "gift",
+            "goal"
+          ]
+        },
+        {
+          "size": 33,
+          "H1": 6.894,
+          "z": 5.6,
+          "members": [
+            "air",
+            "blood",
+            "drink",
+            "earth",
+            "fire",
+            "fuel",
+            "gas",
+            "glass",
+            "gold",
+            "land",
+            "light",
+            "metal",
+            "milk",
+            "moon"
+          ]
+        },
+        {
+          "size": 24,
+          "H1": 6.94,
+          "z": 5.3,
+          "members": [
+            "background",
+            "base",
+            "basis",
+            "border",
+            "bottom",
+            "cent",
+            "center",
+            "core",
+            "corner",
+            "edge",
+            "end",
+            "foundation",
+            "ground",
+            "head"
+          ]
+        }
+      ],
+      "tracked": {
+        "weekday": {
+          "z": -2.0,
+          "H1": 1.782,
+          "contained": 7,
+          "cluster_size": 24
+        },
+        "month": {
+          "z": -2.0,
+          "H1": 1.782,
+          "contained": 12,
+          "cluster_size": 24
+        },
+        "kinship": {
+          "z": 1.6,
+          "H1": 3.649,
+          "contained": 14,
+          "cluster_size": 29
+        },
+        "zodiac": {
+          "z": -1.2,
+          "H1": 0.0,
+          "contained": 10,
+          "cluster_size": 10
+        },
+        "number": {
+          "z": -0.5,
+          "H1": 0.0,
+          "contained": 12,
+          "cluster_size": 13
+        },
+        "geo": {
+          "z": -1.7,
+          "H1": 0.0,
+          "contained": 10,
+          "cluster_size": 10
+        }
+      }
+    },
+    "27": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 0.92,
+        "number": 0.92,
+        "geo": 0.75,
+        "taxonomy": 0.57,
+        "kinship": 0.86,
+        "zodiac": 0.83
+      },
+      "loop_clusters": [
+        {
+          "size": 36,
+          "H1": 5.602,
+          "z": 4.7,
+          "members": [
+            "administration",
+            "agency",
+            "army",
+            "association",
+            "band",
+            "bank",
+            "camp",
+            "church",
+            "club",
+            "college",
+            "committee",
+            "community",
+            "company",
+            "conference"
+          ]
+        },
+        {
+          "size": 20,
+          "H1": 3.653,
+          "z": 4.6,
+          "members": [
+            "actor",
+            "agent",
+            "artist",
+            "attorney",
+            "author",
+            "chairman",
+            "coach",
+            "director",
+            "doctor",
+            "fan",
+            "girlfriend",
+            "governor",
+            "judge",
+            "lawyer"
+          ]
+        },
+        {
+          "size": 26,
+          "H1": 4.892,
+          "z": 4.4,
+          "members": [
+            "adult",
+            "boy",
+            "child",
+            "couple",
+            "dude",
+            "enemy",
+            "friend",
+            "girl",
+            "guy",
+            "host",
+            "kid",
+            "lady",
+            "man",
+            "nation"
+          ]
+        },
+        {
+          "size": 30,
+          "H1": 4.646,
+          "z": 3.6,
+          "members": [
+            "abuse",
+            "access",
+            "conflict",
+            "control",
+            "effort",
+            "failure",
+            "fear",
+            "freedom",
+            "growth",
+            "hell",
+            "justice",
+            "life",
+            "links",
+            "loss"
+          ]
+        }
+      ],
+      "tracked": {
+        "month": {
+          "z": -1.8,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 14
+        },
+        "number": {
+          "z": 2.3,
+          "H1": 3.492,
+          "contained": 11,
+          "cluster_size": 24
+        },
+        "kinship": {
+          "z": -0.4,
+          "H1": 2.292,
+          "contained": 12,
+          "cluster_size": 28
+        },
+        "weekday": {
+          "z": -0.6,
+          "H1": 0.0,
+          "contained": 7,
+          "cluster_size": 9
+        },
+        "geo": {
+          "z": -1.0,
+          "H1": 0.388,
+          "contained": 9,
+          "cluster_size": 9
+        },
+        "taxonomy": {
+          "z": -2.7,
+          "H1": 0.0,
+          "contained": 8,
+          "cluster_size": 13
+        },
+        "zodiac": {
+          "z": -1.1,
+          "H1": 0.0,
+          "contained": 10,
+          "cluster_size": 10
+        }
+      }
+    },
+    "28": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 1.0,
+        "geo": 1.0,
+        "taxonomy": 0.5,
+        "kinship": 0.93,
+        "zodiac": 0.83
+      },
+      "loop_clusters": [
+        {
+          "size": 28,
+          "H1": 5.263,
+          "z": 5.9,
+          "members": [
+            "administration",
+            "agency",
+            "army",
+            "association",
+            "church",
+            "club",
+            "college",
+            "committee",
+            "community",
+            "company",
+            "conference",
+            "council",
+            "county",
+            "department"
+          ]
+        },
+        {
+          "size": 14,
+          "H1": 3.734,
+          "z": 4.7,
+          "members": [
+            "action",
+            "activity",
+            "argument",
+            "behavior",
+            "character",
+            "conversation",
+            "image",
+            "journey",
+            "opinion",
+            "performance",
+            "process",
+            "smile",
+            "speech",
+            "voice"
+          ]
+        },
+        {
+          "size": 14,
+          "H1": 3.016,
+          "z": 4.0,
+          "members": [
+            "aunt",
+            "brother",
+            "daughter",
+            "father",
+            "friend",
+            "granddaughter",
+            "grandfather",
+            "grandmother",
+            "grandson",
+            "mother",
+            "nephew",
+            "niece",
+            "sister",
+            "uncle"
+          ]
+        },
+        {
+          "size": 17,
+          "H1": 5.768,
+          "z": 3.6,
+          "members": [
+            "amount",
+            "battle",
+            "birth",
+            "code",
+            "concept",
+            "drink",
+            "flow",
+            "form",
+            "fun",
+            "function",
+            "kind",
+            "lack",
+            "law",
+            "light"
+          ]
+        }
+      ],
+      "tracked": {
+        "weekday": {
+          "z": -1.6,
+          "H1": 0.0,
+          "contained": 7,
+          "cluster_size": 11
+        },
+        "number": {
+          "z": -1.6,
+          "H1": 0.0,
+          "contained": 12,
+          "cluster_size": 14
+        },
+        "kinship": {
+          "z": 4.0,
+          "H1": 3.016,
+          "contained": 13,
+          "cluster_size": 14
+        },
+        "taxonomy": {
+          "z": -1.1,
+          "H1": 0.0,
+          "contained": 7,
+          "cluster_size": 11
+        },
+        "month": {
+          "z": -0.3,
+          "H1": 0.414,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "geo": {
+          "z": -3.0,
+          "H1": 0.0,
+          "contained": 12,
+          "cluster_size": 13
+        },
+        "zodiac": {
+          "z": -0.9,
+          "H1": 0.0,
+          "contained": 10,
+          "cluster_size": 10
+        }
+      }
+    },
+    "29": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 1.0,
+        "geo": 0.92,
+        "taxonomy": 0.5,
+        "kinship": 0.79,
+        "zodiac": 0.92
+      },
+      "loop_clusters": [
+        {
+          "size": 25,
+          "H1": 5.443,
+          "z": 4.9,
+          "members": [
+            "background",
+            "base",
+            "basis",
+            "border",
+            "bottom",
+            "cent",
+            "center",
+            "century",
+            "core",
+            "corner",
+            "edge",
+            "example",
+            "flat",
+            "ground"
+          ]
+        },
+        {
+          "size": 20,
+          "H1": 4.697,
+          "z": 3.5,
+          "members": [
+            "brand",
+            "condition",
+            "device",
+            "event",
+            "feature",
+            "method",
+            "mission",
+            "model",
+            "operation",
+            "option",
+            "platform",
+            "position",
+            "product",
+            "program"
+          ]
+        }
+      ],
+      "tracked": {
+        "kinship": {
+          "z": 0.9,
+          "H1": 3.267,
+          "contained": 11,
+          "cluster_size": 28
+        },
+        "geo": {
+          "z": -3.3,
+          "H1": 0.222,
+          "contained": 11,
+          "cluster_size": 24
+        },
+        "zodiac": {
+          "z": -3.3,
+          "H1": 0.222,
+          "contained": 11,
+          "cluster_size": 24
+        },
+        "number": {
+          "z": -4.2,
+          "H1": 0.0,
+          "contained": 12,
+          "cluster_size": 16
+        },
+        "weekday": {
+          "z": 0.0,
+          "H1": 0.0,
+          "contained": 7,
+          "cluster_size": 8
+        },
+        "taxonomy": {
+          "z": 0.3,
+          "H1": 1.416,
+          "contained": 7,
+          "cluster_size": 10
+        },
+        "month": {
+          "z": -1.7,
+          "H1": 0.0,
+          "contained": 12,
+          "cluster_size": 12
+        }
+      }
+    },
+    "30": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 0.92,
+        "number": 0.75,
+        "geo": 1.0,
+        "taxonomy": 0.86,
+        "kinship": 1.0,
+        "zodiac": 0.75
+      },
+      "loop_clusters": [
+        {
+          "size": 18,
+          "H1": 7.204,
+          "z": 5.0,
+          "members": [
+            "aid",
+            "capital",
+            "cash",
+            "content",
+            "data",
+            "design",
+            "equipment",
+            "estate",
+            "facilities",
+            "funds",
+            "housing",
+            "information",
+            "labor",
+            "land"
+          ]
+        },
+        {
+          "size": 35,
+          "H1": 4.266,
+          "z": 4.6,
+          "members": [
+            "actor",
+            "adult",
+            "animal",
+            "aunt",
+            "baby",
+            "bitch",
+            "boss",
+            "boy",
+            "brother",
+            "child",
+            "dad",
+            "daughter",
+            "dude",
+            "father"
+          ]
+        },
+        {
+          "size": 18,
+          "H1": 4.263,
+          "z": 4.0,
+          "members": [
+            "cause",
+            "condition",
+            "direction",
+            "form",
+            "function",
+            "law",
+            "location",
+            "method",
+            "order",
+            "path",
+            "person",
+            "place",
+            "plan",
+            "position"
+          ]
+        },
+        {
+          "size": 23,
+          "H1": 4.813,
+          "z": 3.6,
+          "members": [
+            "boat",
+            "bus",
+            "camera",
+            "car",
+            "computer",
+            "device",
+            "dress",
+            "drink",
+            "drug",
+            "engine",
+            "gun",
+            "machine",
+            "phone",
+            "photo"
+          ]
+        }
+      ],
+      "tracked": {
+        "weekday": {
+          "z": -1.5,
+          "H1": 1.514,
+          "contained": 7,
+          "cluster_size": 21
+        },
+        "geo": {
+          "z": -1.5,
+          "H1": 1.514,
+          "contained": 12,
+          "cluster_size": 21
+        },
+        "kinship": {
+          "z": 4.6,
+          "H1": 4.266,
+          "contained": 14,
+          "cluster_size": 35
+        },
+        "taxonomy": {
+          "z": -1.5,
+          "H1": 1.365,
+          "contained": 12,
+          "cluster_size": 22
+        },
+        "number": {
+          "z": -1.0,
+          "H1": 0.0,
+          "contained": 9,
+          "cluster_size": 9
+        },
+        "month": {
+          "z": -1.1,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 12
+        },
+        "zodiac": {
+          "z": -1.0,
+          "H1": 0.0,
+          "contained": 9,
+          "cluster_size": 9
+        }
+      }
+    },
+    "31": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 0.92,
+        "number": 1.0,
+        "geo": 1.0,
+        "taxonomy": 0.79,
+        "kinship": 1.0,
+        "zodiac": 0.92
+      },
+      "loop_clusters": [
+        {
+          "size": 25,
+          "H1": 7.555,
+          "z": 4.7,
+          "members": [
+            "aid",
+            "border",
+            "capital",
+            "cash",
+            "climate",
+            "energy",
+            "environment",
+            "equipment",
+            "estate",
+            "facilities",
+            "fuel",
+            "funds",
+            "gas",
+            "health"
+          ]
+        },
+        {
+          "size": 48,
+          "H1": 4.818,
+          "z": 4.2,
+          "members": [
+            "adult",
+            "assistant",
+            "aunt",
+            "baby",
+            "bitch",
+            "boss",
+            "boy",
+            "brother",
+            "center",
+            "chief",
+            "child",
+            "couple",
+            "daughter",
+            "dude"
+          ]
+        },
+        {
+          "size": 24,
+          "H1": 4.723,
+          "z": 4.2,
+          "members": [
+            "app",
+            "application",
+            "brand",
+            "computer",
+            "design",
+            "device",
+            "email",
+            "engine",
+            "event",
+            "marketing",
+            "network",
+            "phone",
+            "platform",
+            "product"
+          ]
+        }
+      ],
+      "tracked": {
+        "kinship": {
+          "z": 4.2,
+          "H1": 4.818,
+          "contained": 14,
+          "cluster_size": 48
+        },
+        "taxonomy": {
+          "z": -0.6,
+          "H1": 2.169,
+          "contained": 11,
+          "cluster_size": 21
+        },
+        "zodiac": {
+          "z": -0.5,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "number": {
+          "z": -0.6,
+          "H1": 0.0,
+          "contained": 12,
+          "cluster_size": 13
+        },
+        "geo": {
+          "z": -1.2,
+          "H1": 0.13,
+          "contained": 12,
+          "cluster_size": 14
+        },
+        "weekday": {
+          "z": -0.9,
+          "H1": 0.0,
+          "contained": 7,
+          "cluster_size": 7
+        },
+        "month": {
+          "z": -1.2,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        }
+      }
+    },
+    "32": {
+      "purity": {
+        "weekday": 1.0,
+        "month": 1.0,
+        "number": 1.0,
+        "geo": 0.92,
+        "taxonomy": 0.5,
+        "kinship": 1.0,
+        "zodiac": 0.92
+      },
+      "loop_clusters": [
+        {
+          "size": 10,
+          "H1": 4.32,
+          "z": 5.4,
+          "members": [
+            "beach",
+            "country",
+            "hill",
+            "island",
+            "lake",
+            "mountain",
+            "ocean",
+            "river",
+            "sea",
+            "valley"
+          ]
+        },
+        {
+          "size": 29,
+          "H1": 4.611,
+          "z": 4.8,
+          "members": [
+            "actor",
+            "agent",
+            "artist",
+            "attorney",
+            "author",
+            "candidate",
+            "captain",
+            "chairman",
+            "coach",
+            "director",
+            "doctor",
+            "driver",
+            "governor",
+            "judge"
+          ]
+        },
+        {
+          "size": 29,
+          "H1": 5.085,
+          "z": 4.6,
+          "members": [
+            "bag",
+            "ball",
+            "bit",
+            "block",
+            "bowl",
+            "box",
+            "card",
+            "cell",
+            "chain",
+            "corner",
+            "cup",
+            "flat",
+            "line",
+            "map"
+          ]
+        },
+        {
+          "size": 22,
+          "H1": 4.549,
+          "z": 3.7,
+          "members": [
+            "Leo",
+            "aunt",
+            "brother",
+            "daughter",
+            "father",
+            "granddaughter",
+            "grandfather",
+            "grandmother",
+            "grandson",
+            "institute",
+            "king",
+            "lord",
+            "mother",
+            "nephew"
+          ]
+        }
+      ],
+      "tracked": {
+        "kinship": {
+          "z": 3.7,
+          "H1": 4.549,
+          "contained": 14,
+          "cluster_size": 22
+        },
+        "number": {
+          "z": 0.2,
+          "H1": 0.357,
+          "contained": 12,
+          "cluster_size": 12
+        },
+        "weekday": {
+          "z": -1.4,
+          "H1": 0.0,
+          "contained": 7,
+          "cluster_size": 7
+        },
+        "month": {
+          "z": -4.0,
+          "H1": 0.744,
+          "contained": 12,
+          "cluster_size": 21
+        },
+        "geo": {
+          "z": -2.1,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "zodiac": {
+          "z": -1.0,
+          "H1": 0.0,
+          "contained": 11,
+          "cluster_size": 11
+        },
+        "taxonomy": {
+          "z": -1.3,
+          "H1": 0.244,
+          "contained": 7,
+          "cluster_size": 10
+        }
+      }
+    }
+  }
+}
