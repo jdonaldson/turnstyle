@@ -16,6 +16,7 @@ Per direction-frame lesson: z-score per dim across the point set BEFORE distance
 """
 from __future__ import annotations
 import warnings; warnings.filterwarnings("ignore")
+import sys
 import numpy as np
 
 MONTHS = ["January", "February", "March", "April", "May", "June",
@@ -89,7 +90,7 @@ def analyze(acts, words, P, layer):
 def main():
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
-    mid = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
+    mid = sys.argv[1] if len(sys.argv) > 1 else "HuggingFaceTB/SmolLM2-1.7B-Instruct"
     dev = "mps" if torch.backends.mps.is_available() else "cpu"
     tok = AutoTokenizer.from_pretrained(mid)
     mdl = AutoModelForCausalLM.from_pretrained(mid, dtype=torch.float16).to(dev)
