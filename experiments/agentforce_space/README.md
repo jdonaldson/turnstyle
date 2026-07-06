@@ -31,8 +31,22 @@ token**.
 3. **Everything else is symbolic**: goals = the plan's *sinks* (the verified
    unique minimal generator of the DAG); backward-chaining inserts every
    dependency; a topo-sort orders them; a validator checks guardrails before
-   anything executes; the plan compiles to a [Burr](https://github.com/apache/burr)
-   state machine.
+   anything executes; the plan compiles to BOTH a
+   [Burr](https://github.com/apache/burr) state machine and a Salesforce
+   [Agent Script](https://github.com/salesforce/agentscript) `.agent` file.
+
+### Why the Agent Script comes out as a flat guard ladder
+
+Agent Script has no `elif`, and its shipped linter also rejects **nested**
+`if` ("Combine conditions with 'and'/'or'"). So an n-ary conditional must be
+emitted as flat, mutually-exclusive guards, each row carrying its full path
+conjunction (`if not f1 and f2: ...`) — the decision-table normal form. That
+is exactly the object the probe recognizes, so the recognized table maps 1:1
+onto Agentforce's own reviewable artifact. Emitted scripts for every non-abstain
+demo example were validated against Salesforce's published toolchain
+(`@sf-agentscript/agentforce` parser + compiler, 0 diagnostics); `elif` and
+nested-`if` control cases are rejected by the same toolchain, confirming the
+validator has teeth.
 
 No plan is ever *written* by the model, so no plan can be hallucinated — and
 every head returns a calibrated probability, so low confidence becomes an

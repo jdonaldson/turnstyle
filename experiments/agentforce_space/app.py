@@ -23,6 +23,8 @@ import json, os, re
 
 import numpy as np
 
+from agentscript_gen import agentscript_source
+
 # ---------------------------------------------------------------------------
 # Closed action library (Agentforce-style: typed reads/writes over state keys).
 # ---------------------------------------------------------------------------
@@ -399,11 +401,13 @@ def burr_source(res: dict) -> str:
 
 def run_pipeline(req: str):
     if not req or not req.strip():
-        return "<p>Enter a requirement.</p>", "", ""
+        return "<p>Enter a requirement.</p>", "", "", ""
     res = analyze(req)
     if res["abstain"]:
-        return abstain_html(res), "", "# abstained — no workflow emitted"
-    return table_html(res), render_svg(res), burr_source(res)
+        return (abstain_html(res), "", "# abstained — no workflow emitted",
+                "# abstained — no workflow emitted")
+    return (table_html(res), render_svg(res), burr_source(res),
+            agentscript_source(res, ACTIONS, INITIAL_KEYS))
 
 
 EXAMPLES = [
@@ -423,7 +427,11 @@ forward pass** (no tokens are generated, ever); 13 logistic probes on a
 mid-stack hidden state recognize the **demanded outcomes** and the **guard
 condition + polarity**; everything else — dependencies, ordering, the workflow
 graph — is **derived symbolically** from the typed action library and compiled
-to a [Burr](https://github.com/apache/burr) state machine.
+to BOTH a [Burr](https://github.com/apache/burr) state machine and a Salesforce
+[Agent Script](https://github.com/salesforce/agentscript) `.agent` file.
+Agent Script's toolchain rejects `elif` *and* nested `if`, so conditionals are
+emitted as a flat ladder of mutually-exclusive guards — the decision-table
+normal form the probe recognizes is exactly the artifact Agentforce wants.
 
 Nodes link to the relevant public Salesforce Agentforce docs (this demo is a
 research prototype from the [turnstyle](https://github.com/jdonaldson/turnstyle)
@@ -444,6 +452,9 @@ def build_ui():
         dag = gr.HTML(label="Reconstructed DAG")
         with gr.Accordion("Emitted Burr workflow (the reviewable artifact)", open=False):
             code = gr.Code(language="python")
+        with gr.Accordion("Emitted Agent Script (compiles with Salesforce's "
+                          "@sf-agentscript toolchain)", open=False):
+            ascript = gr.Code(language="yaml")
         gr.Examples(EXAMPLES, inputs=req)
         with gr.Accordion("How it works / honest numbers", open=False):
             gr.Markdown(
@@ -454,7 +465,9 @@ def build_ui():
                 "membership via clause-span pooling (54/54 on the calibration corpus).\n"
                 "- **Symbolic**: goals = the plan's *sinks* (unique minimal generator — "
                 "verified); backward-chaining inserts glue; topo-sort orders; the plan "
-                "compiles to Burr.\n"
+                "compiles to Burr AND to Agent Script (validated against Salesforce's "
+                "`@sf-agentscript/agentforce` parser+compiler; its linter rejects `elif` "
+                "and nested `if`, so n-ary choice = a flat guard ladder).\n"
                 "- **Held-out (unseen wordings)**: keys set-exact ≈ .57, polarity 9/9 on "
                 "regex-blind antonym negations, decision-table exact ≈ .52 — matching a "
                 "3.8B model *generating* plans, at ~10× smaller. Calibrated on a small "
@@ -463,9 +476,9 @@ def build_ui():
                 "- Docs links: [Standard Agent Action Reference]"
                 f"({DOC_INDEX}), [escalation]({DOCS['EscalateToHuman'][0]}), "
                 f"[custom actions]({DOC_CUSTOM}).")
-        btn.click(run_pipeline, inputs=req, outputs=[table, dag, code])
-        req.submit(run_pipeline, inputs=req, outputs=[table, dag, code])
-        demo.load(run_pipeline, inputs=req, outputs=[table, dag, code])
+        btn.click(run_pipeline, inputs=req, outputs=[table, dag, code, ascript])
+        req.submit(run_pipeline, inputs=req, outputs=[table, dag, code, ascript])
+        demo.load(run_pipeline, inputs=req, outputs=[table, dag, code, ascript])
     return demo
 
 
