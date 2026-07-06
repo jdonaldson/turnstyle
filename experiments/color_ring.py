@@ -67,7 +67,7 @@ def circ_metrics(theta_hat, theta):
 def main():
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
-    mid = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
+    mid = sys.argv[1] if len(sys.argv) > 1 else "HuggingFaceTB/SmolLM2-1.7B-Instruct"
     dev = "mps" if torch.backends.mps.is_available() else "cpu"
     tok = AutoTokenizer.from_pretrained(mid)
     mdl = AutoModelForCausalLM.from_pretrained(mid, dtype=torch.float16).to(dev)
@@ -117,8 +117,9 @@ def main():
         print(f"  {k:8s} {v:+.3f} @L{L}")
     results["peaks"] = {k: {"value": round(v, 4), "layer": L} for k, (v, L) in best.items()}
 
+    suffix = "_" + mid.split("/")[-1] if len(sys.argv) > 1 else ""
     out = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                       "results", "color_ring.json")
+                       "results", "color_ring" + suffix + ".json")
     with open(out, "w") as f:
         json.dump(results, f, indent=2)
     print(f"\nwrote {out}")
