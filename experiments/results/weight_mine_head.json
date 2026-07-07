@@ -1,0 +1,1331 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "heads": {
+    "L20H0": {
+      "label": "operand copier",
+      "offsets": {
+        "1": [
+          {
+            "sv": 0,
+            "sign": 1,
+            "q": [
+              "7",
+              "six",
+              "6",
+              "seven",
+              "3",
+              "ect",
+              "5",
+              "thirty"
+            ],
+            "k": [
+              "the",
+              "several",
+              "affirm",
+              "etc",
+              "various",
+              "econom",
+              "several",
+              "etc"
+            ]
+          },
+          {
+            "sv": 0,
+            "sign": -1,
+            "q": [
+              "tax",
+              "eat",
+              "rou",
+              "Som",
+              "tax",
+              "Colored",
+              "Ah",
+              "cigarette"
+            ],
+            "k": [
+              "resort",
+              "resorted",
+              "Black",
+              "viral",
+              "black",
+              "coastal",
+              "resorts",
+              "iod"
+            ]
+          },
+          {
+            "sv": 1,
+            "sign": 1,
+            "q": [
+              "four",
+              "five",
+              "three",
+              "twelve",
+              "seven",
+              "six",
+              "eight",
+              "nine"
+            ],
+            "k": [
+              "scaffolding",
+              "hefty",
+              "peeled",
+              "seriousness",
+              "inconven",
+              "three",
+              "das",
+              "issuing"
+            ]
+          },
+          {
+            "sv": 1,
+            "sign": -1,
+            "q": [
+              "-",
+              "Tre",
+              ",",
+              "Low",
+              "Make",
+              "(",
+              "medium",
+              "medium"
+            ],
+            "k": [
+              "tomography",
+              "[]",
+              "Michelle",
+              "quarter",
+              "\u2423",
+              "Quarter",
+              "medicinal",
+              "ed"
+            ]
+          },
+          {
+            "sv": 2,
+            "sign": 1,
+            "q": [
+              "Omega",
+              "-",
+              "Arm",
+              "Red",
+              "Die",
+              "Delta",
+              "Red",
+              "Difficult"
+            ],
+            "k": [
+              "BL",
+              "Bet",
+              "Tal",
+              "flora",
+              "contacts",
+              "\ufffd",
+              "interrog",
+              "binary"
+            ]
+          },
+          {
+            "sv": 2,
+            "sign": -1,
+            "q": [
+              "GDP",
+              "giene",
+              "five",
+              ":||",
+              "Nurs",
+              "ele",
+              ".',",
+              "six"
+            ],
+            "k": [
+              "ND",
+              "Implications",
+              "mt",
+              "sequence",
+              "barb",
+              "hairs",
+              "sin",
+              "matic"
+            ]
+          }
+        ],
+        "2": [
+          {
+            "sv": 0,
+            "sign": 1,
+            "q": [
+              "7",
+              "six",
+              "6",
+              "seven",
+              "3",
+              "5",
+              "thirty",
+              "ect"
+            ],
+            "k": [
+              "the",
+              "several",
+              "etc",
+              "affirm",
+              "various",
+              "etc",
+              "econom",
+              "several"
+            ]
+          },
+          {
+            "sv": 0,
+            "sign": -1,
+            "q": [
+              "tax",
+              "eat",
+              "rou",
+              "Som",
+              "cigarette",
+              "som",
+              "Colored",
+              "tax"
+            ],
+            "k": [
+              "resort",
+              "resorted",
+              "Black",
+              "viral",
+              "black",
+              "parity",
+              "iod",
+              "feudal"
+            ]
+          },
+          {
+            "sv": 1,
+            "sign": 1,
+            "q": [
+              "four",
+              "five",
+              "twelve",
+              "three",
+              "seven",
+              "six",
+              "eight",
+              "nine"
+            ],
+            "k": [
+              "scaffolding",
+              "hefty",
+              "peeled",
+              "inconven",
+              "seriousness",
+              "three",
+              "issuing",
+              "Delete"
+            ]
+          },
+          {
+            "sv": 1,
+            "sign": -1,
+            "q": [
+              "-",
+              "Tre",
+              ",",
+              "Low",
+              "medium",
+              "medium",
+              "Ca",
+              "("
+            ],
+            "k": [
+              "tomography",
+              "quarter",
+              "[]",
+              "medicinal",
+              "\u2423",
+              "Michelle",
+              "ed",
+              "la"
+            ]
+          },
+          {
+            "sv": 2,
+            "sign": 1,
+            "q": [
+              "Omega",
+              "-",
+              "Arm",
+              "Red",
+              "g",
+              "Delta",
+              "Die",
+              "Red"
+            ],
+            "k": [
+              "Bet",
+              "BL",
+              "flora",
+              "Tal",
+              "\ufffd",
+              "contacts",
+              "interrog",
+              "Obl"
+            ]
+          },
+          {
+            "sv": 2,
+            "sign": -1,
+            "q": [
+              "GDP",
+              "giene",
+              "five",
+              ":||",
+              "Nurs",
+              "ele",
+              ".',",
+              "Duch"
+            ],
+            "k": [
+              "ND",
+              "Implications",
+              "mt",
+              "sequence",
+              "barb",
+              "hairs",
+              "matic",
+              "sin"
+            ]
+          }
+        ],
+        "4": [
+          {
+            "sv": 0,
+            "sign": 1,
+            "q": [
+              "eat",
+              "tax",
+              "rou",
+              "cigarette",
+              "Colored",
+              "Som",
+              "som",
+              "therapy"
+            ],
+            "k": [
+              "resort",
+              "resorted",
+              "Black",
+              "viral",
+              "feudal",
+              "estuary",
+              "parity",
+              "iod"
+            ]
+          },
+          {
+            "sv": 0,
+            "sign": -1,
+            "q": [
+              "six",
+              "7",
+              "seven",
+              "6",
+              "3",
+              "5",
+              "thirty",
+              "eight"
+            ],
+            "k": [
+              "the",
+              "etc",
+              "several",
+              "etc",
+              "affirm",
+              "econom",
+              "various",
+              "several"
+            ]
+          },
+          {
+            "sv": 1,
+            "sign": 1,
+            "q": [
+              "-",
+              "Tre",
+              "medium",
+              "Low",
+              "Ca",
+              ",",
+              "medium",
+              "Ris"
+            ],
+            "k": [
+              "tomography",
+              "quarter",
+              "abound",
+              "medicinal",
+              "\u2423",
+              "\u2423",
+              "Michelle",
+              "ed"
+            ]
+          },
+          {
+            "sv": 1,
+            "sign": -1,
+            "q": [
+              "four",
+              "five",
+              "twelve",
+              "three",
+              "six",
+              "seven",
+              "eight",
+              "thirteen"
+            ],
+            "k": [
+              "scaffolding",
+              "hefty",
+              "inconven",
+              "peeled",
+              "issuing",
+              "6",
+              "three",
+              "seriousness"
+            ]
+          },
+          {
+            "sv": 2,
+            "sign": 1,
+            "q": [
+              "Omega",
+              "-",
+              "Arm",
+              "Delta",
+              "g",
+              "Alien",
+              "October",
+              "Red"
+            ],
+            "k": [
+              "BL",
+              "Bet",
+              "flora",
+              "contacts",
+              "\ufffd",
+              "interrog",
+              "Decl",
+              "Tal"
+            ]
+          },
+          {
+            "sv": 2,
+            "sign": -1,
+            "q": [
+              "GDP",
+              "giene",
+              ":||",
+              "five",
+              "Nurs",
+              "ele",
+              ".',",
+              "Duch"
+            ],
+            "k": [
+              "Implications",
+              "ND",
+              "sequence",
+              "matic",
+              "hairs",
+              "sin",
+              "mt",
+              "barb"
+            ]
+          }
+        ],
+        "8": [
+          {
+            "sv": 0,
+            "sign": 1,
+            "q": [
+              "tax",
+              "eat",
+              "Eat",
+              "rou",
+              "Som",
+              "Colored",
+              "cigarette",
+              "therapy"
+            ],
+            "k": [
+              "resort",
+              "resorted",
+              "viral",
+              "feudal",
+              "positional",
+              "estuary",
+              "Botany",
+              "parity"
+            ]
+          },
+          {
+            "sv": 0,
+            "sign": -1,
+            "q": [
+              "seven",
+              "six",
+              "four",
+              "3",
+              "7",
+              "three",
+              "thirty",
+              "eight"
+            ],
+            "k": [
+              "the",
+              "etc",
+              "several",
+              "etc",
+              "affirm",
+              "several",
+              "various",
+              "Several"
+            ]
+          },
+          {
+            "sv": 1,
+            "sign": 1,
+            "q": [
+              "four",
+              "five",
+              "twelve",
+              "three",
+              "six",
+              "seven",
+              "nine",
+              "thirteen"
+            ],
+            "k": [
+              "scaffolding",
+              "inconven",
+              "hefty",
+              "peeled",
+              "issuing",
+              "6",
+              "three",
+              "Andy"
+            ]
+          },
+          {
+            "sv": 1,
+            "sign": -1,
+            "q": [
+              "Tre",
+              "-",
+              "medium",
+              "(",
+              "Low",
+              ",",
+              "Ris",
+              "medium"
+            ],
+            "k": [
+              "tomography",
+              "abound",
+              "\u2423",
+              "quarter",
+              "\u2423",
+              "ab",
+              "medicinal",
+              "als"
+            ]
+          },
+          {
+            "sv": 2,
+            "sign": 1,
+            "q": [
+              "Omega",
+              "Arm",
+              "Alien",
+              "-",
+              "Delta",
+              "*",
+              "g",
+              "published"
+            ],
+            "k": [
+              "BL",
+              "Bet",
+              "flora",
+              "contacts",
+              "aggress",
+              "Altern",
+              "emancipation",
+              "\ufffd"
+            ]
+          },
+          {
+            "sv": 2,
+            "sign": -1,
+            "q": [
+              "GDP",
+              "Nurs",
+              ":||",
+              ".',",
+              "Louise",
+              "five",
+              "Bob",
+              "enthic"
+            ],
+            "k": [
+              "Implications",
+              "ND",
+              "sequence",
+              "matic",
+              "Vaccines",
+              "hairs",
+              "sequence",
+              "goddess"
+            ]
+          }
+        ]
+      },
+      "ov": [
+        {
+          "key": "the",
+          "ov": [
+            "both",
+            "Both",
+            "both",
+            "Both",
+            "4"
+          ]
+        },
+        {
+          "key": "several",
+          "ov": [
+            "first",
+            "9",
+            "nine",
+            "Nine",
+            "FIRST"
+          ]
+        },
+        {
+          "key": "affirm",
+          "ov": [
+            "third",
+            "three",
+            "Three",
+            "Third",
+            "Fourth"
+          ]
+        },
+        {
+          "key": "etc",
+          "ov": [
+            "Nine",
+            "nine",
+            "Ten",
+            "ninth",
+            "ten"
+          ]
+        },
+        {
+          "key": "various",
+          "ov": [
+            "eighth",
+            "Eighth",
+            "others",
+            "other",
+            "other"
+          ]
+        }
+      ],
+      "copy_score": 0.0
+    },
+    "L21H13": {
+      "label": "Emma name-mover",
+      "offsets": {
+        "1": [
+          {
+            "sv": 0,
+            "sign": 1,
+            "q": [
+              "\u2026",
+              "\u2026]",
+              "[\u2026]",
+              "\u2026",
+              "\u2013",
+              "\u2423",
+              "\u2026)",
+              "\u2423"
+            ],
+            "k": [
+              "impoverished",
+              "rooft",
+              "narciss",
+              "polished",
+              "personally",
+              "lieutenant",
+              "Kale",
+              "Originally"
+            ]
+          },
+          {
+            "sv": 0,
+            "sign": -1,
+            "q": [
+              "visa",
+              "disapp",
+              "Salt",
+              "rejo",
+              "synthetic",
+              "Re",
+              "---",
+              "aesthetics"
+            ],
+            "k": [
+              "Heter",
+              "Ru",
+              "latter",
+              "essment",
+              "']))",
+              "zyme",
+              "covert",
+              "ize"
+            ]
+          },
+          {
+            "sv": 1,
+            "sign": 1,
+            "q": [
+              "Bol",
+              "prob",
+              "Cardiovascular",
+              "divinity",
+              "RIPT",
+              "Coronavirus",
+              "Sandy",
+              "coral"
+            ],
+            "k": [
+              "Jen",
+              "witches",
+              "Sit",
+              "scalp",
+              "Ro",
+              "Cod",
+              "pervasive",
+              "\u2423"
+            ]
+          },
+          {
+            "sv": 1,
+            "sign": -1,
+            "q": [
+              "usks",
+              "\u00ac",
+              "Fr",
+              "microscopy",
+              "Kun",
+              "pianist",
+              "Moist",
+              "symmetry"
+            ],
+            "k": [
+              "NRC",
+              "persona",
+              "Introduction",
+              "Conc",
+              "Glossary",
+              "inx",
+              "noct",
+              "Encyclop"
+            ]
+          },
+          {
+            "sv": 2,
+            "sign": 1,
+            "q": [
+              "marijuana",
+              "cannabis",
+              "imus",
+              "pent",
+              "Scul",
+              "enlightenment",
+              "Bonaparte",
+              "cer"
+            ],
+            "k": [
+              "Esp",
+              "ble",
+              "admissions",
+              "decoded",
+              "fut",
+              "Intrigued",
+              "intrinsically",
+              "conducive"
+            ]
+          },
+          {
+            "sv": 2,
+            "sign": -1,
+            "q": [
+              "Mys",
+              "kne",
+              "Urban",
+              "traditional",
+              "Innovation",
+              "Traditional",
+              "Boundaries",
+              "Pa"
+            ],
+            "k": [
+              "Environmental",
+              "brow",
+              "omencl",
+              "Accel",
+              "CE",
+              "carbohyd",
+              "justified",
+              "La"
+            ]
+          }
+        ],
+        "2": [
+          {
+            "sv": 0,
+            "sign": 1,
+            "q": [
+              "\u2026",
+              "\u2026]",
+              "[\u2026]",
+              "\u2013",
+              "\u2026",
+              "\u2423",
+              "\u2423",
+              "Alexandra"
+            ],
+            "k": [
+              "impoverished",
+              "rooft",
+              "polished",
+              "narciss",
+              "lieutenant",
+              "personally",
+              "Originally",
+              "Kale"
+            ]
+          },
+          {
+            "sv": 0,
+            "sign": -1,
+            "q": [
+              "visa",
+              "disapp",
+              "Salt",
+              "rejo",
+              "synthetic",
+              "Re",
+              "---",
+              "aesthetics"
+            ],
+            "k": [
+              "Heter",
+              "Ru",
+              "latter",
+              "essment",
+              "']))",
+              "zyme",
+              "etc",
+              "covert"
+            ]
+          },
+          {
+            "sv": 1,
+            "sign": 1,
+            "q": [
+              "usks",
+              "\u00ac",
+              "Fr",
+              "microscopy",
+              "Kun",
+              "Moist",
+              "pianist",
+              "symmetry"
+            ],
+            "k": [
+              "NRC",
+              "persona",
+              "Introduction",
+              "Glossary",
+              "Conc",
+              "noct",
+              "inx",
+              "Encyclop"
+            ]
+          },
+          {
+            "sv": 1,
+            "sign": -1,
+            "q": [
+              "Bol",
+              "prob",
+              "divinity",
+              "Cardiovascular",
+              "RIPT",
+              "prob",
+              "Coronavirus",
+              "coral"
+            ],
+            "k": [
+              "Jen",
+              "witches",
+              "Sit",
+              "Ro",
+              "scalp",
+              "Cod",
+              "pervasive",
+              "\u2423"
+            ]
+          },
+          {
+            "sv": 2,
+            "sign": 1,
+            "q": [
+              "Mys",
+              "kne",
+              "Urban",
+              "traditional",
+              "Innovation",
+              "Boundaries",
+              "Traditional",
+              "Pa"
+            ],
+            "k": [
+              "Environmental",
+              "brow",
+              "omencl",
+              "Accel",
+              "CE",
+              "carbohyd",
+              "Wen",
+              "justified"
+            ]
+          },
+          {
+            "sv": 2,
+            "sign": -1,
+            "q": [
+              "marijuana",
+              "cannabis",
+              "imus",
+              "pent",
+              "enlightenment",
+              "Bonaparte",
+              "Scul",
+              "cer"
+            ],
+            "k": [
+              "Esp",
+              "ble",
+              "admissions",
+              "intrinsically",
+              "decoded",
+              "Intrigued",
+              "fut",
+              "conducive"
+            ]
+          }
+        ],
+        "4": [
+          {
+            "sv": 0,
+            "sign": 1,
+            "q": [
+              "visa",
+              "Salt",
+              "disapp",
+              "synthetic",
+              "rejo",
+              "Re",
+              "---",
+              "aesthetics"
+            ],
+            "k": [
+              "Heter",
+              "Ru",
+              "essment",
+              "latter",
+              "etc",
+              "']))",
+              "zyme",
+              "))."
+            ]
+          },
+          {
+            "sv": 0,
+            "sign": -1,
+            "q": [
+              "\u2026",
+              "\u2026]",
+              "[\u2026]",
+              "\u2013",
+              "\u2026",
+              "\u2423",
+              "\u2423",
+              "Alexandra"
+            ],
+            "k": [
+              "impoverished",
+              "rooft",
+              "polished",
+              "narciss",
+              "lieutenant",
+              "hath",
+              "sailed",
+              "raced"
+            ]
+          },
+          {
+            "sv": 1,
+            "sign": 1,
+            "q": [
+              "Bol",
+              "divinity",
+              "prob",
+              "RIPT",
+              "vit",
+              "prob",
+              "Cardiovascular",
+              "Microsoft"
+            ],
+            "k": [
+              "Jen",
+              "witches",
+              "Sit",
+              "Ro",
+              "Cod",
+              "Advancement",
+              "separating",
+              "precedent"
+            ]
+          },
+          {
+            "sv": 1,
+            "sign": -1,
+            "q": [
+              "usks",
+              "\u00ac",
+              "microscopy",
+              "symmetry",
+              "Fr",
+              "Moist",
+              "spont",
+              "pianist"
+            ],
+            "k": [
+              "NRC",
+              "persona",
+              "Introduction",
+              "Glossary",
+              "Conc",
+              "noct",
+              "Encyclop",
+              "NSA"
+            ]
+          },
+          {
+            "sv": 2,
+            "sign": 1,
+            "q": [
+              "marijuana",
+              "cannabis",
+              "imus",
+              "pent",
+              "Bonaparte",
+              "enlightenment",
+              "cer",
+              "Scul"
+            ],
+            "k": [
+              "intrinsically",
+              "admissions",
+              "Esp",
+              "ble",
+              "Intrigued",
+              "fut",
+              "conducive",
+              "Mozamb"
+            ]
+          },
+          {
+            "sv": 2,
+            "sign": -1,
+            "q": [
+              "Mys",
+              "kne",
+              "Urban",
+              "Boundaries",
+              "invest",
+              "Var",
+              "Verb",
+              "traditional"
+            ],
+            "k": [
+              "Environmental",
+              "brow",
+              "omencl",
+              "Accel",
+              "Wen",
+              "CE",
+              "La",
+              "justified"
+            ]
+          }
+        ],
+        "8": [
+          {
+            "sv": 0,
+            "sign": 1,
+            "q": [
+              "visa",
+              "synthetic",
+              "disapp",
+              "rejo",
+              "aesthetics",
+              "Bowl",
+              "ERR",
+              "Salt"
+            ],
+            "k": [
+              "Heter",
+              "']))",
+              "etc",
+              "latter",
+              "essment",
+              ")).",
+              "Ru",
+              "zyme"
+            ]
+          },
+          {
+            "sv": 0,
+            "sign": -1,
+            "q": [
+              "\u2026",
+              "\u2026]",
+              "[\u2026]",
+              "\u2026",
+              "\u2013",
+              "\u2423",
+              "Alexandra",
+              "Culinary"
+            ],
+            "k": [
+              "impoverished",
+              "rooft",
+              "initially",
+              "Originally",
+              "imbued",
+              "narciss",
+              "sailed",
+              "lieutenant"
+            ]
+          },
+          {
+            "sv": 1,
+            "sign": 1,
+            "q": [
+              "Bol",
+              "vit",
+              "divinity",
+              "ilton",
+              "RIPT",
+              "prob",
+              "\u2026",
+              "prob"
+            ],
+            "k": [
+              "Jen",
+              "witches",
+              "separating",
+              "formal",
+              "precedent",
+              "Prague",
+              "\u2423",
+              "Sit"
+            ]
+          },
+          {
+            "sv": 1,
+            "sign": -1,
+            "q": [
+              "usks",
+              "microscopy",
+              "Kun",
+              "substrates",
+              "spont",
+              "contour",
+              "inally",
+              "pianist"
+            ],
+            "k": [
+              "NRC",
+              "Encyclop",
+              "noct",
+              "persona",
+              "NSA",
+              "Glossary",
+              "Introduction",
+              "Conc"
+            ]
+          },
+          {
+            "sv": 2,
+            "sign": 1,
+            "q": [
+              "marijuana",
+              "cannabis",
+              "imus",
+              "pent",
+              "Kim",
+              "Bonaparte",
+              "enlightenment",
+              "implied"
+            ],
+            "k": [
+              "intrinsically",
+              "ORK",
+              "agoons",
+              "fter",
+              "admissions",
+              "ioxid",
+              "covered",
+              "Intrigued"
+            ]
+          },
+          {
+            "sv": 2,
+            "sign": -1,
+            "q": [
+              "Mys",
+              "invest",
+              "Verb",
+              "Boundaries",
+              "backlash",
+              "Proc",
+              "Var",
+              "Trad"
+            ],
+            "k": [
+              "Environmental",
+              "brow",
+              "Wen",
+              "alike",
+              "Sam",
+              "blessed",
+              "brow",
+              "Lorenzo"
+            ]
+          }
+        ]
+      },
+      "ov": [
+        {
+          "key": "impoverished",
+          "ov": [
+            "Te",
+            "Der",
+            "Ex",
+            "Der",
+            "Te"
+          ]
+        },
+        {
+          "key": "rooft",
+          "ov": [
+            "Assign",
+            "assignment",
+            "assign",
+            "assignments",
+            "assign"
+          ]
+        },
+        {
+          "key": "narciss",
+          "ov": [
+            "Her",
+            "Her",
+            "un",
+            "Bre",
+            "HER"
+          ]
+        },
+        {
+          "key": "polished",
+          "ov": [
+            "em",
+            "Em",
+            "Em",
+            "EM",
+            "em"
+          ]
+        },
+        {
+          "key": "personally",
+          "ov": [
+            "Di",
+            "Im",
+            "di",
+            "Tra",
+            "Di"
+          ]
+        }
+      ],
+      "copy_score": 0.0
+    }
+  },
+  "live": [
+    {
+      "L": 20,
+      "h": 0,
+      "D": 2,
+      "key": "the",
+      "query": "7",
+      "attn_q_to_k": 0.172,
+      "mean_attn": 0.25,
+      "ratio": 0.7
+    },
+    {
+      "L": 20,
+      "h": 0,
+      "D": 4,
+      "key": "resort",
+      "query": "eat",
+      "attn_q_to_k": 0.004,
+      "mean_attn": 0.167,
+      "ratio": 0.0
+    },
+    {
+      "L": 21,
+      "h": 13,
+      "D": 2,
+      "key": "impoverished",
+      "query": "\u2026",
+      "attn_q_to_k": 0.246,
+      "mean_attn": 0.25,
+      "ratio": 1.0
+    },
+    {
+      "L": 21,
+      "h": 13,
+      "D": 4,
+      "key": "Heter",
+      "query": "visa",
+      "attn_q_to_k": 0.297,
+      "mean_attn": 0.167,
+      "ratio": 1.8
+    }
+  ]
+}
