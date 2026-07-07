@@ -1,6 +1,13 @@
 """
 homology_sweep.py — dyf x ripser: the composed topology instrument, per layer.
 
+*** METRIC BUG (2026-07-06, found by number_helix{,_followup}.py): loop_z has no
+*** absolute persistence floor, and B=10 gives a near-zero-variance null — tiny
+*** Rips blips on unevenly-sampled LINES score z=10-22 (the "number loop @L10
+*** z=22.7" was such an artifact). Do not trust z alone from this script.
+*** Superseded by homology_resweep.py (persistence floor + B=50 + maxdim=2 +
+*** field-coefficient torsion check + synthetic calibration).
+
 The capstone of the interpretability arc. Per layer over a ~830-word pool
 (750 common nouns + planted categories, all unprivileged):
 

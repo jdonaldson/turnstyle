@@ -1,0 +1,1991 @@
+{
+  "model": "mistralai/Mistral-7B-Instruct-v0.3",
+  "n_words": 823,
+  "floors": [
+    1.0,
+    0.25
+  ],
+  "layers": {
+    "0": {
+      "found": [],
+      "tracked": {
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.2,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 19
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.04,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.08,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 8
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.09,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 9
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 24
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 24
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.06,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        }
+      }
+    },
+    "1": {
+      "found": [],
+      "tracked": {
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.05,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 21
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.02,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 23
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.02,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 23
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.01,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.16,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 23
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.05,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 7
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        }
+      }
+    },
+    "2": {
+      "found": [],
+      "tracked": {
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 24
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.15,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 20
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 14
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.04,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        }
+      }
+    },
+    "3": {
+      "found": [],
+      "tracked": {
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.04,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 30
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.04,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 30
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.05,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 24
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.15,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 20
+        }
+      }
+    },
+    "4": {
+      "found": [],
+      "tracked": {
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.02,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 21
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.18,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 18
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.21,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 14
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.14,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        }
+      }
+    },
+    "5": {
+      "found": [],
+      "tracked": {
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.02,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 20
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.17,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.07,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.48,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 21
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.1,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        }
+      }
+    },
+    "6": {
+      "found": [],
+      "tracked": {
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 18
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.06,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 20
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.04,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 21
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.33,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 21
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.14,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        }
+      }
+    },
+    "7": {
+      "found": [],
+      "tracked": {
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.16,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 19
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 20
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.03,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 20
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.05,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.28,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 19
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        }
+      }
+    },
+    "8": {
+      "found": [],
+      "tracked": {
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.12,
+          "H2_ratio": 0.01,
+          "z1": null,
+          "z2": null,
+          "size": 30
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 22
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.03,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 23
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.15,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 19
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.22,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.04,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 13
+        }
+      }
+    },
+    "9": {
+      "found": [],
+      "tracked": {
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.07,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 19
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.22,
+          "H2_ratio": 0.01,
+          "z1": null,
+          "z2": null,
+          "size": 21
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.22,
+          "H2_ratio": 0.01,
+          "z1": null,
+          "z2": null,
+          "size": 21
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.11,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.14,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 23
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        }
+      }
+    },
+    "10": {
+      "found": [],
+      "tracked": {
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.08,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 24
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.09,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 26
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.12,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 19
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.12,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 19
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.11,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 43
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 9
+        }
+      }
+    },
+    "11": {
+      "found": [],
+      "tracked": {
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.05,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 19
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.06,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 22
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.06,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 22
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.08,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 18
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.06,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 22
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.09,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        }
+      }
+    },
+    "12": {
+      "found": [],
+      "tracked": {
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.08,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 19
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.08,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 19
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.03,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 9
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.17,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.02,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.01,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        }
+      }
+    },
+    "13": {
+      "found": [],
+      "tracked": {
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.07,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 35
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 23
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.09,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 33
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.02,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 18
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.09,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 24
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.08,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 14
+        }
+      }
+    },
+    "14": {
+      "found": [],
+      "tracked": {
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.1,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 21
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.1,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.13,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 16
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 9
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.04,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 15
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 9
+        }
+      }
+    },
+    "15": {
+      "found": [],
+      "tracked": {
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.01,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 20
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.04,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 26
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.11,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.04,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 8
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.08,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        }
+      }
+    },
+    "16": {
+      "found": [],
+      "tracked": {
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.17,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 15
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.06,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 18
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.16,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 19
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.12,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.02,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.16,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        }
+      }
+    },
+    "17": {
+      "found": [],
+      "tracked": {
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.04,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 18
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 14
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.06,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.09,
+          "H2_ratio": 0.05,
+          "z1": null,
+          "z2": null,
+          "size": 16
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.23,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 7
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.03,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        }
+      }
+    },
+    "18": {
+      "found": [],
+      "tracked": {
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.05,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 23
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.05,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 23
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.18,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 17
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.22,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 22
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 13
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        }
+      }
+    },
+    "19": {
+      "found": [],
+      "tracked": {
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 23
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.1,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 34
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.04,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.16,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 17
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.06,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 20
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.01,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        }
+      }
+    },
+    "20": {
+      "found": [],
+      "tracked": {
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.3,
+          "H2_ratio": 0.04,
+          "z1": null,
+          "z2": null,
+          "size": 43
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.02,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 21
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.02,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 21
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 13
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.05,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 16
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.05,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        }
+      }
+    },
+    "21": {
+      "found": [],
+      "tracked": {
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.16,
+          "H2_ratio": 0.06,
+          "z1": null,
+          "z2": null,
+          "size": 25
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.03,
+          "H2_ratio": 0.03,
+          "z1": null,
+          "z2": null,
+          "size": 18
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.01,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.08,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 17
+        }
+      }
+    },
+    "22": {
+      "found": [],
+      "tracked": {
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.1,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 24
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 14
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.19,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 17
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.01,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.03,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 13
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        }
+      }
+    },
+    "23": {
+      "found": [],
+      "tracked": {
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.11,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 44
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.03,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 14
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.02,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.04,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 7
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        }
+      }
+    },
+    "24": {
+      "found": [],
+      "tracked": {
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 16
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.17,
+          "H2_ratio": 0.02,
+          "z1": null,
+          "z2": null,
+          "size": 34
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.01,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 23
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 14
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.05,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        }
+      }
+    },
+    "25": {
+      "found": [],
+      "tracked": {
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.06,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 15
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.2,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 25
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.11,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 15
+        }
+      }
+    },
+    "26": {
+      "found": [],
+      "tracked": {
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.14,
+          "H2_ratio": 0.01,
+          "z1": null,
+          "z2": null,
+          "size": 24
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.14,
+          "H2_ratio": 0.01,
+          "z1": null,
+          "z2": null,
+          "size": 24
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.16,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 29
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 20
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 13
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        }
+      }
+    },
+    "27": {
+      "found": [],
+      "tracked": {
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 14
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 16
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.12,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 20
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 9
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.02,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 9
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 13
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        }
+      }
+    },
+    "28": {
+      "found": [],
+      "tracked": {
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 20
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 14
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 13
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.16,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 17
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.03,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        }
+      }
+    },
+    "29": {
+      "found": [],
+      "tracked": {
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.11,
+          "H2_ratio": 0.02,
+          "z1": null,
+          "z2": null,
+          "size": 28
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.01,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 24
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.01,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 24
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 16
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 8
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.05,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        }
+      }
+    },
+    "30": {
+      "found": [],
+      "tracked": {
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 19
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.11,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 21
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.11,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 21
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.09,
+          "H2_ratio": 0.04,
+          "z1": null,
+          "z2": null,
+          "size": 31
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.04,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 37
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 9
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 16
+        }
+      }
+    },
+    "31": {
+      "found": [],
+      "tracked": {
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.16,
+          "H2_ratio": 0.01,
+          "z1": null,
+          "z2": null,
+          "size": 27
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.01,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 14
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 13
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 11
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 7
+        }
+      }
+    },
+    "32": {
+      "found": [],
+      "tracked": {
+        "geo": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 22
+        },
+        "zodiac": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 22
+        },
+        "kinship": {
+          "cls": "contractible",
+          "H1_ratio": 0.18,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 22
+        },
+        "number": {
+          "cls": "contractible",
+          "H1_ratio": 0.03,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 12
+        },
+        "taxonomy": {
+          "cls": "contractible",
+          "H1_ratio": 0.01,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 10
+        },
+        "weekday": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 7
+        },
+        "month": {
+          "cls": "contractible",
+          "H1_ratio": 0.0,
+          "H2_ratio": 0.0,
+          "z1": null,
+          "z2": null,
+          "size": 8
+        }
+      }
+    }
+  }
+}
