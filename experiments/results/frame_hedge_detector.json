@@ -1,0 +1,121 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "layer": 14,
+  "types": {
+    "not_B": {
+      "mean": 4.57,
+      "sd": 1.46,
+      "n": 63,
+      "kind": "neg"
+    },
+    "hardly": {
+      "mean": 4.6,
+      "sd": 1.51,
+      "n": 63,
+      "kind": "neg"
+    },
+    "far_from": {
+      "mean": 5.04,
+      "sd": 1.03,
+      "n": 63,
+      "kind": "neg"
+    },
+    "by_no_means": {
+      "mean": 4.35,
+      "sd": 1.05,
+      "n": 63,
+      "kind": "neg"
+    },
+    "very": {
+      "mean": 1.63,
+      "sd": 0.65,
+      "n": 63,
+      "kind": "ctl"
+    },
+    "extremely": {
+      "mean": 1.71,
+      "sd": 0.6,
+      "n": 63,
+      "kind": "ctl"
+    },
+    "also": {
+      "mean": 1.18,
+      "sd": 0.83,
+      "n": 63,
+      "kind": "ctl"
+    },
+    "not_only": {
+      "mean": 2.61,
+      "sd": 0.73,
+      "n": 63,
+      "kind": "ctl"
+    },
+    "somewhat": {
+      "mean": 2.17,
+      "sd": 0.57,
+      "n": 63,
+      "kind": "mid"
+    },
+    "slightly": {
+      "mean": 2.53,
+      "sd": 0.56,
+      "n": 63,
+      "kind": "mid"
+    },
+    "bare_B": {
+      "mean": 0.58,
+      "sd": 0.87,
+      "n": 63,
+      "kind": "ctl"
+    },
+    "un_morph": {
+      "mean": 1.38,
+      "sd": 1.24,
+      "n": 8,
+      "kind": "morph"
+    }
+  },
+  "auc_neg_vs_ctl": 0.964,
+  "regex_baseline": {
+    "not_B": {
+      "regex_fires": true,
+      "verdict": "ok"
+    },
+    "hardly": {
+      "regex_fires": false,
+      "verdict": "MISS"
+    },
+    "far_from": {
+      "regex_fires": false,
+      "verdict": "MISS"
+    },
+    "by_no_means": {
+      "regex_fires": true,
+      "verdict": "ok"
+    },
+    "very": {
+      "regex_fires": false,
+      "verdict": "ok"
+    },
+    "extremely": {
+      "regex_fires": false,
+      "verdict": "ok"
+    },
+    "also": {
+      "regex_fires": false,
+      "verdict": "ok"
+    },
+    "not_only": {
+      "regex_fires": true,
+      "verdict": "FALSE-POS"
+    },
+    "somewhat": {
+      "regex_fires": false,
+      "verdict": "--"
+    },
+    "slightly": {
+      "regex_fires": false,
+      "verdict": "--"
+    }
+  }
+}
