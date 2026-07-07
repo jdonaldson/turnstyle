@@ -1,0 +1,188 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "real": [
+    {
+      "prompt": "The capital of France is",
+      "answer": "Paris",
+      "ok": true,
+      "max_content_z": 5.9,
+      "n_content_events": 2,
+      "top": "L19H27 <- ['France']"
+    },
+    {
+      "prompt": "The capital of Italy is",
+      "answer": "Rome",
+      "ok": true,
+      "max_content_z": 6.1,
+      "n_content_events": 2,
+      "top": "L19H27 <- ['Italy']"
+    },
+    {
+      "prompt": "The capital of Japan is",
+      "answer": "Tokyo",
+      "ok": true,
+      "max_content_z": 6.6,
+      "n_content_events": 2,
+      "top": "L19H27 <- ['Japan']"
+    },
+    {
+      "prompt": "The capital of Spain is",
+      "answer": "Madrid",
+      "ok": true,
+      "max_content_z": 5.8,
+      "n_content_events": 2,
+      "top": "L19H27 <- ['Spain']"
+    },
+    {
+      "prompt": "The capital of Germany is",
+      "answer": "Berlin",
+      "ok": true,
+      "max_content_z": 5.8,
+      "n_content_events": 2,
+      "top": "L19H27 <- ['Germany']"
+    },
+    {
+      "prompt": "The largest planet in the solar system is",
+      "answer": "Jupiter",
+      "ok": true,
+      "max_content_z": 4.2,
+      "n_content_events": 1,
+      "top": "L20H8 <- ['planet', 'solar']"
+    },
+    {
+      "prompt": "Water is made of hydrogen and",
+      "answer": "oxygen",
+      "ok": true,
+      "max_content_z": 5.6,
+      "n_content_events": 3,
+      "top": "L14H22 <- ['hydrogen']"
+    },
+    {
+      "prompt": "The author of Romeo and Juliet is",
+      "answer": "often",
+      "ok": false,
+      "max_content_z": 5.0,
+      "n_content_events": 5,
+      "top": "L19H0 <- ['Romeo', 'Juliet']"
+    },
+    {
+      "prompt": "The chemical symbol for gold is",
+      "answer": "Au",
+      "ok": true,
+      "max_content_z": 6.7,
+      "n_content_events": 3,
+      "top": "L19H0 <- ['gold']"
+    },
+    {
+      "prompt": "Two plus two equals",
+      "answer": "four",
+      "ok": true,
+      "max_content_z": 8.8,
+      "n_content_events": 13,
+      "top": "L19H23 <- ['two', 'equals']"
+    },
+    {
+      "prompt": "The opposite of hot is",
+      "answer": "cold",
+      "ok": true,
+      "max_content_z": 5.1,
+      "n_content_events": 1,
+      "top": "L19H13 <- ['hot']"
+    },
+    {
+      "prompt": "The color of the sky on a clear day is",
+      "answer": "blue",
+      "ok": true,
+      "max_content_z": 5.1,
+      "n_content_events": 1,
+      "top": "L9H29 <- ['sky', 'day']"
+    }
+  ],
+  "fake": [
+    {
+      "prompt": "The capital of Wakanda is",
+      "answer": "a",
+      "max_content_z": 9.2,
+      "n_content_events": 8,
+      "top": "L22H1 <- ['anda']"
+    },
+    {
+      "prompt": "The capital of Atlantis is",
+      "answer": "a",
+      "max_content_z": 4.7,
+      "n_content_events": 4,
+      "top": "L19H27 <- ['Atlantis']"
+    },
+    {
+      "prompt": "The capital of Narnia is",
+      "answer": "called",
+      "max_content_z": 6.9,
+      "n_content_events": 10,
+      "top": "L19H0 <- ['ia', 'arn']"
+    },
+    {
+      "prompt": "The capital of Gondor is",
+      "answer": "Min",
+      "max_content_z": 7.3,
+      "n_content_events": 3,
+      "top": "L19H27 <- ['Gond']"
+    },
+    {
+      "prompt": "The author of the novel The Crystal Menagerie of Zorblatt is",
+      "answer": "a",
+      "max_content_z": 5.1,
+      "n_content_events": 3,
+      "top": "L9H28 <- ['att']"
+    },
+    {
+      "prompt": "The chemical symbol for the element flumium is",
+      "answer": "F",
+      "max_content_z": 15.8,
+      "n_content_events": 10,
+      "top": "L21H4 <- ['um', 'fl', 'ium']"
+    },
+    {
+      "prompt": "The year the Battle of Quixotania took place was",
+      "answer": "",
+      "max_content_z": 0.0,
+      "n_content_events": 0,
+      "top": ""
+    },
+    {
+      "prompt": "The largest city in Freedonia is",
+      "answer": "Met",
+      "max_content_z": 7.9,
+      "n_content_events": 9,
+      "top": "L21H3 <- ['Freed', 'onia']"
+    },
+    {
+      "prompt": "The inventor of the gravity pencil was",
+      "answer": "a",
+      "max_content_z": 4.4,
+      "n_content_events": 1,
+      "top": "L20H8 <- ['gravity']"
+    },
+    {
+      "prompt": "The national bird of Elbonia is",
+      "answer": "the",
+      "max_content_z": 8.3,
+      "n_content_events": 1,
+      "top": "L20H18 <- ['El']"
+    },
+    {
+      "prompt": "The boiling point of glimmerite is",
+      "answer": "",
+      "max_content_z": 4.3,
+      "n_content_events": 2,
+      "top": "L6H1 <- ['ite', 'immer']"
+    },
+    {
+      "prompt": "The third moon of Earth is called",
+      "answer": "Ph",
+      "max_content_z": 0.0,
+      "n_content_events": 0,
+      "top": ""
+    }
+  ],
+  "auc": 0.5
+}
