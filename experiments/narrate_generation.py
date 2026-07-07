@@ -32,16 +32,14 @@ DEMOS = [
     "Today is Tuesday. Tomorrow will be",
     "Sarah gave the book to Emma because she had finished it. The book was returned by",
     "The capital of France is",
-    "What is nine minus three? The answer is",
-    "Anna told Maria that her car was blocking the driveway. The driveway was blocked by",
-    "All cats are animals. Whiskers is a cat, so Whiskers is",
+    "The capital of Wakanda is",
+    "Christmas falls in the month of",
     "Gold is heavier than silver, and lead is heavier than gold. The heaviest metal of the three is",
     "Monday, Tuesday, Wednesday,",
-    "The word for bread in Spanish is",
-    "Christmas falls in the month of",
-    "The basket held three apples and two pears. The number of apples was",
+    "The chemical symbol for gold is",
+    "The opposite of generous is",
 ]
-GEN_TOKENS = 5
+GEN_TOKENS = 4
 Z_SHOW = 4.0
 TOP_SHOW = 3
 
@@ -50,36 +48,103 @@ FUNCTION_WORDS = {"the", "a", "an", "is", "was", "were", "be", "will",
                   "would", "to", "of", "in", "on", "by", "for", "and", "or",
                   "so", "that", "it", "she", "he", "her", "his", "had",
                   "has", "?", ".", ",", "what", "answer", "word", "number",
-                  "month", "total", "next", ""}
+                  "month", "total", "next", "capital", "symbol", "opposite",
+                  "chemical", "falls", ""}
+
+# heads identified earlier in this arc (event detector + attribution runs)
+HEAD_NOTES = {
+    (19, 27): "fact-recall", (19, 28): "fact-recall",
+    (19, 23): "operand-gather", (17, 26): "arithmetic-gather",
+    (20, 0): "operand-copy", (21, 13): "name-mover",
+    (21, 2): "name-writer", (21, 18): "name-writer",
+    (20, 27): "name-gather", (20, 17): "claim-tracker",
+    (20, 1): "day-sequence", (16, 3): "list-continuation",
+    (4, 14): "instruction-reader", (7, 29): "answer-cue",
+    (6, 31): "question-format", (20, 16): "premise-copy",
+    (21, 27): "premise-copy", (19, 13): "antonym",
+    (20, 8): "attribute-lookup", (21, 4): "comparative",
+}
+# SmolLM2 direct-logit artifact tokens (massive-activation junk)
+OV_ARTIFACTS = {"neurotransmit", "chimpan", "caterpill", "dprinting",
+                "opio", "cryptocur", "recipesteps", "controlplane",
+                "keynot", "<filename>", "earthqu", "meticul", "soriasis"}
+
+
+def _readable_ov(ov):
+    keep = [o for o in ov
+            if o and o.lower() not in OV_ARTIFACTS and o.isalpha()
+            and len(o) >= 2]
+    return keep[:3] if len(keep) >= 2 else []
 
 
 def verbalize(gen, events):
-    """Mechanical event -> English clause rules."""
+    """Event -> explanatory English. Distinguishes recall (whole-word
+    lookup), assembly (subword fragments of an unfamiliar name), gathering
+    (multiple operands), copying (OV writes the token), and format cues."""
     clauses = []
     gl = gen.strip().lower()
     for ev in events:
-        srcs = [s for s in ev["sources"] if s]
+        raw = ev.get("sources_raw", ev["sources"])
+        srcs = [s.strip() for s in raw if s.strip()]
+        frags = [s.strip() for s in raw
+                 if s and not s.startswith(" ") and s.strip()]
         content = [s for s in srcs if s.lower() not in FUNCTION_WORDS]
-        ovl = [o.lower() for o in ev["ov"][:2]]
-        tag = f"(L{ev['L']} H{ev['head']})"
-        if gl and any(gl == o or gl in o or o in gl for o in ovl if o):
+        ovk = _readable_ov(ev["ov"])
+        role = HEAD_NOTES.get((ev["L"], ev["head"]))
+        who = (f"the {role} head (L{ev['L']} H{ev['head']})" if role
+               else f"head L{ev['L']} H{ev['head']}")
+        wrote = f", writing {'/'.join(ovk)}" if ovk else ""
+        if gl and any(gl == o.lower() or gl in o.lower() or o.lower() in gl
+                      for o in ev["ov"][:2] if o):
             src_s = " and ".join(f"'{s}'" for s in (content or srcs)[:2])
-            clauses.append(f"wrote '{gen.strip()}' directly while reading "
-                           f"{src_s} {tag}")
+            clauses.append(f"{who} inspected {src_s} and wrote "
+                           f"'{gen.strip()}' into the answer itself")
+        elif frags and len(frags) >= max(1, len(content)):
+            clauses.append(f"{who} was still piecing together the "
+                           f"unfamiliar name ({' + '.join(repr(f) for f in frags[:3])})"
+                           f" — assembly, not recall")
         elif len(content) >= 2:
-            clauses.append("gathered " + " and ".join(
-                f"'{s}'" for s in content[:3]) + f" {tag}")
+            clauses.append(f"{who} collected "
+                           + " and ".join(f"'{s}'" for s in content[:3])
+                           + f" together{wrote}")
         elif len(content) == 1:
-            clauses.append(f"retrieved '{content[0]}' {tag}")
+            clauses.append(f"{who} looked up '{content[0]}' from the "
+                           f"prompt{wrote}")
         elif srcs:
-            clauses.append(f"followed the cue '"
-                           + " ".join(srcs[:3]) + f"' {tag}")
+            clauses.append(f"{who} checked the format cue "
+                           f"'{' '.join(srcs[:3])}' (what kind of token "
+                           f"comes next), not any content")
         else:
-            clauses.append(f"moved diffuse context {tag}")
+            clauses.append(f"{who} moved diffuse context")
     if not clauses:
         return f"To produce '{gen.strip()}': no head stood out (routine)."
-    return (f"To produce '{gen.strip()}', the model "
+    return (f"To produce '{gen.strip()}': "
             + "; ".join(clauses) + ".")
+
+
+def answer_verdict(steps):
+    """Grounding verdict over the whole answer, from event types."""
+    lookups, assemblies, cues = 0, 0, 0
+    for st in steps:
+        for ev in st["events"]:
+            raw = ev.get("sources_raw", ev["sources"])
+            srcs = [s.strip() for s in raw if s.strip()]
+            frags = [s for s in raw if s and not s.startswith(" ")]
+            content = [s for s in srcs if s.lower() not in FUNCTION_WORDS]
+            if frags and len(frags) >= max(1, len(content)):
+                assemblies += 1
+            elif content:
+                lookups += 1
+            else:
+                cues += 1
+    if assemblies > lookups:
+        return ("UNGROUNDED-ASSEMBLY: the dominant activity was piecing an "
+                "unfamiliar name together, not recalling anything about it")
+    if lookups == 0:
+        return ("FORMAT-DRIVEN: no content was looked up — the answer "
+                "came from the sentence template, not from a fact")
+    return (f"GROUNDED: {lookups} content lookup(s) fed the answer "
+            f"({cues} format checks, {assemblies} assembly events)")
 
 
 def main():
@@ -174,14 +239,15 @@ def main():
             for zv, L, h in flat[:TOP_SHOW]:
                 w = ws[L][h]
                 srcs = np.argsort(-w)[:3]
-                src_toks = [toks[s + 1].strip() for s in srcs if w[s] > 0.5]
+                src_raw = [toks[s + 1] for s in srcs if w[s] > 0.5]
+                src_toks = [s.strip() for s in src_raw]
                 provenance.update(src_toks)
                 contrib = oins[L][h] @ W_O[L][:, h * d_head:(h + 1) * d_head].T
                 ov = [tok.decode([int(i)]).strip() or "␣"
                       for i in np.argsort(-(contrib @ W_U.T))[:4]]
                 step["events"].append(
                     {"L": L, "head": h, "z": round(zv, 1),
-                     "sources": src_toks, "ov": ov})
+                     "sources": src_toks, "sources_raw": src_raw, "ov": ov})
                 print(f"      L{L:2d} H{h:2d} z={zv:4.1f}  <- "
                       f"{', '.join(repr(s) for s in src_toks) or '(diffuse)'}"
                       f"   writes: {', '.join(ov)}", flush=True)
@@ -199,8 +265,10 @@ def main():
         demo["summary"] = (f"It answered {answer.strip()!r} drawing on "
                            + (", ".join(f"'{s}'" for s in content_prov)
                               or "routine context") + ".")
+        demo["verdict"] = answer_verdict(demo["steps"])
         print(f"  answer: {answer!r}")
         print(f"  ∴ {demo['summary']}")
+        print(f"  ⚖ {demo['verdict']}")
         results["demos"].append(demo)
 
     for h in hooks:

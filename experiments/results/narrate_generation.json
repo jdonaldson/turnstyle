@@ -14,6 +14,9 @@
               "sources": [
                 "is"
               ],
+              "sources_raw": [
+                " is"
+              ],
               "ov": [
                 "opio",
                 "dprinting",
@@ -28,6 +31,11 @@
               "sources": [
                 "four",
                 "seven",
+                "?"
+              ],
+              "sources_raw": [
+                " four",
+                " seven",
                 "?"
               ],
               "ov": [
@@ -46,6 +54,11 @@
                 "answer",
                 "The"
               ],
+              "sources_raw": [
+                "?",
+                " answer",
+                " The"
+              ],
               "ov": [
                 "neurotransmit",
                 "olicies",
@@ -54,7 +67,7 @@
               ]
             }
           ],
-          "sentence": "To produce 'eleven', the model followed the cue 'is' (L7 H29); gathered 'four' and 'seven' (L19 H23); followed the cue '? answer The' (L6 H31)."
+          "sentence": "To produce 'eleven': the answer-cue head (L7 H29) checked the format cue 'is' (what kind of token comes next), not any content; the operand-gather head (L19 H23) collected 'four' and 'seven' together; the question-format head (L6 H31) was still piecing together the unfamiliar name ('?') \u2014 assembly, not recall."
         },
         {
           "token": ".",
@@ -67,6 +80,11 @@
                 "?",
                 "answer",
                 "The"
+              ],
+              "sources_raw": [
+                "?",
+                " answer",
+                " The"
               ],
               "ov": [
                 "caterpill",
@@ -83,6 +101,10 @@
                 "seven",
                 "plus"
               ],
+              "sources_raw": [
+                " seven",
+                " plus"
+              ],
               "ov": [
                 "dprinting",
                 "aphylococcus",
@@ -97,6 +119,9 @@
               "sources": [
                 "plus"
               ],
+              "sources_raw": [
+                " plus"
+              ],
               "ov": [
                 "Bon",
                 "bonus",
@@ -105,7 +130,7 @@
               ]
             }
           ],
-          "sentence": "To produce '.', the model followed the cue '? answer The' (L15 H5); gathered 'seven' and 'plus' (L11 H4); retrieved 'plus' (L20 H18)."
+          "sentence": "To produce '.': head L15 H5 was still piecing together the unfamiliar name ('?') \u2014 assembly, not recall; head L11 H4 collected 'seven' and 'plus' together, writing aphylococcus/prag/unanim; head L20 H18 looked up 'plus' from the prompt, writing Bon/bonus/Bon."
         }
       ],
       "answer": " eleven.",
@@ -118,7 +143,8 @@
         "plus",
         "seven"
       ],
-      "summary": "It answered 'eleven.' drawing on 'four', 'plus', 'seven'."
+      "summary": "It answered 'eleven.' drawing on 'four', 'plus', 'seven'.",
+      "verdict": "GROUNDED: 3 content lookup(s) fed the answer (1 format checks, 2 assembly events)"
     },
     {
       "prompt": "Today is Tuesday. Tomorrow will be",
@@ -135,6 +161,11 @@
                 "be",
                 "Tomorrow"
               ],
+              "sources_raw": [
+                " will",
+                " be",
+                " Tomorrow"
+              ],
               "ov": [
                 "miah",
                 "ourselves",
@@ -148,6 +179,9 @@
               "z": 7.4,
               "sources": [
                 "Tuesday"
+              ],
+              "sources_raw": [
+                " Tuesday"
               ],
               "ov": [
                 "enguin",
@@ -163,6 +197,9 @@
               "sources": [
                 "Tomorrow"
               ],
+              "sources_raw": [
+                " Tomorrow"
+              ],
               "ov": [
                 "emetery",
                 "AttributeError",
@@ -171,7 +208,7 @@
               ]
             }
           ],
-          "sentence": "To produce 'Wednesday', the model retrieved 'Tomorrow' (L4 H14); retrieved 'Tuesday' (L20 H1); retrieved 'Tomorrow' (L2 H27)."
+          "sentence": "To produce 'Wednesday': the instruction-reader head (L4 H14) looked up 'Tomorrow' from the prompt, writing miah/ourselves/araoh; the day-sequence head (L20 H1) looked up 'Tuesday' from the prompt, writing enguin/leanor/rocessing; head L2 H27 looked up 'Tomorrow' from the prompt, writing emetery/AttributeError/IPE."
         },
         {
           "token": ".",
@@ -182,6 +219,9 @@
               "z": 6.3,
               "sources": [
                 "Tomorrow"
+              ],
+              "sources_raw": [
+                " Tomorrow"
               ],
               "ov": [
                 "umina",
@@ -197,6 +237,9 @@
               "sources": [
                 "Wednesday"
               ],
+              "sources_raw": [
+                " Wednesday"
+              ],
               "ov": [
                 "artment",
                 "erior",
@@ -211,6 +254,9 @@
               "sources": [
                 "."
               ],
+              "sources_raw": [
+                "."
+              ],
               "ov": [
                 "haplot",
                 "vironments",
@@ -219,7 +265,7 @@
               ]
             }
           ],
-          "sentence": "To produce '.', the model retrieved 'Tomorrow' (L3 H0); retrieved 'Wednesday' (L9 H9); followed the cue '.' (L12 H21)."
+          "sentence": "To produce '.': head L3 H0 looked up 'Tomorrow' from the prompt, writing umina/rowsiness/ITIES; head L9 H9 looked up 'Wednesday' from the prompt, writing artment/erior/paralleled; head L12 H21 was still piecing together the unfamiliar name ('.') \u2014 assembly, not recall."
         }
       ],
       "answer": " Wednesday.",
@@ -231,7 +277,8 @@
         "be",
         "will"
       ],
-      "summary": "It answered 'Wednesday.' drawing on 'Tomorrow', 'Tuesday', 'Wednesday'."
+      "summary": "It answered 'Wednesday.' drawing on 'Tomorrow', 'Tuesday', 'Wednesday'.",
+      "verdict": "GROUNDED: 5 content lookup(s) fed the answer (0 format checks, 1 assembly events)"
     },
     {
       "prompt": "Sarah gave the book to Emma because she had finished it. The book was returned by",
@@ -245,6 +292,9 @@
               "z": 9.6,
               "sources": [
                 "Emma"
+              ],
+              "sources_raw": [
+                " Emma"
               ],
               "ov": [
                 "Em",
@@ -261,6 +311,10 @@
                 "Emma",
                 "gave"
               ],
+              "sources_raw": [
+                " Emma",
+                " gave"
+              ],
               "ov": [
                 "claimed",
                 "claim",
@@ -275,6 +329,9 @@
               "sources": [
                 "Emma"
               ],
+              "sources_raw": [
+                " Emma"
+              ],
               "ov": [
                 "Mem",
                 "Mem",
@@ -283,7 +340,7 @@
               ]
             }
           ],
-          "sentence": "To produce 'Emma', the model wrote 'Emma' directly while reading 'Emma' (L21 H13); gathered 'Emma' and 'gave' (L20 H17); retrieved 'Emma' (L20 H27)."
+          "sentence": "To produce 'Emma': the name-mover head (L21 H13) inspected 'Emma' and wrote 'Emma' into the answer itself; the claim-tracker head (L20 H17) collected 'Emma' and 'gave' together, writing claimed/claim/claims; the name-gather head (L20 H27) looked up 'Emma' from the prompt, writing Mem/Mem/mem."
         },
         {
           "token": ".",
@@ -294,6 +351,9 @@
               "z": 10.2,
               "sources": [
                 "Emma"
+              ],
+              "sources_raw": [
+                " Emma"
               ],
               "ov": [
                 "ControlPlane",
@@ -309,6 +369,9 @@
               "sources": [
                 "Emma"
               ],
+              "sources_raw": [
+                " Emma"
+              ],
               "ov": [
                 "<filename>",
                 "opsies",
@@ -323,6 +386,9 @@
               "sources": [
                 "because"
               ],
+              "sources_raw": [
+                " because"
+              ],
               "ov": [
                 "color",
                 "favor",
@@ -331,7 +397,7 @@
               ]
             }
           ],
-          "sentence": "To produce '.', the model retrieved 'Emma' (L7 H2); retrieved 'Emma' (L11 H27); retrieved 'because' (L10 H3)."
+          "sentence": "To produce '.': head L7 H2 looked up 'Emma' from the prompt; head L11 H27 looked up 'Emma' from the prompt, writing opsies/PARTICULAR; head L10 H3 looked up 'because' from the prompt, writing color/favor/colors."
         }
       ],
       "answer": " Emma.",
@@ -340,7 +406,8 @@
         "because",
         "gave"
       ],
-      "summary": "It answered 'Emma.' drawing on 'Emma', 'because', 'gave'."
+      "summary": "It answered 'Emma.' drawing on 'Emma', 'because', 'gave'.",
+      "verdict": "GROUNDED: 6 content lookup(s) fed the answer (0 format checks, 0 assembly events)"
     },
     {
       "prompt": "The capital of France is",
@@ -354,6 +421,9 @@
               "z": 5.9,
               "sources": [
                 "France"
+              ],
+              "sources_raw": [
+                " France"
               ],
               "ov": [
                 "France",
@@ -369,6 +439,9 @@
               "sources": [
                 "France"
               ],
+              "sources_raw": [
+                " France"
+              ],
               "ov": [
                 "France",
                 "French",
@@ -377,7 +450,7 @@
               ]
             }
           ],
-          "sentence": "To produce 'Paris', the model retrieved 'France' (L19 H27); retrieved 'France' (L19 H28)."
+          "sentence": "To produce 'Paris': the fact-recall head (L19 H27) looked up 'France' from the prompt, writing France/France/French; the fact-recall head (L19 H28) looked up 'France' from the prompt, writing France/French/French."
         },
         {
           "token": ".",
@@ -388,6 +461,9 @@
               "z": 5.4,
               "sources": [
                 "capital"
+              ],
+              "sources_raw": [
+                " capital"
               ],
               "ov": [
                 "cryptocur",
@@ -403,6 +479,10 @@
               "sources": [
                 "capital",
                 "of"
+              ],
+              "sources_raw": [
+                " capital",
+                " of"
               ],
               "ov": [
                 "chimpan",
@@ -420,6 +500,11 @@
                 "capital",
                 "is"
               ],
+              "sources_raw": [
+                " of",
+                " capital",
+                " is"
+              ],
               "ov": [
                 "chimpan",
                 "TType",
@@ -428,7 +513,7 @@
               ]
             }
           ],
-          "sentence": "To produce '.', the model retrieved 'capital' (L3 H0); retrieved 'capital' (L4 H2); retrieved 'capital' (L13 H31)."
+          "sentence": "To produce '.': head L3 H0 checked the format cue 'capital' (what kind of token comes next), not any content; head L4 H2 checked the format cue 'capital of' (what kind of token comes next), not any content; head L13 H31 checked the format cue 'of capital is' (what kind of token comes next), not any content."
         }
       ],
       "answer": " Paris.",
@@ -438,503 +523,334 @@
         "is",
         "of"
       ],
-      "summary": "It answered 'Paris.' drawing on 'France', 'capital'."
+      "summary": "It answered 'Paris.' drawing on 'France'.",
+      "verdict": "GROUNDED: 2 content lookup(s) fed the answer (3 format checks, 0 assembly events)"
     },
     {
-      "prompt": "What is nine minus three? The answer is",
+      "prompt": "The capital of Wakanda is",
       "steps": [
         {
-          "token": " six",
+          "token": " a",
           "events": [
             {
-              "L": 7,
-              "head": 29,
-              "z": 10.5,
+              "L": 22,
+              "head": 1,
+              "z": 9.2,
               "sources": [
-                "is"
+                "is",
+                "anda"
+              ],
+              "sources_raw": [
+                " is",
+                "anda"
               ],
               "ov": [
-                "RecipeSteps",
-                "zees",
-                "chimpan",
-                "opio"
-              ]
-            },
-            {
-              "L": 17,
-              "head": 26,
-              "z": 7.5,
-              "sources": [
-                "three",
-                "nine"
-              ],
-              "ov": [
-                "inical",
-                "igail",
-                "agog",
-                "elescope"
-              ]
-            },
-            {
-              "L": 6,
-              "head": 31,
-              "z": 7.1,
-              "sources": [
-                "answer",
-                "?",
-                "The"
-              ],
-              "ov": [
-                "neurotransmit",
-                "ortunately",
-                "olicies",
-                "ertical"
-              ]
-            }
-          ],
-          "sentence": "To produce 'six', the model followed the cue 'is' (L7 H29); gathered 'three' and 'nine' (L17 H26); followed the cue 'answer ? The' (L6 H31)."
-        },
-        {
-          "token": ".",
-          "events": [
-            {
-              "L": 8,
-              "head": 26,
-              "z": 6.5,
-              "sources": [
-                "three"
-              ],
-              "ov": [
-                ",,,,,,,,,,,,,,,,",
-                "ControlPlane",
-                "undersc",
-                "TType"
-              ]
-            },
-            {
-              "L": 12,
-              "head": 7,
-              "z": 4.5,
-              "sources": [
-                "three",
-                "minus"
-              ],
-              "ov": [
-                "rendip",
-                "teasp",
-                "emeter",
-                "pherds"
-              ]
-            },
-            {
-              "L": 7,
-              "head": 28,
-              "z": 4.5,
-              "sources": [
-                "nine",
-                "three"
-              ],
-              "ov": [
-                "out",
-                "'",
-                "def",
-                "imetres"
-              ]
-            }
-          ],
-          "sentence": "To produce '.', the model retrieved 'three' (L8 H26); gathered 'three' and 'minus' (L12 H7); gathered 'nine' and 'three' (L7 H28)."
-        }
-      ],
-      "answer": " six.",
-      "provenance": [
-        "?",
-        "The",
-        "answer",
-        "is",
-        "minus",
-        "nine",
-        "three"
-      ],
-      "summary": "It answered 'six.' drawing on 'minus', 'nine', 'three'."
-    },
-    {
-      "prompt": "Anna told Maria that her car was blocking the driveway. The driveway was blocked by",
-      "steps": [
-        {
-          "token": " Maria",
-          "events": [
-            {
-              "L": 20,
-              "head": 27,
-              "z": 9.4,
-              "sources": [
-                "Maria",
-                "told"
-              ],
-              "ov": [
-                "Mart",
-                "Mart",
-                "mart",
-                "ta"
-              ]
-            },
-            {
-              "L": 21,
-              "head": 2,
-              "z": 7.3,
-              "sources": [
-                "Maria",
-                "told"
-              ],
-              "ov": [
-                "mar",
-                "mar",
-                "Mar",
-                "Mar"
-              ]
-            },
-            {
-              "L": 21,
-              "head": 18,
-              "z": 7.3,
-              "sources": [
-                "Maria",
-                "told"
-              ],
-              "ov": [
-                "Ana",
-                "Anna",
-                "AMA",
-                "Mia"
-              ]
-            }
-          ],
-          "sentence": "To produce 'Maria', the model gathered 'Maria' and 'told' (L20 H27); wrote 'Maria' directly while reading 'Maria' and 'told' (L21 H2); gathered 'Maria' and 'told' (L21 H18)."
-        },
-        {
-          "token": "'s",
-          "events": [
-            {
-              "L": 10,
-              "head": 16,
-              "z": 9.4,
-              "sources": [
-                "that"
-              ],
-              "ov": [
-                "hoea",
-                ")\".",
-                "*,",
-                "Ethiop"
-              ]
-            },
-            {
-              "L": 11,
-              "head": 27,
-              "z": 7.2,
-              "sources": [
-                "Maria",
-                "told"
-              ],
-              "ov": [
-                "ControlPlane",
-                "nering",
-                "abus",
-                "bicy"
-              ]
-            },
-            {
-              "L": 7,
-              "head": 2,
-              "z": 6.9,
-              "sources": [
-                "Maria",
-                "Maria"
-              ],
-              "ov": [
-                "ControlPlane",
-                "meticul",
-                "esoph",
-                "iothe"
-              ]
-            }
-          ],
-          "sentence": "To produce ''s', the model followed the cue 'that' (L10 H16); gathered 'Maria' and 'told' (L11 H27); gathered 'Maria' and 'Maria' (L7 H2)."
-        },
-        {
-          "token": " car",
-          "events": [
-            {
-              "L": 20,
-              "head": 24,
-              "z": 5.6,
-              "sources": [
-                "car"
-              ],
-              "ov": [
-                "car",
-                "car",
-                "Car",
-                "Car"
-              ]
-            },
-            {
-              "L": 12,
-              "head": 25,
-              "z": 4.8,
-              "sources": [
-                "by",
-                "blocked",
-                "blocking"
-              ],
-              "ov": [
-                "cryptocur",
-                "rosclerosis",
-                "osaics",
-                "lington"
+                "TV",
+                "tv",
+                "tv",
+                "olkien"
               ]
             },
             {
               "L": 19,
-              "head": 19,
-              "z": 4.5,
+              "head": 18,
+              "z": 6.4,
               "sources": [
-                "car"
+                "anda",
+                "Wak"
+              ],
+              "sources_raw": [
+                "anda",
+                " Wak"
               ],
               "ov": [
-                "car",
-                "cat",
-                "called",
-                "called"
+                "forgettable",
+                "vantages",
+                "ertical",
+                "teasp"
+              ]
+            },
+            {
+              "L": 19,
+              "head": 27,
+              "z": 6.3,
+              "sources": [
+                "anda"
+              ],
+              "sources_raw": [
+                "anda"
+              ],
+              "ov": [
+                "African",
+                "Africans",
+                "Africa",
+                "chimpan"
               ]
             }
           ],
-          "sentence": "To produce 'car', the model wrote 'car' directly while reading 'car' (L20 H24); gathered 'blocked' and 'blocking' (L12 H25); wrote 'car' directly while reading 'car' (L19 H19)."
+          "sentence": "To produce 'a': head L22 H1 was still piecing together the unfamiliar name ('anda') \u2014 assembly, not recall; head L19 H18 inspected 'anda' and 'Wak' and wrote 'a' into the answer itself; the fact-recall head (L19 H27) inspected 'anda' and wrote 'a' into the answer itself."
         },
         {
-          "token": ".",
+          "token": " marvel",
           "events": [
             {
-              "L": 18,
-              "head": 31,
-              "z": 7.9,
+              "L": 13,
+              "head": 10,
+              "z": 5.4,
               "sources": [
-                "was",
-                "blocking"
+                "anda"
+              ],
+              "sources_raw": [
+                "anda"
               ],
               "ov": [
-                "was",
-                "was",
-                "Was",
-                "being"
-              ]
-            },
-            {
-              "L": 21,
-              "head": 2,
-              "z": 5.7,
-              "sources": [
-                "told"
-              ],
-              "ov": [
-                "Ann",
-                "ann",
-                "Ann",
-                "ann"
-              ]
-            },
-            {
-              "L": 12,
-              "head": 25,
-              "z": 5.2,
-              "sources": [
-                "blocked",
-                "by"
-              ],
-              "ov": [
-                "osaics",
-                "rosclerosis",
-                "ControlPlane",
-                "cryptocur"
-              ]
-            }
-          ],
-          "sentence": "To produce '.', the model retrieved 'blocking' (L18 H31); retrieved 'told' (L21 H2); retrieved 'blocked' (L12 H25)."
-        }
-      ],
-      "answer": " Maria's car.",
-      "provenance": [
-        "Maria",
-        "blocked",
-        "blocking",
-        "by",
-        "car",
-        "that",
-        "told",
-        "was"
-      ],
-      "summary": "It answered \"Maria's car.\" drawing on 'Maria', 'blocked', 'blocking', 'car', 'told'."
-    },
-    {
-      "prompt": "All cats are animals. Whiskers is a cat, so Whiskers is",
-      "steps": [
-        {
-          "token": " an",
-          "events": [
-            {
-              "L": 20,
-              "head": 16,
-              "z": 7.8,
-              "sources": [
-                "animals"
-              ],
-              "ov": [
-                "animal",
-                "activities",
-                "animals",
-                "animal"
+                "ostering",
+                "odef",
+                "roughts",
+                "uckingham"
               ]
             },
             {
               "L": 15,
-              "head": 7,
-              "z": 7.8,
+              "head": 20,
+              "z": 5.2,
               "sources": [
-                "animals"
+                "anda",
+                "a"
+              ],
+              "sources_raw": [
+                "anda",
+                " a"
               ],
               "ov": [
-                "|'\\",
-                "neurotransmit",
-                "chimpan",
-                "ikhail"
+                "schedul",
+                "erey",
+                "pomegran",
+                "adelph"
               ]
             },
             {
-              "L": 21,
-              "head": 27,
-              "z": 7.3,
+              "L": 0,
+              "head": 22,
+              "z": 5.2,
               "sources": [
-                "animals"
+                "a"
+              ],
+              "sources_raw": [
+                " a"
               ],
               "ov": [
-                "animal",
-                "animals",
-                "Animals",
-                "animal"
+                "earchers",
+                "aseous",
+                "ynasty",
+                "iatives"
               ]
             }
           ],
-          "sentence": "To produce 'an', the model wrote 'an' directly while reading 'animals' (L20 H16); wrote 'an' directly while reading 'animals' (L15 H7); wrote 'an' directly while reading 'animals' (L21 H27)."
+          "sentence": "To produce 'marvel': head L13 H10 was still piecing together the unfamiliar name ('anda') \u2014 assembly, not recall; head L15 H20 was still piecing together the unfamiliar name ('anda') \u2014 assembly, not recall; head L0 H22 checked the format cue 'a' (what kind of token comes next), not any content."
         },
         {
-          "token": " animal",
+          "token": " of",
           "events": [
             {
-              "L": 20,
-              "head": 16,
-              "z": 8.2,
-              "sources": [
-                "animals"
-              ],
-              "ov": [
-                "animal",
-                "activities",
-                "animals",
-                "animal"
-              ]
-            },
-            {
-              "L": 21,
-              "head": 27,
+              "L": 13,
+              "head": 10,
               "z": 6.7,
               "sources": [
-                "animals"
+                "anda"
+              ],
+              "sources_raw": [
+                "anda"
               ],
               "ov": [
-                "animal",
-                "animals",
-                "Animals",
-                "animal"
+                "ostering",
+                "odef",
+                "uckingham",
+                "roughts"
               ]
             },
             {
-              "L": 20,
-              "head": 24,
-              "z": 6.4,
+              "L": 10,
+              "head": 17,
+              "z": 4.5,
               "sources": [
-                "cats",
-                "animals",
-                "cat"
+                "anda"
+              ],
+              "sources_raw": [
+                "anda"
               ],
               "ov": [
-                "cat",
-                "cat",
-                "Cat",
-                "Cat"
+                "practition",
+                "Drink",
+                "jectory",
+                "van"
               ]
             }
           ],
-          "sentence": "To produce 'animal', the model wrote 'animal' directly while reading 'animals' (L20 H16); wrote 'animal' directly while reading 'animals' (L21 H27); gathered 'cats' and 'animals' and 'cat' (L20 H24)."
+          "sentence": "To produce 'of': head L13 H10 was still piecing together the unfamiliar name ('anda') \u2014 assembly, not recall; head L10 H17 was still piecing together the unfamiliar name ('anda') \u2014 assembly, not recall."
+        },
+        {
+          "token": " modern",
+          "events": [
+            {
+              "L": 2,
+              "head": 9,
+              "z": 7.1,
+              "sources": [
+                "marvel"
+              ],
+              "sources_raw": [
+                " marvel"
+              ],
+              "ov": [
+                "ilantro",
+                "innitus",
+                "attoos",
+                "incinn"
+              ]
+            },
+            {
+              "L": 13,
+              "head": 10,
+              "z": 6.8,
+              "sources": [
+                "anda"
+              ],
+              "sources_raw": [
+                "anda"
+              ],
+              "ov": [
+                "ostering",
+                "odef",
+                "uckingham",
+                "roughts"
+              ]
+            },
+            {
+              "L": 19,
+              "head": 27,
+              "z": 5.6,
+              "sources": [
+                "anda"
+              ],
+              "sources_raw": [
+                "anda"
+              ],
+              "ov": [
+                "African",
+                "Africans",
+                "Africa",
+                "Json"
+              ]
+            }
+          ],
+          "sentence": "To produce 'modern': head L2 H9 looked up 'marvel' from the prompt, writing ilantro/innitus/attoos; head L13 H10 was still piecing together the unfamiliar name ('anda') \u2014 assembly, not recall; the fact-recall head (L19 H27) was still piecing together the unfamiliar name ('anda') \u2014 assembly, not recall."
+        }
+      ],
+      "answer": " a marvel of modern",
+      "provenance": [
+        "Wak",
+        "a",
+        "anda",
+        "is",
+        "marvel"
+      ],
+      "summary": "It answered 'a marvel of modern' drawing on 'Wak', 'anda', 'marvel'.",
+      "verdict": "UNGROUNDED-ASSEMBLY: the dominant activity was piecing an unfamiliar name together, not recalling anything about it"
+    },
+    {
+      "prompt": "Christmas falls in the month of",
+      "steps": [
+        {
+          "token": " November",
+          "events": [
+            {
+              "L": 2,
+              "head": 9,
+              "z": 6.7,
+              "sources": [
+                "month"
+              ],
+              "sources_raw": [
+                " month"
+              ],
+              "ov": [
+                "count",
+                "Sh",
+                "d",
+                "sh"
+              ]
+            },
+            {
+              "L": 6,
+              "head": 30,
+              "z": 6.4,
+              "sources": [
+                "month"
+              ],
+              "sources_raw": [
+                " month"
+              ],
+              "ov": [
+                "astrous",
+                "enfranch",
+                "Hub",
+                "rinos"
+              ]
+            },
+            {
+              "L": 0,
+              "head": 4,
+              "z": 5.3,
+              "sources": [
+                "month"
+              ],
+              "sources_raw": [
+                " month"
+              ],
+              "ov": [
+                "ophan",
+                "queous",
+                "postdocs",
+                "teneg"
+              ]
+            }
+          ],
+          "sentence": "To produce 'November': head L2 H9 checked the format cue 'month' (what kind of token comes next), not any content; head L6 H30 checked the format cue 'month' (what kind of token comes next), not any content; head L0 H4 checked the format cue 'month' (what kind of token comes next), not any content."
         },
         {
           "token": ".",
           "events": [
             {
-              "L": 10,
+              "L": 5,
               "head": 3,
-              "z": 17.9,
+              "z": 4.0,
               "sources": [
-                "."
+                "of",
+                "month"
+              ],
+              "sources_raw": [
+                " of",
+                " month"
               ],
               "ov": [
-                "ynasty",
-                "hypoglycemia",
-                "ditionally",
-                "flavors"
-              ]
-            },
-            {
-              "L": 10,
-              "head": 16,
-              "z": 12.7,
-              "sources": [
-                "."
-              ],
-              "ov": [
-                "hoea",
-                ")\".",
-                ").|",
-                "tempfile"
-              ]
-            },
-            {
-              "L": 11,
-              "head": 27,
-              "z": 8.9,
-              "sources": [
-                "animals",
-                "animal"
-              ],
-              "ov": [
-                "caterpill",
-                "theolog",
-                "ulse",
-                "vester"
+                "leg",
+                "bill",
+                "stanbul",
+                "Edward"
               ]
             }
           ],
-          "sentence": "To produce '.', the model followed the cue '.' (L10 H3); wrote '.' directly while reading '.' (L10 H16); gathered 'animals' and 'animal' (L11 H27)."
+          "sentence": "To produce '.': head L5 H3 checked the format cue 'of month' (what kind of token comes next), not any content."
         }
       ],
-      "answer": " an animal.",
+      "answer": " November.",
       "provenance": [
-        ".",
-        "animal",
-        "animals",
-        "cat",
-        "cats"
+        "month",
+        "of"
       ],
-      "summary": "It answered 'an animal.' drawing on 'animal', 'animals', 'cat', 'cats'."
+      "summary": "It answered 'November.' drawing on routine context.",
+      "verdict": "FORMAT-DRIVEN: no content was looked up \u2014 the answer came from the sentence template, not from a fact"
     },
     {
       "prompt": "Gold is heavier than silver, and lead is heavier than gold. The heaviest metal of the three is",
@@ -948,6 +864,9 @@
               "z": 10.5,
               "sources": [
                 "lead"
+              ],
+              "sources_raw": [
+                " lead"
               ],
               "ov": [
                 "lead",
@@ -965,6 +884,11 @@
                 "is",
                 "gold"
               ],
+              "sources_raw": [
+                " metal",
+                " is",
+                " gold"
+              ],
               "ov": [
                 "met",
                 "Met",
@@ -980,6 +904,10 @@
                 "is",
                 "heaviest"
               ],
+              "sources_raw": [
+                " is",
+                " heaviest"
+              ],
               "ov": [
                 "prudence",
                 "apagos",
@@ -988,7 +916,7 @@
               ]
             }
           ],
-          "sentence": "To produce 'gold', the model retrieved 'lead' (L21 H4); gathered 'metal' and 'gold' (L20 H27); retrieved 'heaviest' (L9 H19)."
+          "sentence": "To produce 'gold': the comparative head (L21 H4) looked up 'lead' from the prompt, writing lead/Lead/lead; the name-gather head (L20 H27) collected 'metal' and 'gold' together, writing met/Met/Met; head L9 H19 looked up 'heaviest' from the prompt, writing prudence/apagos/aires."
         },
         {
           "token": ".",
@@ -999,6 +927,10 @@
               "z": 9.9,
               "sources": [
                 "is",
+                "."
+              ],
+              "sources_raw": [
+                " is",
                 "."
               ],
               "ov": [
@@ -1015,6 +947,9 @@
               "sources": [
                 "gold"
               ],
+              "sources_raw": [
+                " gold"
+              ],
               "ov": [
                 "ControlPlane",
                 "))[",
@@ -1030,6 +965,10 @@
                 "than",
                 "is"
               ],
+              "sources_raw": [
+                " than",
+                " is"
+              ],
               "ov": [
                 "neither",
                 "both",
@@ -1038,7 +977,7 @@
               ]
             }
           ],
-          "sentence": "To produce '.', the model wrote '.' directly while reading 'is' and '.' (L10 H16); retrieved 'gold' (L11 H27); retrieved 'than' (L13 H22)."
+          "sentence": "To produce '.': head L10 H16 inspected 'is' and '.' and wrote '.' into the answer itself; head L11 H27 looked up 'gold' from the prompt, writing brilli/opsies; head L13 H22 looked up 'than' from the prompt, writing neither/both/Both."
         }
       ],
       "answer": " gold.",
@@ -1051,7 +990,8 @@
         "metal",
         "than"
       ],
-      "summary": "It answered 'gold.' drawing on 'gold', 'heaviest', 'lead', 'metal', 'than'."
+      "summary": "It answered 'gold.' drawing on 'gold', 'heaviest', 'lead', 'metal', 'than'.",
+      "verdict": "GROUNDED: 5 content lookup(s) fed the answer (0 format checks, 1 assembly events)"
     },
     {
       "prompt": "Monday, Tuesday, Wednesday,",
@@ -1066,6 +1006,11 @@
               "sources": [
                 ",",
                 "Tuesday",
+                ","
+              ],
+              "sources_raw": [
+                ",",
+                " Tuesday",
                 ","
               ],
               "ov": [
@@ -1084,6 +1029,11 @@
                 "Wednesday",
                 ","
               ],
+              "sources_raw": [
+                " Tuesday",
+                " Wednesday",
+                ","
+              ],
               "ov": [
                 "enguin",
                 "oname",
@@ -1098,6 +1048,9 @@
               "sources": [
                 ","
               ],
+              "sources_raw": [
+                ","
+              ],
               "ov": [
                 "Mixin",
                 "sold",
@@ -1106,7 +1059,7 @@
               ]
             }
           ],
-          "sentence": "To produce 'Thursday', the model retrieved 'Tuesday' (L16 H3); gathered 'Tuesday' and 'Wednesday' (L20 H1); followed the cue ',' (L7 H16)."
+          "sentence": "To produce 'Thursday': the list-continuation head (L16 H3) was still piecing together the unfamiliar name (',' + ',') \u2014 assembly, not recall; the day-sequence head (L20 H1) collected 'Tuesday' and 'Wednesday' together, writing enguin/oname/nyder; head L7 H16 was still piecing together the unfamiliar name (',') \u2014 assembly, not recall."
         },
         {
           "token": ",",
@@ -1117,6 +1070,9 @@
               "z": 10.7,
               "sources": [
                 "Wednesday"
+              ],
+              "sources_raw": [
+                " Wednesday"
               ],
               "ov": [
                 "\ufffd",
@@ -1133,6 +1089,10 @@
                 "Tuesday",
                 "Wednesday"
               ],
+              "sources_raw": [
+                " Tuesday",
+                " Wednesday"
+              ],
               "ov": [
                 "caterpill",
                 "lawsu",
@@ -1148,6 +1108,10 @@
                 ",",
                 ","
               ],
+              "sources_raw": [
+                ",",
+                ","
+              ],
               "ov": [
                 ",",
                 "olkien",
@@ -1156,7 +1120,7 @@
               ]
             }
           ],
-          "sentence": "To produce ',', the model retrieved 'Wednesday' (L2 H16); gathered 'Tuesday' and 'Wednesday' (L4 H11); wrote ',' directly while reading ',' and ',' (L18 H3)."
+          "sentence": "To produce ',': head L2 H16 looked up 'Wednesday' from the prompt, writing behind/fin/Alb; head L4 H11 collected 'Tuesday' and 'Wednesday' together, writing lawsu/teasp; head L18 H3 inspected ',' and ',' and wrote ',' into the answer itself."
         },
         {
           "token": " Friday",
@@ -1168,6 +1132,10 @@
               "sources": [
                 ",",
                 "Tuesday"
+              ],
+              "sources_raw": [
+                ",",
+                " Tuesday"
               ],
               "ov": [
                 "ancip",
@@ -1185,6 +1153,11 @@
                 "Tuesday",
                 "Thursday"
               ],
+              "sources_raw": [
+                ",",
+                " Tuesday",
+                " Thursday"
+              ],
               "ov": [
                 "numerable",
                 "neurotransmit",
@@ -1201,6 +1174,11 @@
                 "Wednesday",
                 "Thursday"
               ],
+              "sources_raw": [
+                " Tuesday",
+                " Wednesday",
+                " Thursday"
+              ],
               "ov": [
                 "enguin",
                 "nyder",
@@ -1209,7 +1187,7 @@
               ]
             }
           ],
-          "sentence": "To produce 'Friday', the model retrieved 'Tuesday' (L5 H6); gathered 'Tuesday' and 'Thursday' (L16 H3); gathered 'Tuesday' and 'Wednesday' and 'Thursday' (L20 H1)."
+          "sentence": "To produce 'Friday': head L5 H6 was still piecing together the unfamiliar name (',') \u2014 assembly, not recall; the list-continuation head (L16 H3) collected 'Tuesday' and 'Thursday' together, writing numerable/omegran/pinephrine; the day-sequence head (L20 H1) collected 'Tuesday' and 'Wednesday' and 'Thursday' together, writing enguin/nyder/leanor."
         },
         {
           "token": ",",
@@ -1221,6 +1199,10 @@
               "sources": [
                 "Wednesday",
                 "Tuesday"
+              ],
+              "sources_raw": [
+                " Wednesday",
+                " Tuesday"
               ],
               "ov": [
                 "monaster",
@@ -1235,6 +1217,9 @@
               "z": 9.4,
               "sources": [
                 "Thursday"
+              ],
+              "sources_raw": [
+                " Thursday"
               ],
               "ov": [
                 "\ufffd",
@@ -1252,6 +1237,11 @@
                 "Tuesday",
                 "Thursday"
               ],
+              "sources_raw": [
+                " Wednesday",
+                " Tuesday",
+                " Thursday"
+              ],
               "ov": [
                 "lawsu",
                 "caterpill",
@@ -1260,672 +1250,303 @@
               ]
             }
           ],
-          "sentence": "To produce ',', the model gathered 'Wednesday' and 'Tuesday' (L9 H9); retrieved 'Thursday' (L2 H16); gathered 'Wednesday' and 'Tuesday' and 'Thursday' (L4 H11)."
-        },
-        {
-          "token": " Saturday",
-          "events": [
-            {
-              "L": 5,
-              "head": 6,
-              "z": 12.5,
-              "sources": [
-                ",",
-                ","
-              ],
-              "ov": [
-                "teasp",
-                "ancip",
-                "aspberries",
-                "Workshe"
-              ]
-            },
-            {
-              "L": 16,
-              "head": 3,
-              "z": 9.1,
-              "sources": [
-                ",",
-                "Tuesday",
-                ","
-              ],
-              "ov": [
-                "numerable",
-                "neurotransmit",
-                "oosevelt",
-                "pinephrine"
-              ]
-            },
-            {
-              "L": 9,
-              "head": 9,
-              "z": 7.9,
-              "sources": [
-                ",",
-                ",",
-                "Tuesday"
-              ],
-              "ov": [
-                "chimpan",
-                "bicy",
-                "paralleled",
-                "iries"
-              ]
-            }
-          ],
-          "sentence": "To produce 'Saturday', the model followed the cue ', ,' (L5 H6); retrieved 'Tuesday' (L16 H3); retrieved 'Tuesday' (L9 H9)."
+          "sentence": "To produce ',': head L9 H9 collected 'Wednesday' and 'Tuesday' together, writing monaster/raviolet/pige; head L2 H16 looked up 'Thursday' from the prompt, writing fin/behind/pys; head L4 H11 collected 'Wednesday' and 'Tuesday' and 'Thursday' together, writing lawsu/teasp."
         }
       ],
-      "answer": " Thursday, Friday, Saturday",
+      "answer": " Thursday, Friday,",
       "provenance": [
         ",",
         "Thursday",
         "Tuesday",
         "Wednesday"
       ],
-      "summary": "It answered 'Thursday, Friday, Saturday' drawing on 'Thursday', 'Tuesday', 'Wednesday'."
+      "summary": "It answered 'Thursday, Friday,' drawing on 'Thursday', 'Tuesday', 'Wednesday'.",
+      "verdict": "GROUNDED: 8 content lookup(s) fed the answer (0 format checks, 4 assembly events)"
     },
     {
-      "prompt": "The word for bread in Spanish is",
+      "prompt": "The chemical symbol for gold is",
       "steps": [
         {
-          "token": " \"",
+          "token": " Au",
           "events": [
             {
-              "L": 4,
-              "head": 27,
-              "z": 6.1,
+              "L": 22,
+              "head": 21,
+              "z": 6.8,
               "sources": [
-                "Spanish"
-              ],
-              "ov": [
-                "Birth",
-                "tooth",
-                "ISTORY",
-                "Born"
-              ]
-            },
-            {
-              "L": 6,
-              "head": 12,
-              "z": 5.8,
-              "sources": [
-                "Spanish"
-              ],
-              "ov": [
-                "setuptools",
-                "ikhail",
-                "attribut",
-                "getattr"
-              ]
-            },
-            {
-              "L": 5,
-              "head": 17,
-              "z": 5.3,
-              "sources": [
-                "word",
-                "Spanish",
-                "for"
-              ],
-              "ov": [
-                "leveland",
-                "emetery",
-                "ockey",
-                "isch"
-              ]
-            }
-          ],
-          "sentence": "To produce '\"', the model retrieved 'Spanish' (L4 H27); retrieved 'Spanish' (L6 H12); retrieved 'Spanish' (L5 H17)."
-        },
-        {
-          "token": "pan",
-          "events": [
-            {
-              "L": 5,
-              "head": 17,
-              "z": 8.2,
-              "sources": [
-                "word"
-              ],
-              "ov": [
-                "olkien",
-                "isch",
-                "ynthetic",
-                "_\""
-              ]
-            },
-            {
-              "L": 23,
-              "head": 24,
-              "z": 7.2,
-              "sources": [
-                "\"",
                 "is"
               ],
-              "ov": [
-                "and",
-                "an",
-                "[:,:,",
-                "[...,"
-              ]
-            },
-            {
-              "L": 3,
-              "head": 7,
-              "z": 7.1,
-              "sources": [
-                "\""
+              "sources_raw": [
+                " is"
               ],
               "ov": [
-                "geoId",
-                "emetery",
-                "olicies",
-                "ovenant"
-              ]
-            }
-          ],
-          "sentence": "To produce 'pan', the model followed the cue 'word' (L5 H17); wrote 'pan' directly while reading '\"' (L23 H24); retrieved '\"' (L3 H7)."
-        },
-        {
-          "token": "\".",
-          "events": [
-            {
-              "L": 2,
-              "head": 18,
-              "z": 8.9,
-              "sources": [
-                "Spanish"
-              ],
-              "ov": [
-                "unken",
-                "subprocess",
-                "aspberries",
-                "Preprocess"
+                ")],",
+                "')),",
+                "']),",
+                ")]."
               ]
             },
             {
               "L": 19,
-              "head": 12,
-              "z": 7.9,
-              "sources": [
-                "\""
-              ],
-              "ov": [
-                "\"",
-                "\",",
-                "\":",
-                "\"."
-              ]
-            },
-            {
-              "L": 20,
-              "head": 11,
-              "z": 6.0,
-              "sources": [
-                "\""
-              ],
-              "ov": [
-                "\".",
-                "\",",
-                "\"",
-                ".\""
-              ]
-            }
-          ],
-          "sentence": "To produce '\".', the model retrieved 'Spanish' (L2 H18); wrote '\".' directly while reading '\"' (L19 H12); wrote '\".' directly while reading '\"' (L20 H11)."
-        },
-        {
-          "token": "<|im_end|>",
-          "events": [
-            {
-              "L": 2,
-              "head": 13,
-              "z": 7.0,
-              "sources": [
-                "\"."
-              ],
-              "ov": [
-                "lawsu",
-                "bicy",
-                "teasp",
-                "neurotransmit"
-              ]
-            },
-            {
-              "L": 3,
-              "head": 8,
+              "head": 0,
               "z": 6.7,
-              "sources": [],
+              "sources": [
+                "gold"
+              ],
+              "sources_raw": [
+                " gold"
+              ],
               "ov": [
-                "del",
-                "pite",
-                "overning",
-                "ilantro"
+                "Golden",
+                "Golden",
+                "golden",
+                "gold"
               ]
             },
             {
-              "L": 2,
-              "head": 28,
-              "z": 5.4,
+              "L": 19,
+              "head": 20,
+              "z": 6.3,
               "sources": [
-                "is"
+                "gold"
+              ],
+              "sources_raw": [
+                " gold"
               ],
               "ov": [
-                "chromos",
-                "ertiary",
-                "ynasty",
-                "ISTORY"
+                "OG",
+                "IG",
+                "PG",
+                "IG"
               ]
             }
           ],
-          "sentence": "To produce '<|im_end|>', the model retrieved '\".' (L2 H13); moved diffuse context (L3 H8); followed the cue 'is' (L2 H28)."
+          "sentence": "To produce 'Au': head L22 H21 checked the format cue 'is' (what kind of token comes next), not any content; head L19 H0 looked up 'gold' from the prompt, writing Golden/Golden/golden; head L19 H20 looked up 'gold' from the prompt, writing OG/IG/PG."
         },
         {
-          "token": "\n",
+          "token": ".",
           "events": [
             {
-              "L": 0,
-              "head": 26,
-              "z": 13.8,
-              "sources": [
-                "<|im_end|>"
-              ],
-              "ov": [
-                "<|endoftext|>",
-                "and",
-                "\u2423",
-                "or"
-              ]
-            },
-            {
-              "L": 0,
+              "L": 4,
               "head": 2,
-              "z": 9.0,
+              "z": 8.4,
               "sources": [
-                "<|im_end|>"
+                "symbol"
+              ],
+              "sources_raw": [
+                " symbol"
               ],
               "ov": [
-                "(",
-                "in",
-                ",",
-                "to"
+                "untime",
+                "neurotransmit",
+                "cryptocur",
+                "eca"
               ]
             },
             {
               "L": 4,
-              "head": 25,
-              "z": 8.9,
+              "head": 13,
+              "z": 6.2,
               "sources": [
-                "<|im_end|>"
+                "gold",
+                "symbol",
+                "chemical"
+              ],
+              "sources_raw": [
+                " gold",
+                " symbol",
+                " chemical"
               ],
               "ov": [
-                "hydroc",
-                "__.__",
-                "Lange",
-                "Dame"
+                "side",
+                "\ufffd",
+                "Wire",
+                "side"
+              ]
+            },
+            {
+              "L": 5,
+              "head": 14,
+              "z": 5.5,
+              "sources": [
+                "Au",
+                "gold"
+              ],
+              "sources_raw": [
+                " Au",
+                " gold"
+              ],
+              "ov": [
+                "uson",
+                "\u2500",
+                "hoea",
+                "atians"
               ]
             }
           ],
-          "sentence": "To produce '', the model retrieved '<|im_end|>' (L0 H26); retrieved '<|im_end|>' (L0 H2); retrieved '<|im_end|>' (L4 H25)."
+          "sentence": "To produce '.': head L4 H2 checked the format cue 'symbol' (what kind of token comes next), not any content; head L4 H13 looked up 'gold' from the prompt, writing side/Wire/side; head L5 H14 collected 'Au' and 'gold' together, writing uson/hoea/atians."
         }
       ],
-      "answer": " \"pan\".<|im_end|>\n",
+      "answer": " Au.",
       "provenance": [
-        "\"",
-        "\".",
-        "<|im_end|>",
-        "Spanish",
-        "for",
+        "Au",
+        "chemical",
+        "gold",
         "is",
-        "word"
+        "symbol"
       ],
-      "summary": "It answered '\"pan\".<|im_end|>' drawing on '\"', '\".', '<|im_end|>', 'Spanish'."
+      "summary": "It answered 'Au.' drawing on 'Au', 'gold'.",
+      "verdict": "GROUNDED: 4 content lookup(s) fed the answer (2 format checks, 0 assembly events)"
     },
     {
-      "prompt": "Christmas falls in the month of",
+      "prompt": "The opposite of generous is",
       "steps": [
         {
-          "token": " November",
+          "token": " sting",
           "events": [
             {
-              "L": 2,
-              "head": 9,
-              "z": 6.7,
+              "L": 5,
+              "head": 12,
+              "z": 7.9,
               "sources": [
-                "month"
+                "of"
+              ],
+              "sources_raw": [
+                " of"
               ],
               "ov": [
-                "count",
-                "Sh",
-                "d",
-                "sh"
+                "\u0439",
+                "outheastern",
+                "\u001a",
+                "essim"
               ]
             },
             {
-              "L": 6,
-              "head": 30,
-              "z": 6.4,
+              "L": 19,
+              "head": 20,
+              "z": 4.8,
               "sources": [
-                "month"
+                "generous"
+              ],
+              "sources_raw": [
+                " generous"
               ],
               "ov": [
-                "astrous",
-                "enfranch",
-                "Hub",
-                "rinos"
+                "PG",
+                "RG",
+                "rg",
+                "PG"
               ]
             },
             {
-              "L": 0,
-              "head": 4,
-              "z": 5.3,
+              "L": 15,
+              "head": 12,
+              "z": 4.7,
               "sources": [
-                "month"
+                "generous"
+              ],
+              "sources_raw": [
+                " generous"
               ],
               "ov": [
-                "ophan",
-                "queous",
-                "postdocs",
-                "teneg"
+                "ISO",
+                "narrower",
+                "narrow",
+                "minimalist"
               ]
             }
           ],
-          "sentence": "To produce 'November', the model followed the cue 'month' (L2 H9); followed the cue 'month' (L6 H30); followed the cue 'month' (L0 H4)."
+          "sentence": "To produce 'sting': head L5 H12 checked the format cue 'of' (what kind of token comes next), not any content; head L19 H20 looked up 'generous' from the prompt, writing PG/RG/rg; head L15 H12 looked up 'generous' from the prompt, writing ISO/narrower/narrow."
+        },
+        {
+          "token": "y",
+          "events": [
+            {
+              "L": 12,
+              "head": 11,
+              "z": 4.3,
+              "sources": [
+                "generous"
+              ],
+              "sources_raw": [
+                " generous"
+              ],
+              "ov": [
+                "carbohyd",
+                "neurotransmit",
+                "/~",
+                "unken"
+              ]
+            }
+          ],
+          "sentence": "To produce 'y': head L12 H11 inspected 'generous' and wrote 'y' into the answer itself."
         },
         {
           "token": ".",
           "events": [
             {
               "L": 5,
-              "head": 3,
-              "z": 4.0,
+              "head": 22,
+              "z": 7.2,
               "sources": [
-                "of",
-                "month"
+                "sting"
+              ],
+              "sources_raw": [
+                " sting"
               ],
               "ov": [
-                "leg",
-                "bill",
-                "stanbul",
-                "Edward"
-              ]
-            }
-          ],
-          "sentence": "To produce '.', the model followed the cue 'of month' (L5 H3)."
-        }
-      ],
-      "answer": " November.",
-      "provenance": [
-        "month",
-        "of"
-      ],
-      "summary": "It answered 'November.' drawing on routine context."
-    },
-    {
-      "prompt": "The basket held three apples and two pears. The number of apples was",
-      "steps": [
-        {
-          "token": " twice",
-          "events": [
-            {
-              "L": 7,
-              "head": 24,
-              "z": 4.9,
-              "sources": [
-                "of",
-                "number"
-              ],
-              "ov": [
-                "wau",
-                "oname",
-                "\u03b6\u03c9",
-                "Watt"
-              ]
-            },
-            {
-              "L": 11,
-              "head": 8,
-              "z": 4.5,
-              "sources": [
-                "apples"
-              ],
-              "ov": [
-                "unningham",
-                "symb",
-                "histogram",
-                "cut"
-              ]
-            },
-            {
-              "L": 12,
-              "head": 11,
-              "z": 4.0,
-              "sources": [
-                "pears",
-                "two"
-              ],
-              "ov": [
-                ",,,,,,,,,,,,,,,,",
-                "teasp",
-                "vs",
-                "olkien"
-              ]
-            }
-          ],
-          "sentence": "To produce 'twice', the model followed the cue 'of number' (L7 H24); retrieved 'apples' (L11 H8); gathered 'pears' and 'two' (L12 H11)."
-        },
-        {
-          "token": " the",
-          "events": [
-            {
-              "L": 18,
-              "head": 5,
-              "z": 4.5,
-              "sources": [
-                "number",
-                "The",
-                "of"
-              ],
-              "ov": [
-                "the",
-                "the",
-                "rowsiness",
-                "The"
-              ]
-            },
-            {
-              "L": 16,
-              "head": 31,
-              "z": 4.3,
-              "sources": [
-                "apples",
-                "was"
-              ],
-              "ov": [
-                "ertical",
-                "Preprocess",
-                "Whereas",
-                "showc"
-              ]
-            },
-            {
-              "L": 14,
-              "head": 21,
-              "z": 4.0,
-              "sources": [
-                "twice"
-              ],
-              "ov": [
-                "\u2423",
-                "(",
-                "s",
-                "\u2423"
-              ]
-            }
-          ],
-          "sentence": "To produce 'the', the model wrote 'the' directly while reading 'number' and 'The' (L18 H5); retrieved 'apples' (L16 H31); retrieved 'twice' (L14 H21)."
-        },
-        {
-          "token": " number",
-          "events": [
-            {
-              "L": 3,
-              "head": 25,
-              "z": 11.0,
-              "sources": [
-                "twice"
-              ],
-              "ov": [
-                "tab",
-                "]//",
-                "save",
-                "HLA"
+                "caterpill",
+                "\ufffd",
+                "chimpan",
+                "omenclature"
               ]
             },
             {
               "L": 2,
-              "head": 20,
-              "z": 9.8,
+              "head": 12,
+              "z": 7.1,
               "sources": [
-                "twice"
+                "sting"
+              ],
+              "sources_raw": [
+                " sting"
               ],
               "ov": [
-                "ACTION",
-                "pha",
-                "crosses",
-                "suscept"
-              ]
-            },
-            {
-              "L": 20,
-              "head": 18,
-              "z": 9.8,
-              "sources": [
-                "pears"
-              ],
-              "ov": [
-                "Cor",
-                "Cor",
-                "cor",
-                "corr"
-              ]
-            }
-          ],
-          "sentence": "To produce 'number', the model retrieved 'twice' (L3 H25); retrieved 'twice' (L2 H20); retrieved 'pears' (L20 H18)."
-        },
-        {
-          "token": " of",
-          "events": [
-            {
-              "L": 11,
-              "head": 19,
-              "z": 8.0,
-              "sources": [
-                "of"
-              ],
-              "ov": [
-                "of",
-                "of",
-                "Of",
-                "Of"
-              ]
-            },
-            {
-              "L": 13,
-              "head": 9,
-              "z": 6.6,
-              "sources": [
-                "twice",
-                "was"
-              ],
-              "ov": [
-                "pitu",
-                "pige",
-                "Preprocess",
-                "catar"
-              ]
-            },
-            {
-              "L": 4,
-              "head": 15,
-              "z": 6.0,
-              "sources": [
-                "twice",
-                "the"
-              ],
-              "ov": [
-                "]/",
-                "dw",
-                "'*",
-                "soriasis"
-              ]
-            }
-          ],
-          "sentence": "To produce 'of', the model wrote 'of' directly while reading 'of' (L11 H19); retrieved 'twice' (L13 H9); retrieved 'twice' (L4 H15)."
-        },
-        {
-          "token": " pears",
-          "events": [
-            {
-              "L": 20,
-              "head": 18,
-              "z": 17.3,
-              "sources": [
-                "pears"
-              ],
-              "ov": [
-                "Cor",
-                "Cor",
-                "cor",
-                "corr"
+                "s",
+                "all",
+                "d",
+                "\u2423"
               ]
             },
             {
               "L": 5,
-              "head": 23,
-              "z": 11.5,
+              "head": 7,
+              "z": 4.8,
               "sources": [
-                "the"
+                "sting"
+              ],
+              "sources_raw": [
+                " sting"
               ],
               "ov": [
-                "prioritize",
-                "priorit",
-                "prioritized",
-                "ctools"
-              ]
-            },
-            {
-              "L": 21,
-              "head": 13,
-              "z": 10.3,
-              "sources": [
-                "pears"
-              ],
-              "ov": [
-                "pe",
-                "pe",
-                "Pe",
-                "Pe"
+                "cores",
+                "core",
+                "Core",
+                "\ufffd\ufffd"
               ]
             }
           ],
-          "sentence": "To produce 'pears', the model retrieved 'pears' (L20 H18); followed the cue 'the' (L5 H23); wrote 'pears' directly while reading 'pears' (L21 H13)."
+          "sentence": "To produce '.': head L5 H22 looked up 'sting' from the prompt; head L2 H12 looked up 'sting' from the prompt; head L5 H7 looked up 'sting' from the prompt, writing cores/core/Core."
         }
       ],
-      "answer": " twice the number of pears",
+      "answer": " stingy.",
       "provenance": [
-        "The",
-        "apples",
-        "number",
+        "generous",
         "of",
-        "pears",
-        "the",
-        "twice",
-        "two",
-        "was"
+        "sting"
       ],
-      "summary": "It answered 'twice the number of pears' drawing on 'apples', 'pears', 'twice', 'two'."
+      "summary": "It answered 'stingy.' drawing on 'generous', 'sting'.",
+      "verdict": "GROUNDED: 6 content lookup(s) fed the answer (1 format checks, 0 assembly events)"
     }
   ]
 }
