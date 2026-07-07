@@ -1,0 +1,161 @@
+{
+  "model": "mistralai/Mistral-7B-Instruct-v0.3",
+  "heads": {
+    "L30H18": {
+      "label": "top wd deliverer",
+      "ov_counts": {
+        "identity": 67,
+        "successor": 17,
+        "predecessor": 0,
+        "other": 0
+      },
+      "R_fwd": 0.08,
+      "R_rev": 0.99,
+      "shift_days": 0.07,
+      "R_shift": 0.98,
+      "expl_frac": 0.3693,
+      "month_R": [
+        0.04,
+        0.04
+      ],
+      "phi": [
+        0.1,
+        -0.71,
+        -1.92,
+        -2.72,
+        2.81,
+        1.78,
+        0.78
+      ],
+      "psi": [
+        -0.16,
+        -0.98,
+        -1.76,
+        -2.69,
+        2.56,
+        1.76,
+        0.96
+      ],
+      "frames_top": [
+        [
+          "shape",
+          0.07,
+          6
+        ],
+        [
+          "weight",
+          0.045,
+          13
+        ],
+        [
+          "material",
+          0.04,
+          14
+        ],
+        [
+          "number",
+          0.033,
+          17
+        ],
+        [
+          "opinion",
+          0.032,
+          15
+        ],
+        [
+          "certainty",
+          0.022,
+          18
+        ],
+        [
+          "time",
+          0.022,
+          17
+        ],
+        [
+          "age",
+          0.017,
+          18
+        ]
+      ]
+    },
+    "L24H5": {
+      "label": "wd-CLASS head (contrast)",
+      "ov_counts": {
+        "identity": 35,
+        "successor": 18,
+        "predecessor": 11,
+        "other": 20
+      },
+      "R_fwd": 0.18,
+      "R_rev": 0.19,
+      "shift_days": -0.01,
+      "R_shift": 0.13,
+      "expl_frac": 0.006,
+      "month_R": [
+        0.22,
+        0.2
+      ],
+      "phi": [
+        1.37,
+        1.42,
+        1.92,
+        2.09,
+        1.96,
+        1.65,
+        1.45
+      ],
+      "psi": [
+        -0.4,
+        -1.12,
+        -1.68,
+        -2.67,
+        2.4,
+        1.74,
+        1.03
+      ],
+      "frames_top": [
+        [
+          "age",
+          0.015,
+          18
+        ],
+        [
+          "animacy",
+          0.015,
+          18
+        ],
+        [
+          "number",
+          0.014,
+          17
+        ],
+        [
+          "warmth",
+          0.011,
+          14
+        ],
+        [
+          "shape",
+          0.011,
+          6
+        ],
+        [
+          "material",
+          0.008,
+          14
+        ],
+        [
+          "potency",
+          0.007,
+          22
+        ],
+        [
+          "opinion",
+          0.006,
+          15
+        ]
+      ]
+    }
+  }
+}
