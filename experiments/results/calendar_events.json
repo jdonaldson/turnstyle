@@ -1,0 +1,373 @@
+{
+  "model": "mistralai/Mistral-7B-Instruct-v0.3",
+  "delivery": {
+    "wd->end": [
+      {
+        "L": 30,
+        "head": 18,
+        "mean_delivery": 5.71,
+        "example_sources": "'Monday'(7.3), 'on'(0.3), '.'(0.2)",
+        "ov_top": "Tuesday, Mond, Monday, mond, Taylor"
+      },
+      {
+        "L": 28,
+        "head": 17,
+        "mean_delivery": 3.79,
+        "example_sources": "'Monday'(4.8), 'January'(2.5), 'on'(0.1)",
+        "ov_top": "Taylor, Tuesday, sat, Sat, Tay"
+      },
+      {
+        "L": 24,
+        "head": 5,
+        "mean_delivery": 3.76,
+        "example_sources": "'Monday'(4.9), 'January'(1.9), '.'(0.1)",
+        "ov_top": "Wednesday, Thursday, Tuesday, Saturday, Friday"
+      },
+      {
+        "L": 21,
+        "head": 10,
+        "mean_delivery": 3.33,
+        "example_sources": "'Monday'(5.0), 'January'(0.5), 'met'(0.1)",
+        "ov_top": "Week, weekly, week, Week, week"
+      },
+      {
+        "L": 20,
+        "head": 16,
+        "mean_delivery": 2.1,
+        "example_sources": "'Monday'(2.9), 'January'(0.8), '.'(0.2)",
+        "ov_top": "fate, tempor, atm, TDM, Sund"
+      },
+      {
+        "L": 19,
+        "head": 24,
+        "mean_delivery": 2.09,
+        "example_sources": "'Monday'(2.4), 'January'(1.7), '.'(0.3)",
+        "ov_top": "date, dated, Date, Date, date"
+      },
+      {
+        "L": 16,
+        "head": 18,
+        "mean_delivery": 2.08,
+        "example_sources": "'Monday'(2.2), 'January'(0.5), '.'(0.3)",
+        "ov_top": "Kam, core, workshop, iani, onna"
+      },
+      {
+        "L": 22,
+        "head": 11,
+        "mean_delivery": 2.02,
+        "example_sources": "'Monday'(2.9), 'January'(0.3), '.'(0.3)",
+        "ov_top": "on, auf, On, \u043d\u0430, On"
+      },
+      {
+        "L": 16,
+        "head": 31,
+        "mean_delivery": 1.85,
+        "example_sources": "'Monday'(1.9), 'January'(0.5), '.'(0.2)",
+        "ov_top": "coinc, Lov, late, normally, eau"
+      },
+      {
+        "L": 28,
+        "head": 18,
+        "mean_delivery": 1.53,
+        "example_sources": "'Monday'(1.4), 'January'(1.1), 'They'(0.1)",
+        "ov_top": "Mond, monitor, Monitor, Monday, mond"
+      }
+    ],
+    "mo->end": [
+      {
+        "L": 29,
+        "head": 30,
+        "mean_delivery": 8.47,
+        "example_sources": "'January'(8.2), '.'(1.8), 'met'(0.7)",
+        "ov_top": "They, It, This, And, That"
+      },
+      {
+        "L": 27,
+        "head": 0,
+        "mean_delivery": 4.4,
+        "example_sources": "'January'(4.6), 'They'(0.6), '.'(0.4)",
+        "ov_top": "\u2026., \ufffd, aret, \u2013,, \u2026"
+      },
+      {
+        "L": 25,
+        "head": 7,
+        "mean_delivery": 3.88,
+        "example_sources": "'January'(4.2), '.'(1.3), 'Monday'(0.8)",
+        "ov_top": "although, otte, \u00edlia, cias, weit"
+      },
+      {
+        "L": 26,
+        "head": 28,
+        "mean_delivery": 3.63,
+        "example_sources": "'January'(4.0), 'met'(0.4), 'Monday'(0.3)",
+        "ov_top": "gfx, giornata, \u203b, \u043d\u0433, \u25b8"
+      },
+      {
+        "L": 11,
+        "head": 17,
+        "mean_delivery": 3.05,
+        "example_sources": "'January'(3.2), 'in'(0.3), '.'(0.1)",
+        "ov_top": "rush, anka, atique, rushed, CORE"
+      },
+      {
+        "L": 25,
+        "head": 15,
+        "mean_delivery": 2.22,
+        "example_sources": "'January'(1.5), 'Monday'(0.8), '.'(0.4)",
+        "ov_top": "nine, eleven, eight, thirteen, seven"
+      },
+      {
+        "L": 29,
+        "head": 28,
+        "mean_delivery": 2.2,
+        "example_sources": "'.'(4.4), 'January'(2.0), 'Monday'(1.1)",
+        "ov_top": "afternoon, morning, weeks, Friday, Wednesday"
+      },
+      {
+        "L": 24,
+        "head": 8,
+        "mean_delivery": 2.15,
+        "example_sources": "'January'(2.0), '.'(0.7), 'in'(0.1)",
+        "ov_top": "/, multicol, itself, ikel, /_"
+      },
+      {
+        "L": 13,
+        "head": 31,
+        "mean_delivery": 2.1,
+        "example_sources": "'January'(2.2), 'in'(0.3), '.'(0.2)",
+        "ov_top": "ille, rile, DMA, lad, zm"
+      },
+      {
+        "L": 28,
+        "head": 17,
+        "mean_delivery": 2.05,
+        "example_sources": "'Monday'(4.8), 'January'(2.5), 'on'(0.1)",
+        "ov_top": "Taylor, Tuesday, sat, Sat, Tay"
+      }
+    ],
+    "wd->mo_tok": [
+      {
+        "L": 29,
+        "head": 28,
+        "mean_delivery": 4.08,
+        "example_sources": "'Monday'(3.9), 'January'(1.8), 'met'(1.4)",
+        "ov_top": "\u2423, Wednesday, Friday, Tuesday, Monday"
+      },
+      {
+        "L": 21,
+        "head": 15,
+        "mean_delivery": 4.02,
+        "example_sources": "'Monday'(3.8), 'January'(1.4), 'met'(0.3)",
+        "ov_top": "than, ouw, nonetheless, indeed, ogg"
+      },
+      {
+        "L": 31,
+        "head": 13,
+        "mean_delivery": 3.92,
+        "example_sources": "'Monday'(4.8), 'January'(3.1), 'met'(0.6)",
+        "ov_top": "at, when, in, while, when"
+      },
+      {
+        "L": 28,
+        "head": 10,
+        "mean_delivery": 3.81,
+        "example_sources": "'Monday'(3.6), 'January'(2.0), 'met'(1.1)",
+        "ov_top": "somewhere, several, approximately, sometime, circa"
+      },
+      {
+        "L": 20,
+        "head": 19,
+        "mean_delivery": 3.25,
+        "example_sources": "'Monday'(2.6), 'January'(1.1), 'met'(0.1)",
+        "ov_top": "Miles, distance, reform, izar, numer"
+      },
+      {
+        "L": 28,
+        "head": 6,
+        "mean_delivery": 3.19,
+        "example_sources": "'Monday'(3.6), 'met'(1.0), 'January'(0.8)",
+        "ov_top": "\u2026, ., ..., \u2026., \u2026"
+      },
+      {
+        "L": 26,
+        "head": 20,
+        "mean_delivery": 2.91,
+        "example_sources": "'Monday'(3.5), 'met'(0.9), 'January'(0.4)",
+        "ov_top": "where, wherein, where, when, when"
+      },
+      {
+        "L": 26,
+        "head": 23,
+        "mean_delivery": 2.84,
+        "example_sources": "'Monday'(3.6), 'met'(0.7), 'a'(0.1)",
+        "ov_top": "remain, do, stay, stand, feel"
+      },
+      {
+        "L": 10,
+        "head": 12,
+        "mean_delivery": 2.72,
+        "example_sources": "'Monday'(2.6), 'in'(0.2), 'a'(0.1)",
+        "ov_top": "WAR, gri, uren, intern, enda"
+      },
+      {
+        "L": 24,
+        "head": 1,
+        "mean_delivery": 2.68,
+        "example_sources": "'Monday'(3.5), 'met'(0.3), 'January'(0.1)",
+        "ov_top": "aj\u0105c, iendo, uding, \u1eb1, oping"
+      }
+    ]
+  },
+  "head_events": [
+    {
+      "z": 26.2,
+      "L": 26,
+      "head": 4,
+      "cat": "filler",
+      "text": "All cats are animals. Whiskers is a cat, so Whiskers is",
+      "dest": "ers",
+      "sources": "'isk'(12.2), 'ers'(0.1), 'All'(0.0)",
+      "ov_top": "$|\\, www, www, Wil, ['"
+    },
+    {
+      "z": 21.6,
+      "L": 22,
+      "head": 24,
+      "cat": "filler",
+      "text": "All cats are animals. Whiskers is a cat, so Whiskers is",
+      "dest": "ers",
+      "sources": "'isk'(10.1), 'ers'(0.1), 'Wh'(0.1)",
+      "ov_top": "lez, Hir, blowing, Marcel, \ufffd"
+    },
+    {
+      "z": 21.5,
+      "L": 22,
+      "head": 10,
+      "cat": "filler",
+      "text": "The oak is taller than the pine, but the redwood is tallest.",
+      "dest": ".",
+      "sources": "'pine'(3.0), 'aller'(1.4), ','(0.3)",
+      "ov_top": "agnost, /******/, dav, elta, verb"
+    },
+    {
+      "z": 21.4,
+      "L": 4,
+      "head": 23,
+      "cat": "filler",
+      "text": "SELECT name FROM users WHERE age > 30",
+      "dest": "",
+      "sources": "'WHERE'(0.3), 'age'(0.2), 'FROM'(0.2)",
+      "ov_top": "arto, auch, buzz, ittel, ilio"
+    },
+    {
+      "z": 21.2,
+      "L": 3,
+      "head": 4,
+      "cat": "filler",
+      "text": "for i in range(10): total = total + i",
+      "dest": "(",
+      "sources": "'range'(1.5), 'in'(0.0), '('(0.0)",
+      "ov_top": "unc, ora, odot, ucc, zza"
+    },
+    {
+      "z": 21.2,
+      "L": 1,
+      "head": 22,
+      "cat": "filler",
+      "text": "Sarah gave the book to Emma because she had finished it.",
+      "dest": "to",
+      "sources": "'gave'(0.8), 'book'(0.0), 'to'(0.0)",
+      "ov_top": "ward, gu, virt, wards, zw"
+    },
+    {
+      "z": 20.7,
+      "L": 26,
+      "head": 5,
+      "cat": "filler",
+      "text": "All cats are animals. Whiskers is a cat, so Whiskers is",
+      "dest": "Wh",
+      "sources": "'isk'(9.0), 'Wh'(0.7), 'Wh'(0.2)",
+      "ov_top": "k, kar, kl, kr, K"
+    },
+    {
+      "z": 20.3,
+      "L": 18,
+      "head": 0,
+      "cat": "filler",
+      "text": "All cats are animals. Whiskers is a cat, so Whiskers is",
+      "dest": "Wh",
+      "sources": "'isk'(6.4), 'ers'(0.1), 'Wh'(0.0)",
+      "ov_top": "W, Krist, w, zip, W"
+    },
+    {
+      "z": 20.1,
+      "L": 25,
+      "head": 25,
+      "cat": "filler",
+      "text": "for i in range(10): total = total + i",
+      "dest": "(",
+      "sources": "'range'(7.4), 'in'(0.1), '('(0.1)",
+      "ov_top": "1, 0, otte, 2, iny"
+    },
+    {
+      "z": 20.0,
+      "L": 23,
+      "head": 14,
+      "cat": "filler",
+      "text": "Sarah gave the book to Emma because she had finished it.",
+      "dest": ".",
+      "sources": "'Emma'(7.8), 'finished'(0.4), '.'(0.1)",
+      "ov_top": "em, Emp, Emma, Emp, emp"
+    },
+    {
+      "z": 19.9,
+      "L": 9,
+      "head": 3,
+      "cat": "filler",
+      "text": "Gold is heavier than silver, and lead is heavier still.",
+      "dest": "is",
+      "sources": "'silver'(3.5), 'lead'(0.4), 'is'(0.2)",
+      "ov_top": "du, hed, Stra, Columb, raz"
+    },
+    {
+      "z": 19.4,
+      "L": 1,
+      "head": 18,
+      "cat": "filler",
+      "text": "The oak is taller than the pine, but the redwood is tallest.",
+      "dest": "wood",
+      "sources": "'red'(0.8), 'the'(0.0), 'but'(0.0)",
+      "ov_top": "ieve, \u043d\u0430\u0434, EXP, achuset, oba"
+    },
+    {
+      "z": 19.0,
+      "L": 18,
+      "head": 0,
+      "cat": "filler",
+      "text": "All cats are animals. Whiskers is a cat, so Whiskers is",
+      "dest": "isk",
+      "sources": "'ers'(6.0), 'isk'(0.0), 'isk'(0.0)",
+      "ov_top": "ias, ker, bers, iker, ser"
+    },
+    {
+      "z": 18.6,
+      "L": 23,
+      "head": 14,
+      "cat": "filler",
+      "text": "Sarah gave the book to Emma because she had finished it.",
+      "dest": "because",
+      "sources": "'Emma'(7.8), 'because'(0.1), 'to'(0.1)",
+      "ov_top": "em, Emp, Emma, Emp, Em"
+    },
+    {
+      "z": 18.5,
+      "L": 30,
+      "head": 3,
+      "cat": "filler",
+      "text": "for i in range(10): total = total + i",
+      "dest": "=",
+      "sources": "'total'(18.0), 'i'(0.1), '):'(0.1)",
+      "ov_top": "total, Total, total, Total, tot"
+    }
+  ]
+}
