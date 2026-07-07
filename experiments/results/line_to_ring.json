@@ -1,0 +1,2804 @@
+{
+  "K": 20,
+  "models": {
+    "HuggingFaceTB/SmolLM2-360M-Instruct": {
+      "params_b": 0.36,
+      "cats": {
+        "month": {
+          "0": {
+            "lin": 0.18,
+            "circ": 0.43,
+            "seam": 0.92,
+            "seam_pc2": 0.46,
+            "pc2_H1r": 0.25,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "1": {
+            "lin": 0.44,
+            "circ": 0.48,
+            "seam": 1.05,
+            "seam_pc2": 1.63,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "2": {
+            "lin": 0.46,
+            "circ": 0.48,
+            "seam": 1.05,
+            "seam_pc2": 1.7,
+            "pc2_H1r": 0.01,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "3": {
+            "lin": 0.45,
+            "circ": 0.49,
+            "seam": 1.03,
+            "seam_pc2": 1.51,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "4": {
+            "lin": 0.37,
+            "circ": 0.49,
+            "seam": 1.01,
+            "seam_pc2": 1.2,
+            "pc2_H1r": 0.33,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "5": {
+            "lin": 0.34,
+            "circ": 0.48,
+            "seam": 0.98,
+            "seam_pc2": 1.01,
+            "pc2_H1r": 0.48,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "6": {
+            "lin": 0.33,
+            "circ": 0.46,
+            "seam": 0.96,
+            "seam_pc2": 1.11,
+            "pc2_H1r": 0.38,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "7": {
+            "lin": 0.4,
+            "circ": 0.59,
+            "seam": 1.05,
+            "seam_pc2": 1.48,
+            "pc2_H1r": 1.44,
+            "pc2_z": 2.5,
+            "pc2_cls": "contractible"
+          },
+          "8": {
+            "lin": 0.52,
+            "circ": 0.54,
+            "seam": 1.2,
+            "seam_pc2": 2.22,
+            "pc2_H1r": 0.79,
+            "pc2_z": 1.8,
+            "pc2_cls": "contractible"
+          },
+          "9": {
+            "lin": 0.49,
+            "circ": 0.52,
+            "seam": 1.14,
+            "seam_pc2": 1.76,
+            "pc2_H1r": 1.25,
+            "pc2_z": 3.0,
+            "pc2_cls": "loop"
+          },
+          "10": {
+            "lin": 0.5,
+            "circ": 0.51,
+            "seam": 1.15,
+            "seam_pc2": 1.73,
+            "pc2_H1r": 0.74,
+            "pc2_z": 1.7,
+            "pc2_cls": "contractible"
+          },
+          "11": {
+            "lin": 0.46,
+            "circ": 0.5,
+            "seam": 1.11,
+            "seam_pc2": 1.62,
+            "pc2_H1r": 0.49,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "12": {
+            "lin": 0.39,
+            "circ": 0.46,
+            "seam": 1.11,
+            "seam_pc2": 2.0,
+            "pc2_H1r": 0.57,
+            "pc2_z": 0.6,
+            "pc2_cls": "contractible"
+          },
+          "13": {
+            "lin": 0.37,
+            "circ": 0.46,
+            "seam": 1.1,
+            "seam_pc2": 1.37,
+            "pc2_H1r": 0.85,
+            "pc2_z": 1.8,
+            "pc2_cls": "contractible"
+          },
+          "14": {
+            "lin": 0.31,
+            "circ": 0.42,
+            "seam": 1.13,
+            "seam_pc2": 1.72,
+            "pc2_H1r": 0.71,
+            "pc2_z": 0.9,
+            "pc2_cls": "contractible"
+          },
+          "15": {
+            "lin": 0.3,
+            "circ": 0.41,
+            "seam": 1.12,
+            "seam_pc2": 1.85,
+            "pc2_H1r": 0.6,
+            "pc2_z": 1.3,
+            "pc2_cls": "contractible"
+          },
+          "16": {
+            "lin": 0.32,
+            "circ": 0.42,
+            "seam": 1.12,
+            "seam_pc2": 2.18,
+            "pc2_H1r": 0.6,
+            "pc2_z": 1.1,
+            "pc2_cls": "contractible"
+          },
+          "17": {
+            "lin": 0.32,
+            "circ": 0.41,
+            "seam": 1.12,
+            "seam_pc2": 2.0,
+            "pc2_H1r": 0.35,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "18": {
+            "lin": 0.33,
+            "circ": 0.43,
+            "seam": 1.11,
+            "seam_pc2": 1.69,
+            "pc2_H1r": 0.14,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "19": {
+            "lin": 0.24,
+            "circ": 0.38,
+            "seam": 1.1,
+            "seam_pc2": 1.65,
+            "pc2_H1r": 0.25,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "20": {
+            "lin": 0.24,
+            "circ": 0.39,
+            "seam": 1.08,
+            "seam_pc2": 1.41,
+            "pc2_H1r": 0.3,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "21": {
+            "lin": 0.19,
+            "circ": 0.35,
+            "seam": 1.04,
+            "seam_pc2": 1.37,
+            "pc2_H1r": 0.48,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "22": {
+            "lin": 0.21,
+            "circ": 0.36,
+            "seam": 1.02,
+            "seam_pc2": 0.7,
+            "pc2_H1r": 0.45,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "23": {
+            "lin": 0.26,
+            "circ": 0.37,
+            "seam": 1.04,
+            "seam_pc2": 1.48,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "24": {
+            "lin": 0.18,
+            "circ": 0.35,
+            "seam": 1.04,
+            "seam_pc2": 0.46,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "25": {
+            "lin": 0.12,
+            "circ": 0.34,
+            "seam": 1.0,
+            "seam_pc2": 0.28,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "26": {
+            "lin": 0.05,
+            "circ": 0.3,
+            "seam": 0.92,
+            "seam_pc2": 0.16,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "27": {
+            "lin": 0.08,
+            "circ": 0.32,
+            "seam": 0.89,
+            "seam_pc2": 0.22,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "28": {
+            "lin": 0.07,
+            "circ": 0.32,
+            "seam": 0.88,
+            "seam_pc2": 0.24,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "29": {
+            "lin": 0.04,
+            "circ": 0.31,
+            "seam": 0.85,
+            "seam_pc2": 0.21,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "30": {
+            "lin": 0.01,
+            "circ": 0.3,
+            "seam": 0.86,
+            "seam_pc2": 0.16,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "31": {
+            "lin": 0.06,
+            "circ": 0.31,
+            "seam": 0.86,
+            "seam_pc2": 0.19,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "32": {
+            "lin": 0.05,
+            "circ": 0.32,
+            "seam": 0.83,
+            "seam_pc2": 0.26,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          }
+        },
+        "weekday": {
+          "0": {
+            "lin": 0.7,
+            "circ": 0.56,
+            "seam": 1.2,
+            "seam_pc2": 1.83,
+            "pc2_H1r": 0.24,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "1": {
+            "lin": 0.67,
+            "circ": 0.51,
+            "seam": 1.27,
+            "seam_pc2": 2.17,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "2": {
+            "lin": 0.68,
+            "circ": 0.51,
+            "seam": 1.27,
+            "seam_pc2": 2.27,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "3": {
+            "lin": 0.65,
+            "circ": 0.49,
+            "seam": 1.25,
+            "seam_pc2": 2.06,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "4": {
+            "lin": 0.69,
+            "circ": 0.48,
+            "seam": 1.25,
+            "seam_pc2": 2.24,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "5": {
+            "lin": 0.67,
+            "circ": 0.53,
+            "seam": 1.22,
+            "seam_pc2": 2.06,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "6": {
+            "lin": 0.7,
+            "circ": 0.53,
+            "seam": 1.21,
+            "seam_pc2": 2.07,
+            "pc2_H1r": 0.1,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "7": {
+            "lin": 0.75,
+            "circ": 0.52,
+            "seam": 1.26,
+            "seam_pc2": 2.18,
+            "pc2_H1r": 0.8,
+            "pc2_z": 6.0,
+            "pc2_cls": "weak-loop"
+          },
+          "8": {
+            "lin": 0.71,
+            "circ": 0.49,
+            "seam": 1.29,
+            "seam_pc2": 2.19,
+            "pc2_H1r": 0.75,
+            "pc2_z": 8.5,
+            "pc2_cls": "weak-loop"
+          },
+          "9": {
+            "lin": 0.71,
+            "circ": 0.48,
+            "seam": 1.31,
+            "seam_pc2": 2.21,
+            "pc2_H1r": 0.72,
+            "pc2_z": 7.1,
+            "pc2_cls": "weak-loop"
+          },
+          "10": {
+            "lin": 0.7,
+            "circ": 0.47,
+            "seam": 1.35,
+            "seam_pc2": 2.33,
+            "pc2_H1r": 0.68,
+            "pc2_z": 4.5,
+            "pc2_cls": "weak-loop"
+          },
+          "11": {
+            "lin": 0.73,
+            "circ": 0.48,
+            "seam": 1.33,
+            "seam_pc2": 2.31,
+            "pc2_H1r": 0.43,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "12": {
+            "lin": 0.73,
+            "circ": 0.46,
+            "seam": 1.35,
+            "seam_pc2": 2.28,
+            "pc2_H1r": 0.49,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "13": {
+            "lin": 0.77,
+            "circ": 0.52,
+            "seam": 1.36,
+            "seam_pc2": 2.32,
+            "pc2_H1r": 0.32,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "14": {
+            "lin": 0.8,
+            "circ": 0.52,
+            "seam": 1.38,
+            "seam_pc2": 2.43,
+            "pc2_H1r": 0.07,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "15": {
+            "lin": 0.81,
+            "circ": 0.53,
+            "seam": 1.4,
+            "seam_pc2": 2.56,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "16": {
+            "lin": 0.81,
+            "circ": 0.53,
+            "seam": 1.38,
+            "seam_pc2": 2.59,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "17": {
+            "lin": 0.8,
+            "circ": 0.58,
+            "seam": 1.36,
+            "seam_pc2": 2.49,
+            "pc2_H1r": 0.03,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "18": {
+            "lin": 0.83,
+            "circ": 0.58,
+            "seam": 1.34,
+            "seam_pc2": 2.4,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "19": {
+            "lin": 0.8,
+            "circ": 0.6,
+            "seam": 1.35,
+            "seam_pc2": 2.45,
+            "pc2_H1r": 0.1,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "20": {
+            "lin": 0.82,
+            "circ": 0.63,
+            "seam": 1.31,
+            "seam_pc2": 2.19,
+            "pc2_H1r": 0.08,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "21": {
+            "lin": 0.81,
+            "circ": 0.6,
+            "seam": 1.31,
+            "seam_pc2": 2.23,
+            "pc2_H1r": 0.11,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "22": {
+            "lin": 0.77,
+            "circ": 0.6,
+            "seam": 1.35,
+            "seam_pc2": 2.29,
+            "pc2_H1r": 0.15,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "23": {
+            "lin": 0.67,
+            "circ": 0.52,
+            "seam": 1.28,
+            "seam_pc2": 2.27,
+            "pc2_H1r": 0.31,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "24": {
+            "lin": 0.73,
+            "circ": 0.58,
+            "seam": 1.26,
+            "seam_pc2": 2.28,
+            "pc2_H1r": 0.17,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "25": {
+            "lin": 0.61,
+            "circ": 0.58,
+            "seam": 1.2,
+            "seam_pc2": 1.79,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "26": {
+            "lin": 0.65,
+            "circ": 0.58,
+            "seam": 1.22,
+            "seam_pc2": 1.96,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "27": {
+            "lin": 0.64,
+            "circ": 0.55,
+            "seam": 1.21,
+            "seam_pc2": 1.92,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "28": {
+            "lin": 0.59,
+            "circ": 0.55,
+            "seam": 1.23,
+            "seam_pc2": 1.89,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "29": {
+            "lin": 0.59,
+            "circ": 0.53,
+            "seam": 1.24,
+            "seam_pc2": 1.99,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "30": {
+            "lin": 0.67,
+            "circ": 0.55,
+            "seam": 1.27,
+            "seam_pc2": 2.18,
+            "pc2_H1r": 0.04,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "31": {
+            "lin": 0.69,
+            "circ": 0.59,
+            "seam": 1.31,
+            "seam_pc2": 2.21,
+            "pc2_H1r": 0.03,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "32": {
+            "lin": 0.58,
+            "circ": 0.46,
+            "seam": 1.36,
+            "seam_pc2": 2.3,
+            "pc2_H1r": 0.08,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          }
+        }
+      }
+    },
+    "Qwen/Qwen2.5-1.5B-Instruct": {
+      "params_b": 1.5,
+      "cats": {
+        "month": {
+          "0": {
+            "lin": 0.34,
+            "circ": 0.63,
+            "seam": 0.93,
+            "seam_pc2": 0.45,
+            "pc2_H1r": 1.06,
+            "pc2_z": 3.6,
+            "pc2_cls": "loop"
+          },
+          "1": {
+            "lin": 0.29,
+            "circ": 0.53,
+            "seam": 0.99,
+            "seam_pc2": 0.36,
+            "pc2_H1r": 0.35,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "2": {
+            "lin": 0.34,
+            "circ": 0.44,
+            "seam": 1.11,
+            "seam_pc2": 1.34,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "3": {
+            "lin": 0.14,
+            "circ": 0.25,
+            "seam": 1.02,
+            "seam_pc2": 0.29,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "4": {
+            "lin": 0.3,
+            "circ": 0.41,
+            "seam": 1.08,
+            "seam_pc2": 1.65,
+            "pc2_H1r": 0.48,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "5": {
+            "lin": 0.21,
+            "circ": 0.46,
+            "seam": 1.0,
+            "seam_pc2": 1.01,
+            "pc2_H1r": 0.59,
+            "pc2_z": 1.4,
+            "pc2_cls": "contractible"
+          },
+          "6": {
+            "lin": 0.22,
+            "circ": 0.42,
+            "seam": 1.01,
+            "seam_pc2": 0.81,
+            "pc2_H1r": 0.1,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "7": {
+            "lin": 0.33,
+            "circ": 0.43,
+            "seam": 1.09,
+            "seam_pc2": 0.86,
+            "pc2_H1r": 0.4,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "8": {
+            "lin": 0.31,
+            "circ": 0.41,
+            "seam": 1.05,
+            "seam_pc2": 0.9,
+            "pc2_H1r": 0.44,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "9": {
+            "lin": 0.46,
+            "circ": 0.52,
+            "seam": 1.08,
+            "seam_pc2": 1.27,
+            "pc2_H1r": 0.48,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "10": {
+            "lin": 0.41,
+            "circ": 0.48,
+            "seam": 1.06,
+            "seam_pc2": 1.31,
+            "pc2_H1r": 0.4,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "11": {
+            "lin": 0.51,
+            "circ": 0.51,
+            "seam": 1.19,
+            "seam_pc2": 2.33,
+            "pc2_H1r": 0.7,
+            "pc2_z": 0.5,
+            "pc2_cls": "contractible"
+          },
+          "12": {
+            "lin": 0.62,
+            "circ": 0.59,
+            "seam": 1.29,
+            "seam_pc2": 2.74,
+            "pc2_H1r": 0.78,
+            "pc2_z": 1.0,
+            "pc2_cls": "contractible"
+          },
+          "13": {
+            "lin": 0.46,
+            "circ": 0.47,
+            "seam": 1.19,
+            "seam_pc2": 2.21,
+            "pc2_H1r": 0.18,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "14": {
+            "lin": 0.44,
+            "circ": 0.47,
+            "seam": 1.19,
+            "seam_pc2": 2.08,
+            "pc2_H1r": 0.34,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "15": {
+            "lin": 0.36,
+            "circ": 0.41,
+            "seam": 1.19,
+            "seam_pc2": 1.97,
+            "pc2_H1r": 0.04,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "16": {
+            "lin": 0.31,
+            "circ": 0.38,
+            "seam": 1.15,
+            "seam_pc2": 1.72,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "17": {
+            "lin": 0.26,
+            "circ": 0.36,
+            "seam": 1.11,
+            "seam_pc2": 1.64,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "18": {
+            "lin": 0.23,
+            "circ": 0.37,
+            "seam": 1.11,
+            "seam_pc2": 1.45,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "19": {
+            "lin": 0.21,
+            "circ": 0.36,
+            "seam": 1.06,
+            "seam_pc2": 1.46,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "20": {
+            "lin": 0.27,
+            "circ": 0.31,
+            "seam": 1.14,
+            "seam_pc2": 2.03,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "21": {
+            "lin": 0.16,
+            "circ": 0.35,
+            "seam": 0.99,
+            "seam_pc2": 0.76,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "22": {
+            "lin": 0.17,
+            "circ": 0.42,
+            "seam": 0.76,
+            "seam_pc2": 0.32,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "23": {
+            "lin": 0.16,
+            "circ": 0.36,
+            "seam": 0.77,
+            "seam_pc2": 0.4,
+            "pc2_H1r": 0.54,
+            "pc2_z": 1.9,
+            "pc2_cls": "contractible"
+          },
+          "24": {
+            "lin": 0.04,
+            "circ": 0.29,
+            "seam": 0.7,
+            "seam_pc2": 0.39,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "25": {
+            "lin": 0.05,
+            "circ": 0.3,
+            "seam": 0.7,
+            "seam_pc2": 0.33,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "26": {
+            "lin": 0.06,
+            "circ": 0.31,
+            "seam": 0.72,
+            "seam_pc2": 0.35,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "27": {
+            "lin": 0.04,
+            "circ": 0.31,
+            "seam": 0.71,
+            "seam_pc2": 0.2,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "28": {
+            "lin": -0.0,
+            "circ": 0.29,
+            "seam": 0.67,
+            "seam_pc2": 0.15,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          }
+        },
+        "weekday": {
+          "0": {
+            "lin": 0.81,
+            "circ": 0.65,
+            "seam": 1.18,
+            "seam_pc2": 2.24,
+            "pc2_H1r": 0.35,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "1": {
+            "lin": 0.67,
+            "circ": 0.62,
+            "seam": 1.08,
+            "seam_pc2": 1.78,
+            "pc2_H1r": 0.58,
+            "pc2_z": 4.7,
+            "pc2_cls": "weak-loop"
+          },
+          "2": {
+            "lin": 0.63,
+            "circ": 0.59,
+            "seam": 1.1,
+            "seam_pc2": 1.74,
+            "pc2_H1r": 0.58,
+            "pc2_z": 2.9,
+            "pc2_cls": "contractible"
+          },
+          "3": {
+            "lin": 0.66,
+            "circ": 0.35,
+            "seam": 1.67,
+            "seam_pc2": 3.2,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "4": {
+            "lin": 0.7,
+            "circ": 0.39,
+            "seam": 1.58,
+            "seam_pc2": 3.22,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "5": {
+            "lin": 0.68,
+            "circ": 0.41,
+            "seam": 1.35,
+            "seam_pc2": 2.76,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "6": {
+            "lin": 0.38,
+            "circ": 0.15,
+            "seam": 1.19,
+            "seam_pc2": 1.92,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "7": {
+            "lin": 0.38,
+            "circ": 0.16,
+            "seam": 1.24,
+            "seam_pc2": 1.91,
+            "pc2_H1r": 0.58,
+            "pc2_z": 12.4,
+            "pc2_cls": "weak-loop"
+          },
+          "8": {
+            "lin": 0.49,
+            "circ": 0.27,
+            "seam": 1.28,
+            "seam_pc2": 2.03,
+            "pc2_H1r": 0.49,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "9": {
+            "lin": 0.52,
+            "circ": 0.27,
+            "seam": 1.29,
+            "seam_pc2": 1.94,
+            "pc2_H1r": 0.01,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "10": {
+            "lin": 0.72,
+            "circ": 0.39,
+            "seam": 1.36,
+            "seam_pc2": 2.16,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "11": {
+            "lin": 0.74,
+            "circ": 0.45,
+            "seam": 1.38,
+            "seam_pc2": 2.29,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "12": {
+            "lin": 0.79,
+            "circ": 0.67,
+            "seam": 1.29,
+            "seam_pc2": 2.11,
+            "pc2_H1r": 0.17,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "13": {
+            "lin": 0.81,
+            "circ": 0.55,
+            "seam": 1.31,
+            "seam_pc2": 2.39,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "14": {
+            "lin": 0.8,
+            "circ": 0.52,
+            "seam": 1.32,
+            "seam_pc2": 2.4,
+            "pc2_H1r": 0.02,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "15": {
+            "lin": 0.85,
+            "circ": 0.63,
+            "seam": 1.33,
+            "seam_pc2": 2.25,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "16": {
+            "lin": 0.84,
+            "circ": 0.55,
+            "seam": 1.36,
+            "seam_pc2": 2.47,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "17": {
+            "lin": 0.8,
+            "circ": 0.5,
+            "seam": 1.35,
+            "seam_pc2": 2.32,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "18": {
+            "lin": 0.8,
+            "circ": 0.53,
+            "seam": 1.34,
+            "seam_pc2": 2.25,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "19": {
+            "lin": 0.81,
+            "circ": 0.54,
+            "seam": 1.34,
+            "seam_pc2": 2.44,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "20": {
+            "lin": 0.83,
+            "circ": 0.54,
+            "seam": 1.33,
+            "seam_pc2": 2.46,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "21": {
+            "lin": 0.82,
+            "circ": 0.65,
+            "seam": 1.29,
+            "seam_pc2": 2.52,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "22": {
+            "lin": 0.85,
+            "circ": 0.54,
+            "seam": 1.28,
+            "seam_pc2": 2.88,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "23": {
+            "lin": 0.82,
+            "circ": 0.56,
+            "seam": 1.36,
+            "seam_pc2": 2.81,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "24": {
+            "lin": 0.8,
+            "circ": 0.55,
+            "seam": 1.32,
+            "seam_pc2": 2.69,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "25": {
+            "lin": 0.81,
+            "circ": 0.53,
+            "seam": 1.37,
+            "seam_pc2": 2.89,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "26": {
+            "lin": 0.8,
+            "circ": 0.57,
+            "seam": 1.36,
+            "seam_pc2": 2.83,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "27": {
+            "lin": 0.78,
+            "circ": 0.58,
+            "seam": 1.32,
+            "seam_pc2": 2.69,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "28": {
+            "lin": 0.7,
+            "circ": 0.51,
+            "seam": 1.32,
+            "seam_pc2": 2.61,
+            "pc2_H1r": 0.09,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          }
+        }
+      }
+    },
+    "HuggingFaceTB/SmolLM2-1.7B-Instruct": {
+      "params_b": 1.7,
+      "cats": {
+        "month": {
+          "0": {
+            "lin": 0.28,
+            "circ": 0.55,
+            "seam": 0.93,
+            "seam_pc2": 0.68,
+            "pc2_H1r": 0.69,
+            "pc2_z": 2.6,
+            "pc2_cls": "contractible"
+          },
+          "1": {
+            "lin": 0.56,
+            "circ": 0.62,
+            "seam": 1.02,
+            "seam_pc2": 1.82,
+            "pc2_H1r": 0.9,
+            "pc2_z": 2.1,
+            "pc2_cls": "contractible"
+          },
+          "2": {
+            "lin": 0.36,
+            "circ": 0.47,
+            "seam": 0.98,
+            "seam_pc2": 1.1,
+            "pc2_H1r": 0.49,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "3": {
+            "lin": 0.34,
+            "circ": 0.52,
+            "seam": 0.99,
+            "seam_pc2": 1.23,
+            "pc2_H1r": 0.77,
+            "pc2_z": 2.1,
+            "pc2_cls": "contractible"
+          },
+          "4": {
+            "lin": 0.57,
+            "circ": 0.62,
+            "seam": 1.08,
+            "seam_pc2": 2.25,
+            "pc2_H1r": 0.84,
+            "pc2_z": 1.6,
+            "pc2_cls": "contractible"
+          },
+          "5": {
+            "lin": 0.62,
+            "circ": 0.57,
+            "seam": 1.18,
+            "seam_pc2": 2.66,
+            "pc2_H1r": 0.74,
+            "pc2_z": 1.0,
+            "pc2_cls": "contractible"
+          },
+          "6": {
+            "lin": 0.54,
+            "circ": 0.53,
+            "seam": 1.14,
+            "seam_pc2": 2.06,
+            "pc2_H1r": 0.93,
+            "pc2_z": 2.2,
+            "pc2_cls": "contractible"
+          },
+          "7": {
+            "lin": 0.59,
+            "circ": 0.54,
+            "seam": 1.16,
+            "seam_pc2": 2.39,
+            "pc2_H1r": 0.54,
+            "pc2_z": 1.5,
+            "pc2_cls": "contractible"
+          },
+          "8": {
+            "lin": 0.61,
+            "circ": 0.58,
+            "seam": 1.16,
+            "seam_pc2": 2.29,
+            "pc2_H1r": 0.83,
+            "pc2_z": 2.2,
+            "pc2_cls": "contractible"
+          },
+          "9": {
+            "lin": 0.59,
+            "circ": 0.57,
+            "seam": 1.16,
+            "seam_pc2": 2.03,
+            "pc2_H1r": 0.76,
+            "pc2_z": 1.8,
+            "pc2_cls": "contractible"
+          },
+          "10": {
+            "lin": 0.58,
+            "circ": 0.53,
+            "seam": 1.16,
+            "seam_pc2": 2.06,
+            "pc2_H1r": 0.39,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "11": {
+            "lin": 0.56,
+            "circ": 0.53,
+            "seam": 1.16,
+            "seam_pc2": 2.01,
+            "pc2_H1r": 0.05,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "12": {
+            "lin": 0.58,
+            "circ": 0.55,
+            "seam": 1.17,
+            "seam_pc2": 2.13,
+            "pc2_H1r": 0.08,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "13": {
+            "lin": 0.58,
+            "circ": 0.53,
+            "seam": 1.17,
+            "seam_pc2": 2.0,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "14": {
+            "lin": 0.49,
+            "circ": 0.47,
+            "seam": 1.17,
+            "seam_pc2": 2.05,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "15": {
+            "lin": 0.42,
+            "circ": 0.47,
+            "seam": 1.11,
+            "seam_pc2": 1.82,
+            "pc2_H1r": 0.39,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "16": {
+            "lin": 0.26,
+            "circ": 0.32,
+            "seam": 1.07,
+            "seam_pc2": 2.0,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "17": {
+            "lin": 0.33,
+            "circ": 0.62,
+            "seam": 0.91,
+            "seam_pc2": 0.53,
+            "pc2_H1r": 0.37,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "18": {
+            "lin": 0.34,
+            "circ": 0.62,
+            "seam": 0.93,
+            "seam_pc2": 0.62,
+            "pc2_H1r": 1.14,
+            "pc2_z": 1.7,
+            "pc2_cls": "contractible"
+          },
+          "19": {
+            "lin": 0.22,
+            "circ": 0.5,
+            "seam": 0.88,
+            "seam_pc2": 0.39,
+            "pc2_H1r": 0.7,
+            "pc2_z": 1.4,
+            "pc2_cls": "contractible"
+          },
+          "20": {
+            "lin": 0.17,
+            "circ": 0.43,
+            "seam": 0.86,
+            "seam_pc2": 0.18,
+            "pc2_H1r": 0.19,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "21": {
+            "lin": 0.13,
+            "circ": 0.41,
+            "seam": 0.83,
+            "seam_pc2": 0.18,
+            "pc2_H1r": 0.03,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "22": {
+            "lin": 0.09,
+            "circ": 0.38,
+            "seam": 0.8,
+            "seam_pc2": 0.19,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "23": {
+            "lin": 0.08,
+            "circ": 0.38,
+            "seam": 0.8,
+            "seam_pc2": 0.13,
+            "pc2_H1r": 0.15,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "24": {
+            "lin": -0.0,
+            "circ": 0.3,
+            "seam": 0.77,
+            "seam_pc2": 0.37,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          }
+        },
+        "weekday": {
+          "0": {
+            "lin": 0.79,
+            "circ": 0.68,
+            "seam": 1.17,
+            "seam_pc2": 1.87,
+            "pc2_H1r": 0.63,
+            "pc2_z": 5.8,
+            "pc2_cls": "weak-loop"
+          },
+          "1": {
+            "lin": 0.83,
+            "circ": 0.56,
+            "seam": 1.23,
+            "seam_pc2": 2.46,
+            "pc2_H1r": 0.35,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "2": {
+            "lin": 0.85,
+            "circ": 0.5,
+            "seam": 1.32,
+            "seam_pc2": 2.63,
+            "pc2_H1r": 0.03,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "3": {
+            "lin": 0.71,
+            "circ": 0.5,
+            "seam": 1.3,
+            "seam_pc2": 2.33,
+            "pc2_H1r": 0.58,
+            "pc2_z": 2.6,
+            "pc2_cls": "contractible"
+          },
+          "4": {
+            "lin": 0.75,
+            "circ": 0.41,
+            "seam": 1.44,
+            "seam_pc2": 2.74,
+            "pc2_H1r": 0.21,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "5": {
+            "lin": 0.7,
+            "circ": 0.43,
+            "seam": 1.33,
+            "seam_pc2": 2.41,
+            "pc2_H1r": 0.64,
+            "pc2_z": 3.1,
+            "pc2_cls": "weak-loop"
+          },
+          "6": {
+            "lin": 0.68,
+            "circ": 0.41,
+            "seam": 1.3,
+            "seam_pc2": 2.4,
+            "pc2_H1r": 0.61,
+            "pc2_z": 1.8,
+            "pc2_cls": "contractible"
+          },
+          "7": {
+            "lin": 0.67,
+            "circ": 0.44,
+            "seam": 1.28,
+            "seam_pc2": 2.29,
+            "pc2_H1r": 0.83,
+            "pc2_z": 2.1,
+            "pc2_cls": "contractible"
+          },
+          "8": {
+            "lin": 0.71,
+            "circ": 0.49,
+            "seam": 1.28,
+            "seam_pc2": 2.35,
+            "pc2_H1r": 0.59,
+            "pc2_z": 1.2,
+            "pc2_cls": "contractible"
+          },
+          "9": {
+            "lin": 0.71,
+            "circ": 0.46,
+            "seam": 1.29,
+            "seam_pc2": 2.37,
+            "pc2_H1r": 0.57,
+            "pc2_z": 2.1,
+            "pc2_cls": "contractible"
+          },
+          "10": {
+            "lin": 0.69,
+            "circ": 0.49,
+            "seam": 1.35,
+            "seam_pc2": 2.55,
+            "pc2_H1r": 0.41,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "11": {
+            "lin": 0.72,
+            "circ": 0.48,
+            "seam": 1.37,
+            "seam_pc2": 2.58,
+            "pc2_H1r": 0.36,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "12": {
+            "lin": 0.78,
+            "circ": 0.52,
+            "seam": 1.36,
+            "seam_pc2": 2.54,
+            "pc2_H1r": 0.28,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "13": {
+            "lin": 0.79,
+            "circ": 0.56,
+            "seam": 1.37,
+            "seam_pc2": 2.47,
+            "pc2_H1r": 0.27,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "14": {
+            "lin": 0.82,
+            "circ": 0.6,
+            "seam": 1.38,
+            "seam_pc2": 2.47,
+            "pc2_H1r": 0.1,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "15": {
+            "lin": 0.74,
+            "circ": 0.57,
+            "seam": 1.32,
+            "seam_pc2": 2.28,
+            "pc2_H1r": 0.49,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "16": {
+            "lin": 0.78,
+            "circ": 0.55,
+            "seam": 1.32,
+            "seam_pc2": 2.37,
+            "pc2_H1r": 0.28,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "17": {
+            "lin": 0.69,
+            "circ": 0.5,
+            "seam": 1.27,
+            "seam_pc2": 2.43,
+            "pc2_H1r": 0.01,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "18": {
+            "lin": 0.7,
+            "circ": 0.48,
+            "seam": 1.34,
+            "seam_pc2": 2.49,
+            "pc2_H1r": 0.2,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "19": {
+            "lin": 0.74,
+            "circ": 0.54,
+            "seam": 1.37,
+            "seam_pc2": 2.59,
+            "pc2_H1r": 0.15,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "20": {
+            "lin": 0.76,
+            "circ": 0.55,
+            "seam": 1.38,
+            "seam_pc2": 2.59,
+            "pc2_H1r": 0.06,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "21": {
+            "lin": 0.72,
+            "circ": 0.48,
+            "seam": 1.41,
+            "seam_pc2": 2.58,
+            "pc2_H1r": 0.17,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "22": {
+            "lin": 0.7,
+            "circ": 0.48,
+            "seam": 1.42,
+            "seam_pc2": 2.67,
+            "pc2_H1r": 0.06,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "23": {
+            "lin": 0.7,
+            "circ": 0.48,
+            "seam": 1.44,
+            "seam_pc2": 2.7,
+            "pc2_H1r": 0.01,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "24": {
+            "lin": 0.68,
+            "circ": 0.48,
+            "seam": 1.53,
+            "seam_pc2": 2.86,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          }
+        }
+      }
+    },
+    "microsoft/Phi-4-mini-instruct": {
+      "params_b": 3.8,
+      "cats": {
+        "month": {
+          "0": {
+            "lin": 0.09,
+            "circ": 0.33,
+            "seam": 0.82,
+            "seam_pc2": 0.36,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "1": {
+            "lin": 0.46,
+            "circ": 0.59,
+            "seam": 1.06,
+            "seam_pc2": 1.75,
+            "pc2_H1r": 1.13,
+            "pc2_z": 2.5,
+            "pc2_cls": "contractible"
+          },
+          "2": {
+            "lin": 0.55,
+            "circ": 0.58,
+            "seam": 1.1,
+            "seam_pc2": 2.34,
+            "pc2_H1r": 0.73,
+            "pc2_z": 1.0,
+            "pc2_cls": "contractible"
+          },
+          "3": {
+            "lin": 0.54,
+            "circ": 0.55,
+            "seam": 1.11,
+            "seam_pc2": 2.46,
+            "pc2_H1r": 0.4,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "4": {
+            "lin": 0.6,
+            "circ": 0.63,
+            "seam": 1.12,
+            "seam_pc2": 2.68,
+            "pc2_H1r": 0.71,
+            "pc2_z": 0.5,
+            "pc2_cls": "contractible"
+          },
+          "5": {
+            "lin": 0.69,
+            "circ": 0.69,
+            "seam": 1.13,
+            "seam_pc2": 3.1,
+            "pc2_H1r": 0.83,
+            "pc2_z": 0.6,
+            "pc2_cls": "contractible"
+          },
+          "6": {
+            "lin": 0.66,
+            "circ": 0.68,
+            "seam": 1.12,
+            "seam_pc2": 3.02,
+            "pc2_H1r": 0.7,
+            "pc2_z": 0.5,
+            "pc2_cls": "contractible"
+          },
+          "7": {
+            "lin": 0.67,
+            "circ": 0.67,
+            "seam": 1.14,
+            "seam_pc2": 3.08,
+            "pc2_H1r": 0.27,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "8": {
+            "lin": 0.66,
+            "circ": 0.66,
+            "seam": 1.16,
+            "seam_pc2": 3.01,
+            "pc2_H1r": 0.15,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "9": {
+            "lin": 0.6,
+            "circ": 0.62,
+            "seam": 1.15,
+            "seam_pc2": 2.9,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "10": {
+            "lin": 0.51,
+            "circ": 0.6,
+            "seam": 1.12,
+            "seam_pc2": 2.58,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "11": {
+            "lin": 0.5,
+            "circ": 0.59,
+            "seam": 1.11,
+            "seam_pc2": 2.43,
+            "pc2_H1r": 0.22,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "12": {
+            "lin": 0.51,
+            "circ": 0.61,
+            "seam": 1.06,
+            "seam_pc2": 2.0,
+            "pc2_H1r": 0.36,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "13": {
+            "lin": 0.47,
+            "circ": 0.56,
+            "seam": 1.09,
+            "seam_pc2": 2.2,
+            "pc2_H1r": 0.17,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "14": {
+            "lin": 0.4,
+            "circ": 0.56,
+            "seam": 1.06,
+            "seam_pc2": 1.76,
+            "pc2_H1r": 0.37,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "15": {
+            "lin": 0.26,
+            "circ": 0.46,
+            "seam": 1.01,
+            "seam_pc2": 1.21,
+            "pc2_H1r": 0.94,
+            "pc2_z": 2.7,
+            "pc2_cls": "contractible"
+          },
+          "16": {
+            "lin": 0.32,
+            "circ": 0.35,
+            "seam": 1.08,
+            "seam_pc2": 1.94,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "17": {
+            "lin": 0.42,
+            "circ": 0.6,
+            "seam": 1.05,
+            "seam_pc2": 1.53,
+            "pc2_H1r": 0.98,
+            "pc2_z": 2.0,
+            "pc2_cls": "contractible"
+          },
+          "18": {
+            "lin": 0.44,
+            "circ": 0.65,
+            "seam": 1.02,
+            "seam_pc2": 1.34,
+            "pc2_H1r": 1.1,
+            "pc2_z": 3.6,
+            "pc2_cls": "loop"
+          },
+          "19": {
+            "lin": 0.32,
+            "circ": 0.58,
+            "seam": 0.97,
+            "seam_pc2": 0.87,
+            "pc2_H1r": 1.03,
+            "pc2_z": 3.4,
+            "pc2_cls": "loop"
+          },
+          "20": {
+            "lin": 0.21,
+            "circ": 0.49,
+            "seam": 0.97,
+            "seam_pc2": 0.41,
+            "pc2_H1r": 0.81,
+            "pc2_z": 2.7,
+            "pc2_cls": "contractible"
+          },
+          "21": {
+            "lin": 0.12,
+            "circ": 0.4,
+            "seam": 0.95,
+            "seam_pc2": 0.2,
+            "pc2_H1r": 0.91,
+            "pc2_z": 3.7,
+            "pc2_cls": "weak-loop"
+          },
+          "22": {
+            "lin": 0.05,
+            "circ": 0.34,
+            "seam": 0.92,
+            "seam_pc2": 0.08,
+            "pc2_H1r": 0.65,
+            "pc2_z": 2.2,
+            "pc2_cls": "contractible"
+          },
+          "23": {
+            "lin": 0.03,
+            "circ": 0.33,
+            "seam": 0.9,
+            "seam_pc2": 0.09,
+            "pc2_H1r": 0.72,
+            "pc2_z": 2.5,
+            "pc2_cls": "contractible"
+          },
+          "24": {
+            "lin": 0.04,
+            "circ": 0.35,
+            "seam": 0.9,
+            "seam_pc2": 0.1,
+            "pc2_H1r": 0.48,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "25": {
+            "lin": 0.03,
+            "circ": 0.34,
+            "seam": 0.89,
+            "seam_pc2": 0.09,
+            "pc2_H1r": 0.5,
+            "pc2_z": 1.5,
+            "pc2_cls": "contractible"
+          },
+          "26": {
+            "lin": 0.03,
+            "circ": 0.34,
+            "seam": 0.87,
+            "seam_pc2": 0.04,
+            "pc2_H1r": 0.7,
+            "pc2_z": 3.2,
+            "pc2_cls": "weak-loop"
+          },
+          "27": {
+            "lin": 0.01,
+            "circ": 0.32,
+            "seam": 0.87,
+            "seam_pc2": 0.05,
+            "pc2_H1r": 0.27,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "28": {
+            "lin": 0.01,
+            "circ": 0.32,
+            "seam": 0.85,
+            "seam_pc2": 0.05,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "29": {
+            "lin": 0.0,
+            "circ": 0.32,
+            "seam": 0.84,
+            "seam_pc2": 0.08,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "30": {
+            "lin": -0.01,
+            "circ": 0.31,
+            "seam": 0.81,
+            "seam_pc2": 0.05,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "31": {
+            "lin": -0.0,
+            "circ": 0.3,
+            "seam": 0.75,
+            "seam_pc2": 0.08,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "32": {
+            "lin": -0.02,
+            "circ": 0.27,
+            "seam": 0.62,
+            "seam_pc2": 0.08,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          }
+        },
+        "weekday": {
+          "0": {
+            "lin": 0.79,
+            "circ": 0.59,
+            "seam": 1.28,
+            "seam_pc2": 2.41,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "1": {
+            "lin": 0.73,
+            "circ": 0.65,
+            "seam": 1.17,
+            "seam_pc2": 1.92,
+            "pc2_H1r": 0.21,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "2": {
+            "lin": 0.67,
+            "circ": 0.57,
+            "seam": 1.18,
+            "seam_pc2": 1.97,
+            "pc2_H1r": 0.14,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "3": {
+            "lin": 0.68,
+            "circ": 0.56,
+            "seam": 1.19,
+            "seam_pc2": 1.99,
+            "pc2_H1r": 0.21,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "4": {
+            "lin": 0.69,
+            "circ": 0.63,
+            "seam": 1.18,
+            "seam_pc2": 1.77,
+            "pc2_H1r": 0.07,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "5": {
+            "lin": 0.72,
+            "circ": 0.68,
+            "seam": 1.16,
+            "seam_pc2": 1.64,
+            "pc2_H1r": 0.16,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "6": {
+            "lin": 0.77,
+            "circ": 0.7,
+            "seam": 1.19,
+            "seam_pc2": 1.82,
+            "pc2_H1r": 0.33,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "7": {
+            "lin": 0.74,
+            "circ": 0.68,
+            "seam": 1.2,
+            "seam_pc2": 1.87,
+            "pc2_H1r": 0.19,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "8": {
+            "lin": 0.74,
+            "circ": 0.67,
+            "seam": 1.22,
+            "seam_pc2": 2.0,
+            "pc2_H1r": 0.14,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "9": {
+            "lin": 0.74,
+            "circ": 0.66,
+            "seam": 1.22,
+            "seam_pc2": 1.99,
+            "pc2_H1r": 0.3,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "10": {
+            "lin": 0.74,
+            "circ": 0.65,
+            "seam": 1.22,
+            "seam_pc2": 2.0,
+            "pc2_H1r": 0.28,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "11": {
+            "lin": 0.72,
+            "circ": 0.62,
+            "seam": 1.22,
+            "seam_pc2": 2.02,
+            "pc2_H1r": 0.24,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "12": {
+            "lin": 0.76,
+            "circ": 0.62,
+            "seam": 1.23,
+            "seam_pc2": 2.14,
+            "pc2_H1r": 0.04,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "13": {
+            "lin": 0.75,
+            "circ": 0.59,
+            "seam": 1.2,
+            "seam_pc2": 2.14,
+            "pc2_H1r": 0.33,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "14": {
+            "lin": 0.72,
+            "circ": 0.57,
+            "seam": 1.18,
+            "seam_pc2": 1.95,
+            "pc2_H1r": 0.76,
+            "pc2_z": 5.2,
+            "pc2_cls": "weak-loop"
+          },
+          "15": {
+            "lin": 0.73,
+            "circ": 0.55,
+            "seam": 1.19,
+            "seam_pc2": 1.96,
+            "pc2_H1r": 0.83,
+            "pc2_z": 4.1,
+            "pc2_cls": "weak-loop"
+          },
+          "16": {
+            "lin": 0.74,
+            "circ": 0.64,
+            "seam": 1.16,
+            "seam_pc2": 1.98,
+            "pc2_H1r": 1.09,
+            "pc2_z": 4.1,
+            "pc2_cls": "loop"
+          },
+          "17": {
+            "lin": 0.79,
+            "circ": 0.64,
+            "seam": 1.15,
+            "seam_pc2": 2.0,
+            "pc2_H1r": 0.98,
+            "pc2_z": 5.6,
+            "pc2_cls": "weak-loop"
+          },
+          "18": {
+            "lin": 0.74,
+            "circ": 0.62,
+            "seam": 1.2,
+            "seam_pc2": 2.16,
+            "pc2_H1r": 0.29,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "19": {
+            "lin": 0.73,
+            "circ": 0.62,
+            "seam": 1.2,
+            "seam_pc2": 2.15,
+            "pc2_H1r": 0.45,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "20": {
+            "lin": 0.71,
+            "circ": 0.57,
+            "seam": 1.19,
+            "seam_pc2": 2.09,
+            "pc2_H1r": 0.19,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "21": {
+            "lin": 0.74,
+            "circ": 0.58,
+            "seam": 1.19,
+            "seam_pc2": 2.17,
+            "pc2_H1r": 0.21,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "22": {
+            "lin": 0.74,
+            "circ": 0.56,
+            "seam": 1.23,
+            "seam_pc2": 2.29,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "23": {
+            "lin": 0.76,
+            "circ": 0.56,
+            "seam": 1.25,
+            "seam_pc2": 2.34,
+            "pc2_H1r": 0.07,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "24": {
+            "lin": 0.74,
+            "circ": 0.55,
+            "seam": 1.27,
+            "seam_pc2": 2.39,
+            "pc2_H1r": 0.14,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "25": {
+            "lin": 0.75,
+            "circ": 0.52,
+            "seam": 1.27,
+            "seam_pc2": 2.45,
+            "pc2_H1r": 0.15,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "26": {
+            "lin": 0.69,
+            "circ": 0.5,
+            "seam": 1.3,
+            "seam_pc2": 2.53,
+            "pc2_H1r": 0.06,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "27": {
+            "lin": 0.69,
+            "circ": 0.5,
+            "seam": 1.3,
+            "seam_pc2": 2.49,
+            "pc2_H1r": 0.15,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "28": {
+            "lin": 0.72,
+            "circ": 0.5,
+            "seam": 1.3,
+            "seam_pc2": 2.5,
+            "pc2_H1r": 0.2,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "29": {
+            "lin": 0.72,
+            "circ": 0.5,
+            "seam": 1.3,
+            "seam_pc2": 2.51,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "30": {
+            "lin": 0.71,
+            "circ": 0.46,
+            "seam": 1.36,
+            "seam_pc2": 2.77,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "31": {
+            "lin": 0.69,
+            "circ": 0.48,
+            "seam": 1.4,
+            "seam_pc2": 2.92,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "32": {
+            "lin": 0.57,
+            "circ": 0.34,
+            "seam": 1.45,
+            "seam_pc2": 2.94,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          }
+        }
+      }
+    },
+    "mistralai/Mistral-7B-Instruct-v0.3": {
+      "params_b": 7.0,
+      "cats": {
+        "month": {
+          "0": {
+            "lin": 0.36,
+            "circ": 0.49,
+            "seam": 1.02,
+            "seam_pc2": 0.88,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "1": {
+            "lin": 0.35,
+            "circ": 0.39,
+            "seam": 1.03,
+            "seam_pc2": 2.21,
+            "pc2_H1r": 0.06,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "2": {
+            "lin": 0.21,
+            "circ": 0.39,
+            "seam": 0.99,
+            "seam_pc2": 1.85,
+            "pc2_H1r": 0.27,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "3": {
+            "lin": 0.37,
+            "circ": 0.43,
+            "seam": 1.13,
+            "seam_pc2": 3.49,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "4": {
+            "lin": 0.51,
+            "circ": 0.56,
+            "seam": 1.11,
+            "seam_pc2": 2.48,
+            "pc2_H1r": 1.24,
+            "pc2_z": 2.4,
+            "pc2_cls": "contractible"
+          },
+          "5": {
+            "lin": 0.38,
+            "circ": 0.59,
+            "seam": 1.05,
+            "seam_pc2": 0.54,
+            "pc2_H1r": 1.11,
+            "pc2_z": 2.9,
+            "pc2_cls": "contractible"
+          },
+          "6": {
+            "lin": 0.35,
+            "circ": 0.56,
+            "seam": 1.04,
+            "seam_pc2": 0.59,
+            "pc2_H1r": 0.76,
+            "pc2_z": 3.1,
+            "pc2_cls": "weak-loop"
+          },
+          "7": {
+            "lin": 0.54,
+            "circ": 0.7,
+            "seam": 1.06,
+            "seam_pc2": 1.7,
+            "pc2_H1r": 2.09,
+            "pc2_z": 3.9,
+            "pc2_cls": "loop"
+          },
+          "8": {
+            "lin": 0.56,
+            "circ": 0.69,
+            "seam": 1.16,
+            "seam_pc2": 2.01,
+            "pc2_H1r": 1.39,
+            "pc2_z": 4.0,
+            "pc2_cls": "loop"
+          },
+          "9": {
+            "lin": 0.64,
+            "circ": 0.76,
+            "seam": 1.19,
+            "seam_pc2": 2.1,
+            "pc2_H1r": 2.23,
+            "pc2_z": 4.5,
+            "pc2_cls": "loop"
+          },
+          "10": {
+            "lin": 0.58,
+            "circ": 0.7,
+            "seam": 1.17,
+            "seam_pc2": 1.88,
+            "pc2_H1r": 2.06,
+            "pc2_z": 4.2,
+            "pc2_cls": "loop"
+          },
+          "11": {
+            "lin": 0.53,
+            "circ": 0.67,
+            "seam": 1.17,
+            "seam_pc2": 1.6,
+            "pc2_H1r": 1.68,
+            "pc2_z": 4.3,
+            "pc2_cls": "loop"
+          },
+          "12": {
+            "lin": 0.46,
+            "circ": 0.62,
+            "seam": 1.16,
+            "seam_pc2": 1.4,
+            "pc2_H1r": 1.13,
+            "pc2_z": 2.7,
+            "pc2_cls": "contractible"
+          },
+          "13": {
+            "lin": 0.45,
+            "circ": 0.59,
+            "seam": 1.17,
+            "seam_pc2": 1.49,
+            "pc2_H1r": 0.89,
+            "pc2_z": 1.7,
+            "pc2_cls": "contractible"
+          },
+          "14": {
+            "lin": 0.36,
+            "circ": 0.54,
+            "seam": 1.15,
+            "seam_pc2": 1.31,
+            "pc2_H1r": 1.13,
+            "pc2_z": 1.9,
+            "pc2_cls": "contractible"
+          },
+          "15": {
+            "lin": 0.25,
+            "circ": 0.48,
+            "seam": 1.08,
+            "seam_pc2": 0.92,
+            "pc2_H1r": 0.73,
+            "pc2_z": 0.8,
+            "pc2_cls": "contractible"
+          },
+          "16": {
+            "lin": 0.62,
+            "circ": 0.63,
+            "seam": 1.26,
+            "seam_pc2": 1.66,
+            "pc2_H1r": 1.9,
+            "pc2_z": 3.6,
+            "pc2_cls": "loop"
+          },
+          "17": {
+            "lin": 0.58,
+            "circ": 0.65,
+            "seam": 1.19,
+            "seam_pc2": 1.56,
+            "pc2_H1r": 2.32,
+            "pc2_z": 4.3,
+            "pc2_cls": "loop"
+          },
+          "18": {
+            "lin": 0.38,
+            "circ": 0.58,
+            "seam": 1.04,
+            "seam_pc2": 0.96,
+            "pc2_H1r": 1.01,
+            "pc2_z": 4.1,
+            "pc2_cls": "loop"
+          },
+          "19": {
+            "lin": -0.03,
+            "circ": 0.29,
+            "seam": 0.98,
+            "seam_pc2": 0.26,
+            "pc2_H1r": 1.01,
+            "pc2_z": 0.8,
+            "pc2_cls": "contractible"
+          },
+          "20": {
+            "lin": -0.06,
+            "circ": 0.25,
+            "seam": 0.91,
+            "seam_pc2": 0.14,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "21": {
+            "lin": -0.11,
+            "circ": 0.19,
+            "seam": 0.85,
+            "seam_pc2": 0.09,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "22": {
+            "lin": -0.13,
+            "circ": 0.16,
+            "seam": 0.86,
+            "seam_pc2": 0.06,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "23": {
+            "lin": -0.11,
+            "circ": 0.15,
+            "seam": 0.87,
+            "seam_pc2": 0.01,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "24": {
+            "lin": -0.13,
+            "circ": 0.18,
+            "seam": 0.84,
+            "seam_pc2": 0.02,
+            "pc2_H1r": 0.2,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "25": {
+            "lin": -0.13,
+            "circ": 0.19,
+            "seam": 0.8,
+            "seam_pc2": 0.01,
+            "pc2_H1r": 0.12,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "26": {
+            "lin": -0.1,
+            "circ": 0.18,
+            "seam": 0.85,
+            "seam_pc2": 0.1,
+            "pc2_H1r": 0.25,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "27": {
+            "lin": -0.1,
+            "circ": 0.19,
+            "seam": 0.82,
+            "seam_pc2": 0.11,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "28": {
+            "lin": -0.14,
+            "circ": 0.18,
+            "seam": 0.82,
+            "seam_pc2": 0.1,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "29": {
+            "lin": -0.18,
+            "circ": 0.15,
+            "seam": 0.8,
+            "seam_pc2": 0.13,
+            "pc2_H1r": 0.51,
+            "pc2_z": 3.0,
+            "pc2_cls": "weak-loop"
+          },
+          "30": {
+            "lin": -0.17,
+            "circ": 0.14,
+            "seam": 0.8,
+            "seam_pc2": 0.04,
+            "pc2_H1r": 0.32,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "31": {
+            "lin": -0.16,
+            "circ": 0.14,
+            "seam": 0.8,
+            "seam_pc2": 0.06,
+            "pc2_H1r": 0.06,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "32": {
+            "lin": -0.15,
+            "circ": 0.15,
+            "seam": 0.79,
+            "seam_pc2": 0.09,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          }
+        },
+        "weekday": {
+          "0": {
+            "lin": 0.75,
+            "circ": 0.57,
+            "seam": 1.07,
+            "seam_pc2": 1.88,
+            "pc2_H1r": 0.48,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "1": {
+            "lin": 0.56,
+            "circ": 0.51,
+            "seam": 1.06,
+            "seam_pc2": 1.7,
+            "pc2_H1r": 0.29,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "2": {
+            "lin": 0.62,
+            "circ": 0.43,
+            "seam": 1.13,
+            "seam_pc2": 1.9,
+            "pc2_H1r": 0.2,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "3": {
+            "lin": 0.62,
+            "circ": 0.42,
+            "seam": 1.2,
+            "seam_pc2": 2.14,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "4": {
+            "lin": 0.7,
+            "circ": 0.58,
+            "seam": 1.19,
+            "seam_pc2": 1.92,
+            "pc2_H1r": 0.2,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "5": {
+            "lin": 0.49,
+            "circ": 0.41,
+            "seam": 1.22,
+            "seam_pc2": 2.02,
+            "pc2_H1r": 0.08,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "6": {
+            "lin": 0.53,
+            "circ": 0.43,
+            "seam": 1.22,
+            "seam_pc2": 1.96,
+            "pc2_H1r": 0.42,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "7": {
+            "lin": 0.62,
+            "circ": 0.47,
+            "seam": 1.26,
+            "seam_pc2": 2.01,
+            "pc2_H1r": 0.82,
+            "pc2_z": 10.7,
+            "pc2_cls": "weak-loop"
+          },
+          "8": {
+            "lin": 0.7,
+            "circ": 0.55,
+            "seam": 1.26,
+            "seam_pc2": 1.8,
+            "pc2_H1r": 1.14,
+            "pc2_z": 10.2,
+            "pc2_cls": "loop"
+          },
+          "9": {
+            "lin": 0.7,
+            "circ": 0.57,
+            "seam": 1.29,
+            "seam_pc2": 1.89,
+            "pc2_H1r": 0.77,
+            "pc2_z": 4.8,
+            "pc2_cls": "weak-loop"
+          },
+          "10": {
+            "lin": 0.71,
+            "circ": 0.57,
+            "seam": 1.3,
+            "seam_pc2": 1.97,
+            "pc2_H1r": 0.76,
+            "pc2_z": 4.7,
+            "pc2_cls": "weak-loop"
+          },
+          "11": {
+            "lin": 0.69,
+            "circ": 0.56,
+            "seam": 1.28,
+            "seam_pc2": 1.97,
+            "pc2_H1r": 0.72,
+            "pc2_z": 6.8,
+            "pc2_cls": "weak-loop"
+          },
+          "12": {
+            "lin": 0.73,
+            "circ": 0.59,
+            "seam": 1.28,
+            "seam_pc2": 1.98,
+            "pc2_H1r": 0.79,
+            "pc2_z": 4.0,
+            "pc2_cls": "weak-loop"
+          },
+          "13": {
+            "lin": 0.73,
+            "circ": 0.58,
+            "seam": 1.26,
+            "seam_pc2": 1.96,
+            "pc2_H1r": 0.73,
+            "pc2_z": 6.7,
+            "pc2_cls": "weak-loop"
+          },
+          "14": {
+            "lin": 0.7,
+            "circ": 0.51,
+            "seam": 1.41,
+            "seam_pc2": 2.5,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "15": {
+            "lin": 0.65,
+            "circ": 0.6,
+            "seam": 1.36,
+            "seam_pc2": 1.94,
+            "pc2_H1r": 0.61,
+            "pc2_z": 7.9,
+            "pc2_cls": "weak-loop"
+          },
+          "16": {
+            "lin": 0.69,
+            "circ": 0.61,
+            "seam": 1.35,
+            "seam_pc2": 2.04,
+            "pc2_H1r": 0.45,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "17": {
+            "lin": 0.8,
+            "circ": 0.66,
+            "seam": 1.36,
+            "seam_pc2": 2.01,
+            "pc2_H1r": 0.55,
+            "pc2_z": 3.7,
+            "pc2_cls": "weak-loop"
+          },
+          "18": {
+            "lin": 0.79,
+            "circ": 0.61,
+            "seam": 1.31,
+            "seam_pc2": 2.2,
+            "pc2_H1r": 0.32,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "19": {
+            "lin": 0.3,
+            "circ": 0.29,
+            "seam": 1.07,
+            "seam_pc2": 1.69,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "20": {
+            "lin": 0.37,
+            "circ": 0.28,
+            "seam": 1.12,
+            "seam_pc2": 1.88,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "21": {
+            "lin": 0.41,
+            "circ": 0.26,
+            "seam": 1.15,
+            "seam_pc2": 2.12,
+            "pc2_H1r": 0.22,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "22": {
+            "lin": 0.46,
+            "circ": 0.27,
+            "seam": 1.18,
+            "seam_pc2": 2.35,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "23": {
+            "lin": 0.52,
+            "circ": 0.29,
+            "seam": 1.2,
+            "seam_pc2": 2.44,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "24": {
+            "lin": 0.48,
+            "circ": 0.26,
+            "seam": 1.21,
+            "seam_pc2": 2.5,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "25": {
+            "lin": 0.45,
+            "circ": 0.24,
+            "seam": 1.22,
+            "seam_pc2": 2.3,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "26": {
+            "lin": 0.42,
+            "circ": 0.21,
+            "seam": 1.22,
+            "seam_pc2": 2.43,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "27": {
+            "lin": 0.29,
+            "circ": 0.17,
+            "seam": 1.15,
+            "seam_pc2": 2.19,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "28": {
+            "lin": 0.33,
+            "circ": 0.21,
+            "seam": 1.14,
+            "seam_pc2": 2.41,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "29": {
+            "lin": 0.62,
+            "circ": 0.41,
+            "seam": 1.15,
+            "seam_pc2": 2.52,
+            "pc2_H1r": 0.0,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "30": {
+            "lin": 0.61,
+            "circ": 0.75,
+            "seam": 1.13,
+            "seam_pc2": 1.55,
+            "pc2_H1r": 0.39,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "31": {
+            "lin": 0.61,
+            "circ": 0.64,
+            "seam": 1.15,
+            "seam_pc2": 1.73,
+            "pc2_H1r": 0.22,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          },
+          "32": {
+            "lin": 0.56,
+            "circ": 0.61,
+            "seam": 1.16,
+            "seam_pc2": 1.8,
+            "pc2_H1r": 0.12,
+            "pc2_z": null,
+            "pc2_cls": "contractible"
+          }
+        }
+      }
+    }
+  }
+}
