@@ -32,10 +32,54 @@ DEMOS = [
     "Today is Tuesday. Tomorrow will be",
     "Sarah gave the book to Emma because she had finished it. The book was returned by",
     "The capital of France is",
+    "What is nine minus three? The answer is",
+    "Anna told Maria that her car was blocking the driveway. The driveway was blocked by",
+    "All cats are animals. Whiskers is a cat, so Whiskers is",
+    "Gold is heavier than silver, and lead is heavier than gold. The heaviest metal of the three is",
+    "Monday, Tuesday, Wednesday,",
+    "The word for bread in Spanish is",
+    "Christmas falls in the month of",
+    "The basket held three apples and two pears. The number of apples was",
 ]
 GEN_TOKENS = 5
 Z_SHOW = 4.0
 TOP_SHOW = 3
+
+# presentation-layer word classes for verbalization (NOT solver logic)
+FUNCTION_WORDS = {"the", "a", "an", "is", "was", "were", "be", "will",
+                  "would", "to", "of", "in", "on", "by", "for", "and", "or",
+                  "so", "that", "it", "she", "he", "her", "his", "had",
+                  "has", "?", ".", ",", "what", "answer", "word", "number",
+                  "month", "total", "next", ""}
+
+
+def verbalize(gen, events):
+    """Mechanical event -> English clause rules."""
+    clauses = []
+    gl = gen.strip().lower()
+    for ev in events:
+        srcs = [s for s in ev["sources"] if s]
+        content = [s for s in srcs if s.lower() not in FUNCTION_WORDS]
+        ovl = [o.lower() for o in ev["ov"][:2]]
+        tag = f"(L{ev['L']} H{ev['head']})"
+        if gl and any(gl == o or gl in o or o in gl for o in ovl if o):
+            src_s = " and ".join(f"'{s}'" for s in (content or srcs)[:2])
+            clauses.append(f"wrote '{gen.strip()}' directly while reading "
+                           f"{src_s} {tag}")
+        elif len(content) >= 2:
+            clauses.append("gathered " + " and ".join(
+                f"'{s}'" for s in content[:3]) + f" {tag}")
+        elif len(content) == 1:
+            clauses.append(f"retrieved '{content[0]}' {tag}")
+        elif srcs:
+            clauses.append(f"followed the cue '"
+                           + " ".join(srcs[:3]) + f"' {tag}")
+        else:
+            clauses.append(f"moved diffuse context {tag}")
+    if not clauses:
+        return f"To produce '{gen.strip()}': no head stood out (routine)."
+    return (f"To produce '{gen.strip()}', the model "
+            + "; ".join(clauses) + ".")
 
 
 def main():
@@ -141,6 +185,8 @@ def main():
                 print(f"      L{L:2d} H{h:2d} z={zv:4.1f}  <- "
                       f"{', '.join(repr(s) for s in src_toks) or '(diffuse)'}"
                       f"   writes: {', '.join(ov)}", flush=True)
+            step["sentence"] = verbalize(gen, step["events"])
+            print(f"      » {step['sentence']}")
             ids = ids + [nxt]
             demo["steps"].append(step)
             if gen.strip() in (".", "</s>", ""):
@@ -148,8 +194,13 @@ def main():
         answer = tok.decode(ids[len(tok(prompt)['input_ids']):])
         demo["answer"] = answer
         demo["provenance"] = sorted(provenance)
+        content_prov = sorted(s for s in provenance
+                              if s.lower() not in FUNCTION_WORDS)
+        demo["summary"] = (f"It answered {answer.strip()!r} drawing on "
+                           + (", ".join(f"'{s}'" for s in content_prov)
+                              or "routine context") + ".")
         print(f"  answer: {answer!r}")
-        print(f"  provenance (event sources): {sorted(provenance)}")
+        print(f"  ∴ {demo['summary']}")
         results["demos"].append(demo)
 
     for h in hooks:
