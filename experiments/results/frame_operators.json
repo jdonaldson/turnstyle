@@ -1,0 +1,711 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "ops": [
+    "",
+    "also ",
+    "extremely ",
+    "very ",
+    "quite ",
+    "somewhat ",
+    "slightly ",
+    "barely ",
+    "not ",
+    "more ",
+    "less "
+  ],
+  "frames": {
+    "opinion": {
+      "r_refit": 0.9999995071524989,
+      "r_lib": 0.9990408561453582,
+      "layer": 3,
+      "ops": {
+        "also": {
+          "slope": 0.978,
+          "intercept": 1.448,
+          "r2": 0.999
+        },
+        "extremely": {
+          "slope": 0.828,
+          "intercept": -0.096,
+          "r2": 0.993
+        },
+        "very": {
+          "slope": 0.869,
+          "intercept": 0.055,
+          "r2": 0.991
+        },
+        "quite": {
+          "slope": 0.813,
+          "intercept": 0.362,
+          "r2": 0.991
+        },
+        "somewhat": {
+          "slope": 0.827,
+          "intercept": -0.371,
+          "r2": 0.993
+        },
+        "slightly": {
+          "slope": 0.829,
+          "intercept": -0.369,
+          "r2": 0.996
+        },
+        "barely": {
+          "slope": 0.642,
+          "intercept": -1.161,
+          "r2": 0.986
+        },
+        "not": {
+          "slope": 0.586,
+          "intercept": -1.096,
+          "r2": 0.945
+        },
+        "more": {
+          "slope": 0.832,
+          "intercept": -0.839,
+          "r2": 0.99
+        },
+        "less": {
+          "slope": 0.528,
+          "intercept": -0.592,
+          "r2": 0.945
+        }
+      }
+    },
+    "size": {
+      "r_refit": 0.9999997296694841,
+      "r_lib": 0.9936603969210074,
+      "layer": 3,
+      "ops": {
+        "also": {
+          "slope": 0.966,
+          "intercept": 0.105,
+          "r2": 0.999
+        },
+        "extremely": {
+          "slope": 0.879,
+          "intercept": 0.628,
+          "r2": 0.992
+        },
+        "very": {
+          "slope": 0.91,
+          "intercept": 1.257,
+          "r2": 0.99
+        },
+        "quite": {
+          "slope": 0.849,
+          "intercept": 1.407,
+          "r2": 0.993
+        },
+        "somewhat": {
+          "slope": 0.849,
+          "intercept": 0.283,
+          "r2": 0.996
+        },
+        "slightly": {
+          "slope": 0.842,
+          "intercept": -0.772,
+          "r2": 0.998
+        },
+        "barely": {
+          "slope": 0.784,
+          "intercept": -1.755,
+          "r2": 0.998
+        },
+        "not": {
+          "slope": 0.749,
+          "intercept": -0.073,
+          "r2": 0.988
+        },
+        "more": {
+          "slope": 0.868,
+          "intercept": -0.366,
+          "r2": 0.993
+        },
+        "less": {
+          "slope": 0.78,
+          "intercept": -1.779,
+          "r2": 0.989
+        }
+      }
+    },
+    "age": {
+      "r_refit": 0.9999997364749604,
+      "r_lib": 0.9914201683575956,
+      "layer": 2,
+      "ops": {
+        "also": {
+          "slope": 0.978,
+          "intercept": 0.211,
+          "r2": 0.999
+        },
+        "extremely": {
+          "slope": 0.952,
+          "intercept": 1.232,
+          "r2": 0.999
+        },
+        "very": {
+          "slope": 0.955,
+          "intercept": 1.726,
+          "r2": 0.996
+        },
+        "quite": {
+          "slope": 0.914,
+          "intercept": 0.619,
+          "r2": 0.997
+        },
+        "somewhat": {
+          "slope": 0.935,
+          "intercept": 0.437,
+          "r2": 0.999
+        },
+        "slightly": {
+          "slope": 0.915,
+          "intercept": 0.213,
+          "r2": 0.997
+        },
+        "barely": {
+          "slope": 0.852,
+          "intercept": -0.475,
+          "r2": 0.993
+        },
+        "not": {
+          "slope": 0.954,
+          "intercept": 0.026,
+          "r2": 0.997
+        },
+        "more": {
+          "slope": 0.96,
+          "intercept": 1.078,
+          "r2": 0.995
+        },
+        "less": {
+          "slope": 0.851,
+          "intercept": -0.594,
+          "r2": 0.993
+        }
+      }
+    },
+    "weight": {
+      "r_refit": 0.9999996186109193,
+      "r_lib": 0.9946871382784682,
+      "layer": 5,
+      "ops": {
+        "also": {
+          "slope": 0.965,
+          "intercept": -0.342,
+          "r2": 0.998
+        },
+        "extremely": {
+          "slope": 0.88,
+          "intercept": -0.975,
+          "r2": 0.993
+        },
+        "very": {
+          "slope": 0.892,
+          "intercept": -0.078,
+          "r2": 0.997
+        },
+        "quite": {
+          "slope": 0.867,
+          "intercept": 0.21,
+          "r2": 0.994
+        },
+        "somewhat": {
+          "slope": 0.891,
+          "intercept": 0.607,
+          "r2": 0.994
+        },
+        "slightly": {
+          "slope": 0.88,
+          "intercept": -0.284,
+          "r2": 0.991
+        },
+        "barely": {
+          "slope": 0.787,
+          "intercept": -0.189,
+          "r2": 0.993
+        },
+        "not": {
+          "slope": 0.868,
+          "intercept": -0.745,
+          "r2": 0.993
+        },
+        "more": {
+          "slope": 0.866,
+          "intercept": -0.15,
+          "r2": 0.996
+        },
+        "less": {
+          "slope": 0.768,
+          "intercept": -2.232,
+          "r2": 0.984
+        }
+      }
+    },
+    "warmth": {
+      "r_refit": 0.9999989117730222,
+      "r_lib": 0.9873114126684769,
+      "layer": 13,
+      "ops": {
+        "also": {
+          "slope": 0.993,
+          "intercept": 1.832,
+          "r2": 0.995
+        },
+        "extremely": {
+          "slope": 0.884,
+          "intercept": -0.812,
+          "r2": 0.971
+        },
+        "very": {
+          "slope": 0.933,
+          "intercept": -0.784,
+          "r2": 0.982
+        },
+        "quite": {
+          "slope": 0.885,
+          "intercept": -1.531,
+          "r2": 0.981
+        },
+        "somewhat": {
+          "slope": 0.816,
+          "intercept": -2.407,
+          "r2": 0.982
+        },
+        "slightly": {
+          "slope": 0.717,
+          "intercept": -0.85,
+          "r2": 0.982
+        },
+        "barely": {
+          "slope": 0.309,
+          "intercept": -5.071,
+          "r2": 0.695
+        },
+        "not": {
+          "slope": 0.399,
+          "intercept": -3.431,
+          "r2": 0.692
+        },
+        "more": {
+          "slope": 0.789,
+          "intercept": -2.875,
+          "r2": 0.987
+        },
+        "less": {
+          "slope": 0.34,
+          "intercept": -3.445,
+          "r2": 0.688
+        }
+      }
+    },
+    "competence": {
+      "r_refit": 0.9999960156084123,
+      "r_lib": 0.993557268564399,
+      "layer": 19,
+      "ops": {
+        "also": {
+          "slope": 0.939,
+          "intercept": 2.043,
+          "r2": 0.993
+        },
+        "extremely": {
+          "slope": 0.833,
+          "intercept": 1.138,
+          "r2": 0.973
+        },
+        "very": {
+          "slope": 0.787,
+          "intercept": -0.299,
+          "r2": 0.977
+        },
+        "quite": {
+          "slope": 0.772,
+          "intercept": 0.769,
+          "r2": 0.985
+        },
+        "somewhat": {
+          "slope": 0.662,
+          "intercept": -0.164,
+          "r2": 0.988
+        },
+        "slightly": {
+          "slope": 0.544,
+          "intercept": -2.425,
+          "r2": 0.975
+        },
+        "barely": {
+          "slope": 0.489,
+          "intercept": -5.82,
+          "r2": 0.908
+        },
+        "not": {
+          "slope": 0.585,
+          "intercept": -3.846,
+          "r2": 0.924
+        },
+        "more": {
+          "slope": 0.668,
+          "intercept": -1.207,
+          "r2": 0.982
+        },
+        "less": {
+          "slope": 0.415,
+          "intercept": -2.741,
+          "r2": 0.868
+        }
+      }
+    },
+    "potency": {
+      "r_refit": 0.9999983494047197,
+      "r_lib": 0.9931485402881943,
+      "layer": 17,
+      "ops": {
+        "also": {
+          "slope": 0.922,
+          "intercept": 1.608,
+          "r2": 0.992
+        },
+        "extremely": {
+          "slope": 0.806,
+          "intercept": -1.21,
+          "r2": 0.981
+        },
+        "very": {
+          "slope": 0.838,
+          "intercept": -0.926,
+          "r2": 0.986
+        },
+        "quite": {
+          "slope": 0.836,
+          "intercept": -1.139,
+          "r2": 0.979
+        },
+        "somewhat": {
+          "slope": 0.751,
+          "intercept": -1.23,
+          "r2": 0.976
+        },
+        "slightly": {
+          "slope": 0.651,
+          "intercept": -0.913,
+          "r2": 0.972
+        },
+        "barely": {
+          "slope": 0.514,
+          "intercept": -4.138,
+          "r2": 0.947
+        },
+        "not": {
+          "slope": 0.701,
+          "intercept": -2.384,
+          "r2": 0.955
+        },
+        "more": {
+          "slope": 0.749,
+          "intercept": -2.298,
+          "r2": 0.98
+        },
+        "less": {
+          "slope": 0.522,
+          "intercept": -3.123,
+          "r2": 0.897
+        }
+      }
+    },
+    "certainty": {
+      "r_refit": 0.9999987671625371,
+      "r_lib": 0.9999987737480458,
+      "layer": 16,
+      "ops": {
+        "also": {
+          "slope": 0.845,
+          "intercept": 0.258,
+          "r2": 0.996
+        },
+        "extremely": {
+          "slope": 0.746,
+          "intercept": -2.12,
+          "r2": 0.94
+        },
+        "very": {
+          "slope": 0.805,
+          "intercept": -0.2,
+          "r2": 0.978
+        },
+        "quite": {
+          "slope": 0.844,
+          "intercept": -0.727,
+          "r2": 0.983
+        },
+        "somewhat": {
+          "slope": 0.734,
+          "intercept": -1.322,
+          "r2": 0.977
+        },
+        "slightly": {
+          "slope": 0.532,
+          "intercept": -1.618,
+          "r2": 0.902
+        },
+        "barely": {
+          "slope": 0.261,
+          "intercept": -1.851,
+          "r2": 0.322
+        },
+        "not": {
+          "slope": 0.026,
+          "intercept": -3.421,
+          "r2": 0.003
+        },
+        "more": {
+          "slope": 0.585,
+          "intercept": -1.404,
+          "r2": 0.91
+        },
+        "less": {
+          "slope": 0.051,
+          "intercept": -1.632,
+          "r2": 0.013
+        }
+      }
+    }
+  },
+  "signatures": {
+    "also": {
+      "mean": 0.948,
+      "sd": 0.045
+    },
+    "extremely": {
+      "mean": 0.851,
+      "sd": 0.058
+    },
+    "very": {
+      "mean": 0.874,
+      "sd": 0.056
+    },
+    "quite": {
+      "mean": 0.847,
+      "sd": 0.041
+    },
+    "somewhat": {
+      "mean": 0.808,
+      "sd": 0.083
+    },
+    "slightly": {
+      "mean": 0.739,
+      "sd": 0.141
+    },
+    "barely": {
+      "mean": 0.58,
+      "sd": 0.209
+    },
+    "not": {
+      "mean": 0.608,
+      "sd": 0.274
+    },
+    "more": {
+      "mean": 0.79,
+      "sd": 0.112
+    },
+    "less": {
+      "mean": 0.532,
+      "sd": 0.25
+    }
+  },
+  "negation_asymmetry": {
+    "opinion": {
+      "hi_slope": 1.069,
+      "lo_slope": 0.682
+    },
+    "size": {
+      "hi_slope": 0.956,
+      "lo_slope": 0.78
+    },
+    "age": {
+      "hi_slope": 1.059,
+      "lo_slope": 1.06
+    },
+    "weight": {
+      "hi_slope": 1.08,
+      "lo_slope": 0.871
+    },
+    "warmth": {
+      "hi_slope": 0.846,
+      "lo_slope": 0.513
+    },
+    "competence": {
+      "hi_slope": 1.124,
+      "lo_slope": 0.517
+    },
+    "potency": {
+      "hi_slope": 0.964,
+      "lo_slope": 0.931
+    },
+    "certainty": {
+      "hi_slope": 1.198,
+      "lo_slope": 0.41
+    },
+    "pooled_hi": 1.108,
+    "pooled_lo": 0.701
+  },
+  "layer_profile": {
+    "also": [
+      1.0,
+      0.984,
+      0.986,
+      1.003,
+      0.982,
+      0.965,
+      0.948,
+      0.933,
+      0.937,
+      0.924,
+      0.915,
+      0.895,
+      0.893,
+      0.88,
+      0.876,
+      0.878,
+      0.879,
+      0.896,
+      0.905,
+      0.919,
+      0.923,
+      0.92,
+      0.918,
+      0.911,
+      0.939
+    ],
+    "very": [
+      1.0,
+      0.953,
+      0.93,
+      0.92,
+      0.9,
+      0.88,
+      0.868,
+      0.854,
+      0.852,
+      0.861,
+      0.859,
+      0.856,
+      0.86,
+      0.853,
+      0.854,
+      0.851,
+      0.851,
+      0.827,
+      0.805,
+      0.798,
+      0.788,
+      0.783,
+      0.781,
+      0.792,
+      0.754
+    ],
+    "not": [
+      1.0,
+      0.923,
+      0.878,
+      0.799,
+      0.747,
+      0.666,
+      0.614,
+      0.575,
+      0.571,
+      0.445,
+      0.421,
+      0.448,
+      0.415,
+      0.383,
+      0.382,
+      0.412,
+      0.444,
+      0.499,
+      0.523,
+      0.535,
+      0.532,
+      0.526,
+      0.525,
+      0.517,
+      0.537
+    ]
+  },
+  "specificity": {
+    "very": {
+      "own": 0.112,
+      "other": 0.054
+    },
+    "not": {
+      "own": 0.425,
+      "other": 0.104
+    }
+  },
+  "un_pairs": [
+    {
+      "frame": "warmth",
+      "base": "kind",
+      "un": "unkind",
+      "c_base": 19.94,
+      "c_un": -12.51,
+      "c_not": 0.33
+    },
+    {
+      "frame": "warmth",
+      "base": "friendly",
+      "un": "unfriendly",
+      "c_base": 12.82,
+      "c_un": -15.7,
+      "c_not": -5.94
+    },
+    {
+      "frame": "warmth",
+      "base": "pleasant",
+      "un": "unpleasant",
+      "c_base": 5.73,
+      "c_un": -15.07,
+      "c_not": -9.57
+    },
+    {
+      "frame": "certainty",
+      "base": "likely",
+      "un": "unlikely",
+      "c_base": 11.68,
+      "c_un": -16.85,
+      "c_not": -11.02
+    },
+    {
+      "frame": "certainty",
+      "base": "certain",
+      "un": "uncertain",
+      "c_base": 18.87,
+      "c_un": -9.76,
+      "c_not": -1.92
+    },
+    {
+      "frame": "certainty",
+      "base": "clear",
+      "un": "unclear",
+      "c_base": 13.99,
+      "c_un": -9.78,
+      "c_not": -8.4
+    },
+    {
+      "frame": "opinion",
+      "base": "fair",
+      "un": "unfair",
+      "c_base": 4.11,
+      "c_un": -4.96,
+      "c_not": -1.99
+    },
+    {
+      "frame": "opinion",
+      "base": "happy",
+      "un": "unhappy",
+      "c_base": 5.62,
+      "c_un": -4.59,
+      "c_not": 0.92
+    }
+  ]
+}

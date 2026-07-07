@@ -1,0 +1,88 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "templates": {
+    "opinion": "That was {m}{w}.",
+    "size": "That was {m}{w}.",
+    "age": "That was {m}{w}.",
+    "weight": "That was {m}{w}.",
+    "warmth": "He was {m}{w}.",
+    "competence": "He was {m}{w}.",
+    "potency": "He was {m}{w}.",
+    "certainty": "It was {m}{w} that they left."
+  },
+  "rows": {
+    "opinion": {
+      "end_cv_r": 0.948,
+      "end_layer": 12,
+      "end_not_slope": -0.215,
+      "end_r2": 0.496,
+      "adj_not_slope": 0.651,
+      "prediction": "  --",
+      "ok": null
+    },
+    "size": {
+      "end_cv_r": 0.908,
+      "end_layer": 7,
+      "end_not_slope": 0.627,
+      "end_r2": 0.924,
+      "adj_not_slope": 0.771,
+      "prediction": "R1 neg",
+      "ok": false
+    },
+    "age": {
+      "end_cv_r": 0.817,
+      "end_layer": 10,
+      "end_not_slope": 0.541,
+      "end_r2": 0.957,
+      "adj_not_slope": 0.96,
+      "prediction": "R2 ~0",
+      "ok": false
+    },
+    "weight": {
+      "end_cv_r": 0.79,
+      "end_layer": 24,
+      "end_not_slope": 0.573,
+      "end_r2": 0.817,
+      "adj_not_slope": 0.927,
+      "prediction": "  --",
+      "ok": null
+    },
+    "warmth": {
+      "end_cv_r": 0.948,
+      "end_layer": 12,
+      "end_not_slope": -0.694,
+      "end_r2": 0.678,
+      "adj_not_slope": 0.292,
+      "prediction": "R1 neg",
+      "ok": true
+    },
+    "competence": {
+      "end_cv_r": 0.942,
+      "end_layer": 11,
+      "end_not_slope": -0.16,
+      "end_r2": 0.268,
+      "adj_not_slope": 0.488,
+      "prediction": "R1 neg",
+      "ok": true
+    },
+    "potency": {
+      "end_cv_r": 0.934,
+      "end_layer": 12,
+      "end_not_slope": -0.283,
+      "end_r2": 0.36,
+      "adj_not_slope": 0.68,
+      "prediction": "R1 neg",
+      "ok": true
+    },
+    "certainty": {
+      "end_cv_r": 0.963,
+      "end_layer": 17,
+      "end_not_slope": -0.226,
+      "end_r2": 0.121,
+      "adj_not_slope": 0.083,
+      "prediction": "R2 ~0",
+      "ok": false
+    }
+  },
+  "r3_all_adj_positive": true
+}
