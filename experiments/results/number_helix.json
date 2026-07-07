@@ -1,0 +1,3445 @@
+{
+  "model": "mistralai/Mistral-7B-Instruct-v0.3",
+  "conditions": {
+    "neutral/last": {
+      "0": {
+        "cong_ratio": 0.979,
+        "cong_z": -1.6,
+        "star": {
+          "d(eleven,one)": 99.16,
+          "d(eleven,seven)": 92.97,
+          "d(eleven,six)": 93.99,
+          "d(twelve,two)": 94.9,
+          "d(twelve,seven)": 93.64
+        },
+        "rsa": {
+          "line": 0.297,
+          "circ7": -0.063,
+          "circ10": 0.059,
+          "circ12": 0.074,
+          "helix": 0.288
+        },
+        "best_rho": 2.0,
+        "semi_partial_circ10": 0.049,
+        "sp_p": 0.1297,
+        "readout": {
+          "t": -0.711,
+          "cos10": -0.959,
+          "sin10": -0.939
+        }
+      },
+      "1": {
+        "cong_ratio": 0.957,
+        "cong_z": -2.8,
+        "star": {
+          "d(eleven,one)": 103.16,
+          "d(eleven,seven)": 87.86,
+          "d(eleven,six)": 88.27,
+          "d(twelve,two)": 95.53,
+          "d(twelve,seven)": 91.27
+        },
+        "rsa": {
+          "line": 0.692,
+          "circ7": -0.103,
+          "circ10": 0.029,
+          "circ12": 0.045,
+          "helix": 0.689
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.046,
+        "sp_p": 0.1637,
+        "readout": {
+          "t": -0.34,
+          "cos10": -0.922,
+          "sin10": -0.833
+        }
+      },
+      "2": {
+        "cong_ratio": 0.948,
+        "cong_z": -2.3,
+        "star": {
+          "d(eleven,one)": 108.72,
+          "d(eleven,seven)": 85.09,
+          "d(eleven,six)": 86.53,
+          "d(twelve,two)": 94.47,
+          "d(twelve,seven)": 87.31
+        },
+        "rsa": {
+          "line": 0.7,
+          "circ7": -0.097,
+          "circ10": 0.025,
+          "circ12": 0.038,
+          "helix": 0.696
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.085,
+        "sp_p": 0.0539,
+        "readout": {
+          "t": -0.134,
+          "cos10": -0.862,
+          "sin10": -0.651
+        }
+      },
+      "3": {
+        "cong_ratio": 0.949,
+        "cong_z": -3.2,
+        "star": {
+          "d(eleven,one)": 110.41,
+          "d(eleven,seven)": 94.61,
+          "d(eleven,six)": 93.7,
+          "d(twelve,two)": 95.83,
+          "d(twelve,seven)": 94.42
+        },
+        "rsa": {
+          "line": 0.79,
+          "circ7": -0.111,
+          "circ10": 0.052,
+          "circ12": 0.078,
+          "helix": 0.79
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.093,
+        "sp_p": 0.0918,
+        "readout": {
+          "t": 0.142,
+          "cos10": -0.699,
+          "sin10": -0.261
+        }
+      },
+      "4": {
+        "cong_ratio": 0.952,
+        "cong_z": -3.8,
+        "star": {
+          "d(eleven,one)": 110.64,
+          "d(eleven,seven)": 91.78,
+          "d(eleven,six)": 93.78,
+          "d(twelve,two)": 99.67,
+          "d(twelve,seven)": 97.25
+        },
+        "rsa": {
+          "line": 0.829,
+          "circ7": -0.111,
+          "circ10": 0.048,
+          "circ12": 0.079,
+          "helix": 0.827
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.115,
+        "sp_p": 0.0599,
+        "readout": {
+          "t": 0.185,
+          "cos10": -0.675,
+          "sin10": -0.294
+        }
+      },
+      "5": {
+        "cong_ratio": 0.958,
+        "cong_z": -2.6,
+        "star": {
+          "d(eleven,one)": 106.42,
+          "d(eleven,seven)": 85.63,
+          "d(eleven,six)": 88.88,
+          "d(twelve,two)": 100.47,
+          "d(twelve,seven)": 94.17
+        },
+        "rsa": {
+          "line": 0.782,
+          "circ7": -0.061,
+          "circ10": 0.024,
+          "circ12": 0.049,
+          "helix": 0.775
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.071,
+        "sp_p": 0.1078,
+        "readout": {
+          "t": -0.008,
+          "cos10": -0.75,
+          "sin10": -0.619
+        }
+      },
+      "6": {
+        "cong_ratio": 0.966,
+        "cong_z": -1.9,
+        "star": {
+          "d(eleven,one)": 109.71,
+          "d(eleven,seven)": 84.28,
+          "d(eleven,six)": 86.59,
+          "d(twelve,two)": 103.99,
+          "d(twelve,seven)": 91.99
+        },
+        "rsa": {
+          "line": 0.779,
+          "circ7": -0.058,
+          "circ10": 0.021,
+          "circ12": 0.046,
+          "helix": 0.773
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.049,
+        "sp_p": 0.1517,
+        "readout": {
+          "t": -0.031,
+          "cos10": -0.758,
+          "sin10": -0.676
+        }
+      },
+      "7": {
+        "cong_ratio": 0.972,
+        "cong_z": -1.4,
+        "star": {
+          "d(eleven,one)": 110.62,
+          "d(eleven,seven)": 82.38,
+          "d(eleven,six)": 86.71,
+          "d(twelve,two)": 107.97,
+          "d(twelve,seven)": 87.94
+        },
+        "rsa": {
+          "line": 0.792,
+          "circ7": -0.053,
+          "circ10": 0.019,
+          "circ12": 0.028,
+          "helix": 0.786
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.052,
+        "sp_p": 0.1377,
+        "readout": {
+          "t": 0.035,
+          "cos10": -0.705,
+          "sin10": -0.527
+        }
+      },
+      "8": {
+        "cong_ratio": 0.978,
+        "cong_z": -1.0,
+        "star": {
+          "d(eleven,one)": 110.71,
+          "d(eleven,seven)": 83.91,
+          "d(eleven,six)": 86.17,
+          "d(twelve,two)": 109.73,
+          "d(twelve,seven)": 89.59
+        },
+        "rsa": {
+          "line": 0.809,
+          "circ7": -0.053,
+          "circ10": 0.005,
+          "circ12": 0.011,
+          "helix": 0.804
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.007,
+        "sp_p": 0.3613,
+        "readout": {
+          "t": 0.201,
+          "cos10": -0.596,
+          "sin10": -0.354
+        }
+      },
+      "9": {
+        "cong_ratio": 0.985,
+        "cong_z": -0.6,
+        "star": {
+          "d(eleven,one)": 109.22,
+          "d(eleven,seven)": 82.29,
+          "d(eleven,six)": 83.42,
+          "d(twelve,two)": 111.82,
+          "d(twelve,seven)": 86.96
+        },
+        "rsa": {
+          "line": 0.744,
+          "circ7": -0.048,
+          "circ10": -0.007,
+          "circ12": 0.003,
+          "helix": 0.738
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.01,
+        "sp_p": 0.4032,
+        "readout": {
+          "t": 0.163,
+          "cos10": -0.51,
+          "sin10": -0.398
+        }
+      },
+      "10": {
+        "cong_ratio": 0.982,
+        "cong_z": -0.7,
+        "star": {
+          "d(eleven,one)": 109.95,
+          "d(eleven,seven)": 79.15,
+          "d(eleven,six)": 81.13,
+          "d(twelve,two)": 112.28,
+          "d(twelve,seven)": 87.13
+        },
+        "rsa": {
+          "line": 0.743,
+          "circ7": -0.04,
+          "circ10": 0.004,
+          "circ12": 0.003,
+          "helix": 0.738
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.025,
+        "sp_p": 0.2814,
+        "readout": {
+          "t": 0.233,
+          "cos10": -0.481,
+          "sin10": -0.182
+        }
+      },
+      "11": {
+        "cong_ratio": 0.983,
+        "cong_z": -0.7,
+        "star": {
+          "d(eleven,one)": 111.44,
+          "d(eleven,seven)": 78.49,
+          "d(eleven,six)": 81.31,
+          "d(twelve,two)": 110.32,
+          "d(twelve,seven)": 85.68
+        },
+        "rsa": {
+          "line": 0.765,
+          "circ7": -0.045,
+          "circ10": -0.004,
+          "circ12": -0.001,
+          "helix": 0.761
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.009,
+        "sp_p": 0.3633,
+        "readout": {
+          "t": 0.232,
+          "cos10": -0.505,
+          "sin10": -0.225
+        }
+      },
+      "12": {
+        "cong_ratio": 0.982,
+        "cong_z": -0.6,
+        "star": {
+          "d(eleven,one)": 112.7,
+          "d(eleven,seven)": 74.15,
+          "d(eleven,six)": 78.31,
+          "d(twelve,two)": 111.18,
+          "d(twelve,seven)": 82.51
+        },
+        "rsa": {
+          "line": 0.744,
+          "circ7": -0.045,
+          "circ10": -0.008,
+          "circ12": -0.016,
+          "helix": 0.742
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.022,
+        "sp_p": 0.2555,
+        "readout": {
+          "t": 0.245,
+          "cos10": -0.386,
+          "sin10": -0.15
+        }
+      },
+      "13": {
+        "cong_ratio": 0.983,
+        "cong_z": -0.7,
+        "star": {
+          "d(eleven,one)": 113.37,
+          "d(eleven,seven)": 74.05,
+          "d(eleven,six)": 78.11,
+          "d(twelve,two)": 111.43,
+          "d(twelve,seven)": 82.45
+        },
+        "rsa": {
+          "line": 0.761,
+          "circ7": -0.047,
+          "circ10": -0.009,
+          "circ12": -0.024,
+          "helix": 0.759
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.018,
+        "sp_p": 0.2994,
+        "readout": {
+          "t": 0.263,
+          "cos10": -0.369,
+          "sin10": -0.156
+        }
+      },
+      "14": {
+        "cong_ratio": 0.982,
+        "cong_z": -0.7,
+        "star": {
+          "d(eleven,one)": 116.67,
+          "d(eleven,seven)": 73.43,
+          "d(eleven,six)": 77.95,
+          "d(twelve,two)": 112.14,
+          "d(twelve,seven)": 81.13
+        },
+        "rsa": {
+          "line": 0.764,
+          "circ7": -0.051,
+          "circ10": 0.002,
+          "circ12": -0.013,
+          "helix": 0.762
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.016,
+        "sp_p": 0.3074,
+        "readout": {
+          "t": 0.305,
+          "cos10": -0.3,
+          "sin10": -0.107
+        }
+      },
+      "15": {
+        "cong_ratio": 0.976,
+        "cong_z": -1.0,
+        "star": {
+          "d(eleven,one)": 116.67,
+          "d(eleven,seven)": 70.35,
+          "d(eleven,six)": 75.57,
+          "d(twelve,two)": 116.38,
+          "d(twelve,seven)": 82.19
+        },
+        "rsa": {
+          "line": 0.772,
+          "circ7": -0.063,
+          "circ10": 0.011,
+          "circ12": 0.0,
+          "helix": 0.772
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.008,
+        "sp_p": 0.3932,
+        "readout": {
+          "t": 0.307,
+          "cos10": -0.293,
+          "sin10": -0.032
+        }
+      },
+      "16": {
+        "cong_ratio": 0.967,
+        "cong_z": -1.1,
+        "star": {
+          "d(eleven,one)": 117.95,
+          "d(eleven,seven)": 68.92,
+          "d(eleven,six)": 72.67,
+          "d(twelve,two)": 113.03,
+          "d(twelve,seven)": 80.35
+        },
+        "rsa": {
+          "line": 0.766,
+          "circ7": -0.057,
+          "circ10": 0.016,
+          "circ12": 0.002,
+          "helix": 0.767
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.013,
+        "sp_p": 0.3114,
+        "readout": {
+          "t": 0.321,
+          "cos10": -0.298,
+          "sin10": -0.042
+        }
+      },
+      "17": {
+        "cong_ratio": 0.943,
+        "cong_z": -2.3,
+        "star": {
+          "d(eleven,one)": 121.9,
+          "d(eleven,seven)": 73.69,
+          "d(eleven,six)": 79.7,
+          "d(twelve,two)": 108.21,
+          "d(twelve,seven)": 82.5
+        },
+        "rsa": {
+          "line": 0.766,
+          "circ7": -0.086,
+          "circ10": 0.05,
+          "circ12": 0.05,
+          "helix": 0.768
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.075,
+        "sp_p": 0.0719,
+        "readout": {
+          "t": 0.324,
+          "cos10": -0.093,
+          "sin10": 0.222
+        }
+      },
+      "18": {
+        "cong_ratio": 0.954,
+        "cong_z": -1.8,
+        "star": {
+          "d(eleven,one)": 114.77,
+          "d(eleven,seven)": 76.01,
+          "d(eleven,six)": 79.01,
+          "d(twelve,two)": 119.32,
+          "d(twelve,seven)": 100.08
+        },
+        "rsa": {
+          "line": 0.675,
+          "circ7": -0.059,
+          "circ10": 0.068,
+          "circ12": 0.074,
+          "helix": 0.673
+        },
+        "best_rho": 1.0,
+        "semi_partial_circ10": 0.076,
+        "sp_p": 0.0739,
+        "readout": {
+          "t": 0.28,
+          "cos10": -0.397,
+          "sin10": -0.164
+        }
+      },
+      "19": {
+        "cong_ratio": 0.937,
+        "cong_z": -3.1,
+        "star": {
+          "d(eleven,one)": 106.27,
+          "d(eleven,seven)": 73.23,
+          "d(eleven,six)": 74.97,
+          "d(twelve,two)": 105.52,
+          "d(twelve,seven)": 91.73
+        },
+        "rsa": {
+          "line": 0.741,
+          "circ7": -0.062,
+          "circ10": 0.051,
+          "circ12": 0.053,
+          "helix": 0.742
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.078,
+        "sp_p": 0.1158,
+        "readout": {
+          "t": 0.087,
+          "cos10": -0.81,
+          "sin10": -0.41
+        }
+      },
+      "20": {
+        "cong_ratio": 0.957,
+        "cong_z": -2.1,
+        "star": {
+          "d(eleven,one)": 108.8,
+          "d(eleven,seven)": 78.62,
+          "d(eleven,six)": 82.32,
+          "d(twelve,two)": 110.98,
+          "d(twelve,seven)": 99.2
+        },
+        "rsa": {
+          "line": 0.628,
+          "circ7": -0.061,
+          "circ10": 0.059,
+          "circ12": 0.096,
+          "helix": 0.623
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.084,
+        "sp_p": 0.0659,
+        "readout": {
+          "t": 0.16,
+          "cos10": -0.807,
+          "sin10": -0.434
+        }
+      },
+      "21": {
+        "cong_ratio": 0.96,
+        "cong_z": -2.2,
+        "star": {
+          "d(eleven,one)": 110.47,
+          "d(eleven,seven)": 79.82,
+          "d(eleven,six)": 87.01,
+          "d(twelve,two)": 109.33,
+          "d(twelve,seven)": 96.06
+        },
+        "rsa": {
+          "line": 0.709,
+          "circ7": -0.062,
+          "circ10": 0.031,
+          "circ12": 0.076,
+          "helix": 0.705
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.055,
+        "sp_p": 0.1657,
+        "readout": {
+          "t": 0.189,
+          "cos10": -0.805,
+          "sin10": -0.505
+        }
+      },
+      "22": {
+        "cong_ratio": 0.96,
+        "cong_z": -2.2,
+        "star": {
+          "d(eleven,one)": 106.92,
+          "d(eleven,seven)": 82.26,
+          "d(eleven,six)": 83.56,
+          "d(twelve,two)": 109.48,
+          "d(twelve,seven)": 98.24
+        },
+        "rsa": {
+          "line": 0.734,
+          "circ7": -0.061,
+          "circ10": 0.032,
+          "circ12": 0.087,
+          "helix": 0.731
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.057,
+        "sp_p": 0.1657,
+        "readout": {
+          "t": 0.236,
+          "cos10": -0.785,
+          "sin10": -0.439
+        }
+      },
+      "23": {
+        "cong_ratio": 0.958,
+        "cong_z": -2.0,
+        "star": {
+          "d(eleven,one)": 103.68,
+          "d(eleven,seven)": 80.8,
+          "d(eleven,six)": 82.19,
+          "d(twelve,two)": 110.94,
+          "d(twelve,seven)": 97.33
+        },
+        "rsa": {
+          "line": 0.675,
+          "circ7": -0.053,
+          "circ10": 0.059,
+          "circ12": 0.107,
+          "helix": 0.674
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.087,
+        "sp_p": 0.0958,
+        "readout": {
+          "t": 0.136,
+          "cos10": -0.795,
+          "sin10": -0.628
+        }
+      },
+      "24": {
+        "cong_ratio": 0.954,
+        "cong_z": -2.1,
+        "star": {
+          "d(eleven,one)": 104.14,
+          "d(eleven,seven)": 79.37,
+          "d(eleven,six)": 85.46,
+          "d(twelve,two)": 109.89,
+          "d(twelve,seven)": 97.76
+        },
+        "rsa": {
+          "line": 0.639,
+          "circ7": -0.057,
+          "circ10": 0.064,
+          "circ12": 0.115,
+          "helix": 0.638
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.075,
+        "sp_p": 0.0798,
+        "readout": {
+          "t": 0.164,
+          "cos10": -0.804,
+          "sin10": -0.586
+        }
+      },
+      "25": {
+        "cong_ratio": 0.952,
+        "cong_z": -2.1,
+        "star": {
+          "d(eleven,one)": 105.65,
+          "d(eleven,seven)": 78.03,
+          "d(eleven,six)": 83.89,
+          "d(twelve,two)": 109.29,
+          "d(twelve,seven)": 97.06
+        },
+        "rsa": {
+          "line": 0.632,
+          "circ7": -0.051,
+          "circ10": 0.069,
+          "circ12": 0.122,
+          "helix": 0.631
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.08,
+        "sp_p": 0.0918,
+        "readout": {
+          "t": 0.172,
+          "cos10": -0.798,
+          "sin10": -0.593
+        }
+      },
+      "26": {
+        "cong_ratio": 0.95,
+        "cong_z": -2.1,
+        "star": {
+          "d(eleven,one)": 106.95,
+          "d(eleven,seven)": 80.04,
+          "d(eleven,six)": 83.45,
+          "d(twelve,two)": 108.47,
+          "d(twelve,seven)": 96.38
+        },
+        "rsa": {
+          "line": 0.604,
+          "circ7": -0.058,
+          "circ10": 0.07,
+          "circ12": 0.124,
+          "helix": 0.604
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.079,
+        "sp_p": 0.0519,
+        "readout": {
+          "t": 0.18,
+          "cos10": -0.796,
+          "sin10": -0.57
+        }
+      },
+      "27": {
+        "cong_ratio": 0.949,
+        "cong_z": -2.0,
+        "star": {
+          "d(eleven,one)": 108.24,
+          "d(eleven,seven)": 79.54,
+          "d(eleven,six)": 82.9,
+          "d(twelve,two)": 108.09,
+          "d(twelve,seven)": 96.17
+        },
+        "rsa": {
+          "line": 0.58,
+          "circ7": -0.054,
+          "circ10": 0.07,
+          "circ12": 0.126,
+          "helix": 0.581
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.082,
+        "sp_p": 0.0559,
+        "readout": {
+          "t": 0.154,
+          "cos10": -0.814,
+          "sin10": -0.57
+        }
+      },
+      "28": {
+        "cong_ratio": 0.944,
+        "cong_z": -2.0,
+        "star": {
+          "d(eleven,one)": 109.09,
+          "d(eleven,seven)": 80.64,
+          "d(eleven,six)": 84.64,
+          "d(twelve,two)": 106.05,
+          "d(twelve,seven)": 93.85
+        },
+        "rsa": {
+          "line": 0.549,
+          "circ7": -0.058,
+          "circ10": 0.074,
+          "circ12": 0.131,
+          "helix": 0.55
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.088,
+        "sp_p": 0.0679,
+        "readout": {
+          "t": 0.158,
+          "cos10": -0.808,
+          "sin10": -0.533
+        }
+      },
+      "29": {
+        "cong_ratio": 0.932,
+        "cong_z": -2.3,
+        "star": {
+          "d(eleven,one)": 111.12,
+          "d(eleven,seven)": 78.96,
+          "d(eleven,six)": 82.14,
+          "d(twelve,two)": 102.66,
+          "d(twelve,seven)": 91.17
+        },
+        "rsa": {
+          "line": 0.559,
+          "circ7": -0.064,
+          "circ10": 0.091,
+          "circ12": 0.128,
+          "helix": 0.561
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.115,
+        "sp_p": 0.02,
+        "readout": {
+          "t": 0.019,
+          "cos10": -0.811,
+          "sin10": -0.68
+        }
+      },
+      "30": {
+        "cong_ratio": 0.936,
+        "cong_z": -2.1,
+        "star": {
+          "d(eleven,one)": 113.9,
+          "d(eleven,seven)": 78.24,
+          "d(eleven,six)": 80.67,
+          "d(twelve,two)": 102.12,
+          "d(twelve,seven)": 89.88
+        },
+        "rsa": {
+          "line": 0.56,
+          "circ7": -0.062,
+          "circ10": 0.092,
+          "circ12": 0.128,
+          "helix": 0.562
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.111,
+        "sp_p": 0.018,
+        "readout": {
+          "t": 0.048,
+          "cos10": -0.809,
+          "sin10": -0.65
+        }
+      },
+      "31": {
+        "cong_ratio": 0.941,
+        "cong_z": -1.7,
+        "star": {
+          "d(eleven,one)": 117.19,
+          "d(eleven,seven)": 77.22,
+          "d(eleven,six)": 79.87,
+          "d(twelve,two)": 101.34,
+          "d(twelve,seven)": 89.05
+        },
+        "rsa": {
+          "line": 0.549,
+          "circ7": -0.058,
+          "circ10": 0.088,
+          "circ12": 0.126,
+          "helix": 0.551
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.11,
+        "sp_p": 0.022,
+        "readout": {
+          "t": 0.091,
+          "cos10": -0.801,
+          "sin10": -0.605
+        }
+      },
+      "32": {
+        "cong_ratio": 0.943,
+        "cong_z": -1.4,
+        "star": {
+          "d(eleven,one)": 119.33,
+          "d(eleven,seven)": 76.19,
+          "d(eleven,six)": 80.04,
+          "d(twelve,two)": 102.16,
+          "d(twelve,seven)": 90.82
+        },
+        "rsa": {
+          "line": 0.497,
+          "circ7": -0.051,
+          "circ10": 0.085,
+          "circ12": 0.139,
+          "helix": 0.498
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.094,
+        "sp_p": 0.0319,
+        "readout": {
+          "t": 0.178,
+          "cos10": -0.781,
+          "sin10": -0.496
+        }
+      }
+    },
+    "neutral/mean": {
+      "0": {
+        "cong_ratio": 0.977,
+        "cong_z": -1.5,
+        "star": {
+          "d(eleven,one)": 101.75,
+          "d(eleven,seven)": 95.22,
+          "d(eleven,six)": 96.13,
+          "d(twelve,two)": 97.13,
+          "d(twelve,seven)": 95.77
+        },
+        "rsa": {
+          "line": 0.299,
+          "circ7": -0.057,
+          "circ10": 0.081,
+          "circ12": 0.131,
+          "helix": 0.293
+        },
+        "best_rho": 2.0,
+        "semi_partial_circ10": 0.081,
+        "sp_p": 0.0659,
+        "readout": {
+          "t": -0.706,
+          "cos10": -0.956,
+          "sin10": -0.938
+        }
+      },
+      "1": {
+        "cong_ratio": 0.956,
+        "cong_z": -3.2,
+        "star": {
+          "d(eleven,one)": 107.33,
+          "d(eleven,seven)": 91.57,
+          "d(eleven,six)": 92.1,
+          "d(twelve,two)": 99.49,
+          "d(twelve,seven)": 95.12
+        },
+        "rsa": {
+          "line": 0.663,
+          "circ7": -0.121,
+          "circ10": 0.07,
+          "circ12": 0.147,
+          "helix": 0.659
+        },
+        "best_rho": 2.0,
+        "semi_partial_circ10": 0.094,
+        "sp_p": 0.0639,
+        "readout": {
+          "t": -0.365,
+          "cos10": -0.919,
+          "sin10": -0.842
+        }
+      },
+      "2": {
+        "cong_ratio": 0.946,
+        "cong_z": -3.4,
+        "star": {
+          "d(eleven,one)": 113.64,
+          "d(eleven,seven)": 89.15,
+          "d(eleven,six)": 90.72,
+          "d(twelve,two)": 98.88,
+          "d(twelve,seven)": 91.55
+        },
+        "rsa": {
+          "line": 0.784,
+          "circ7": -0.116,
+          "circ10": 0.063,
+          "circ12": 0.11,
+          "helix": 0.781
+        },
+        "best_rho": 1.0,
+        "semi_partial_circ10": 0.123,
+        "sp_p": 0.0439,
+        "readout": {
+          "t": -0.161,
+          "cos10": -0.875,
+          "sin10": -0.691
+        }
+      },
+      "3": {
+        "cong_ratio": 0.949,
+        "cong_z": -3.2,
+        "star": {
+          "d(eleven,one)": 114.23,
+          "d(eleven,seven)": 98.03,
+          "d(eleven,six)": 96.89,
+          "d(twelve,two)": 98.89,
+          "d(twelve,seven)": 97.63
+        },
+        "rsa": {
+          "line": 0.746,
+          "circ7": -0.104,
+          "circ10": 0.08,
+          "circ12": 0.145,
+          "helix": 0.744
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.139,
+        "sp_p": 0.0459,
+        "readout": {
+          "t": 0.19,
+          "cos10": -0.709,
+          "sin10": -0.262
+        }
+      },
+      "4": {
+        "cong_ratio": 0.952,
+        "cong_z": -3.1,
+        "star": {
+          "d(eleven,one)": 113.5,
+          "d(eleven,seven)": 94.26,
+          "d(eleven,six)": 96.38,
+          "d(twelve,two)": 102.39,
+          "d(twelve,seven)": 99.86
+        },
+        "rsa": {
+          "line": 0.762,
+          "circ7": -0.105,
+          "circ10": 0.072,
+          "circ12": 0.146,
+          "helix": 0.757
+        },
+        "best_rho": 1.0,
+        "semi_partial_circ10": 0.149,
+        "sp_p": 0.0339,
+        "readout": {
+          "t": 0.263,
+          "cos10": -0.671,
+          "sin10": -0.26
+        }
+      },
+      "5": {
+        "cong_ratio": 0.96,
+        "cong_z": -2.3,
+        "star": {
+          "d(eleven,one)": 109.79,
+          "d(eleven,seven)": 88.31,
+          "d(eleven,six)": 91.98,
+          "d(twelve,two)": 103.53,
+          "d(twelve,seven)": 97.05
+        },
+        "rsa": {
+          "line": 0.738,
+          "circ7": -0.064,
+          "circ10": 0.049,
+          "circ12": 0.124,
+          "helix": 0.729
+        },
+        "best_rho": 2.0,
+        "semi_partial_circ10": 0.119,
+        "sp_p": 0.0459,
+        "readout": {
+          "t": 0.055,
+          "cos10": -0.758,
+          "sin10": -0.639
+        }
+      },
+      "6": {
+        "cong_ratio": 0.968,
+        "cong_z": -1.8,
+        "star": {
+          "d(eleven,one)": 113.0,
+          "d(eleven,seven)": 86.93,
+          "d(eleven,six)": 89.35,
+          "d(twelve,two)": 106.96,
+          "d(twelve,seven)": 94.78
+        },
+        "rsa": {
+          "line": 0.765,
+          "circ7": -0.065,
+          "circ10": 0.043,
+          "circ12": 0.095,
+          "helix": 0.758
+        },
+        "best_rho": 1.0,
+        "semi_partial_circ10": 0.097,
+        "sp_p": 0.0679,
+        "readout": {
+          "t": 0.04,
+          "cos10": -0.771,
+          "sin10": -0.687
+        }
+      },
+      "7": {
+        "cong_ratio": 0.975,
+        "cong_z": -1.3,
+        "star": {
+          "d(eleven,one)": 114.09,
+          "d(eleven,seven)": 85.18,
+          "d(eleven,six)": 89.65,
+          "d(twelve,two)": 111.18,
+          "d(twelve,seven)": 90.82
+        },
+        "rsa": {
+          "line": 0.809,
+          "circ7": -0.066,
+          "circ10": 0.05,
+          "circ12": 0.071,
+          "helix": 0.804
+        },
+        "best_rho": 1.0,
+        "semi_partial_circ10": 0.092,
+        "sp_p": 0.0659,
+        "readout": {
+          "t": 0.107,
+          "cos10": -0.731,
+          "sin10": -0.564
+        }
+      },
+      "8": {
+        "cong_ratio": 0.979,
+        "cong_z": -1.0,
+        "star": {
+          "d(eleven,one)": 114.71,
+          "d(eleven,seven)": 87.06,
+          "d(eleven,six)": 89.54,
+          "d(twelve,two)": 113.63,
+          "d(twelve,seven)": 92.99
+        },
+        "rsa": {
+          "line": 0.829,
+          "circ7": -0.069,
+          "circ10": 0.03,
+          "circ12": 0.052,
+          "helix": 0.825
+        },
+        "best_rho": 1.0,
+        "semi_partial_circ10": 0.049,
+        "sp_p": 0.2076,
+        "readout": {
+          "t": 0.284,
+          "cos10": -0.628,
+          "sin10": -0.4
+        }
+      },
+      "9": {
+        "cong_ratio": 0.987,
+        "cong_z": -0.5,
+        "star": {
+          "d(eleven,one)": 113.57,
+          "d(eleven,seven)": 86.23,
+          "d(eleven,six)": 87.38,
+          "d(twelve,two)": 116.66,
+          "d(twelve,seven)": 90.96
+        },
+        "rsa": {
+          "line": 0.801,
+          "circ7": -0.066,
+          "circ10": 0.032,
+          "circ12": 0.05,
+          "helix": 0.797
+        },
+        "best_rho": 1.0,
+        "semi_partial_circ10": 0.054,
+        "sp_p": 0.1816,
+        "readout": {
+          "t": 0.227,
+          "cos10": -0.561,
+          "sin10": -0.49
+        }
+      },
+      "10": {
+        "cong_ratio": 0.985,
+        "cong_z": -0.6,
+        "star": {
+          "d(eleven,one)": 114.06,
+          "d(eleven,seven)": 82.9,
+          "d(eleven,six)": 84.97,
+          "d(twelve,two)": 117.02,
+          "d(twelve,seven)": 90.92
+        },
+        "rsa": {
+          "line": 0.789,
+          "circ7": -0.06,
+          "circ10": 0.042,
+          "circ12": 0.05,
+          "helix": 0.785
+        },
+        "best_rho": 1.0,
+        "semi_partial_circ10": 0.062,
+        "sp_p": 0.1677,
+        "readout": {
+          "t": 0.326,
+          "cos10": -0.52,
+          "sin10": -0.258
+        }
+      },
+      "11": {
+        "cong_ratio": 0.988,
+        "cong_z": -0.5,
+        "star": {
+          "d(eleven,one)": 115.7,
+          "d(eleven,seven)": 81.86,
+          "d(eleven,six)": 84.8,
+          "d(twelve,two)": 114.68,
+          "d(twelve,seven)": 89.06
+        },
+        "rsa": {
+          "line": 0.799,
+          "circ7": -0.06,
+          "circ10": 0.029,
+          "circ12": 0.042,
+          "helix": 0.797
+        },
+        "best_rho": 1.0,
+        "semi_partial_circ10": 0.057,
+        "sp_p": 0.1697,
+        "readout": {
+          "t": 0.347,
+          "cos10": -0.54,
+          "sin10": -0.255
+        }
+      },
+      "12": {
+        "cong_ratio": 0.986,
+        "cong_z": -0.5,
+        "star": {
+          "d(eleven,one)": 117.44,
+          "d(eleven,seven)": 77.65,
+          "d(eleven,six)": 82.27,
+          "d(twelve,two)": 116.13,
+          "d(twelve,seven)": 86.07
+        },
+        "rsa": {
+          "line": 0.801,
+          "circ7": -0.056,
+          "circ10": 0.026,
+          "circ12": 0.032,
+          "helix": 0.8
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.072,
+        "sp_p": 0.1038,
+        "readout": {
+          "t": 0.349,
+          "cos10": -0.432,
+          "sin10": -0.176
+        }
+      },
+      "13": {
+        "cong_ratio": 0.987,
+        "cong_z": -0.5,
+        "star": {
+          "d(eleven,one)": 117.86,
+          "d(eleven,seven)": 77.37,
+          "d(eleven,six)": 81.87,
+          "d(twelve,two)": 115.83,
+          "d(twelve,seven)": 85.68
+        },
+        "rsa": {
+          "line": 0.807,
+          "circ7": -0.054,
+          "circ10": 0.019,
+          "circ12": 0.018,
+          "helix": 0.807
+        },
+        "best_rho": 1.0,
+        "semi_partial_circ10": 0.066,
+        "sp_p": 0.1238,
+        "readout": {
+          "t": 0.355,
+          "cos10": -0.4,
+          "sin10": -0.171
+        }
+      },
+      "14": {
+        "cong_ratio": 0.986,
+        "cong_z": -0.5,
+        "star": {
+          "d(eleven,one)": 121.26,
+          "d(eleven,seven)": 76.51,
+          "d(eleven,six)": 81.49,
+          "d(twelve,two)": 116.09,
+          "d(twelve,seven)": 84.1
+        },
+        "rsa": {
+          "line": 0.786,
+          "circ7": -0.061,
+          "circ10": 0.029,
+          "circ12": 0.026,
+          "helix": 0.786
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.065,
+        "sp_p": 0.1198,
+        "readout": {
+          "t": 0.39,
+          "cos10": -0.336,
+          "sin10": -0.11
+        }
+      },
+      "15": {
+        "cong_ratio": 0.98,
+        "cong_z": -0.7,
+        "star": {
+          "d(eleven,one)": 120.54,
+          "d(eleven,seven)": 72.95,
+          "d(eleven,six)": 78.72,
+          "d(twelve,two)": 119.96,
+          "d(twelve,seven)": 84.54
+        },
+        "rsa": {
+          "line": 0.78,
+          "circ7": -0.067,
+          "circ10": 0.034,
+          "circ12": 0.039,
+          "helix": 0.781
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.055,
+        "sp_p": 0.1836,
+        "readout": {
+          "t": 0.386,
+          "cos10": -0.314,
+          "sin10": -0.013
+        }
+      },
+      "16": {
+        "cong_ratio": 0.972,
+        "cong_z": -0.9,
+        "star": {
+          "d(eleven,one)": 121.3,
+          "d(eleven,seven)": 71.18,
+          "d(eleven,six)": 75.37,
+          "d(twelve,two)": 116.27,
+          "d(twelve,seven)": 82.62
+        },
+        "rsa": {
+          "line": 0.764,
+          "circ7": -0.06,
+          "circ10": 0.039,
+          "circ12": 0.03,
+          "helix": 0.766
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.052,
+        "sp_p": 0.1577,
+        "readout": {
+          "t": 0.408,
+          "cos10": -0.303,
+          "sin10": 0.007
+        }
+      },
+      "17": {
+        "cong_ratio": 0.95,
+        "cong_z": -1.8,
+        "star": {
+          "d(eleven,one)": 124.74,
+          "d(eleven,seven)": 75.58,
+          "d(eleven,six)": 82.04,
+          "d(twelve,two)": 110.44,
+          "d(twelve,seven)": 84.23
+        },
+        "rsa": {
+          "line": 0.755,
+          "circ7": -0.093,
+          "circ10": 0.066,
+          "circ12": 0.077,
+          "helix": 0.757
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.098,
+        "sp_p": 0.0419,
+        "readout": {
+          "t": 0.417,
+          "cos10": -0.134,
+          "sin10": 0.253
+        }
+      },
+      "18": {
+        "cong_ratio": 0.956,
+        "cong_z": -1.5,
+        "star": {
+          "d(eleven,one)": 116.16,
+          "d(eleven,seven)": 76.75,
+          "d(eleven,six)": 80.29,
+          "d(twelve,two)": 120.47,
+          "d(twelve,seven)": 101.03
+        },
+        "rsa": {
+          "line": 0.66,
+          "circ7": -0.058,
+          "circ10": 0.083,
+          "circ12": 0.095,
+          "helix": 0.659
+        },
+        "best_rho": 1.0,
+        "semi_partial_circ10": 0.086,
+        "sp_p": 0.0539,
+        "readout": {
+          "t": 0.383,
+          "cos10": -0.378,
+          "sin10": -0.048
+        }
+      },
+      "19": {
+        "cong_ratio": 0.938,
+        "cong_z": -3.0,
+        "star": {
+          "d(eleven,one)": 108.19,
+          "d(eleven,seven)": 74.27,
+          "d(eleven,six)": 76.32,
+          "d(twelve,two)": 107.2,
+          "d(twelve,seven)": 93.05
+        },
+        "rsa": {
+          "line": 0.729,
+          "circ7": -0.053,
+          "circ10": 0.072,
+          "circ12": 0.089,
+          "helix": 0.729
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.078,
+        "sp_p": 0.1138,
+        "readout": {
+          "t": 0.132,
+          "cos10": -0.771,
+          "sin10": -0.369
+        }
+      },
+      "20": {
+        "cong_ratio": 0.957,
+        "cong_z": -1.8,
+        "star": {
+          "d(eleven,one)": 110.61,
+          "d(eleven,seven)": 79.71,
+          "d(eleven,six)": 83.62,
+          "d(twelve,two)": 112.61,
+          "d(twelve,seven)": 100.41
+        },
+        "rsa": {
+          "line": 0.565,
+          "circ7": -0.05,
+          "circ10": 0.076,
+          "circ12": 0.135,
+          "helix": 0.562
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.094,
+        "sp_p": 0.0479,
+        "readout": {
+          "t": 0.218,
+          "cos10": -0.756,
+          "sin10": -0.402
+        }
+      },
+      "21": {
+        "cong_ratio": 0.961,
+        "cong_z": -1.9,
+        "star": {
+          "d(eleven,one)": 112.23,
+          "d(eleven,seven)": 81.0,
+          "d(eleven,six)": 88.37,
+          "d(twelve,two)": 110.83,
+          "d(twelve,seven)": 97.33
+        },
+        "rsa": {
+          "line": 0.672,
+          "circ7": -0.053,
+          "circ10": 0.052,
+          "circ12": 0.115,
+          "helix": 0.67
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.072,
+        "sp_p": 0.1038,
+        "readout": {
+          "t": 0.261,
+          "cos10": -0.763,
+          "sin10": -0.44
+        }
+      },
+      "22": {
+        "cong_ratio": 0.959,
+        "cong_z": -2.1,
+        "star": {
+          "d(eleven,one)": 108.22,
+          "d(eleven,seven)": 83.12,
+          "d(eleven,six)": 84.55,
+          "d(twelve,two)": 110.68,
+          "d(twelve,seven)": 99.02
+        },
+        "rsa": {
+          "line": 0.699,
+          "circ7": -0.06,
+          "circ10": 0.051,
+          "circ12": 0.118,
+          "helix": 0.696
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.078,
+        "sp_p": 0.0978,
+        "readout": {
+          "t": 0.312,
+          "cos10": -0.741,
+          "sin10": -0.377
+        }
+      },
+      "23": {
+        "cong_ratio": 0.958,
+        "cong_z": -1.8,
+        "star": {
+          "d(eleven,one)": 104.76,
+          "d(eleven,seven)": 81.46,
+          "d(eleven,six)": 83.11,
+          "d(twelve,two)": 111.88,
+          "d(twelve,seven)": 98.1
+        },
+        "rsa": {
+          "line": 0.645,
+          "circ7": -0.052,
+          "circ10": 0.076,
+          "circ12": 0.134,
+          "helix": 0.647
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.11,
+        "sp_p": 0.0499,
+        "readout": {
+          "t": 0.214,
+          "cos10": -0.759,
+          "sin10": -0.521
+        }
+      },
+      "24": {
+        "cong_ratio": 0.952,
+        "cong_z": -2.0,
+        "star": {
+          "d(eleven,one)": 105.02,
+          "d(eleven,seven)": 79.84,
+          "d(eleven,six)": 86.2,
+          "d(twelve,two)": 110.73,
+          "d(twelve,seven)": 98.43
+        },
+        "rsa": {
+          "line": 0.61,
+          "circ7": -0.061,
+          "circ10": 0.078,
+          "circ12": 0.14,
+          "helix": 0.611
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.09,
+        "sp_p": 0.0599,
+        "readout": {
+          "t": 0.228,
+          "cos10": -0.764,
+          "sin10": -0.502
+        }
+      },
+      "25": {
+        "cong_ratio": 0.951,
+        "cong_z": -2.2,
+        "star": {
+          "d(eleven,one)": 106.27,
+          "d(eleven,seven)": 78.37,
+          "d(eleven,six)": 84.37,
+          "d(twelve,two)": 109.83,
+          "d(twelve,seven)": 97.54
+        },
+        "rsa": {
+          "line": 0.614,
+          "circ7": -0.058,
+          "circ10": 0.086,
+          "circ12": 0.147,
+          "helix": 0.615
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.094,
+        "sp_p": 0.0739,
+        "readout": {
+          "t": 0.225,
+          "cos10": -0.762,
+          "sin10": -0.521
+        }
+      },
+      "26": {
+        "cong_ratio": 0.95,
+        "cong_z": -2.2,
+        "star": {
+          "d(eleven,one)": 107.13,
+          "d(eleven,seven)": 80.04,
+          "d(eleven,six)": 83.51,
+          "d(twelve,two)": 108.32,
+          "d(twelve,seven)": 96.37
+        },
+        "rsa": {
+          "line": 0.606,
+          "circ7": -0.066,
+          "circ10": 0.08,
+          "circ12": 0.138,
+          "helix": 0.608
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.081,
+        "sp_p": 0.0579,
+        "readout": {
+          "t": 0.212,
+          "cos10": -0.764,
+          "sin10": -0.522
+        }
+      },
+      "27": {
+        "cong_ratio": 0.951,
+        "cong_z": -2.0,
+        "star": {
+          "d(eleven,one)": 108.15,
+          "d(eleven,seven)": 79.31,
+          "d(eleven,six)": 82.7,
+          "d(twelve,two)": 107.73,
+          "d(twelve,seven)": 95.83
+        },
+        "rsa": {
+          "line": 0.585,
+          "circ7": -0.066,
+          "circ10": 0.077,
+          "circ12": 0.131,
+          "helix": 0.587
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.08,
+        "sp_p": 0.0619,
+        "readout": {
+          "t": 0.175,
+          "cos10": -0.781,
+          "sin10": -0.526
+        }
+      },
+      "28": {
+        "cong_ratio": 0.946,
+        "cong_z": -2.0,
+        "star": {
+          "d(eleven,one)": 108.52,
+          "d(eleven,seven)": 80.12,
+          "d(eleven,six)": 84.02,
+          "d(twelve,two)": 105.07,
+          "d(twelve,seven)": 92.87
+        },
+        "rsa": {
+          "line": 0.555,
+          "circ7": -0.066,
+          "circ10": 0.075,
+          "circ12": 0.127,
+          "helix": 0.558
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.083,
+        "sp_p": 0.0798,
+        "readout": {
+          "t": 0.164,
+          "cos10": -0.778,
+          "sin10": -0.491
+        }
+      },
+      "29": {
+        "cong_ratio": 0.936,
+        "cong_z": -2.3,
+        "star": {
+          "d(eleven,one)": 110.14,
+          "d(eleven,seven)": 78.19,
+          "d(eleven,six)": 81.08,
+          "d(twelve,two)": 101.32,
+          "d(twelve,seven)": 90.13
+        },
+        "rsa": {
+          "line": 0.558,
+          "circ7": -0.073,
+          "circ10": 0.09,
+          "circ12": 0.119,
+          "helix": 0.561
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.103,
+        "sp_p": 0.0279,
+        "readout": {
+          "t": -0.012,
+          "cos10": -0.776,
+          "sin10": -0.644
+        }
+      },
+      "30": {
+        "cong_ratio": 0.942,
+        "cong_z": -2.0,
+        "star": {
+          "d(eleven,one)": 112.39,
+          "d(eleven,seven)": 77.0,
+          "d(eleven,six)": 79.33,
+          "d(twelve,two)": 100.3,
+          "d(twelve,seven)": 88.45
+        },
+        "rsa": {
+          "line": 0.553,
+          "circ7": -0.068,
+          "circ10": 0.079,
+          "circ12": 0.109,
+          "helix": 0.556
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.084,
+        "sp_p": 0.0319,
+        "readout": {
+          "t": -0.006,
+          "cos10": -0.78,
+          "sin10": -0.636
+        }
+      },
+      "31": {
+        "cong_ratio": 0.948,
+        "cong_z": -1.5,
+        "star": {
+          "d(eleven,one)": 115.2,
+          "d(eleven,seven)": 75.59,
+          "d(eleven,six)": 78.24,
+          "d(twelve,two)": 99.34,
+          "d(twelve,seven)": 87.44
+        },
+        "rsa": {
+          "line": 0.539,
+          "circ7": -0.06,
+          "circ10": 0.071,
+          "circ12": 0.105,
+          "helix": 0.542
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.077,
+        "sp_p": 0.0619,
+        "readout": {
+          "t": 0.027,
+          "cos10": -0.771,
+          "sin10": -0.608
+        }
+      },
+      "32": {
+        "cong_ratio": 0.951,
+        "cong_z": -1.3,
+        "star": {
+          "d(eleven,one)": 116.67,
+          "d(eleven,seven)": 74.17,
+          "d(eleven,six)": 78.07,
+          "d(twelve,two)": 99.68,
+          "d(twelve,seven)": 88.71
+        },
+        "rsa": {
+          "line": 0.48,
+          "circ7": -0.054,
+          "circ10": 0.065,
+          "circ12": 0.114,
+          "helix": 0.482
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.06,
+        "sp_p": 0.0758,
+        "readout": {
+          "t": 0.109,
+          "cos10": -0.745,
+          "sin10": -0.505
+        }
+      }
+    },
+    "number/last": {
+      "0": {
+        "cong_ratio": 0.987,
+        "cong_z": -0.9,
+        "star": {
+          "d(eleven,one)": 97.65,
+          "d(eleven,seven)": 91.87,
+          "d(eleven,six)": 92.75,
+          "d(twelve,two)": 93.58,
+          "d(twelve,seven)": 92.27
+        },
+        "rsa": {
+          "line": 0.193,
+          "circ7": -0.045,
+          "circ10": 0.072,
+          "circ12": 0.093,
+          "helix": 0.192
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.074,
+        "sp_p": 0.0639,
+        "readout": {
+          "t": -0.693,
+          "cos10": -0.95,
+          "sin10": -0.933
+        }
+      },
+      "1": {
+        "cong_ratio": 0.961,
+        "cong_z": -1.7,
+        "star": {
+          "d(eleven,one)": 95.14,
+          "d(eleven,seven)": 85.9,
+          "d(eleven,six)": 85.55,
+          "d(twelve,two)": 91.27,
+          "d(twelve,seven)": 89.44
+        },
+        "rsa": {
+          "line": 0.512,
+          "circ7": -0.082,
+          "circ10": 0.064,
+          "circ12": 0.093,
+          "helix": 0.516
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.081,
+        "sp_p": 0.0559,
+        "readout": {
+          "t": -0.288,
+          "cos10": -0.915,
+          "sin10": -0.82
+        }
+      },
+      "2": {
+        "cong_ratio": 0.953,
+        "cong_z": -1.4,
+        "star": {
+          "d(eleven,one)": 102.54,
+          "d(eleven,seven)": 82.93,
+          "d(eleven,six)": 83.17,
+          "d(twelve,two)": 90.04,
+          "d(twelve,seven)": 86.49
+        },
+        "rsa": {
+          "line": 0.586,
+          "circ7": -0.068,
+          "circ10": 0.06,
+          "circ12": 0.069,
+          "helix": 0.59
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.103,
+        "sp_p": 0.0339,
+        "readout": {
+          "t": 0.05,
+          "cos10": -0.8,
+          "sin10": -0.588
+        }
+      },
+      "3": {
+        "cong_ratio": 0.936,
+        "cong_z": -1.6,
+        "star": {
+          "d(eleven,one)": 103.57,
+          "d(eleven,seven)": 87.82,
+          "d(eleven,six)": 86.29,
+          "d(twelve,two)": 89.16,
+          "d(twelve,seven)": 87.48
+        },
+        "rsa": {
+          "line": 0.621,
+          "circ7": -0.087,
+          "circ10": 0.092,
+          "circ12": 0.112,
+          "helix": 0.627
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.148,
+        "sp_p": 0.022,
+        "readout": {
+          "t": 0.323,
+          "cos10": -0.564,
+          "sin10": -0.149
+        }
+      },
+      "4": {
+        "cong_ratio": 0.948,
+        "cong_z": -1.3,
+        "star": {
+          "d(eleven,one)": 105.99,
+          "d(eleven,seven)": 82.77,
+          "d(eleven,six)": 83.03,
+          "d(twelve,two)": 91.5,
+          "d(twelve,seven)": 88.09
+        },
+        "rsa": {
+          "line": 0.612,
+          "circ7": -0.077,
+          "circ10": 0.117,
+          "circ12": 0.142,
+          "helix": 0.618
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.167,
+        "sp_p": 0.008,
+        "readout": {
+          "t": 0.285,
+          "cos10": -0.633,
+          "sin10": -0.282
+        }
+      },
+      "5": {
+        "cong_ratio": 0.948,
+        "cong_z": -1.5,
+        "star": {
+          "d(eleven,one)": 107.48,
+          "d(eleven,seven)": 82.25,
+          "d(eleven,six)": 79.96,
+          "d(twelve,two)": 92.42,
+          "d(twelve,seven)": 91.08
+        },
+        "rsa": {
+          "line": 0.489,
+          "circ7": -0.03,
+          "circ10": 0.139,
+          "circ12": 0.16,
+          "helix": 0.493
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.157,
+        "sp_p": 0.006,
+        "readout": {
+          "t": 0.133,
+          "cos10": -0.685,
+          "sin10": -0.533
+        }
+      },
+      "6": {
+        "cong_ratio": 0.954,
+        "cong_z": -1.1,
+        "star": {
+          "d(eleven,one)": 113.45,
+          "d(eleven,seven)": 81.54,
+          "d(eleven,six)": 79.15,
+          "d(twelve,two)": 96.56,
+          "d(twelve,seven)": 87.08
+        },
+        "rsa": {
+          "line": 0.497,
+          "circ7": -0.037,
+          "circ10": 0.129,
+          "circ12": 0.154,
+          "helix": 0.502
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.146,
+        "sp_p": 0.008,
+        "readout": {
+          "t": 0.055,
+          "cos10": -0.752,
+          "sin10": -0.679
+        }
+      },
+      "7": {
+        "cong_ratio": 0.967,
+        "cong_z": -0.8,
+        "star": {
+          "d(eleven,one)": 117.3,
+          "d(eleven,seven)": 82.4,
+          "d(eleven,six)": 78.03,
+          "d(twelve,two)": 100.09,
+          "d(twelve,seven)": 83.87
+        },
+        "rsa": {
+          "line": 0.505,
+          "circ7": -0.038,
+          "circ10": 0.115,
+          "circ12": 0.142,
+          "helix": 0.51
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.127,
+        "sp_p": 0.008,
+        "readout": {
+          "t": 0.016,
+          "cos10": -0.774,
+          "sin10": -0.736
+        }
+      },
+      "8": {
+        "cong_ratio": 0.976,
+        "cong_z": -0.5,
+        "star": {
+          "d(eleven,one)": 119.07,
+          "d(eleven,seven)": 81.63,
+          "d(eleven,six)": 76.94,
+          "d(twelve,two)": 102.04,
+          "d(twelve,seven)": 84.2
+        },
+        "rsa": {
+          "line": 0.517,
+          "circ7": -0.039,
+          "circ10": 0.096,
+          "circ12": 0.129,
+          "helix": 0.522
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.096,
+        "sp_p": 0.0539,
+        "readout": {
+          "t": 0.053,
+          "cos10": -0.783,
+          "sin10": -0.703
+        }
+      },
+      "9": {
+        "cong_ratio": 0.978,
+        "cong_z": -0.5,
+        "star": {
+          "d(eleven,one)": 120.27,
+          "d(eleven,seven)": 80.59,
+          "d(eleven,six)": 72.9,
+          "d(twelve,two)": 104.27,
+          "d(twelve,seven)": 82.14
+        },
+        "rsa": {
+          "line": 0.455,
+          "circ7": -0.036,
+          "circ10": 0.076,
+          "circ12": 0.105,
+          "helix": 0.461
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.061,
+        "sp_p": 0.0898,
+        "readout": {
+          "t": -0.022,
+          "cos10": -0.779,
+          "sin10": -0.805
+        }
+      },
+      "10": {
+        "cong_ratio": 0.979,
+        "cong_z": -0.5,
+        "star": {
+          "d(eleven,one)": 120.1,
+          "d(eleven,seven)": 77.59,
+          "d(eleven,six)": 70.15,
+          "d(twelve,two)": 107.43,
+          "d(twelve,seven)": 78.66
+        },
+        "rsa": {
+          "line": 0.434,
+          "circ7": -0.03,
+          "circ10": 0.065,
+          "circ12": 0.077,
+          "helix": 0.44
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.059,
+        "sp_p": 0.0798,
+        "readout": {
+          "t": -0.09,
+          "cos10": -0.769,
+          "sin10": -0.804
+        }
+      },
+      "11": {
+        "cong_ratio": 0.983,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 119.58,
+          "d(eleven,seven)": 76.28,
+          "d(eleven,six)": 68.39,
+          "d(twelve,two)": 109.15,
+          "d(twelve,seven)": 76.68
+        },
+        "rsa": {
+          "line": 0.395,
+          "circ7": -0.026,
+          "circ10": 0.062,
+          "circ12": 0.078,
+          "helix": 0.402
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.052,
+        "sp_p": 0.1158,
+        "readout": {
+          "t": -0.08,
+          "cos10": -0.728,
+          "sin10": -0.827
+        }
+      },
+      "12": {
+        "cong_ratio": 0.982,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 120.23,
+          "d(eleven,seven)": 74.36,
+          "d(eleven,six)": 65.7,
+          "d(twelve,two)": 109.93,
+          "d(twelve,seven)": 73.62
+        },
+        "rsa": {
+          "line": 0.382,
+          "circ7": -0.028,
+          "circ10": 0.054,
+          "circ12": 0.062,
+          "helix": 0.388
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.044,
+        "sp_p": 0.1218,
+        "readout": {
+          "t": -0.046,
+          "cos10": -0.668,
+          "sin10": -0.832
+        }
+      },
+      "13": {
+        "cong_ratio": 0.985,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 123.38,
+          "d(eleven,seven)": 73.84,
+          "d(eleven,six)": 64.67,
+          "d(twelve,two)": 112.95,
+          "d(twelve,seven)": 71.67
+        },
+        "rsa": {
+          "line": 0.377,
+          "circ7": -0.033,
+          "circ10": 0.048,
+          "circ12": 0.055,
+          "helix": 0.383
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.037,
+        "sp_p": 0.1677,
+        "readout": {
+          "t": -0.023,
+          "cos10": -0.669,
+          "sin10": -0.821
+        }
+      },
+      "14": {
+        "cong_ratio": 0.983,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 122.0,
+          "d(eleven,seven)": 72.77,
+          "d(eleven,six)": 63.2,
+          "d(twelve,two)": 114.96,
+          "d(twelve,seven)": 70.1
+        },
+        "rsa": {
+          "line": 0.36,
+          "circ7": -0.035,
+          "circ10": 0.055,
+          "circ12": 0.058,
+          "helix": 0.367
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.042,
+        "sp_p": 0.1597,
+        "readout": {
+          "t": 0.022,
+          "cos10": -0.611,
+          "sin10": -0.795
+        }
+      },
+      "15": {
+        "cong_ratio": 0.98,
+        "cong_z": -0.4,
+        "star": {
+          "d(eleven,one)": 122.73,
+          "d(eleven,seven)": 72.11,
+          "d(eleven,six)": 64.5,
+          "d(twelve,two)": 116.11,
+          "d(twelve,seven)": 68.04
+        },
+        "rsa": {
+          "line": 0.397,
+          "circ7": -0.05,
+          "circ10": 0.059,
+          "circ12": 0.067,
+          "helix": 0.403
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.043,
+        "sp_p": 0.1477,
+        "readout": {
+          "t": 0.085,
+          "cos10": -0.433,
+          "sin10": -0.706
+        }
+      },
+      "16": {
+        "cong_ratio": 0.973,
+        "cong_z": -0.4,
+        "star": {
+          "d(eleven,one)": 125.76,
+          "d(eleven,seven)": 69.44,
+          "d(eleven,six)": 62.74,
+          "d(twelve,two)": 121.24,
+          "d(twelve,seven)": 63.58
+        },
+        "rsa": {
+          "line": 0.419,
+          "circ7": -0.051,
+          "circ10": 0.056,
+          "circ12": 0.062,
+          "helix": 0.426
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.035,
+        "sp_p": 0.1776,
+        "readout": {
+          "t": 0.171,
+          "cos10": -0.415,
+          "sin10": -0.65
+        }
+      },
+      "17": {
+        "cong_ratio": 0.953,
+        "cong_z": -0.9,
+        "star": {
+          "d(eleven,one)": 126.89,
+          "d(eleven,seven)": 76.63,
+          "d(eleven,six)": 70.99,
+          "d(twelve,two)": 117.05,
+          "d(twelve,seven)": 66.7
+        },
+        "rsa": {
+          "line": 0.462,
+          "circ7": -0.073,
+          "circ10": 0.065,
+          "circ12": 0.091,
+          "helix": 0.468
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.075,
+        "sp_p": 0.0439,
+        "readout": {
+          "t": 0.208,
+          "cos10": -0.16,
+          "sin10": -0.469
+        }
+      },
+      "18": {
+        "cong_ratio": 0.967,
+        "cong_z": -0.5,
+        "star": {
+          "d(eleven,one)": 132.01,
+          "d(eleven,seven)": 78.83,
+          "d(eleven,six)": 69.19,
+          "d(twelve,two)": 120.21,
+          "d(twelve,seven)": 75.85
+        },
+        "rsa": {
+          "line": 0.434,
+          "circ7": -0.059,
+          "circ10": 0.063,
+          "circ12": 0.087,
+          "helix": 0.441
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.06,
+        "sp_p": 0.0838,
+        "readout": {
+          "t": 0.208,
+          "cos10": -0.305,
+          "sin10": -0.548
+        }
+      },
+      "19": {
+        "cong_ratio": 0.961,
+        "cong_z": -0.7,
+        "star": {
+          "d(eleven,one)": 125.78,
+          "d(eleven,seven)": 74.15,
+          "d(eleven,six)": 71.22,
+          "d(twelve,two)": 112.98,
+          "d(twelve,seven)": 72.18
+        },
+        "rsa": {
+          "line": 0.477,
+          "circ7": -0.062,
+          "circ10": 0.074,
+          "circ12": 0.112,
+          "helix": 0.482
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.066,
+        "sp_p": 0.0918,
+        "readout": {
+          "t": 0.06,
+          "cos10": -0.646,
+          "sin10": -0.628
+        }
+      },
+      "20": {
+        "cong_ratio": 0.979,
+        "cong_z": -0.4,
+        "star": {
+          "d(eleven,one)": 132.78,
+          "d(eleven,seven)": 79.62,
+          "d(eleven,six)": 81.0,
+          "d(twelve,two)": 121.53,
+          "d(twelve,seven)": 71.5
+        },
+        "rsa": {
+          "line": 0.452,
+          "circ7": -0.053,
+          "circ10": 0.063,
+          "circ12": 0.126,
+          "helix": 0.456
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.072,
+        "sp_p": 0.0499,
+        "readout": {
+          "t": 0.187,
+          "cos10": -0.65,
+          "sin10": -0.663
+        }
+      },
+      "21": {
+        "cong_ratio": 0.983,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 130.91,
+          "d(eleven,seven)": 76.21,
+          "d(eleven,six)": 80.04,
+          "d(twelve,two)": 119.23,
+          "d(twelve,seven)": 69.69
+        },
+        "rsa": {
+          "line": 0.471,
+          "circ7": -0.049,
+          "circ10": 0.05,
+          "circ12": 0.12,
+          "helix": 0.475
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.065,
+        "sp_p": 0.0699,
+        "readout": {
+          "t": 0.238,
+          "cos10": -0.632,
+          "sin10": -0.633
+        }
+      },
+      "22": {
+        "cong_ratio": 0.982,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 130.5,
+          "d(eleven,seven)": 74.5,
+          "d(eleven,six)": 78.15,
+          "d(twelve,two)": 120.22,
+          "d(twelve,seven)": 68.16
+        },
+        "rsa": {
+          "line": 0.468,
+          "circ7": -0.042,
+          "circ10": 0.047,
+          "circ12": 0.111,
+          "helix": 0.472
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.05,
+        "sp_p": 0.1257,
+        "readout": {
+          "t": 0.289,
+          "cos10": -0.573,
+          "sin10": -0.579
+        }
+      },
+      "23": {
+        "cong_ratio": 0.98,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 129.89,
+          "d(eleven,seven)": 72.88,
+          "d(eleven,six)": 77.46,
+          "d(twelve,two)": 120.23,
+          "d(twelve,seven)": 67.53
+        },
+        "rsa": {
+          "line": 0.465,
+          "circ7": -0.045,
+          "circ10": 0.055,
+          "circ12": 0.109,
+          "helix": 0.469
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.066,
+        "sp_p": 0.0898,
+        "readout": {
+          "t": 0.25,
+          "cos10": -0.554,
+          "sin10": -0.596
+        }
+      },
+      "24": {
+        "cong_ratio": 0.977,
+        "cong_z": -0.4,
+        "star": {
+          "d(eleven,one)": 128.68,
+          "d(eleven,seven)": 71.21,
+          "d(eleven,six)": 80.04,
+          "d(twelve,two)": 119.17,
+          "d(twelve,seven)": 66.83
+        },
+        "rsa": {
+          "line": 0.443,
+          "circ7": -0.044,
+          "circ10": 0.052,
+          "circ12": 0.106,
+          "helix": 0.447
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.054,
+        "sp_p": 0.0958,
+        "readout": {
+          "t": 0.255,
+          "cos10": -0.583,
+          "sin10": -0.59
+        }
+      },
+      "25": {
+        "cong_ratio": 0.973,
+        "cong_z": -0.4,
+        "star": {
+          "d(eleven,one)": 129.32,
+          "d(eleven,seven)": 69.8,
+          "d(eleven,six)": 78.99,
+          "d(twelve,two)": 119.71,
+          "d(twelve,seven)": 65.94
+        },
+        "rsa": {
+          "line": 0.428,
+          "circ7": -0.043,
+          "circ10": 0.052,
+          "circ12": 0.099,
+          "helix": 0.433
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.053,
+        "sp_p": 0.1158,
+        "readout": {
+          "t": 0.258,
+          "cos10": -0.559,
+          "sin10": -0.588
+        }
+      },
+      "26": {
+        "cong_ratio": 0.971,
+        "cong_z": -0.5,
+        "star": {
+          "d(eleven,one)": 126.95,
+          "d(eleven,seven)": 68.64,
+          "d(eleven,six)": 78.95,
+          "d(twelve,two)": 119.11,
+          "d(twelve,seven)": 66.12
+        },
+        "rsa": {
+          "line": 0.411,
+          "circ7": -0.044,
+          "circ10": 0.06,
+          "circ12": 0.107,
+          "helix": 0.415
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.056,
+        "sp_p": 0.0758,
+        "readout": {
+          "t": 0.24,
+          "cos10": -0.566,
+          "sin10": -0.6
+        }
+      },
+      "27": {
+        "cong_ratio": 0.97,
+        "cong_z": -0.5,
+        "star": {
+          "d(eleven,one)": 126.52,
+          "d(eleven,seven)": 67.69,
+          "d(eleven,six)": 78.6,
+          "d(twelve,two)": 118.6,
+          "d(twelve,seven)": 65.0
+        },
+        "rsa": {
+          "line": 0.396,
+          "circ7": -0.043,
+          "circ10": 0.062,
+          "circ12": 0.108,
+          "helix": 0.4
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.054,
+        "sp_p": 0.0898,
+        "readout": {
+          "t": 0.24,
+          "cos10": -0.581,
+          "sin10": -0.603
+        }
+      },
+      "28": {
+        "cong_ratio": 0.963,
+        "cong_z": -0.6,
+        "star": {
+          "d(eleven,one)": 126.44,
+          "d(eleven,seven)": 69.83,
+          "d(eleven,six)": 80.78,
+          "d(twelve,two)": 119.07,
+          "d(twelve,seven)": 64.7
+        },
+        "rsa": {
+          "line": 0.392,
+          "circ7": -0.047,
+          "circ10": 0.067,
+          "circ12": 0.11,
+          "helix": 0.397
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.053,
+        "sp_p": 0.0918,
+        "readout": {
+          "t": 0.244,
+          "cos10": -0.593,
+          "sin10": -0.576
+        }
+      },
+      "29": {
+        "cong_ratio": 0.95,
+        "cong_z": -0.8,
+        "star": {
+          "d(eleven,one)": 124.46,
+          "d(eleven,seven)": 67.63,
+          "d(eleven,six)": 78.71,
+          "d(twelve,two)": 116.45,
+          "d(twelve,seven)": 64.63
+        },
+        "rsa": {
+          "line": 0.385,
+          "circ7": -0.054,
+          "circ10": 0.072,
+          "circ12": 0.113,
+          "helix": 0.389
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.059,
+        "sp_p": 0.0918,
+        "readout": {
+          "t": 0.231,
+          "cos10": -0.505,
+          "sin10": -0.559
+        }
+      },
+      "30": {
+        "cong_ratio": 0.953,
+        "cong_z": -0.8,
+        "star": {
+          "d(eleven,one)": 125.33,
+          "d(eleven,seven)": 66.26,
+          "d(eleven,six)": 78.07,
+          "d(twelve,two)": 117.76,
+          "d(twelve,seven)": 64.07
+        },
+        "rsa": {
+          "line": 0.392,
+          "circ7": -0.054,
+          "circ10": 0.067,
+          "circ12": 0.111,
+          "helix": 0.396
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.058,
+        "sp_p": 0.0758,
+        "readout": {
+          "t": 0.247,
+          "cos10": -0.512,
+          "sin10": -0.547
+        }
+      },
+      "31": {
+        "cong_ratio": 0.957,
+        "cong_z": -0.6,
+        "star": {
+          "d(eleven,one)": 125.19,
+          "d(eleven,seven)": 66.07,
+          "d(eleven,six)": 77.84,
+          "d(twelve,two)": 119.84,
+          "d(twelve,seven)": 63.84
+        },
+        "rsa": {
+          "line": 0.389,
+          "circ7": -0.051,
+          "circ10": 0.062,
+          "circ12": 0.107,
+          "helix": 0.393
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.052,
+        "sp_p": 0.0938,
+        "readout": {
+          "t": 0.253,
+          "cos10": -0.508,
+          "sin10": -0.584
+        }
+      },
+      "32": {
+        "cong_ratio": 0.961,
+        "cong_z": -0.6,
+        "star": {
+          "d(eleven,one)": 118.83,
+          "d(eleven,seven)": 65.14,
+          "d(eleven,six)": 78.16,
+          "d(twelve,two)": 122.26,
+          "d(twelve,seven)": 65.71
+        },
+        "rsa": {
+          "line": 0.363,
+          "circ7": -0.043,
+          "circ10": 0.057,
+          "circ12": 0.107,
+          "helix": 0.367
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.044,
+        "sp_p": 0.1297,
+        "readout": {
+          "t": 0.318,
+          "cos10": -0.532,
+          "sin10": -0.579
+        }
+      }
+    },
+    "number/mean": {
+      "0": {
+        "cong_ratio": 0.984,
+        "cong_z": -0.9,
+        "star": {
+          "d(eleven,one)": 100.06,
+          "d(eleven,seven)": 93.94,
+          "d(eleven,six)": 94.81,
+          "d(twelve,two)": 95.7,
+          "d(twelve,seven)": 94.3
+        },
+        "rsa": {
+          "line": 0.216,
+          "circ7": -0.049,
+          "circ10": 0.095,
+          "circ12": 0.154,
+          "helix": 0.216
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.104,
+        "sp_p": 0.0419,
+        "readout": {
+          "t": -0.681,
+          "cos10": -0.947,
+          "sin10": -0.931
+        }
+      },
+      "1": {
+        "cong_ratio": 0.959,
+        "cong_z": -1.8,
+        "star": {
+          "d(eleven,one)": 99.04,
+          "d(eleven,seven)": 89.39,
+          "d(eleven,six)": 89.11,
+          "d(twelve,two)": 94.94,
+          "d(twelve,seven)": 93.1
+        },
+        "rsa": {
+          "line": 0.515,
+          "circ7": -0.108,
+          "circ10": 0.106,
+          "circ12": 0.186,
+          "helix": 0.515
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.116,
+        "sp_p": 0.024,
+        "readout": {
+          "t": -0.302,
+          "cos10": -0.91,
+          "sin10": -0.828
+        }
+      },
+      "2": {
+        "cong_ratio": 0.95,
+        "cong_z": -1.5,
+        "star": {
+          "d(eleven,one)": 106.5,
+          "d(eleven,seven)": 86.23,
+          "d(eleven,six)": 86.51,
+          "d(twelve,two)": 93.62,
+          "d(twelve,seven)": 89.7
+        },
+        "rsa": {
+          "line": 0.631,
+          "circ7": -0.085,
+          "circ10": 0.102,
+          "circ12": 0.143,
+          "helix": 0.633
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.154,
+        "sp_p": 0.018,
+        "readout": {
+          "t": 0.094,
+          "cos10": -0.794,
+          "sin10": -0.577
+        }
+      },
+      "3": {
+        "cong_ratio": 0.937,
+        "cong_z": -1.6,
+        "star": {
+          "d(eleven,one)": 106.53,
+          "d(eleven,seven)": 90.42,
+          "d(eleven,six)": 88.65,
+          "d(twelve,two)": 91.52,
+          "d(twelve,seven)": 89.93
+        },
+        "rsa": {
+          "line": 0.614,
+          "circ7": -0.069,
+          "circ10": 0.124,
+          "circ12": 0.161,
+          "helix": 0.619
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.171,
+        "sp_p": 0.012,
+        "readout": {
+          "t": 0.432,
+          "cos10": -0.537,
+          "sin10": -0.012
+        }
+      },
+      "4": {
+        "cong_ratio": 0.95,
+        "cong_z": -1.2,
+        "star": {
+          "d(eleven,one)": 108.51,
+          "d(eleven,seven)": 84.82,
+          "d(eleven,six)": 84.83,
+          "d(twelve,two)": 93.58,
+          "d(twelve,seven)": 90.33
+        },
+        "rsa": {
+          "line": 0.574,
+          "circ7": -0.056,
+          "circ10": 0.13,
+          "circ12": 0.179,
+          "helix": 0.579
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.178,
+        "sp_p": 0.008,
+        "readout": {
+          "t": 0.402,
+          "cos10": -0.588,
+          "sin10": -0.142
+        }
+      },
+      "5": {
+        "cong_ratio": 0.952,
+        "cong_z": -1.4,
+        "star": {
+          "d(eleven,one)": 110.87,
+          "d(eleven,seven)": 84.93,
+          "d(eleven,six)": 82.45,
+          "d(twelve,two)": 95.19,
+          "d(twelve,seven)": 93.97
+        },
+        "rsa": {
+          "line": 0.458,
+          "circ7": -0.016,
+          "circ10": 0.149,
+          "circ12": 0.202,
+          "helix": 0.463
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.174,
+        "sp_p": 0.002,
+        "readout": {
+          "t": 0.288,
+          "cos10": -0.606,
+          "sin10": -0.408
+        }
+      },
+      "6": {
+        "cong_ratio": 0.957,
+        "cong_z": -1.1,
+        "star": {
+          "d(eleven,one)": 116.42,
+          "d(eleven,seven)": 83.66,
+          "d(eleven,six)": 81.16,
+          "d(twelve,two)": 99.07,
+          "d(twelve,seven)": 89.5
+        },
+        "rsa": {
+          "line": 0.453,
+          "circ7": -0.02,
+          "circ10": 0.136,
+          "circ12": 0.193,
+          "helix": 0.46
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.162,
+        "sp_p": 0.004,
+        "readout": {
+          "t": 0.203,
+          "cos10": -0.69,
+          "sin10": -0.593
+        }
+      },
+      "7": {
+        "cong_ratio": 0.969,
+        "cong_z": -0.7,
+        "star": {
+          "d(eleven,one)": 119.93,
+          "d(eleven,seven)": 84.26,
+          "d(eleven,six)": 79.81,
+          "d(twelve,two)": 102.37,
+          "d(twelve,seven)": 85.91
+        },
+        "rsa": {
+          "line": 0.459,
+          "circ7": -0.023,
+          "circ10": 0.116,
+          "circ12": 0.173,
+          "helix": 0.467
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.135,
+        "sp_p": 0.006,
+        "readout": {
+          "t": 0.17,
+          "cos10": -0.711,
+          "sin10": -0.671
+        }
+      },
+      "8": {
+        "cong_ratio": 0.979,
+        "cong_z": -0.4,
+        "star": {
+          "d(eleven,one)": 121.64,
+          "d(eleven,seven)": 83.42,
+          "d(eleven,six)": 78.64,
+          "d(twelve,two)": 104.41,
+          "d(twelve,seven)": 86.16
+        },
+        "rsa": {
+          "line": 0.468,
+          "circ7": -0.02,
+          "circ10": 0.1,
+          "circ12": 0.161,
+          "helix": 0.477
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.097,
+        "sp_p": 0.0499,
+        "readout": {
+          "t": 0.247,
+          "cos10": -0.709,
+          "sin10": -0.603
+        }
+      },
+      "9": {
+        "cong_ratio": 0.981,
+        "cong_z": -0.4,
+        "star": {
+          "d(eleven,one)": 123.1,
+          "d(eleven,seven)": 82.71,
+          "d(eleven,six)": 74.85,
+          "d(twelve,two)": 106.96,
+          "d(twelve,seven)": 84.34
+        },
+        "rsa": {
+          "line": 0.403,
+          "circ7": -0.018,
+          "circ10": 0.085,
+          "circ12": 0.14,
+          "helix": 0.414
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.079,
+        "sp_p": 0.0399,
+        "readout": {
+          "t": 0.203,
+          "cos10": -0.704,
+          "sin10": -0.652
+        }
+      },
+      "10": {
+        "cong_ratio": 0.983,
+        "cong_z": -0.4,
+        "star": {
+          "d(eleven,one)": 123.01,
+          "d(eleven,seven)": 79.53,
+          "d(eleven,six)": 72.03,
+          "d(twelve,two)": 110.33,
+          "d(twelve,seven)": 80.65
+        },
+        "rsa": {
+          "line": 0.391,
+          "circ7": -0.016,
+          "circ10": 0.074,
+          "circ12": 0.109,
+          "helix": 0.402
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.076,
+        "sp_p": 0.0539,
+        "readout": {
+          "t": 0.148,
+          "cos10": -0.701,
+          "sin10": -0.682
+        }
+      },
+      "11": {
+        "cong_ratio": 0.987,
+        "cong_z": -0.2,
+        "star": {
+          "d(eleven,one)": 122.3,
+          "d(eleven,seven)": 78.07,
+          "d(eleven,six)": 70.27,
+          "d(twelve,two)": 112.14,
+          "d(twelve,seven)": 78.55
+        },
+        "rsa": {
+          "line": 0.359,
+          "circ7": -0.018,
+          "circ10": 0.079,
+          "circ12": 0.114,
+          "helix": 0.37
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.074,
+        "sp_p": 0.0659,
+        "readout": {
+          "t": 0.174,
+          "cos10": -0.637,
+          "sin10": -0.687
+        }
+      },
+      "12": {
+        "cong_ratio": 0.986,
+        "cong_z": -0.2,
+        "star": {
+          "d(eleven,one)": 123.42,
+          "d(eleven,seven)": 76.38,
+          "d(eleven,six)": 67.72,
+          "d(twelve,two)": 113.08,
+          "d(twelve,seven)": 75.58
+        },
+        "rsa": {
+          "line": 0.354,
+          "circ7": -0.02,
+          "circ10": 0.075,
+          "circ12": 0.1,
+          "helix": 0.365
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.073,
+        "sp_p": 0.0459,
+        "readout": {
+          "t": 0.213,
+          "cos10": -0.586,
+          "sin10": -0.677
+        }
+      },
+      "13": {
+        "cong_ratio": 0.991,
+        "cong_z": -0.1,
+        "star": {
+          "d(eleven,one)": 126.11,
+          "d(eleven,seven)": 75.52,
+          "d(eleven,six)": 66.56,
+          "d(twelve,two)": 115.7,
+          "d(twelve,seven)": 73.47
+        },
+        "rsa": {
+          "line": 0.351,
+          "circ7": -0.026,
+          "circ10": 0.063,
+          "circ12": 0.089,
+          "helix": 0.361
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.06,
+        "sp_p": 0.0958,
+        "readout": {
+          "t": 0.219,
+          "cos10": -0.583,
+          "sin10": -0.639
+        }
+      },
+      "14": {
+        "cong_ratio": 0.991,
+        "cong_z": -0.2,
+        "star": {
+          "d(eleven,one)": 124.45,
+          "d(eleven,seven)": 74.23,
+          "d(eleven,six)": 64.81,
+          "d(twelve,two)": 117.6,
+          "d(twelve,seven)": 71.6
+        },
+        "rsa": {
+          "line": 0.339,
+          "circ7": -0.027,
+          "circ10": 0.064,
+          "circ12": 0.091,
+          "helix": 0.348
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.061,
+        "sp_p": 0.0758,
+        "readout": {
+          "t": 0.259,
+          "cos10": -0.516,
+          "sin10": -0.613
+        }
+      },
+      "15": {
+        "cong_ratio": 0.987,
+        "cong_z": -0.2,
+        "star": {
+          "d(eleven,one)": 125.26,
+          "d(eleven,seven)": 73.44,
+          "d(eleven,six)": 66.1,
+          "d(twelve,two)": 118.46,
+          "d(twelve,seven)": 69.47
+        },
+        "rsa": {
+          "line": 0.375,
+          "circ7": -0.047,
+          "circ10": 0.072,
+          "circ12": 0.101,
+          "helix": 0.384
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.066,
+        "sp_p": 0.0659,
+        "readout": {
+          "t": 0.281,
+          "cos10": -0.363,
+          "sin10": -0.513
+        }
+      },
+      "16": {
+        "cong_ratio": 0.982,
+        "cong_z": -0.2,
+        "star": {
+          "d(eleven,one)": 128.22,
+          "d(eleven,seven)": 70.79,
+          "d(eleven,six)": 64.26,
+          "d(twelve,two)": 123.56,
+          "d(twelve,seven)": 64.83
+        },
+        "rsa": {
+          "line": 0.395,
+          "circ7": -0.043,
+          "circ10": 0.069,
+          "circ12": 0.092,
+          "helix": 0.404
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.052,
+        "sp_p": 0.0938,
+        "readout": {
+          "t": 0.353,
+          "cos10": -0.331,
+          "sin10": -0.402
+        }
+      },
+      "17": {
+        "cong_ratio": 0.963,
+        "cong_z": -0.7,
+        "star": {
+          "d(eleven,one)": 129.33,
+          "d(eleven,seven)": 78.09,
+          "d(eleven,six)": 72.58,
+          "d(twelve,two)": 119.32,
+          "d(twelve,seven)": 68.13
+        },
+        "rsa": {
+          "line": 0.429,
+          "circ7": -0.065,
+          "circ10": 0.075,
+          "circ12": 0.119,
+          "helix": 0.435
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.074,
+        "sp_p": 0.0439,
+        "readout": {
+          "t": 0.353,
+          "cos10": -0.109,
+          "sin10": -0.27
+        }
+      },
+      "18": {
+        "cong_ratio": 0.976,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 133.8,
+          "d(eleven,seven)": 79.75,
+          "d(eleven,six)": 70.27,
+          "d(twelve,two)": 121.81,
+          "d(twelve,seven)": 76.94
+        },
+        "rsa": {
+          "line": 0.41,
+          "circ7": -0.052,
+          "circ10": 0.074,
+          "circ12": 0.112,
+          "helix": 0.419
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.076,
+        "sp_p": 0.0479,
+        "readout": {
+          "t": 0.347,
+          "cos10": -0.236,
+          "sin10": -0.276
+        }
+      },
+      "19": {
+        "cong_ratio": 0.967,
+        "cong_z": -0.6,
+        "star": {
+          "d(eleven,one)": 127.58,
+          "d(eleven,seven)": 75.1,
+          "d(eleven,six)": 72.34,
+          "d(twelve,two)": 114.52,
+          "d(twelve,seven)": 73.25
+        },
+        "rsa": {
+          "line": 0.454,
+          "circ7": -0.055,
+          "circ10": 0.077,
+          "circ12": 0.13,
+          "helix": 0.461
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.064,
+        "sp_p": 0.0898,
+        "readout": {
+          "t": 0.182,
+          "cos10": -0.618,
+          "sin10": -0.509
+        }
+      },
+      "20": {
+        "cong_ratio": 0.982,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 134.33,
+          "d(eleven,seven)": 80.46,
+          "d(eleven,six)": 82.1,
+          "d(twelve,two)": 122.99,
+          "d(twelve,seven)": 72.23
+        },
+        "rsa": {
+          "line": 0.419,
+          "circ7": -0.045,
+          "circ10": 0.071,
+          "circ12": 0.146,
+          "helix": 0.424
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.069,
+        "sp_p": 0.0619,
+        "readout": {
+          "t": 0.304,
+          "cos10": -0.599,
+          "sin10": -0.545
+        }
+      },
+      "21": {
+        "cong_ratio": 0.987,
+        "cong_z": -0.2,
+        "star": {
+          "d(eleven,one)": 132.09,
+          "d(eleven,seven)": 76.82,
+          "d(eleven,six)": 80.75,
+          "d(twelve,two)": 120.33,
+          "d(twelve,seven)": 70.21
+        },
+        "rsa": {
+          "line": 0.464,
+          "circ7": -0.045,
+          "circ10": 0.06,
+          "circ12": 0.134,
+          "helix": 0.469
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.069,
+        "sp_p": 0.0719,
+        "readout": {
+          "t": 0.36,
+          "cos10": -0.554,
+          "sin10": -0.495
+        }
+      },
+      "22": {
+        "cong_ratio": 0.986,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 131.45,
+          "d(eleven,seven)": 74.86,
+          "d(eleven,six)": 78.57,
+          "d(twelve,two)": 121.17,
+          "d(twelve,seven)": 68.41
+        },
+        "rsa": {
+          "line": 0.464,
+          "circ7": -0.044,
+          "circ10": 0.053,
+          "circ12": 0.115,
+          "helix": 0.47
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.054,
+        "sp_p": 0.1078,
+        "readout": {
+          "t": 0.399,
+          "cos10": -0.496,
+          "sin10": -0.446
+        }
+      },
+      "23": {
+        "cong_ratio": 0.984,
+        "cong_z": -0.2,
+        "star": {
+          "d(eleven,one)": 130.73,
+          "d(eleven,seven)": 73.15,
+          "d(eleven,six)": 77.94,
+          "d(twelve,two)": 121.11,
+          "d(twelve,seven)": 67.71
+        },
+        "rsa": {
+          "line": 0.467,
+          "circ7": -0.051,
+          "circ10": 0.062,
+          "circ12": 0.114,
+          "helix": 0.473
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.071,
+        "sp_p": 0.0778,
+        "readout": {
+          "t": 0.351,
+          "cos10": -0.479,
+          "sin10": -0.456
+        }
+      },
+      "24": {
+        "cong_ratio": 0.982,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 129.31,
+          "d(eleven,seven)": 71.39,
+          "d(eleven,six)": 80.41,
+          "d(twelve,two)": 119.91,
+          "d(twelve,seven)": 66.95
+        },
+        "rsa": {
+          "line": 0.449,
+          "circ7": -0.05,
+          "circ10": 0.061,
+          "circ12": 0.111,
+          "helix": 0.455
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.055,
+        "sp_p": 0.1038,
+        "readout": {
+          "t": 0.334,
+          "cos10": -0.474,
+          "sin10": -0.496
+        }
+      },
+      "25": {
+        "cong_ratio": 0.98,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 129.86,
+          "d(eleven,seven)": 69.86,
+          "d(eleven,six)": 79.23,
+          "d(twelve,two)": 120.24,
+          "d(twelve,seven)": 65.98
+        },
+        "rsa": {
+          "line": 0.439,
+          "circ7": -0.054,
+          "circ10": 0.06,
+          "circ12": 0.105,
+          "helix": 0.445
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.055,
+        "sp_p": 0.1078,
+        "readout": {
+          "t": 0.334,
+          "cos10": -0.452,
+          "sin10": -0.49
+        }
+      },
+      "26": {
+        "cong_ratio": 0.982,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 126.93,
+          "d(eleven,seven)": 68.22,
+          "d(eleven,six)": 78.84,
+          "d(twelve,two)": 119.22,
+          "d(twelve,seven)": 65.78
+        },
+        "rsa": {
+          "line": 0.424,
+          "circ7": -0.052,
+          "circ10": 0.063,
+          "circ12": 0.107,
+          "helix": 0.429
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.06,
+        "sp_p": 0.0679,
+        "readout": {
+          "t": 0.275,
+          "cos10": -0.468,
+          "sin10": -0.554
+        }
+      },
+      "27": {
+        "cong_ratio": 0.983,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 126.19,
+          "d(eleven,seven)": 67.16,
+          "d(eleven,six)": 78.33,
+          "d(twelve,two)": 118.44,
+          "d(twelve,seven)": 64.49
+        },
+        "rsa": {
+          "line": 0.408,
+          "circ7": -0.05,
+          "circ10": 0.061,
+          "circ12": 0.104,
+          "helix": 0.412
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.061,
+        "sp_p": 0.0639,
+        "readout": {
+          "t": 0.247,
+          "cos10": -0.492,
+          "sin10": -0.591
+        }
+      },
+      "28": {
+        "cong_ratio": 0.978,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 125.74,
+          "d(eleven,seven)": 69.07,
+          "d(eleven,six)": 80.22,
+          "d(twelve,two)": 118.7,
+          "d(twelve,seven)": 63.99
+        },
+        "rsa": {
+          "line": 0.409,
+          "circ7": -0.059,
+          "circ10": 0.067,
+          "circ12": 0.108,
+          "helix": 0.414
+        },
+        "best_rho": 0.5,
+        "semi_partial_circ10": 0.063,
+        "sp_p": 0.0838,
+        "readout": {
+          "t": 0.21,
+          "cos10": -0.508,
+          "sin10": -0.614
+        }
+      },
+      "29": {
+        "cong_ratio": 0.969,
+        "cong_z": -0.5,
+        "star": {
+          "d(eleven,one)": 123.27,
+          "d(eleven,seven)": 66.56,
+          "d(eleven,six)": 77.66,
+          "d(twelve,two)": 115.47,
+          "d(twelve,seven)": 63.62
+        },
+        "rsa": {
+          "line": 0.396,
+          "circ7": -0.066,
+          "circ10": 0.076,
+          "circ12": 0.11,
+          "helix": 0.4
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.068,
+        "sp_p": 0.0539,
+        "readout": {
+          "t": 0.133,
+          "cos10": -0.463,
+          "sin10": -0.665
+        }
+      },
+      "30": {
+        "cong_ratio": 0.974,
+        "cong_z": -0.5,
+        "star": {
+          "d(eleven,one)": 123.55,
+          "d(eleven,seven)": 64.94,
+          "d(eleven,six)": 76.81,
+          "d(twelve,two)": 116.35,
+          "d(twelve,seven)": 62.7
+        },
+        "rsa": {
+          "line": 0.397,
+          "circ7": -0.064,
+          "circ10": 0.073,
+          "circ12": 0.108,
+          "helix": 0.4
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.061,
+        "sp_p": 0.0579,
+        "readout": {
+          "t": 0.093,
+          "cos10": -0.473,
+          "sin10": -0.698
+        }
+      },
+      "31": {
+        "cong_ratio": 0.978,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 123.43,
+          "d(eleven,seven)": 64.69,
+          "d(eleven,six)": 76.64,
+          "d(twelve,two)": 118.29,
+          "d(twelve,seven)": 62.46
+        },
+        "rsa": {
+          "line": 0.393,
+          "circ7": -0.06,
+          "circ10": 0.063,
+          "circ12": 0.099,
+          "helix": 0.396
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.059,
+        "sp_p": 0.0699,
+        "readout": {
+          "t": 0.078,
+          "cos10": -0.494,
+          "sin10": -0.736
+        }
+      },
+      "32": {
+        "cong_ratio": 0.981,
+        "cong_z": -0.3,
+        "star": {
+          "d(eleven,one)": 116.72,
+          "d(eleven,seven)": 63.64,
+          "d(eleven,six)": 76.81,
+          "d(twelve,two)": 120.4,
+          "d(twelve,seven)": 64.14
+        },
+        "rsa": {
+          "line": 0.385,
+          "circ7": -0.06,
+          "circ10": 0.06,
+          "circ12": 0.102,
+          "helix": 0.388
+        },
+        "best_rho": 4.0,
+        "semi_partial_circ10": 0.051,
+        "sp_p": 0.0938,
+        "readout": {
+          "t": 0.129,
+          "cos10": -0.528,
+          "sin10": -0.736
+        }
+      }
+    }
+  }
+}
