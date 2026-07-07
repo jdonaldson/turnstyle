@@ -1,0 +1,7108 @@
+{
+  "model": "mistralai/Mistral-7B-Instruct-v0.3",
+  "wd_x_mo/b_tok": {
+    "0": {
+      "full": "degenerate",
+      "pc4": {
+        "mnn": 0.0,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "degenerate"
+      },
+      "sup4": {
+        "mnn": 0.0,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "degenerate"
+      },
+      "cv": 0.21,
+      "margA": {
+        "mnn": 0.0,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "degenerate"
+      },
+      "margB": {
+        "mnn": 10.57,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 1.0,
+      "torus_rsa_pc4": 0.38
+    },
+    "1": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.18,
+        "H1_ratio": 66.08,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 2.17,
+        "H1_ratio": 17.96,
+        "H2_ratio": 0.2,
+        "n1": 1,
+        "n2": 0,
+        "z1": 11.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.57,
+      "margA": {
+        "mnn": 26.03,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 9.25,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 1.0,
+      "torus_rsa_pc4": 0.37
+    },
+    "2": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.53,
+        "H1_ratio": 26.16,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.1,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 7.17,
+        "H1_ratio": 5.45,
+        "H2_ratio": 0.3,
+        "n1": 1,
+        "n2": 0,
+        "z1": 8.4,
+        "z2": 1.1,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.93,
+      "margA": {
+        "mnn": 15.17,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 10.97,
+        "H1_ratio": 1.19,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.39
+    },
+    "3": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 1.05,
+        "H1_ratio": 1.9,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -3.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 11.75,
+        "H1_ratio": 3.4,
+        "H2_ratio": 0.54,
+        "n1": 1,
+        "n2": 8,
+        "z1": 13.2,
+        "z2": 4.3,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 23.84,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 12.0,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.95,
+      "torus_rsa_pc4": 0.43
+    },
+    "4": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 1.1,
+        "H1_ratio": 2.87,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -4.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 10.02,
+        "H1_ratio": 4.16,
+        "H2_ratio": 0.52,
+        "n1": 1,
+        "n2": 0,
+        "z1": 11.7,
+        "z2": 2.8,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 22.39,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 14.28,
+        "H1_ratio": 0.61,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.89,
+      "torus_rsa_pc4": 0.44
+    },
+    "5": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 1.12,
+        "H1_ratio": 9.57,
+        "H2_ratio": 0.06,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.4,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 8.56,
+        "H1_ratio": 5.26,
+        "H2_ratio": 0.43,
+        "n1": 1,
+        "n2": 0,
+        "z1": 10.2,
+        "z2": 2.3,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.96,
+      "margA": {
+        "mnn": 24.09,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 18.82,
+        "H1_ratio": 1.59,
+        "H2_ratio": 0.14,
+        "n1": 1,
+        "n2": 0,
+        "z1": 4.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.87,
+      "torus_rsa_pc4": 0.48
+    },
+    "6": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 1.14,
+        "H1_ratio": 8.85,
+        "H2_ratio": 0.26,
+        "n1": 0,
+        "n2": 0,
+        "z1": -2.2,
+        "z2": -3.3,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 9.84,
+        "H1_ratio": 4.44,
+        "H2_ratio": 0.43,
+        "n1": 1,
+        "n2": 10,
+        "z1": 12.2,
+        "z2": 3.5,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 21.8,
+        "H1_ratio": 0.24,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.81,
+        "H1_ratio": 1.71,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.91,
+      "torus_rsa_pc4": 0.47
+    },
+    "7": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 1.59,
+        "H1_ratio": 8.57,
+        "H2_ratio": 0.77,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.4,
+        "z2": -2.1,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 8.99,
+        "H1_ratio": 4.92,
+        "H2_ratio": 0.54,
+        "n1": 1,
+        "n2": 0,
+        "z1": 10.5,
+        "z2": 2.3,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 25.0,
+        "H1_ratio": 0.46,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.81,
+        "H1_ratio": 1.62,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 4.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.9,
+      "torus_rsa_pc4": 0.49
+    },
+    "8": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 1.55,
+        "H1_ratio": 5.98,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 8.62,
+        "H1_ratio": 5.61,
+        "H2_ratio": 0.4,
+        "n1": 2,
+        "n2": 0,
+        "z1": 10.0,
+        "z2": 1.8,
+        "torsion": false,
+        "cls": "multi-loop"
+      },
+      "cv": 0.96,
+      "margA": {
+        "mnn": 23.55,
+        "H1_ratio": 0.48,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 20.81,
+        "H1_ratio": 1.66,
+        "H2_ratio": 0.14,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.91,
+      "torus_rsa_pc4": 0.52
+    },
+    "9": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 1.4,
+        "H1_ratio": 9.26,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 8.92,
+        "H1_ratio": 5.56,
+        "H2_ratio": 0.37,
+        "n1": 1,
+        "n2": 0,
+        "z1": 9.6,
+        "z2": 1.8,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.96,
+      "margA": {
+        "mnn": 25.77,
+        "H1_ratio": 0.31,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 19.55,
+        "H1_ratio": 2.16,
+        "H2_ratio": 0.01,
+        "n1": 1,
+        "n2": 0,
+        "z1": 5.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.91,
+      "torus_rsa_pc4": 0.55
+    },
+    "10": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 1.56,
+        "H1_ratio": 5.07,
+        "H2_ratio": 0.06,
+        "n1": 0,
+        "n2": 0,
+        "z1": -3.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 9.08,
+        "H1_ratio": 5.28,
+        "H2_ratio": 0.26,
+        "n1": 1,
+        "n2": 0,
+        "z1": 12.7,
+        "z2": 0.0,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.96,
+      "margA": {
+        "mnn": 24.81,
+        "H1_ratio": 0.19,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 19.32,
+        "H1_ratio": 1.87,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.93,
+      "torus_rsa_pc4": 0.53
+    },
+    "11": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 1.74,
+        "H1_ratio": 5.06,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -2.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 10.21,
+        "H1_ratio": 4.65,
+        "H2_ratio": 0.4,
+        "n1": 1,
+        "n2": 0,
+        "z1": 14.1,
+        "z2": 1.8,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 20.45,
+        "H1_ratio": 0.03,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 20.46,
+        "H1_ratio": 1.74,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 4.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.95,
+      "torus_rsa_pc4": 0.52
+    },
+    "12": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 1.97,
+        "H1_ratio": 2.56,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -3.7,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 10.26,
+        "H1_ratio": 4.54,
+        "H2_ratio": 0.33,
+        "n1": 1,
+        "n2": 0,
+        "z1": 13.8,
+        "z2": 0.8,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 21.89,
+        "H1_ratio": 0.05,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 18.46,
+        "H1_ratio": 1.63,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.7,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.95,
+      "torus_rsa_pc4": 0.51
+    },
+    "13": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 1.96,
+        "H1_ratio": 2.78,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -4.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 9.89,
+        "H1_ratio": 4.63,
+        "H2_ratio": 0.32,
+        "n1": 1,
+        "n2": 0,
+        "z1": 15.6,
+        "z2": 0.4,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 23.83,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 18.65,
+        "H1_ratio": 1.75,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.5
+    },
+    "14": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 2.16,
+        "H1_ratio": 3.65,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -2.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 10.35,
+        "H1_ratio": 4.21,
+        "H2_ratio": 0.33,
+        "n1": 1,
+        "n2": 0,
+        "z1": 18.3,
+        "z2": 0.3,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 25.86,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 16.93,
+        "H1_ratio": 1.6,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.51
+    },
+    "15": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 1.67,
+        "H1_ratio": 6.88,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 9.51,
+        "H1_ratio": 4.65,
+        "H2_ratio": 0.27,
+        "n1": 1,
+        "n2": 0,
+        "z1": 12.0,
+        "z2": 0.1,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 26.69,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 18.86,
+        "H1_ratio": 1.25,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.7,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.49
+    },
+    "16": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 1.16,
+        "H1_ratio": 3.41,
+        "H2_ratio": 0.13,
+        "n1": 0,
+        "n2": 0,
+        "z1": -3.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 7.76,
+        "H1_ratio": 6.2,
+        "H2_ratio": 0.37,
+        "n1": 1,
+        "n2": 0,
+        "z1": 12.1,
+        "z2": 0.2,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.94,
+      "margA": {
+        "mnn": 26.72,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 15.48,
+        "H1_ratio": 0.73,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.48
+    },
+    "17": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.94,
+        "H1_ratio": 2.39,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -4.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 6.72,
+        "H1_ratio": 7.4,
+        "H2_ratio": 0.89,
+        "n1": 1,
+        "n2": 3,
+        "z1": 8.5,
+        "z2": 5.3,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.91,
+      "margA": {
+        "mnn": 26.89,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.86,
+        "H1_ratio": 1.48,
+        "H2_ratio": 0.11,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.53
+    },
+    "18": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.84,
+        "H1_ratio": 2.45,
+        "H2_ratio": 0.09,
+        "n1": 0,
+        "n2": 0,
+        "z1": -4.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 7.1,
+        "H1_ratio": 6.44,
+        "H2_ratio": 0.78,
+        "n1": 1,
+        "n2": 3,
+        "z1": 12.6,
+        "z2": 3.2,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.93,
+      "margA": {
+        "mnn": 25.89,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 16.56,
+        "H1_ratio": 1.16,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.52
+    },
+    "19": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.6,
+        "H1_ratio": 21.87,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 5.29,
+        "H1_ratio": 7.77,
+        "H2_ratio": 0.31,
+        "n1": 1,
+        "n2": 0,
+        "z1": 12.8,
+        "z2": 0.1,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.87,
+      "margA": {
+        "mnn": 27.03,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 14.86,
+        "H1_ratio": 0.68,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.42
+    },
+    "20": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.58,
+        "H1_ratio": 38.52,
+        "H2_ratio": 0.0,
+        "n1": 2,
+        "n2": 0,
+        "z1": 4.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "multi-loop"
+      },
+      "sup4": {
+        "mnn": 6.01,
+        "H1_ratio": 6.62,
+        "H2_ratio": 0.37,
+        "n1": 1,
+        "n2": 0,
+        "z1": 13.4,
+        "z2": 0.8,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.91,
+      "margA": {
+        "mnn": 27.96,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 15.71,
+        "H1_ratio": 0.98,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 3.1,
+        "z2": null,
+        "torsion": false,
+        "cls": "weak-loop"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.42
+    },
+    "21": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.78,
+        "H1_ratio": 19.17,
+        "H2_ratio": 0.12,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 7.22,
+        "H1_ratio": 5.3,
+        "H2_ratio": 0.22,
+        "n1": 1,
+        "n2": 0,
+        "z1": 12.4,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.95,
+      "margA": {
+        "mnn": 24.61,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 13.72,
+        "H1_ratio": 1.09,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.42
+    },
+    "22": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.87,
+        "H1_ratio": 12.65,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 8.02,
+        "H1_ratio": 4.58,
+        "H2_ratio": 0.24,
+        "n1": 1,
+        "n2": 0,
+        "z1": 12.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.96,
+      "margA": {
+        "mnn": 25.31,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 15.59,
+        "H1_ratio": 0.2,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.39
+    },
+    "23": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.89,
+        "H1_ratio": 9.57,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.7,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 8.01,
+        "H1_ratio": 4.55,
+        "H2_ratio": 0.18,
+        "n1": 1,
+        "n2": 0,
+        "z1": 11.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.96,
+      "margA": {
+        "mnn": 27.19,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 14.27,
+        "H1_ratio": 0.49,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.38
+    },
+    "24": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.93,
+        "H1_ratio": 8.92,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.7,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 8.18,
+        "H1_ratio": 4.65,
+        "H2_ratio": 0.4,
+        "n1": 1,
+        "n2": 0,
+        "z1": 11.3,
+        "z2": 1.0,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.96,
+      "margA": {
+        "mnn": 26.22,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 13.64,
+        "H1_ratio": 0.09,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.41
+    },
+    "25": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.84,
+        "H1_ratio": 9.41,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 7.79,
+        "H1_ratio": 4.79,
+        "H2_ratio": 0.72,
+        "n1": 1,
+        "n2": 3,
+        "z1": 12.3,
+        "z2": 5.0,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.96,
+      "margA": {
+        "mnn": 25.96,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 15.82,
+        "H1_ratio": 0.31,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.4
+    },
+    "26": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.82,
+        "H1_ratio": 15.56,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 7.28,
+        "H1_ratio": 5.01,
+        "H2_ratio": 0.68,
+        "n1": 1,
+        "n2": 3,
+        "z1": 11.8,
+        "z2": 3.0,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.95,
+      "margA": {
+        "mnn": 26.02,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 13.28,
+        "H1_ratio": 0.22,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.37
+    },
+    "27": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.9,
+        "H1_ratio": 14.15,
+        "H2_ratio": 0.09,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 7.08,
+        "H1_ratio": 5.12,
+        "H2_ratio": 0.74,
+        "n1": 1,
+        "n2": 3,
+        "z1": 13.1,
+        "z2": 3.1,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.95,
+      "margA": {
+        "mnn": 26.64,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 12.25,
+        "H1_ratio": 0.35,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.38
+    },
+    "28": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.8,
+        "H1_ratio": 4.69,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -3.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 6.95,
+        "H1_ratio": 5.12,
+        "H2_ratio": 0.57,
+        "n1": 1,
+        "n2": 0,
+        "z1": 12.6,
+        "z2": 2.7,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.94,
+      "margA": {
+        "mnn": 26.7,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 18.7,
+        "H1_ratio": 0.07,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.37
+    },
+    "29": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.81,
+        "H1_ratio": 14.68,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.4,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 7.0,
+        "H1_ratio": 4.98,
+        "H2_ratio": 0.61,
+        "n1": 1,
+        "n2": 3,
+        "z1": 10.5,
+        "z2": 3.8,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.95,
+      "margA": {
+        "mnn": 28.87,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 16.91,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.36
+    },
+    "30": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.79,
+        "H1_ratio": 15.36,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 7.25,
+        "H1_ratio": 4.85,
+        "H2_ratio": 0.51,
+        "n1": 1,
+        "n2": 0,
+        "z1": 9.9,
+        "z2": 2.0,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.95,
+      "margA": {
+        "mnn": 28.62,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.07,
+        "H1_ratio": 0.05,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.36
+    },
+    "31": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.81,
+        "H1_ratio": 15.92,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 7.72,
+        "H1_ratio": 4.57,
+        "H2_ratio": 0.43,
+        "n1": 1,
+        "n2": 0,
+        "z1": 14.4,
+        "z2": 1.6,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.95,
+      "margA": {
+        "mnn": 28.03,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 16.68,
+        "H1_ratio": 0.05,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.35
+    },
+    "32": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.88,
+        "H1_ratio": 14.01,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.1,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 8.61,
+        "H1_ratio": 4.06,
+        "H2_ratio": 0.31,
+        "n1": 1,
+        "n2": 0,
+        "z1": 22.6,
+        "z2": 0.7,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.96,
+      "margA": {
+        "mnn": 26.53,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 15.06,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.34
+    }
+  },
+  "wd_x_mo/end": {
+    "0": {
+      "full": "degenerate",
+      "pc4": {
+        "mnn": 0.0,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "degenerate"
+      },
+      "sup4": {
+        "mnn": 0.0,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "degenerate"
+      },
+      "cv": -0.14,
+      "margA": {
+        "mnn": 0.0,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "degenerate"
+      },
+      "margB": {
+        "mnn": 0.0,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "degenerate"
+      },
+      "fibcons": 1.0,
+      "torus_rsa_pc4": 0.07
+    },
+    "1": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 2.07,
+        "H1_ratio": 0.72,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -3.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 9.34,
+        "H1_ratio": 1.69,
+        "H2_ratio": 0.37,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.6,
+        "z2": 0.8,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "cv": 0.96,
+      "margA": {
+        "mnn": 23.09,
+        "H1_ratio": 0.11,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 6.36,
+        "H1_ratio": 0.18,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 1.0,
+      "torus_rsa_pc4": 0.26
+    },
+    "2": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 4.25,
+        "H1_ratio": 1.16,
+        "H2_ratio": 0.31,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.7,
+        "z2": -0.7,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 11.9,
+        "H1_ratio": 2.04,
+        "H2_ratio": 0.21,
+        "n1": 1,
+        "n2": 0,
+        "z1": 9.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 13.99,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 4.51,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.28
+    },
+    "3": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 4.52,
+        "H1_ratio": 1.68,
+        "H2_ratio": 0.39,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.4,
+        "z2": -0.8,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 12.43,
+        "H1_ratio": 1.85,
+        "H2_ratio": 0.34,
+        "n1": 1,
+        "n2": 0,
+        "z1": 5.4,
+        "z2": 0.2,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 29.99,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 9.64,
+        "H1_ratio": 0.27,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 1.0,
+      "torus_rsa_pc4": 0.34
+    },
+    "4": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 7.09,
+        "H1_ratio": 0.71,
+        "H2_ratio": 0.66,
+        "n1": 0,
+        "n2": 0,
+        "z1": -3.1,
+        "z2": 0.4,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 13.05,
+        "H1_ratio": 2.02,
+        "H2_ratio": 0.52,
+        "n1": 1,
+        "n2": 0,
+        "z1": 8.3,
+        "z2": 1.3,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 21.83,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 10.98,
+        "H1_ratio": 0.56,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.1,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.46
+    },
+    "5": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 8.74,
+        "H1_ratio": 1.28,
+        "H2_ratio": 0.15,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.1,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 13.18,
+        "H1_ratio": 2.05,
+        "H2_ratio": 0.82,
+        "n1": 2,
+        "n2": 1,
+        "z1": 8.5,
+        "z2": 3.3,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 11.15,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 16.05,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.49
+    },
+    "6": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 10.62,
+        "H1_ratio": 0.84,
+        "H2_ratio": 0.32,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.5,
+        "z2": 0.9,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 13.38,
+        "H1_ratio": 2.18,
+        "H2_ratio": 1.15,
+        "n1": 3,
+        "n2": 4,
+        "z1": 7.0,
+        "z2": 5.1,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 13.98,
+        "H1_ratio": 0.37,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 19.37,
+        "H1_ratio": 0.25,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.57
+    },
+    "7": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 10.99,
+        "H1_ratio": 0.62,
+        "H2_ratio": 0.13,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 12.86,
+        "H1_ratio": 2.16,
+        "H2_ratio": 1.2,
+        "n1": 4,
+        "n2": 3,
+        "z1": 7.3,
+        "z2": 6.2,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 14.21,
+        "H1_ratio": 0.46,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 19.62,
+        "H1_ratio": 0.15,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.57
+    },
+    "8": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 11.7,
+        "H1_ratio": 0.7,
+        "H2_ratio": 0.69,
+        "n1": 0,
+        "n2": 1,
+        "z1": -1.5,
+        "z2": 6.6,
+        "torsion": false,
+        "cls": "cavity"
+      },
+      "sup4": {
+        "mnn": 13.35,
+        "H1_ratio": 2.2,
+        "H2_ratio": 1.13,
+        "n1": 3,
+        "n2": 2,
+        "z1": 6.3,
+        "z2": 5.5,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 16.73,
+        "H1_ratio": 0.23,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 19.75,
+        "H1_ratio": 0.11,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.61
+    },
+    "9": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 12.23,
+        "H1_ratio": 0.67,
+        "H2_ratio": 0.09,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 13.17,
+        "H1_ratio": 2.14,
+        "H2_ratio": 1.13,
+        "n1": 4,
+        "n2": 3,
+        "z1": 10.5,
+        "z2": 5.3,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 17.77,
+        "H1_ratio": 0.25,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.9,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.61
+    },
+    "10": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 11.91,
+        "H1_ratio": 0.71,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 13.63,
+        "H1_ratio": 2.18,
+        "H2_ratio": 1.05,
+        "n1": 3,
+        "n2": 3,
+        "z1": 7.8,
+        "z2": 5.9,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 18.23,
+        "H1_ratio": 0.1,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 15.72,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.62
+    },
+    "11": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 13.03,
+        "H1_ratio": 0.81,
+        "H2_ratio": 0.14,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.4,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 13.67,
+        "H1_ratio": 2.17,
+        "H2_ratio": 1.15,
+        "n1": 3,
+        "n2": 4,
+        "z1": 7.4,
+        "z2": 7.5,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 20.12,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.77,
+        "H1_ratio": 0.42,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.64
+    },
+    "12": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 10.19,
+        "H1_ratio": 1.27,
+        "H2_ratio": 0.11,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 12.74,
+        "H1_ratio": 2.52,
+        "H2_ratio": 0.81,
+        "n1": 2,
+        "n2": 2,
+        "z1": 12.0,
+        "z2": 3.3,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 23.38,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 18.63,
+        "H1_ratio": 0.15,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.54
+    },
+    "13": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 11.84,
+        "H1_ratio": 1.3,
+        "H2_ratio": 0.44,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.0,
+        "z2": 2.1,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 13.76,
+        "H1_ratio": 2.15,
+        "H2_ratio": 1.16,
+        "n1": 3,
+        "n2": 2,
+        "z1": 9.1,
+        "z2": 7.0,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 27.52,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 15.4,
+        "H1_ratio": 0.31,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.64
+    },
+    "14": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 13.34,
+        "H1_ratio": 1.17,
+        "H2_ratio": 0.18,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 13.68,
+        "H1_ratio": 2.07,
+        "H2_ratio": 1.11,
+        "n1": 3,
+        "n2": 4,
+        "z1": 5.4,
+        "z2": 8.2,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 30.8,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 18.69,
+        "H1_ratio": 0.16,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.63
+    },
+    "15": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 12.82,
+        "H1_ratio": 1.17,
+        "H2_ratio": 0.34,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.6,
+        "z2": 0.4,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 13.66,
+        "H1_ratio": 2.07,
+        "H2_ratio": 1.1,
+        "n1": 3,
+        "n2": 4,
+        "z1": 9.7,
+        "z2": 5.9,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 33.11,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 18.7,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.62
+    },
+    "16": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 12.71,
+        "H1_ratio": 1.06,
+        "H2_ratio": 0.26,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.8,
+        "z2": 0.3,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 13.81,
+        "H1_ratio": 2.11,
+        "H2_ratio": 1.09,
+        "n1": 3,
+        "n2": 2,
+        "z1": 7.8,
+        "z2": 6.9,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 29.08,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 18.71,
+        "H1_ratio": 0.27,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.62
+    },
+    "17": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 12.76,
+        "H1_ratio": 1.09,
+        "H2_ratio": 0.34,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.5,
+        "z2": 0.9,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 14.06,
+        "H1_ratio": 2.0,
+        "H2_ratio": 0.89,
+        "n1": 3,
+        "n2": 2,
+        "z1": 8.0,
+        "z2": 6.4,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 22.82,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 18.9,
+        "H1_ratio": 0.56,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.61
+    },
+    "18": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 13.4,
+        "H1_ratio": 1.51,
+        "H2_ratio": 0.56,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.8,
+        "z2": 1.1,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 18.2,
+        "H1_ratio": 2.44,
+        "H2_ratio": 0.58,
+        "n1": 1,
+        "n2": 0,
+        "z1": 13.7,
+        "z2": 2.2,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 30.94,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 20.66,
+        "H1_ratio": 1.26,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.76
+    },
+    "19": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 13.8,
+        "H1_ratio": 1.14,
+        "H2_ratio": 0.65,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.7,
+        "z2": 2.5,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 17.68,
+        "H1_ratio": 2.39,
+        "H2_ratio": 0.67,
+        "n1": 1,
+        "n2": 2,
+        "z1": 12.0,
+        "z2": 3.4,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 30.84,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 20.62,
+        "H1_ratio": 1.01,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.72
+    },
+    "20": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 5.86,
+        "H1_ratio": 5.44,
+        "H2_ratio": 0.0,
+        "n1": 2,
+        "n2": 0,
+        "z1": 6.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "multi-loop"
+      },
+      "sup4": {
+        "mnn": 16.95,
+        "H1_ratio": 2.77,
+        "H2_ratio": 0.27,
+        "n1": 1,
+        "n2": 0,
+        "z1": 17.1,
+        "z2": 0.5,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 27.1,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 20.12,
+        "H1_ratio": 1.7,
+        "H2_ratio": 0.08,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.66
+    },
+    "21": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 6.57,
+        "H1_ratio": 4.34,
+        "H2_ratio": 0.02,
+        "n1": 5,
+        "n2": 0,
+        "z1": 6.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "multi-loop"
+      },
+      "sup4": {
+        "mnn": 18.88,
+        "H1_ratio": 2.38,
+        "H2_ratio": 0.58,
+        "n1": 1,
+        "n2": 0,
+        "z1": 12.5,
+        "z2": 2.4,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 29.89,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 22.12,
+        "H1_ratio": 1.74,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 4.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.69
+    },
+    "22": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 7.41,
+        "H1_ratio": 3.03,
+        "H2_ratio": 0.69,
+        "n1": 3,
+        "n2": 0,
+        "z1": 3.3,
+        "z2": 0.7,
+        "torsion": false,
+        "cls": "multi-loop"
+      },
+      "sup4": {
+        "mnn": 18.24,
+        "H1_ratio": 2.24,
+        "H2_ratio": 0.74,
+        "n1": 1,
+        "n2": 1,
+        "z1": 12.3,
+        "z2": 3.7,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 22.21,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 20.29,
+        "H1_ratio": 1.21,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.65
+    },
+    "23": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 8.9,
+        "H1_ratio": 2.25,
+        "H2_ratio": 0.54,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.0,
+        "z2": 0.1,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 18.33,
+        "H1_ratio": 2.2,
+        "H2_ratio": 0.73,
+        "n1": 1,
+        "n2": 1,
+        "z1": 10.7,
+        "z2": 4.1,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 20.85,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 20.23,
+        "H1_ratio": 1.2,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.66
+    },
+    "24": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 8.87,
+        "H1_ratio": 2.67,
+        "H2_ratio": 0.42,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.6,
+        "z2": -0.2,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 18.04,
+        "H1_ratio": 2.3,
+        "H2_ratio": 0.72,
+        "n1": 1,
+        "n2": 1,
+        "z1": 17.5,
+        "z2": 4.2,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 21.09,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 19.68,
+        "H1_ratio": 1.45,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.67
+    },
+    "25": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 10.66,
+        "H1_ratio": 2.29,
+        "H2_ratio": 0.29,
+        "n1": 2,
+        "n2": 0,
+        "z1": 3.6,
+        "z2": -0.7,
+        "torsion": false,
+        "cls": "multi-loop"
+      },
+      "sup4": {
+        "mnn": 18.29,
+        "H1_ratio": 2.27,
+        "H2_ratio": 0.74,
+        "n1": 1,
+        "n2": 1,
+        "z1": 13.2,
+        "z2": 4.7,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 22.25,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 19.76,
+        "H1_ratio": 1.55,
+        "H2_ratio": 0.02,
+        "n1": 1,
+        "n2": 0,
+        "z1": 4.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.69
+    },
+    "26": {
+      "full": "cavity",
+      "pc4": {
+        "mnn": 3.95,
+        "H1_ratio": 7.86,
+        "H2_ratio": 0.45,
+        "n1": 6,
+        "n2": 0,
+        "z1": 7.2,
+        "z2": -2.9,
+        "torsion": false,
+        "cls": "multi-loop"
+      },
+      "sup4": {
+        "mnn": 17.73,
+        "H1_ratio": 2.46,
+        "H2_ratio": 0.55,
+        "n1": 1,
+        "n2": 3,
+        "z1": 15.0,
+        "z2": 3.4,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 26.91,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 21.07,
+        "H1_ratio": 1.86,
+        "H2_ratio": 0.08,
+        "n1": 1,
+        "n2": 0,
+        "z1": 4.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.64
+    },
+    "27": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 3.56,
+        "H1_ratio": 8.52,
+        "H2_ratio": 0.59,
+        "n1": 6,
+        "n2": 0,
+        "z1": 6.4,
+        "z2": -1.7,
+        "torsion": false,
+        "cls": "multi-loop"
+      },
+      "sup4": {
+        "mnn": 17.69,
+        "H1_ratio": 2.47,
+        "H2_ratio": 0.52,
+        "n1": 1,
+        "n2": 3,
+        "z1": 15.3,
+        "z2": 3.3,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 25.9,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 21.02,
+        "H1_ratio": 2.01,
+        "H2_ratio": 0.06,
+        "n1": 1,
+        "n2": 0,
+        "z1": 4.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.64
+    },
+    "28": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 3.6,
+        "H1_ratio": 8.65,
+        "H2_ratio": 0.69,
+        "n1": 6,
+        "n2": 0,
+        "z1": 5.3,
+        "z2": -1.3,
+        "torsion": false,
+        "cls": "multi-loop"
+      },
+      "sup4": {
+        "mnn": 17.37,
+        "H1_ratio": 2.5,
+        "H2_ratio": 0.5,
+        "n1": 1,
+        "n2": 3,
+        "z1": 21.3,
+        "z2": 3.1,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 24.94,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 21.42,
+        "H1_ratio": 1.95,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 5.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.64
+    },
+    "29": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 3.79,
+        "H1_ratio": 7.48,
+        "H2_ratio": 0.23,
+        "n1": 8,
+        "n2": 0,
+        "z1": 5.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "multi-loop"
+      },
+      "sup4": {
+        "mnn": 17.52,
+        "H1_ratio": 2.44,
+        "H2_ratio": 0.54,
+        "n1": 1,
+        "n2": 4,
+        "z1": 18.7,
+        "z2": 4.1,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 24.96,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 20.57,
+        "H1_ratio": 2.11,
+        "H2_ratio": 0.04,
+        "n1": 1,
+        "n2": 0,
+        "z1": 6.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.63
+    },
+    "30": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 3.9,
+        "H1_ratio": 7.33,
+        "H2_ratio": 0.56,
+        "n1": 8,
+        "n2": 0,
+        "z1": 4.2,
+        "z2": -1.5,
+        "torsion": false,
+        "cls": "multi-loop"
+      },
+      "sup4": {
+        "mnn": 17.45,
+        "H1_ratio": 2.45,
+        "H2_ratio": 0.52,
+        "n1": 1,
+        "n2": 2,
+        "z1": 16.1,
+        "z2": 4.6,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 26.01,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 22.15,
+        "H1_ratio": 1.9,
+        "H2_ratio": 0.03,
+        "n1": 1,
+        "n2": 0,
+        "z1": 5.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.64
+    },
+    "31": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 15.85,
+        "H1_ratio": 2.21,
+        "H2_ratio": 0.84,
+        "n1": 2,
+        "n2": 3,
+        "z1": 7.7,
+        "z2": 4.9,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "sup4": {
+        "mnn": 17.74,
+        "H1_ratio": 2.24,
+        "H2_ratio": 1.57,
+        "n1": 2,
+        "n2": 1,
+        "z1": 14.2,
+        "z2": 12.4,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 1.0,
+      "margA": {
+        "mnn": 39.99,
+        "H1_ratio": 0.74,
+        "H2_ratio": 0.11,
+        "n1": 0,
+        "n2": 0,
+        "z1": 5.4,
+        "z2": null,
+        "torsion": false,
+        "cls": "weak-loop"
+      },
+      "margB": {
+        "mnn": 19.4,
+        "H1_ratio": 2.35,
+        "H2_ratio": 0.06,
+        "n1": 1,
+        "n2": 0,
+        "z1": 6.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.94
+    },
+    "32": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 16.49,
+        "H1_ratio": 2.11,
+        "H2_ratio": 0.74,
+        "n1": 1,
+        "n2": 3,
+        "z1": 8.8,
+        "z2": 3.8,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "sup4": {
+        "mnn": 17.61,
+        "H1_ratio": 2.29,
+        "H2_ratio": 1.53,
+        "n1": 2,
+        "n2": 1,
+        "z1": 8.6,
+        "z2": 12.4,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 1.0,
+      "margA": {
+        "mnn": 38.43,
+        "H1_ratio": 0.66,
+        "H2_ratio": 0.1,
+        "n1": 0,
+        "n2": 0,
+        "z1": 3.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "weak-loop"
+      },
+      "margB": {
+        "mnn": 20.35,
+        "H1_ratio": 2.19,
+        "H2_ratio": 0.16,
+        "n1": 1,
+        "n2": 0,
+        "z1": 5.4,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.93
+    }
+  },
+  "wd_x_hr/b_tok": {
+    "0": {
+      "full": "degenerate",
+      "pc4": {
+        "mnn": 0.0,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "degenerate"
+      },
+      "sup4": {
+        "mnn": 0.0,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "degenerate"
+      },
+      "cv": -0.14,
+      "margA": {
+        "mnn": 0.0,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "degenerate"
+      },
+      "margB": {
+        "mnn": 0.0,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "degenerate"
+      },
+      "fibcons": 1.0,
+      "torus_rsa_pc4": 0.07
+    },
+    "1": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 4.22,
+        "H1_ratio": 2.81,
+        "H2_ratio": 0.08,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 10.68,
+        "H1_ratio": 2.35,
+        "H2_ratio": 0.32,
+        "n1": 1,
+        "n2": 0,
+        "z1": 8.0,
+        "z2": -0.1,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 16.77,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 7.36,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 1.0,
+      "torus_rsa_pc4": 0.43
+    },
+    "2": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.63,
+        "H1_ratio": 11.87,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -2.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 5.26,
+        "H1_ratio": 6.94,
+        "H2_ratio": 0.46,
+        "n1": 1,
+        "n2": 0,
+        "z1": 9.9,
+        "z2": 2.4,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.79,
+      "margA": {
+        "mnn": 21.81,
+        "H1_ratio": 0.19,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 9.82,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 1.0,
+      "torus_rsa_pc4": 0.36
+    },
+    "3": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.79,
+        "H1_ratio": 11.6,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 5.92,
+        "H1_ratio": 5.74,
+        "H2_ratio": 0.26,
+        "n1": 1,
+        "n2": 0,
+        "z1": 22.9,
+        "z2": 0.0,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.9,
+      "margA": {
+        "mnn": 27.99,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 10.72,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.37
+    },
+    "4": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 0.59,
+        "H1_ratio": 3.17,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -3.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 3.91,
+        "H1_ratio": 10.73,
+        "H2_ratio": 0.61,
+        "n1": 1,
+        "n2": 0,
+        "z1": 10.5,
+        "z2": 2.1,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.73,
+      "margA": {
+        "mnn": 34.8,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 13.52,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.43
+    },
+    "5": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 1.02,
+        "H1_ratio": 5.1,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -3.4,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 7.27,
+        "H1_ratio": 7.0,
+        "H2_ratio": 0.44,
+        "n1": 1,
+        "n2": 0,
+        "z1": 10.8,
+        "z2": 1.2,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.94,
+      "margA": {
+        "mnn": 18.1,
+        "H1_ratio": 0.76,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 4.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "weak-loop"
+      },
+      "margB": {
+        "mnn": 17.73,
+        "H1_ratio": 1.44,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.53
+    },
+    "6": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 1.37,
+        "H1_ratio": 7.3,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -2.1,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 8.47,
+        "H1_ratio": 5.97,
+        "H2_ratio": 0.3,
+        "n1": 1,
+        "n2": 0,
+        "z1": 13.3,
+        "z2": -0.3,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.94,
+      "margA": {
+        "mnn": 15.86,
+        "H1_ratio": 0.57,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 4.7,
+        "z2": null,
+        "torsion": false,
+        "cls": "weak-loop"
+      },
+      "margB": {
+        "mnn": 18.59,
+        "H1_ratio": 2.07,
+        "H2_ratio": 0.02,
+        "n1": 1,
+        "n2": 0,
+        "z1": 5.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.56
+    },
+    "7": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 1.58,
+        "H1_ratio": 3.39,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -3.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 8.0,
+        "H1_ratio": 6.36,
+        "H2_ratio": 0.53,
+        "n1": 1,
+        "n2": 0,
+        "z1": 15.8,
+        "z2": 1.3,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.94,
+      "margA": {
+        "mnn": 15.89,
+        "H1_ratio": 0.51,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 4.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "weak-loop"
+      },
+      "margB": {
+        "mnn": 19.89,
+        "H1_ratio": 1.93,
+        "H2_ratio": 0.14,
+        "n1": 1,
+        "n2": 0,
+        "z1": 5.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.55
+    },
+    "8": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 1.83,
+        "H1_ratio": 2.08,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -4.4,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 7.36,
+        "H1_ratio": 6.87,
+        "H2_ratio": 0.38,
+        "n1": 2,
+        "n2": 0,
+        "z1": 12.1,
+        "z2": 0.4,
+        "torsion": false,
+        "cls": "multi-loop"
+      },
+      "cv": 0.93,
+      "margA": {
+        "mnn": 15.98,
+        "H1_ratio": 0.35,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 19.74,
+        "H1_ratio": 1.27,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.53
+    },
+    "9": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.05,
+        "H1_ratio": 0.47,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 7.13,
+        "H1_ratio": 7.25,
+        "H2_ratio": 0.6,
+        "n1": 2,
+        "n2": 0,
+        "z1": 16.5,
+        "z2": 2.1,
+        "torsion": false,
+        "cls": "multi-loop"
+      },
+      "cv": 0.93,
+      "margA": {
+        "mnn": 16.34,
+        "H1_ratio": 0.32,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 20.56,
+        "H1_ratio": 1.43,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.7,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.54
+    },
+    "10": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.02,
+        "H1_ratio": 0.12,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 8.1,
+        "H1_ratio": 6.37,
+        "H2_ratio": 0.33,
+        "n1": 1,
+        "n2": 0,
+        "z1": 17.0,
+        "z2": 0.4,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.93,
+      "margA": {
+        "mnn": 16.69,
+        "H1_ratio": 0.3,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 19.66,
+        "H1_ratio": 1.5,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.4,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "fibcons": 0.94,
+      "torus_rsa_pc4": 0.53
+    },
+    "11": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.22,
+        "H1_ratio": 0.21,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 8.93,
+        "H1_ratio": 5.62,
+        "H2_ratio": 0.35,
+        "n1": 1,
+        "n2": 0,
+        "z1": 10.0,
+        "z2": 0.6,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.94,
+      "margA": {
+        "mnn": 16.47,
+        "H1_ratio": 0.26,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 19.66,
+        "H1_ratio": 1.15,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.7,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.94,
+      "torus_rsa_pc4": 0.53
+    },
+    "12": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.29,
+        "H1_ratio": 0.26,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 8.56,
+        "H1_ratio": 5.77,
+        "H2_ratio": 0.37,
+        "n1": 1,
+        "n2": 0,
+        "z1": 15.3,
+        "z2": 2.0,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.93,
+      "margA": {
+        "mnn": 15.07,
+        "H1_ratio": 0.2,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 20.61,
+        "H1_ratio": 0.9,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.93,
+      "torus_rsa_pc4": 0.51
+    },
+    "13": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.31,
+        "H1_ratio": 0.09,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 8.93,
+        "H1_ratio": 5.39,
+        "H2_ratio": 0.41,
+        "n1": 1,
+        "n2": 0,
+        "z1": 15.9,
+        "z2": 1.5,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.93,
+      "margA": {
+        "mnn": 16.17,
+        "H1_ratio": 0.19,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 19.52,
+        "H1_ratio": 0.52,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.91,
+      "torus_rsa_pc4": 0.5
+    },
+    "14": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.25,
+        "H1_ratio": 0.16,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 8.97,
+        "H1_ratio": 5.32,
+        "H2_ratio": 0.38,
+        "n1": 1,
+        "n2": 0,
+        "z1": 10.3,
+        "z2": 1.0,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.93,
+      "margA": {
+        "mnn": 17.13,
+        "H1_ratio": 0.21,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 18.89,
+        "H1_ratio": 0.02,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.92,
+      "torus_rsa_pc4": 0.48
+    },
+    "15": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.42,
+        "H1_ratio": 0.18,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 8.29,
+        "H1_ratio": 5.67,
+        "H2_ratio": 0.34,
+        "n1": 1,
+        "n2": 0,
+        "z1": 10.6,
+        "z2": 0.9,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.93,
+      "margA": {
+        "mnn": 16.71,
+        "H1_ratio": 0.07,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 18.29,
+        "H1_ratio": 0.96,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.91,
+      "torus_rsa_pc4": 0.52
+    },
+    "16": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.37,
+        "H1_ratio": 0.01,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 9.58,
+        "H1_ratio": 4.97,
+        "H2_ratio": 0.23,
+        "n1": 1,
+        "n2": 0,
+        "z1": 9.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.94,
+      "margA": {
+        "mnn": 19.21,
+        "H1_ratio": 0.01,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 18.07,
+        "H1_ratio": 0.89,
+        "H2_ratio": 0.04,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.91,
+      "torus_rsa_pc4": 0.51
+    },
+    "17": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 1.96,
+        "H1_ratio": 0.6,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -4.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 7.44,
+        "H1_ratio": 6.79,
+        "H2_ratio": 0.61,
+        "n1": 1,
+        "n2": 0,
+        "z1": 12.9,
+        "z2": 2.2,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.92,
+      "margA": {
+        "mnn": 21.52,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 21.19,
+        "H1_ratio": 0.55,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.4,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.91,
+      "torus_rsa_pc4": 0.54
+    },
+    "18": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.0,
+        "H1_ratio": 0.29,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 10.96,
+        "H1_ratio": 4.18,
+        "H2_ratio": 0.35,
+        "n1": 1,
+        "n2": 0,
+        "z1": 11.5,
+        "z2": 1.9,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.96,
+      "margA": {
+        "mnn": 28.37,
+        "H1_ratio": 0.4,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 16.67,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.45
+    },
+    "19": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 1.65,
+        "H1_ratio": 0.04,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 9.97,
+        "H1_ratio": 4.67,
+        "H2_ratio": 0.3,
+        "n1": 1,
+        "n2": 0,
+        "z1": 11.5,
+        "z2": 0.5,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.96,
+      "margA": {
+        "mnn": 24.89,
+        "H1_ratio": 0.19,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 16.55,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.45
+    },
+    "20": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 1.8,
+        "H1_ratio": 0.1,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 9.1,
+        "H1_ratio": 5.18,
+        "H2_ratio": 0.25,
+        "n1": 1,
+        "n2": 0,
+        "z1": 10.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.95,
+      "margA": {
+        "mnn": 24.56,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 15.45,
+        "H1_ratio": 0.37,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.45
+    },
+    "21": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.14,
+        "H1_ratio": 0.1,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 10.95,
+        "H1_ratio": 4.24,
+        "H2_ratio": 0.4,
+        "n1": 1,
+        "n2": 0,
+        "z1": 8.7,
+        "z2": 1.5,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 20.91,
+        "H1_ratio": 0.09,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 16.96,
+        "H1_ratio": 0.46,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.46
+    },
+    "22": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.34,
+        "H1_ratio": 0.14,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 11.39,
+        "H1_ratio": 4.05,
+        "H2_ratio": 0.49,
+        "n1": 1,
+        "n2": 0,
+        "z1": 9.6,
+        "z2": 1.7,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 19.91,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.1,
+        "H1_ratio": 0.37,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.46
+    },
+    "23": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.17,
+        "H1_ratio": 0.04,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 11.2,
+        "H1_ratio": 4.05,
+        "H2_ratio": 0.45,
+        "n1": 1,
+        "n2": 0,
+        "z1": 9.8,
+        "z2": 2.2,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 20.06,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 16.32,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.46
+    },
+    "24": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.09,
+        "H1_ratio": 0.09,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 10.47,
+        "H1_ratio": 3.9,
+        "H2_ratio": 0.39,
+        "n1": 1,
+        "n2": 0,
+        "z1": 8.5,
+        "z2": 1.0,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.96,
+      "margA": {
+        "mnn": 21.73,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 15.55,
+        "H1_ratio": 0.63,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.46
+    },
+    "25": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 2.2,
+        "H1_ratio": 0.19,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 10.15,
+        "H1_ratio": 4.01,
+        "H2_ratio": 0.41,
+        "n1": 1,
+        "n2": 0,
+        "z1": 10.2,
+        "z2": 2.2,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 21.92,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 13.58,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.45
+    },
+    "26": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.11,
+        "H1_ratio": 0.27,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 10.12,
+        "H1_ratio": 3.74,
+        "H2_ratio": 0.5,
+        "n1": 1,
+        "n2": 0,
+        "z1": 8.7,
+        "z2": 2.8,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 21.4,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 12.67,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.45
+    },
+    "27": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.1,
+        "H1_ratio": 0.51,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -5.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 10.1,
+        "H1_ratio": 3.74,
+        "H2_ratio": 0.4,
+        "n1": 1,
+        "n2": 0,
+        "z1": 12.7,
+        "z2": 2.1,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.96,
+      "margA": {
+        "mnn": 23.62,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 11.69,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.93,
+      "torus_rsa_pc4": 0.45
+    },
+    "28": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.31,
+        "H1_ratio": 0.59,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -5.4,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 9.8,
+        "H1_ratio": 3.9,
+        "H2_ratio": 0.43,
+        "n1": 1,
+        "n2": 0,
+        "z1": 8.6,
+        "z2": 2.1,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.96,
+      "margA": {
+        "mnn": 22.15,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 11.62,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.93,
+      "torus_rsa_pc4": 0.45
+    },
+    "29": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 2.31,
+        "H1_ratio": 0.31,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 10.26,
+        "H1_ratio": 3.69,
+        "H2_ratio": 0.42,
+        "n1": 1,
+        "n2": 0,
+        "z1": 11.0,
+        "z2": 2.4,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 23.71,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 11.61,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.93,
+      "torus_rsa_pc4": 0.46
+    },
+    "30": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.37,
+        "H1_ratio": 0.39,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 10.1,
+        "H1_ratio": 3.7,
+        "H2_ratio": 0.45,
+        "n1": 1,
+        "n2": 0,
+        "z1": 13.3,
+        "z2": 1.3,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 23.62,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 10.77,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.92,
+      "torus_rsa_pc4": 0.45
+    },
+    "31": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.29,
+        "H1_ratio": 0.47,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 12.61,
+        "H1_ratio": 2.97,
+        "H2_ratio": 0.4,
+        "n1": 1,
+        "n2": 0,
+        "z1": 8.9,
+        "z2": 1.6,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 31.36,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 10.89,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.93,
+      "torus_rsa_pc4": 0.45
+    },
+    "32": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.26,
+        "H1_ratio": 0.1,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 13.03,
+        "H1_ratio": 2.98,
+        "H2_ratio": 0.44,
+        "n1": 1,
+        "n2": 8,
+        "z1": 10.5,
+        "z2": 3.8,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 32.6,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 10.89,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.93,
+      "torus_rsa_pc4": 0.45
+    }
+  },
+  "wd_x_hr/end": {
+    "0": {
+      "full": "degenerate",
+      "pc4": {
+        "mnn": 0.0,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "degenerate"
+      },
+      "sup4": {
+        "mnn": 0.0,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "degenerate"
+      },
+      "cv": -0.14,
+      "margA": {
+        "mnn": 0.0,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "degenerate"
+      },
+      "margB": {
+        "mnn": 0.0,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "degenerate"
+      },
+      "fibcons": 1.0,
+      "torus_rsa_pc4": 0.07
+    },
+    "1": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 9.58,
+        "H1_ratio": 1.75,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.1,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 11.77,
+        "H1_ratio": 1.91,
+        "H2_ratio": 0.41,
+        "n1": 1,
+        "n2": 0,
+        "z1": 7.4,
+        "z2": 0.5,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 16.86,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 12.69,
+        "H1_ratio": 0.1,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 1.0,
+      "torus_rsa_pc4": 0.46
+    },
+    "2": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 6.41,
+        "H1_ratio": 0.9,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -2.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 11.27,
+        "H1_ratio": 2.19,
+        "H2_ratio": 0.34,
+        "n1": 1,
+        "n2": 0,
+        "z1": 9.1,
+        "z2": 0.1,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.97,
+      "margA": {
+        "mnn": 29.38,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 8.62,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.41
+    },
+    "3": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 6.96,
+        "H1_ratio": 0.86,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -2.1,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 12.9,
+        "H1_ratio": 2.1,
+        "H2_ratio": 0.37,
+        "n1": 1,
+        "n2": 0,
+        "z1": 10.5,
+        "z2": 0.3,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 19.77,
+        "H1_ratio": 0.21,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 11.43,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 1.0,
+      "torus_rsa_pc4": 0.44
+    },
+    "4": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 7.96,
+        "H1_ratio": 0.71,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -2.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 12.62,
+        "H1_ratio": 2.3,
+        "H2_ratio": 0.46,
+        "n1": 1,
+        "n2": 0,
+        "z1": 11.5,
+        "z2": 1.0,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 22.45,
+        "H1_ratio": 0.24,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.31,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.45
+    },
+    "5": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 1.75,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 11.66,
+        "H1_ratio": 3.98,
+        "H2_ratio": 0.42,
+        "n1": 1,
+        "n2": 0,
+        "z1": 14.4,
+        "z2": 1.7,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 30.41,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 16.08,
+        "H1_ratio": 0.15,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.49
+    },
+    "6": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 2.9,
+        "H1_ratio": 4.4,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 16.78,
+        "H1_ratio": 2.69,
+        "H2_ratio": 0.52,
+        "n1": 1,
+        "n2": 0,
+        "z1": 16.8,
+        "z2": 1.8,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 17.1,
+        "H1_ratio": 0.31,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.07,
+        "H1_ratio": 0.93,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.65
+    },
+    "7": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 4.94,
+        "H1_ratio": 2.2,
+        "H2_ratio": 0.24,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 16.64,
+        "H1_ratio": 2.7,
+        "H2_ratio": 0.49,
+        "n1": 1,
+        "n2": 0,
+        "z1": 14.9,
+        "z2": 2.0,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 18.13,
+        "H1_ratio": 0.35,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.96,
+        "H1_ratio": 1.01,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.99,
+      "torus_rsa_pc4": 0.65
+    },
+    "8": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 4.61,
+        "H1_ratio": 3.54,
+        "H2_ratio": 0.03,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 16.67,
+        "H1_ratio": 2.64,
+        "H2_ratio": 0.4,
+        "n1": 1,
+        "n2": 0,
+        "z1": 10.5,
+        "z2": 2.2,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 15.25,
+        "H1_ratio": 0.18,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.37,
+        "H1_ratio": 1.37,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.65
+    },
+    "9": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 4.71,
+        "H1_ratio": 3.08,
+        "H2_ratio": 1.03,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.0,
+        "z2": 0.3,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 17.08,
+        "H1_ratio": 2.52,
+        "H2_ratio": 0.53,
+        "n1": 1,
+        "n2": 0,
+        "z1": 12.7,
+        "z2": 2.6,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 16.54,
+        "H1_ratio": 0.25,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 16.91,
+        "H1_ratio": 0.88,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.6
+    },
+    "10": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 5.4,
+        "H1_ratio": 2.44,
+        "H2_ratio": 0.76,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.6,
+        "z2": -0.7,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 16.01,
+        "H1_ratio": 2.7,
+        "H2_ratio": 0.42,
+        "n1": 1,
+        "n2": 0,
+        "z1": 9.9,
+        "z2": 1.6,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 17.53,
+        "H1_ratio": 0.06,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 16.67,
+        "H1_ratio": 0.65,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.6
+    },
+    "11": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 6.4,
+        "H1_ratio": 1.65,
+        "H2_ratio": 0.43,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.5,
+        "z2": -0.9,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 15.41,
+        "H1_ratio": 2.78,
+        "H2_ratio": 0.47,
+        "n1": 1,
+        "n2": 0,
+        "z1": 13.6,
+        "z2": 2.1,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 17.01,
+        "H1_ratio": 0.2,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.34,
+        "H1_ratio": 0.39,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.61
+    },
+    "12": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 5.42,
+        "H1_ratio": 2.48,
+        "H2_ratio": 0.42,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.4,
+        "z2": -1.1,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 15.0,
+        "H1_ratio": 2.85,
+        "H2_ratio": 0.49,
+        "n1": 1,
+        "n2": 5,
+        "z1": 10.7,
+        "z2": 3.4,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 20.63,
+        "H1_ratio": 0.17,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.81,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.98,
+      "torus_rsa_pc4": 0.61
+    },
+    "13": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 7.17,
+        "H1_ratio": 1.29,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -1.7,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 15.61,
+        "H1_ratio": 2.77,
+        "H2_ratio": 0.47,
+        "n1": 1,
+        "n2": 0,
+        "z1": 17.5,
+        "z2": 1.6,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 19.69,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 19.07,
+        "H1_ratio": 0.31,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.63
+    },
+    "14": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 5.96,
+        "H1_ratio": 2.25,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.4,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 15.65,
+        "H1_ratio": 2.76,
+        "H2_ratio": 0.52,
+        "n1": 1,
+        "n2": 0,
+        "z1": 11.0,
+        "z2": 2.4,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 20.2,
+        "H1_ratio": 0.16,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 18.73,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.61
+    },
+    "15": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 5.41,
+        "H1_ratio": 2.49,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 16.19,
+        "H1_ratio": 2.77,
+        "H2_ratio": 0.52,
+        "n1": 1,
+        "n2": 0,
+        "z1": 13.2,
+        "z2": 2.8,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 22.8,
+        "H1_ratio": 0.12,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 19.92,
+        "H1_ratio": 0.02,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.61
+    },
+    "16": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 4.34,
+        "H1_ratio": 3.67,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 16.05,
+        "H1_ratio": 2.79,
+        "H2_ratio": 0.52,
+        "n1": 1,
+        "n2": 0,
+        "z1": 13.0,
+        "z2": 2.4,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 23.66,
+        "H1_ratio": 0.01,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 19.44,
+        "H1_ratio": 0.12,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.62
+    },
+    "17": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 4.39,
+        "H1_ratio": 3.49,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 15.79,
+        "H1_ratio": 2.85,
+        "H2_ratio": 0.51,
+        "n1": 1,
+        "n2": 0,
+        "z1": 12.5,
+        "z2": 2.3,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 26.99,
+        "H1_ratio": 0.02,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 18.45,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.61
+    },
+    "18": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 8.32,
+        "H1_ratio": 1.92,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.1,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 17.69,
+        "H1_ratio": 2.54,
+        "H2_ratio": 0.53,
+        "n1": 1,
+        "n2": 1,
+        "z1": 21.0,
+        "z2": 3.7,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 30.98,
+        "H1_ratio": 0.33,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 20.23,
+        "H1_ratio": 0.45,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.65
+    },
+    "19": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 6.91,
+        "H1_ratio": 2.47,
+        "H2_ratio": 0.01,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 17.17,
+        "H1_ratio": 2.61,
+        "H2_ratio": 0.55,
+        "n1": 1,
+        "n2": 2,
+        "z1": 9.7,
+        "z2": 3.2,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 25.49,
+        "H1_ratio": 0.36,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 18.95,
+        "H1_ratio": 0.1,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.62
+    },
+    "20": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 6.61,
+        "H1_ratio": 2.61,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 16.98,
+        "H1_ratio": 2.66,
+        "H2_ratio": 0.43,
+        "n1": 1,
+        "n2": 0,
+        "z1": 14.0,
+        "z2": 2.1,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.98,
+      "margA": {
+        "mnn": 25.7,
+        "H1_ratio": 0.3,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 19.06,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.95,
+      "torus_rsa_pc4": 0.62
+    },
+    "21": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 7.12,
+        "H1_ratio": 2.25,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.7,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 16.71,
+        "H1_ratio": 2.53,
+        "H2_ratio": 0.52,
+        "n1": 1,
+        "n2": 0,
+        "z1": 12.4,
+        "z2": 2.8,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 24.67,
+        "H1_ratio": 0.46,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.43,
+        "H1_ratio": 0.01,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.95,
+      "torus_rsa_pc4": 0.61
+    },
+    "22": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 7.74,
+        "H1_ratio": 1.9,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 17.28,
+        "H1_ratio": 2.38,
+        "H2_ratio": 0.61,
+        "n1": 1,
+        "n2": 0,
+        "z1": 13.8,
+        "z2": 1.9,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 24.23,
+        "H1_ratio": 0.27,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 16.76,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.95,
+      "torus_rsa_pc4": 0.6
+    },
+    "23": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 7.87,
+        "H1_ratio": 1.73,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 17.02,
+        "H1_ratio": 2.38,
+        "H2_ratio": 0.61,
+        "n1": 1,
+        "n2": 1,
+        "z1": 9.5,
+        "z2": 3.7,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 23.26,
+        "H1_ratio": 0.2,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 15.94,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.95,
+      "torus_rsa_pc4": 0.6
+    },
+    "24": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 7.17,
+        "H1_ratio": 1.79,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 16.83,
+        "H1_ratio": 2.43,
+        "H2_ratio": 0.63,
+        "n1": 1,
+        "n2": 0,
+        "z1": 12.7,
+        "z2": 2.4,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 25.33,
+        "H1_ratio": 0.12,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 16.41,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.95,
+      "torus_rsa_pc4": 0.59
+    },
+    "25": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 6.18,
+        "H1_ratio": 2.07,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.4,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 16.97,
+        "H1_ratio": 2.54,
+        "H2_ratio": 0.58,
+        "n1": 1,
+        "n2": 2,
+        "z1": 13.8,
+        "z2": 4.3,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 28.79,
+        "H1_ratio": 0.1,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.31,
+        "H1_ratio": 0.08,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.95,
+      "torus_rsa_pc4": 0.6
+    },
+    "26": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 6.16,
+        "H1_ratio": 2.63,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.7,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 16.78,
+        "H1_ratio": 2.66,
+        "H2_ratio": 0.63,
+        "n1": 1,
+        "n2": 0,
+        "z1": 14.7,
+        "z2": 2.8,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 28.45,
+        "H1_ratio": 0.17,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.65,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.6
+    },
+    "27": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 6.08,
+        "H1_ratio": 2.45,
+        "H2_ratio": 0.03,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 16.55,
+        "H1_ratio": 2.7,
+        "H2_ratio": 0.62,
+        "n1": 1,
+        "n2": 3,
+        "z1": 12.8,
+        "z2": 3.4,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 28.69,
+        "H1_ratio": 0.16,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.35,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.59
+    },
+    "28": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 5.83,
+        "H1_ratio": 2.37,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": -0.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 16.46,
+        "H1_ratio": 2.67,
+        "H2_ratio": 0.6,
+        "n1": 1,
+        "n2": 0,
+        "z1": 13.5,
+        "z2": 2.9,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 30.03,
+        "H1_ratio": 0.16,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 17.11,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.95,
+      "torus_rsa_pc4": 0.59
+    },
+    "29": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 6.54,
+        "H1_ratio": 2.32,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 17.45,
+        "H1_ratio": 2.41,
+        "H2_ratio": 0.65,
+        "n1": 1,
+        "n2": 2,
+        "z1": 12.5,
+        "z2": 4.4,
+        "torsion": false,
+        "cls": "loop+cavity"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 38.08,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 16.79,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.59
+    },
+    "30": {
+      "full": "weak-loop",
+      "pc4": {
+        "mnn": 5.99,
+        "H1_ratio": 2.41,
+        "H2_ratio": 0.04,
+        "n1": 0,
+        "n2": 0,
+        "z1": 0.1,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 17.28,
+        "H1_ratio": 2.4,
+        "H2_ratio": 0.6,
+        "n1": 1,
+        "n2": 0,
+        "z1": 17.1,
+        "z2": 2.9,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 38.28,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "margB": {
+        "mnn": 16.56,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.95,
+      "torus_rsa_pc4": 0.58
+    },
+    "31": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 11.78,
+        "H1_ratio": 2.11,
+        "H2_ratio": 0.57,
+        "n1": 2,
+        "n2": 0,
+        "z1": 7.0,
+        "z2": 0.5,
+        "torsion": false,
+        "cls": "multi-loop"
+      },
+      "sup4": {
+        "mnn": 15.2,
+        "H1_ratio": 2.26,
+        "H2_ratio": 1.48,
+        "n1": 8,
+        "n2": 10,
+        "z1": 9.6,
+        "z2": 6.2,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 1.0,
+      "margA": {
+        "mnn": 42.94,
+        "H1_ratio": 0.82,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 6.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "weak-loop"
+      },
+      "margB": {
+        "mnn": 16.36,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.97,
+      "torus_rsa_pc4": 0.82
+    },
+    "32": {
+      "full": "contractible",
+      "pc4": {
+        "mnn": 13.0,
+        "H1_ratio": 1.57,
+        "H2_ratio": 0.55,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.8,
+        "z2": 1.7,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "sup4": {
+        "mnn": 15.26,
+        "H1_ratio": 2.14,
+        "H2_ratio": 1.54,
+        "n1": 3,
+        "n2": 7,
+        "z1": 6.9,
+        "z2": 7.6,
+        "torsion": false,
+        "cls": "torus-sig"
+      },
+      "cv": 0.99,
+      "margA": {
+        "mnn": 40.49,
+        "H1_ratio": 0.73,
+        "H2_ratio": 0.01,
+        "n1": 0,
+        "n2": 0,
+        "z1": 3.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "weak-loop"
+      },
+      "margB": {
+        "mnn": 15.12,
+        "H1_ratio": 0.0,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "fibcons": 0.96,
+      "torus_rsa_pc4": 0.76
+    }
+  },
+  "hue_sup": {
+    "0": {
+      "sup2": {
+        "mnn": 15.96,
+        "H1_ratio": 1.15,
+        "H2_ratio": 0.04,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": -0.79,
+      "circ_rsa": 0.95
+    },
+    "1": {
+      "sup2": {
+        "mnn": 14.6,
+        "H1_ratio": 1.23,
+        "H2_ratio": 0.1,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.7,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "cv": -0.78,
+      "circ_rsa": 0.97
+    },
+    "2": {
+      "sup2": {
+        "mnn": 14.56,
+        "H1_ratio": 0.48,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "cv": -0.79,
+      "circ_rsa": 0.89
+    },
+    "3": {
+      "sup2": {
+        "mnn": 16.62,
+        "H1_ratio": 0.2,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "cv": -0.8,
+      "circ_rsa": 0.84
+    },
+    "4": {
+      "sup2": {
+        "mnn": 15.29,
+        "H1_ratio": 0.56,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.1,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "cv": -0.7,
+      "circ_rsa": 0.89
+    },
+    "5": {
+      "sup2": {
+        "mnn": 15.76,
+        "H1_ratio": 1.2,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 6.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": -0.68,
+      "circ_rsa": 0.93
+    },
+    "6": {
+      "sup2": {
+        "mnn": 16.65,
+        "H1_ratio": 1.07,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 4.8,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": -0.65,
+      "circ_rsa": 0.94
+    },
+    "7": {
+      "sup2": {
+        "mnn": 15.97,
+        "H1_ratio": 0.93,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 3.7,
+        "z2": null,
+        "torsion": false,
+        "cls": "weak-loop"
+      },
+      "cv": -0.68,
+      "circ_rsa": 0.92
+    },
+    "8": {
+      "sup2": {
+        "mnn": 15.86,
+        "H1_ratio": 0.77,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "cv": -0.65,
+      "circ_rsa": 0.91
+    },
+    "9": {
+      "sup2": {
+        "mnn": 15.82,
+        "H1_ratio": 0.76,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "cv": -0.57,
+      "circ_rsa": 0.91
+    },
+    "10": {
+      "sup2": {
+        "mnn": 15.41,
+        "H1_ratio": 0.61,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "cv": -0.54,
+      "circ_rsa": 0.89
+    },
+    "11": {
+      "sup2": {
+        "mnn": 15.4,
+        "H1_ratio": 0.54,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 1.3,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "cv": -0.57,
+      "circ_rsa": 0.88
+    },
+    "12": {
+      "sup2": {
+        "mnn": 15.83,
+        "H1_ratio": 0.31,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "cv": -0.57,
+      "circ_rsa": 0.86
+    },
+    "13": {
+      "sup2": {
+        "mnn": 15.36,
+        "H1_ratio": 0.37,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "cv": -0.58,
+      "circ_rsa": 0.85
+    },
+    "14": {
+      "sup2": {
+        "mnn": 15.49,
+        "H1_ratio": 0.36,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "cv": -0.44,
+      "circ_rsa": 0.84
+    },
+    "15": {
+      "sup2": {
+        "mnn": 15.88,
+        "H1_ratio": 0.26,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "cv": -0.5,
+      "circ_rsa": 0.83
+    },
+    "16": {
+      "sup2": {
+        "mnn": 16.07,
+        "H1_ratio": 0.3,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "cv": -0.56,
+      "circ_rsa": 0.83
+    },
+    "17": {
+      "sup2": {
+        "mnn": 18.87,
+        "H1_ratio": 0.31,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": null,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "cv": -0.51,
+      "circ_rsa": 0.84
+    },
+    "18": {
+      "sup2": {
+        "mnn": 17.11,
+        "H1_ratio": 0.92,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 3.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "weak-loop"
+      },
+      "cv": -0.43,
+      "circ_rsa": 0.9
+    },
+    "19": {
+      "sup2": {
+        "mnn": 16.82,
+        "H1_ratio": 1.24,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 4.0,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": -0.53,
+      "circ_rsa": 0.95
+    },
+    "20": {
+      "sup2": {
+        "mnn": 16.97,
+        "H1_ratio": 1.02,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 4.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": -0.57,
+      "circ_rsa": 0.94
+    },
+    "21": {
+      "sup2": {
+        "mnn": 16.7,
+        "H1_ratio": 1.11,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.2,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": -0.57,
+      "circ_rsa": 0.92
+    },
+    "22": {
+      "sup2": {
+        "mnn": 16.57,
+        "H1_ratio": 1.18,
+        "H2_ratio": 0.0,
+        "n1": 0,
+        "n2": 0,
+        "z1": 2.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "contractible"
+      },
+      "cv": -0.56,
+      "circ_rsa": 0.92
+    },
+    "23": {
+      "sup2": {
+        "mnn": 16.56,
+        "H1_ratio": 1.24,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": -0.58,
+      "circ_rsa": 0.92
+    },
+    "24": {
+      "sup2": {
+        "mnn": 16.69,
+        "H1_ratio": 1.26,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 4.1,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": -0.6,
+      "circ_rsa": 0.93
+    },
+    "25": {
+      "sup2": {
+        "mnn": 16.65,
+        "H1_ratio": 1.35,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 4.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": -0.6,
+      "circ_rsa": 0.94
+    },
+    "26": {
+      "sup2": {
+        "mnn": 16.48,
+        "H1_ratio": 1.34,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 5.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": -0.64,
+      "circ_rsa": 0.94
+    },
+    "27": {
+      "sup2": {
+        "mnn": 16.59,
+        "H1_ratio": 1.36,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 4.1,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": -0.66,
+      "circ_rsa": 0.93
+    },
+    "28": {
+      "sup2": {
+        "mnn": 16.4,
+        "H1_ratio": 1.3,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.5,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": -0.68,
+      "circ_rsa": 0.92
+    },
+    "29": {
+      "sup2": {
+        "mnn": 16.31,
+        "H1_ratio": 1.32,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 4.7,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": -0.69,
+      "circ_rsa": 0.92
+    },
+    "30": {
+      "sup2": {
+        "mnn": 16.04,
+        "H1_ratio": 1.33,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 4.6,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": -0.7,
+      "circ_rsa": 0.92
+    },
+    "31": {
+      "sup2": {
+        "mnn": 15.63,
+        "H1_ratio": 1.3,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": -0.72,
+      "circ_rsa": 0.92
+    },
+    "32": {
+      "sup2": {
+        "mnn": 15.51,
+        "H1_ratio": 1.15,
+        "H2_ratio": 0.0,
+        "n1": 1,
+        "n2": 0,
+        "z1": 3.9,
+        "z2": null,
+        "torsion": false,
+        "cls": "loop"
+      },
+      "cv": -0.74,
+      "circ_rsa": 0.91
+    }
+  }
+}
