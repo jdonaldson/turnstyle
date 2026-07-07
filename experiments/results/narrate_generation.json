@@ -1,0 +1,432 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "demos": [
+    {
+      "prompt": "What is four plus seven? The answer is",
+      "steps": [
+        {
+          "token": " eleven",
+          "events": [
+            {
+              "L": 7,
+              "head": 29,
+              "z": 11.0,
+              "sources": [
+                "is"
+              ],
+              "ov": [
+                "opio",
+                "dprinting",
+                "chimpan",
+                "RecipeSteps"
+              ]
+            },
+            {
+              "L": 19,
+              "head": 23,
+              "z": 9.6,
+              "sources": [
+                "four",
+                "seven",
+                "?"
+              ],
+              "ov": [
+                "\u2014",
+                "\u2014",
+                "--",
+                "\u2013"
+              ]
+            },
+            {
+              "L": 6,
+              "head": 31,
+              "z": 7.2,
+              "sources": [
+                "?",
+                "answer",
+                "The"
+              ],
+              "ov": [
+                "neurotransmit",
+                "olicies",
+                "opio",
+                "ortunately"
+              ]
+            }
+          ]
+        },
+        {
+          "token": ".",
+          "events": [
+            {
+              "L": 15,
+              "head": 5,
+              "z": 5.4,
+              "sources": [
+                "?",
+                "answer",
+                "The"
+              ],
+              "ov": [
+                "caterpill",
+                "showc",
+                "ArticleGoogle",
+                "sup"
+              ]
+            },
+            {
+              "L": 11,
+              "head": 4,
+              "z": 4.5,
+              "sources": [
+                "seven",
+                "plus"
+              ],
+              "ov": [
+                "dprinting",
+                "aphylococcus",
+                "prag",
+                "unanim"
+              ]
+            },
+            {
+              "L": 20,
+              "head": 18,
+              "z": 4.2,
+              "sources": [
+                "plus"
+              ],
+              "ov": [
+                "Bon",
+                "bonus",
+                "Bon",
+                "min"
+              ]
+            }
+          ]
+        }
+      ],
+      "answer": " eleven.",
+      "provenance": [
+        "?",
+        "The",
+        "answer",
+        "four",
+        "is",
+        "plus",
+        "seven"
+      ]
+    },
+    {
+      "prompt": "Today is Tuesday. Tomorrow will be",
+      "steps": [
+        {
+          "token": " Wednesday",
+          "events": [
+            {
+              "L": 4,
+              "head": 14,
+              "z": 12.6,
+              "sources": [
+                "will",
+                "be",
+                "Tomorrow"
+              ],
+              "ov": [
+                "miah",
+                "ourselves",
+                "araoh",
+                "future"
+              ]
+            },
+            {
+              "L": 20,
+              "head": 1,
+              "z": 7.4,
+              "sources": [
+                "Tuesday"
+              ],
+              "ov": [
+                "enguin",
+                "leanor",
+                "rocessing",
+                "oname"
+              ]
+            },
+            {
+              "L": 2,
+              "head": 27,
+              "z": 5.3,
+              "sources": [
+                "Tomorrow"
+              ],
+              "ov": [
+                "emetery",
+                "AttributeError",
+                "IPE",
+                "olkien"
+              ]
+            }
+          ]
+        },
+        {
+          "token": ".",
+          "events": [
+            {
+              "L": 3,
+              "head": 0,
+              "z": 6.3,
+              "sources": [
+                "Tomorrow"
+              ],
+              "ov": [
+                "umina",
+                "rowsiness",
+                "ITIES",
+                "irmingham"
+              ]
+            },
+            {
+              "L": 9,
+              "head": 9,
+              "z": 4.2,
+              "sources": [
+                "Wednesday"
+              ],
+              "ov": [
+                "artment",
+                "erior",
+                "paralleled",
+                "sofar"
+              ]
+            },
+            {
+              "L": 12,
+              "head": 21,
+              "z": 4.2,
+              "sources": [
+                "."
+              ],
+              "ov": [
+                "haplot",
+                "vironments",
+                "omencl",
+                "mackerel"
+              ]
+            }
+          ]
+        }
+      ],
+      "answer": " Wednesday.",
+      "provenance": [
+        ".",
+        "Tomorrow",
+        "Tuesday",
+        "Wednesday",
+        "be",
+        "will"
+      ]
+    },
+    {
+      "prompt": "Sarah gave the book to Emma because she had finished it. The book was returned by",
+      "steps": [
+        {
+          "token": " Emma",
+          "events": [
+            {
+              "L": 21,
+              "head": 13,
+              "z": 9.6,
+              "sources": [
+                "Emma"
+              ],
+              "ov": [
+                "Em",
+                "Emma",
+                "em",
+                "em"
+              ]
+            },
+            {
+              "L": 20,
+              "head": 17,
+              "z": 8.2,
+              "sources": [
+                "Emma",
+                "gave"
+              ],
+              "ov": [
+                "claimed",
+                "claim",
+                "claims",
+                "claim"
+              ]
+            },
+            {
+              "L": 20,
+              "head": 27,
+              "z": 7.9,
+              "sources": [
+                "Emma"
+              ],
+              "ov": [
+                "Mem",
+                "Mem",
+                "mem",
+                "mem"
+              ]
+            }
+          ]
+        },
+        {
+          "token": ".",
+          "events": [
+            {
+              "L": 7,
+              "head": 2,
+              "z": 10.2,
+              "sources": [
+                "Emma"
+              ],
+              "ov": [
+                "ControlPlane",
+                "KeyNot",
+                "chimpan",
+                "<filename>"
+              ]
+            },
+            {
+              "L": 11,
+              "head": 27,
+              "z": 8.6,
+              "sources": [
+                "Emma"
+              ],
+              "ov": [
+                "<filename>",
+                "opsies",
+                "ControlPlane",
+                "PARTICULAR"
+              ]
+            },
+            {
+              "L": 10,
+              "head": 3,
+              "z": 8.0,
+              "sources": [
+                "because"
+              ],
+              "ov": [
+                "color",
+                "favor",
+                "colors",
+                "hypoglycemia"
+              ]
+            }
+          ]
+        }
+      ],
+      "answer": " Emma.",
+      "provenance": [
+        "Emma",
+        "because",
+        "gave"
+      ]
+    },
+    {
+      "prompt": "The capital of France is",
+      "steps": [
+        {
+          "token": " Paris",
+          "events": [
+            {
+              "L": 19,
+              "head": 27,
+              "z": 5.9,
+              "sources": [
+                "France"
+              ],
+              "ov": [
+                "France",
+                "France",
+                "French",
+                "French"
+              ]
+            },
+            {
+              "L": 19,
+              "head": 28,
+              "z": 4.6,
+              "sources": [
+                "France"
+              ],
+              "ov": [
+                "France",
+                "French",
+                "French",
+                "french"
+              ]
+            }
+          ]
+        },
+        {
+          "token": ".",
+          "events": [
+            {
+              "L": 3,
+              "head": 0,
+              "z": 5.4,
+              "sources": [
+                "capital"
+              ],
+              "ov": [
+                "cryptocur",
+                "igail",
+                "arvation",
+                "IFE"
+              ]
+            },
+            {
+              "L": 4,
+              "head": 2,
+              "z": 4.4,
+              "sources": [
+                "capital",
+                "of"
+              ],
+              "ov": [
+                "chimpan",
+                "neurotransmit",
+                "caterpill",
+                "cryptocur"
+              ]
+            },
+            {
+              "L": 13,
+              "head": 31,
+              "z": 4.2,
+              "sources": [
+                "of",
+                "capital",
+                "is"
+              ],
+              "ov": [
+                "chimpan",
+                "TType",
+                "ynasty",
+                "drawn"
+              ]
+            }
+          ]
+        }
+      ],
+      "answer": " Paris.",
+      "provenance": [
+        "France",
+        "capital",
+        "is",
+        "of"
+      ]
+    }
+  ]
+}
