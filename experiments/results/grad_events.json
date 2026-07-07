@@ -1,0 +1,192 @@
+{
+  "model": "mistralai/Mistral-7B-Instruct-v0.3",
+  "accuracy": "28/28",
+  "tables": {
+    "total attribution": [
+      {
+        "L": 0,
+        "head": 18,
+        "attr": 0.893,
+        "top_edge": "'on' <- '<s>' (+1.735)"
+      },
+      {
+        "L": 28,
+        "head": 17,
+        "attr": 0.844,
+        "top_edge": "'a' <- 'Wednesday' (+1.214)"
+      },
+      {
+        "L": 17,
+        "head": 0,
+        "attr": 0.775,
+        "top_edge": "'a' <- 'day' (+0.443)"
+      },
+      {
+        "L": 21,
+        "head": 9,
+        "attr": 0.76,
+        "top_edge": "'a' <- 'Monday' (+0.875)"
+      },
+      {
+        "L": 16,
+        "head": 0,
+        "attr": 0.719,
+        "top_edge": "'a' <- 'day' (+0.706)"
+      },
+      {
+        "L": 17,
+        "head": 1,
+        "attr": 0.62,
+        "top_edge": "'was' <- 'Sunday' (+0.809)"
+      },
+      {
+        "L": 30,
+        "head": 18,
+        "attr": 0.618,
+        "top_edge": "'a' <- 'Tuesday' (+0.723)"
+      },
+      {
+        "L": 17,
+        "head": 2,
+        "attr": -0.474,
+        "top_edge": "'a' <- 'Saturday' (-0.749)"
+      },
+      {
+        "L": 0,
+        "head": 12,
+        "attr": -0.404,
+        "top_edge": "'on' <- '<s>' (-0.556)"
+      },
+      {
+        "L": 31,
+        "head": 22,
+        "attr": 0.395,
+        "top_edge": "'a' <- 'was' (+0.506)"
+      },
+      {
+        "L": 20,
+        "head": 30,
+        "attr": 0.392,
+        "top_edge": "'a' <- 'Wednesday' (+0.661)"
+      },
+      {
+        "L": 14,
+        "head": 13,
+        "attr": -0.378,
+        "top_edge": "'a' <- 'day' (-0.365)"
+      },
+      {
+        "L": 13,
+        "head": 14,
+        "attr": -0.374,
+        "top_edge": "'day' <- '.' (-0.122)"
+      },
+      {
+        "L": 20,
+        "head": 28,
+        "attr": 0.373,
+        "top_edge": "'a' <- 'Wednesday' (+0.555)"
+      },
+      {
+        "L": 0,
+        "head": 13,
+        "attr": 0.369,
+        "top_edge": "'on' <- '<s>' (+0.581)"
+      }
+    ],
+    "total attribution_L30H18_rank": 7,
+    "attribution via weekday-span sources": [
+      {
+        "L": 28,
+        "head": 17,
+        "attr": 0.86,
+        "top_edge": "'a' <- 'Wednesday' (+1.214)"
+      },
+      {
+        "L": 21,
+        "head": 9,
+        "attr": 0.774,
+        "top_edge": "'a' <- 'Monday' (+0.875)"
+      },
+      {
+        "L": 17,
+        "head": 1,
+        "attr": 0.768,
+        "top_edge": "'was' <- 'Sunday' (+0.809)"
+      },
+      {
+        "L": 17,
+        "head": 2,
+        "attr": -0.444,
+        "top_edge": "'a' <- 'Saturday' (-0.749)"
+      },
+      {
+        "L": 30,
+        "head": 18,
+        "attr": 0.425,
+        "top_edge": "'a' <- 'Tuesday' (+0.723)"
+      },
+      {
+        "L": 20,
+        "head": 30,
+        "attr": 0.386,
+        "top_edge": "'a' <- 'Wednesday' (+0.661)"
+      },
+      {
+        "L": 20,
+        "head": 28,
+        "attr": 0.364,
+        "top_edge": "'a' <- 'Wednesday' (+0.555)"
+      },
+      {
+        "L": 30,
+        "head": 17,
+        "attr": -0.312,
+        "top_edge": "'a' <- 'Saturday' (-0.451)"
+      },
+      {
+        "L": 24,
+        "head": 7,
+        "attr": -0.284,
+        "top_edge": "'a' <- 'Monday' (-0.552)"
+      },
+      {
+        "L": 17,
+        "head": 3,
+        "attr": 0.255,
+        "top_edge": "'a' <- 'Friday' (+0.454)"
+      },
+      {
+        "L": 30,
+        "head": 27,
+        "attr": 0.197,
+        "top_edge": "'a' <- 'Thursday' (+0.365)"
+      },
+      {
+        "L": 10,
+        "head": 26,
+        "attr": 0.182,
+        "top_edge": "'a' <- 'Friday' (+0.178)"
+      },
+      {
+        "L": 30,
+        "head": 24,
+        "attr": -0.181,
+        "top_edge": "'a' <- 'Tuesday' (-0.328)"
+      },
+      {
+        "L": 17,
+        "head": 26,
+        "attr": -0.157,
+        "top_edge": "'a' <- 'Wednesday' (-0.192)"
+      },
+      {
+        "L": 18,
+        "head": 31,
+        "attr": 0.15,
+        "top_edge": "'a' <- 'Wednesday' (+0.296)"
+      }
+    ],
+    "attribution via weekday-span sources_L30H18_rank": 5
+  }
+}
