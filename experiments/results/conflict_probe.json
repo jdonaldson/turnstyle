@@ -1,0 +1,179 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "rows": [
+    {
+      "prompt": "Gold is heavier than silver, and lead is heavier than gold. The heaviest of the three is",
+      "correct": false,
+      "emitted": ":",
+      "target": "lead",
+      "recs": [
+        "lead"
+      ],
+      "overruled": 1,
+      "conflict": 0
+    },
+    {
+      "prompt": "Silver is heavier than lead, and gold is heavier than silver. The heaviest of the three is",
+      "correct": true,
+      "emitted": "gold",
+      "target": "gold",
+      "recs": [],
+      "overruled": 0,
+      "conflict": 0
+    },
+    {
+      "prompt": "Lead is heavier than gold, and silver is heavier than lead. The heaviest of the three is",
+      "correct": false,
+      "emitted": "",
+      "target": "silver",
+      "recs": [
+        "lead"
+      ],
+      "overruled": 1,
+      "conflict": 0
+    },
+    {
+      "prompt": "Oak is taller than pine, and cedar is taller than oak. The tallest of the three is",
+      "correct": true,
+      "emitted": "cedar",
+      "target": "cedar",
+      "recs": [
+        "cedar",
+        "pine"
+      ],
+      "overruled": 1,
+      "conflict": 1
+    },
+    {
+      "prompt": "Pine is taller than cedar, and oak is taller than pine. The tallest of the three is",
+      "correct": true,
+      "emitted": "oak",
+      "target": "oak",
+      "recs": [
+        "oak",
+        "pine"
+      ],
+      "overruled": 1,
+      "conflict": 1
+    },
+    {
+      "prompt": "Cedar is taller than oak, and pine is taller than cedar. The tallest of the three is",
+      "correct": true,
+      "emitted": "pine",
+      "target": "pine",
+      "recs": [
+        "cedar",
+        "oak",
+        "pine"
+      ],
+      "overruled": 1,
+      "conflict": 1
+    },
+    {
+      "prompt": "Whale is bigger than dolphin, and shark is bigger than whale. The biggest of the three is",
+      "correct": false,
+      "emitted": "a",
+      "target": "shark",
+      "recs": [
+        "dolphin"
+      ],
+      "overruled": 1,
+      "conflict": 0
+    },
+    {
+      "prompt": "Dolphin is bigger than shark, and whale is bigger than dolphin. The biggest of the three is",
+      "correct": true,
+      "emitted": "whale",
+      "target": "whale",
+      "recs": [
+        "dolphin"
+      ],
+      "overruled": 1,
+      "conflict": 0
+    },
+    {
+      "prompt": "Shark is bigger than whale, and dolphin is bigger than shark. The biggest of the three is",
+      "correct": false,
+      "emitted": "the",
+      "target": "dolphin",
+      "recs": [
+        "dolphin"
+      ],
+      "overruled": 1,
+      "conflict": 0
+    },
+    {
+      "prompt": "Tom is older than Sam, and Ben is older than Tom. The oldest of the three is",
+      "correct": true,
+      "emitted": "Ben",
+      "target": "Ben",
+      "recs": [
+        "Ben",
+        "Sam"
+      ],
+      "overruled": 1,
+      "conflict": 1
+    },
+    {
+      "prompt": "Sam is older than Ben, and Tom is older than Sam. The oldest of the three is",
+      "correct": true,
+      "emitted": "Tom",
+      "target": "Tom",
+      "recs": [
+        "Ben",
+        "Tom"
+      ],
+      "overruled": 1,
+      "conflict": 1
+    },
+    {
+      "prompt": "Ben is older than Tom, and Sam is older than Ben. The oldest of the three is",
+      "correct": false,
+      "emitted": "Tom",
+      "target": "Sam",
+      "recs": [
+        "Ben",
+        "Tom"
+      ],
+      "overruled": 1,
+      "conflict": 1
+    },
+    {
+      "prompt": "Granite is harder than marble, and chalk is harder than granite. The hardest of the three is",
+      "correct": true,
+      "emitted": "chalk",
+      "target": "chalk",
+      "recs": [
+        "chalk",
+        "granite",
+        "marble"
+      ],
+      "overruled": 1,
+      "conflict": 1
+    },
+    {
+      "prompt": "Marble is harder than chalk, and granite is harder than marble. The hardest of the three is",
+      "correct": true,
+      "emitted": "granite",
+      "target": "granite",
+      "recs": [
+        "granite",
+        "marble"
+      ],
+      "overruled": 1,
+      "conflict": 1
+    },
+    {
+      "prompt": "Chalk is harder than granite, and marble is harder than chalk. The hardest of the three is",
+      "correct": false,
+      "emitted": "granite",
+      "target": "marble",
+      "recs": [
+        "granite",
+        "marble"
+      ],
+      "overruled": 1,
+      "conflict": 1
+    }
+  ]
+}
