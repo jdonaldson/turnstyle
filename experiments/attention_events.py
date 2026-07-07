@@ -151,56 +151,96 @@ def main():
     for h in hooks:
         h.remove()
 
+    def decompose_head(e, h):
+        toks = e["_toks"]; w = e["_w"]; L = e["L"]
+        srcs = np.argsort(-w[h])[:3]
+        src_s = ", ".join(f"'{toks[s + 1]}'({w[h, s]:.1f})"
+                          for s in srcs if w[h, s] > 0)
+        contrib = e["_oin"][h] @ W_O[L][:, h * d_head:(h + 1) * d_head].T
+        logits = contrib @ W_U.T
+        top_v = np.argsort(-logits)[:5]
+        ov = ", ".join(tok.decode([int(i)]).strip() or "␣" for i in top_v)
+        return {"head": int(h), "sources": src_s, "ov_top": ov}
+
+    # ---- v1: layer-sum events -------------------------------------------
     mu = [np.mean(s) for s in per_layer_scores]
     sd = [np.std(s) + 1e-9 for s in per_layer_scores]
     for s in samples:
         s["z"] = (s["score"] - mu[s["L"]]) / sd[s["L"]]
 
-    events = sorted(samples, key=lambda s: -s["z"])[:TOP_EVENTS]
     counts = {}
     for s in samples:
         if s["z"] >= Z_EVENT:
             counts[s["L"]] = counts.get(s["L"], 0) + 1
-
-    print("\n=== per-layer event counts (z>=3) ===")
+    print("\n=== v1 per-layer event counts (layer-sum z>=3) ===")
     print(" ".join(f"L{L}:{counts.get(L, 0)}" for L in range(n_layers)))
 
-    print(f"\n=== top {TOP_EVENTS} events ===", flush=True)
+    # ---- v2: per-HEAD events (an event is a head-level outlier) ---------
+    hs_sum = np.zeros((n_layers, n_heads))
+    hs_sq = np.zeros((n_layers, n_heads))
+    hs_n = np.zeros((n_layers, n_heads))
+    for s in samples:
+        hs = s["_w"].sum(1)                      # [H]
+        s["_hs"] = hs
+        hs_sum[s["L"]] += hs
+        hs_sq[s["L"]] += hs ** 2
+        hs_n[s["L"]] += 1
+    mu_h = hs_sum / hs_n
+    sd_h = np.sqrt(np.maximum(hs_sq / hs_n - mu_h ** 2, 0)) + 1e-9
+
+    head_events = []
+    for s in samples:
+        zh = (s["_hs"] - mu_h[s["L"]]) / sd_h[s["L"]]
+        for h in np.where(zh >= Z_EVENT)[0]:
+            head_events.append((float(zh[h]), s, int(h)))
+    head_events.sort(key=lambda e: -e[0])
+
+    h_counts = {}
+    for z, s, h in head_events:
+        h_counts[s["L"]] = h_counts.get(s["L"], 0) + 1
+    print("\n=== v2 per-layer head-event counts (per-head z>=3) ===")
+    print(" ".join(f"L{L}:{h_counts.get(L, 0)}" for L in range(n_layers)))
+
+    print(f"\n=== v2 top {TOP_EVENTS} head-events ===", flush=True)
     out_events = []
-    for e in events:
-        toks = e["_toks"]; w = e["_w"]; L = e["L"]; t = e["t"]
-        head_tot = w.sum(1)
-        tops = np.argsort(-head_tot)[:2]
-        head_info = []
-        for h in tops:
-            srcs = np.argsort(-w[h])[:3]
-            src_s = ", ".join(f"'{toks[s + 1]}'({w[h, s]:.1f})"
-                              for s in srcs if w[h, s] > 0)
-            contrib = e["_oin"][h] @ W_O[L][:, h * d_head:(h + 1) * d_head].T
-            logits = contrib @ W_U.T
-            top_v = np.argsort(-logits)[:5]
-            ov = ", ".join(tok.decode([int(i)]).strip() or "␣"
-                           for i in top_v)
-            head_info.append({"head": int(h), "sources": src_s,
-                              "ov_top": ov})
-        rec = {"cat": e["cat"], "text": CORPUS[e["pi"]][1], "L": L,
-               "dest": toks[t], "z": round(float(e["z"]), 1),
-               "sink": round(e["sink"], 2), "heads": head_info}
+    for z, e, h in head_events[:TOP_EVENTS]:
+        hi = decompose_head(e, h)
+        rec = {"cat": e["cat"], "text": CORPUS[e["pi"]][1], "L": e["L"],
+               "dest": e["_toks"][e["t"]], "z": round(z, 1),
+               "sink": round(e["sink"], 2), "head": hi}
         out_events.append(rec)
-        print(f"\nz={rec['z']:5.1f} L{L:2d} [{rec['cat']:9s}] "
-              f"dest='{rec['dest']}' sink={rec['sink']:.2f}  "
-              f"\"{rec['text'][:60]}\"")
-        for hi in head_info:
-            print(f"    H{hi['head']:2d} <- {hi['sources']}")
-            print(f"        OV writes: {hi['ov_top']}")
+        print(f"\nz={z:5.1f} L{e['L']:2d} H{h:2d} [{rec['cat']:9s}] "
+              f"dest='{rec['dest']}'  \"{rec['text'][:58]}\"")
+        print(f"    <- {hi['sources']}")
+        print(f"    OV writes: {hi['ov_top']}")
+
+    # ---- planted validation: best late-layer arith head-event -----------
+    arith = [(z, s, h) for z, s, h in head_events
+             if s["cat"] == "arith" and s["L"] >= 12]
+    print("\n=== planted arithmetic validation (per-head, L>=12) ===")
+    if arith:
+        for z, s, h in arith[:5]:
+            hi = decompose_head(s, h)
+            print(f"  z={z:.1f} L{s['L']} H{h} dest='{s['_toks'][s['t']]}' "
+                  f"\"{CORPUS[s['pi']][1][:45]}\" <- {hi['sources']} | "
+                  f"OV: {hi['ov_top']}")
+    else:
+        print("  STILL MISSING — per-head z did not recover it either")
 
     outp = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                         "results", "attention_events.json")
     with open(outp, "w") as f:
         json.dump({"model": MODEL, "z_event": Z_EVENT,
-                   "layer_event_counts": {str(k): v for k, v in
-                                          sorted(counts.items())},
-                   "events": out_events}, f, indent=2)
+                   "v1_layer_event_counts": {str(k): v for k, v in
+                                             sorted(counts.items())},
+                   "v2_head_event_counts": {str(k): v for k, v in
+                                            sorted(h_counts.items())},
+                   "head_events": out_events,
+                   "arith_validation": [
+                       {"z": round(z, 1), "L": s["L"], "head": h,
+                        "dest": s["_toks"][s["t"]],
+                        "text": CORPUS[s["pi"]][1]}
+                       for z, s, h in arith[:5]]}, f, indent=2)
     print(f"\nwrote {outp}")
 
 

@@ -1,7 +1,7 @@
 {
   "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
   "z_event": 3.0,
-  "layer_event_counts": {
+  "v1_layer_event_counts": {
     "1": 7,
     "2": 4,
     "3": 3,
@@ -15,606 +15,459 @@
     "20": 1,
     "21": 4
   },
-  "events": [
-    {
-      "cat": "code",
-      "text": "SELECT name FROM users WHERE age > 30",
-      "L": 3,
-      "dest": " >",
-      "z": 5.5,
-      "sink": 0.66,
-      "heads": [
-        {
-          "head": 24,
-          "sources": "' WHERE'(4.8), ' FROM'(0.1), ' >'(0.0)",
-          "ov_top": "Timing, org, hurry, Tim, Core"
-        },
-        {
-          "head": 4,
-          "sources": "' FROM'(1.0), ' age'(1.0), ' WHERE'(0.9)",
-          "ov_top": "chimpan, WARRANTIES, pick, SE, appa"
-        }
-      ]
-    },
-    {
-      "cat": "code",
-      "text": "SELECT name FROM users WHERE age > 30",
-      "L": 3,
-      "dest": " WHERE",
-      "z": 5.4,
-      "sink": 0.65,
-      "heads": [
-        {
-          "head": 31,
-          "sources": "' WHERE'(2.4), ' FROM'(1.8), ' users'(0.1)",
-          "ov_top": "embrance, ineteenth, caterpill, zymatic, ikhail"
-        },
-        {
-          "head": 20,
-          "sources": "' users'(1.5), ' name'(1.2), ' FROM'(0.4)",
-          "ov_top": "chimpan, caterpill, neurotransmit, Ishma, bicy"
-        }
-      ]
-    },
-    {
-      "cat": "code",
-      "text": "SELECT name FROM users WHERE age > 30",
-      "L": 2,
-      "dest": " >",
-      "z": 4.8,
-      "sink": 0.71,
-      "heads": [
-        {
-          "head": 8,
-          "sources": "' age'(1.8), ' WHERE'(0.9), ' >'(0.4)",
-          "ov_top": "meticul, chimpan, dprinting, <filename>, numerable"
-        },
-        {
-          "head": 17,
-          "sources": "' >'(3.2), ' FROM'(0.2), ' WHERE'(0.1)",
-          "ov_top": "cryptocur, dprinting, ustaining, outheastern, paralleled"
-        }
-      ]
-    },
-    {
-      "cat": "code",
-      "text": "SELECT name FROM users WHERE age > 30",
-      "L": 1,
-      "dest": " age",
-      "z": 4.5,
-      "sink": 0.15,
-      "heads": [
-        {
-          "head": 28,
-          "sources": "' users'(1.2), ' name'(1.0), ' age'(1.0)",
-          "ov_top": "enfranch, aution, intendent, insic, teasp"
-        },
-        {
-          "head": 13,
-          "sources": "' age'(1.3), ' WHERE'(1.1), ' FROM'(0.6)",
-          "ov_top": "appre, M, C, D, controvers"
-        }
-      ]
-    },
-    {
-      "cat": "code",
-      "text": "SELECT name FROM users WHERE age > 30",
-      "L": 1,
-      "dest": " >",
-      "z": 4.4,
-      "sink": 0.15,
-      "heads": [
-        {
-          "head": 28,
-          "sources": "' age'(2.4), ' WHERE'(1.0), ' >'(0.6)",
-          "ov_top": "enfranch, intendent, aution, insic, teasp"
-        },
-        {
-          "head": 13,
-          "sources": "' >'(2.5), ' WHERE'(0.4), ' age'(0.4)",
-          "ov_top": "k, C, in, to, M"
-        }
-      ]
-    },
-    {
-      "cat": "logic",
-      "text": "Either the key is in the drawer or on the hook. It is not in the drawer.",
-      "L": 12,
-      "dest": " drawer",
-      "z": 4.2,
-      "sink": 0.33,
-      "heads": [
-        {
-          "head": 14,
-          "sources": "' on'(2.1), ' hook'(2.0), ' drawer'(1.3)",
-          "ov_top": "ikhail, \ufffd\ufffd, emeteries, leanor, interrupted"
-        },
-        {
-          "head": 15,
-          "sources": "' drawer'(6.6), ' the'(0.2), ' in'(0.1)",
-          "ov_top": "off, any, All, further, each"
-        }
-      ]
-    },
-    {
-      "cat": "code",
-      "text": "SELECT name FROM users WHERE age > 30",
-      "L": 2,
-      "dest": " age",
-      "z": 4.2,
-      "sink": 0.73,
-      "heads": [
-        {
-          "head": 19,
-          "sources": "' WHERE'(3.1), ' age'(0.2), ' users'(0.0)",
-          "ov_top": "Preprocess, xtap, [![, ancip, adier"
-        },
-        {
-          "head": 25,
-          "sources": "' users'(1.0), ' age'(0.7), ' WHERE'(0.6)",
-          "ov_top": "earthqu, semicon, control, \ufffd, ograp"
-        }
-      ]
-    },
-    {
-      "cat": "code",
-      "text": "SELECT name FROM users WHERE age > 30",
-      "L": 1,
-      "dest": " WHERE",
-      "z": 4.1,
-      "sink": 0.21,
-      "heads": [
-        {
-          "head": 28,
-          "sources": "' name'(1.5), ' users'(1.3), ' WHERE'(0.8)",
-          "ov_top": "enfranch, aution, intendent, insic, teasp"
-        },
-        {
-          "head": 13,
-          "sources": "' WHERE'(1.8), ' FROM'(0.9), ' users'(0.7)",
-          "ov_top": "appre, M, flavored, k, D"
-        }
-      ]
-    },
-    {
-      "cat": "coref",
-      "text": "Sarah gave the book to Emma because she had finished it.",
-      "L": 21,
-      "dest": ".",
-      "z": 3.9,
-      "sink": 0.48,
-      "heads": [
-        {
-          "head": 13,
-          "sources": "' Emma'(12.3), ' gave'(0.3), '.'(0.2)",
-          "ov_top": "Em, Emma, em, em, Em"
-        },
-        {
-          "head": 24,
-          "sources": "' gave'(9.5), '.'(1.4), ' Emma'(1.0)",
-          "ov_top": "\"__, =_, rosclerosis, '__, \\_"
-        }
-      ]
-    },
-    {
-      "cat": "multiling",
-      "text": "Le train arrive \u00e0 la gare.",
-      "L": 1,
-      "dest": " \u00e0",
-      "z": 3.8,
-      "sink": 0.19,
-      "heads": [
-        {
-          "head": 13,
-          "sources": "' \u00e0'(2.0), ' arrive'(1.3), ' train'(0.4)",
-          "ov_top": "mischie, pries, controvers, appre, glo"
-        },
-        {
-          "head": 28,
-          "sources": "' arrive'(1.2), ' train'(1.1), ' \u00e0'(1.0)",
-          "ov_top": "enfranch, aution, intendent, insic, teasp"
-        }
-      ]
-    },
-    {
-      "cat": "code",
-      "text": "SELECT name FROM users WHERE age > 30",
-      "L": 2,
-      "dest": " WHERE",
-      "z": 3.8,
-      "sink": 0.74,
-      "heads": [
-        {
-          "head": 5,
-          "sources": "' WHERE'(1.6), ' FROM'(1.4), ' name'(0.1)",
-          "ov_top": "zymatic, arvation, ardships, esoph, apagos"
-        },
-        {
-          "head": 8,
-          "sources": "' users'(1.6), ' FROM'(0.6), ' name'(0.4)",
-          "ov_top": "chimpan, meticul, <filename>, agoons, caterpill"
-        }
-      ]
-    },
-    {
-      "cat": "code",
-      "text": "SELECT name FROM users WHERE age > 30",
-      "L": 4,
-      "dest": " >",
-      "z": 3.6,
-      "sink": 0.67,
-      "heads": [
-        {
-          "head": 10,
-          "sources": "' WHERE'(1.1), ' age'(1.0), ' FROM'(0.8)",
-          "ov_top": "chimpan, severance, neurotransmit, roring, xon"
-        },
-        {
-          "head": 27,
-          "sources": "' >'(3.1), ' age'(0.6), ' WHERE'(0.2)",
-          "ov_top": "igions, continence, :%, reference, alu"
-        }
-      ]
-    },
-    {
-      "cat": "coref",
-      "text": "Sarah gave the book to Emma because she had finished it.",
-      "L": 21,
-      "dest": " because",
-      "z": 3.5,
-      "sink": 0.57,
-      "heads": [
-        {
-          "head": 13,
-          "sources": "' Emma'(13.2), ' gave'(0.2), ' because'(0.0)",
-          "ov_top": "Em, Emma, em, em, Em"
-        },
-        {
-          "head": 24,
-          "sources": "' gave'(10.9), ' Emma'(2.4), ' the'(0.1)",
-          "ov_top": "\"__, =_, rosclerosis, '__, \\_"
-        }
-      ]
-    },
-    {
-      "cat": "compare",
-      "text": "The oak is taller than the pine, but the redwood is tallest.",
-      "L": 19,
-      "dest": " is",
-      "z": 3.5,
-      "sink": 0.57,
-      "heads": [
-        {
-          "head": 7,
-          "sources": "'wood'(6.5), ' is'(1.8), ' red'(0.4)",
-          "ov_top": "folios, opio, caterpill, practition, earthqu"
-        },
-        {
-          "head": 31,
-          "sources": "' taller'(8.6), ' than'(0.3), ' but'(0.1)",
-          "ov_top": "RecipeSteps, olkien, irmingham, opio, unanim"
-        }
-      ]
-    },
-    {
-      "cat": "code",
-      "text": "SELECT name FROM users WHERE age > 30",
-      "L": 1,
-      "dest": " users",
-      "z": 3.5,
-      "sink": 0.24,
-      "heads": [
-        {
-          "head": 28,
-          "sources": "' name'(1.9), ' users'(1.7), ' FROM'(0.5)",
-          "ov_top": "enfranch, aution, intendent, insic, teasp"
-        },
-        {
-          "head": 13,
-          "sources": "' users'(1.3), ' FROM'(1.3), ' name'(0.6)",
-          "ov_top": "appre, HOLD, retros, controvers, pries"
-        }
-      ]
-    },
-    {
-      "cat": "code",
-      "text": "SELECT name FROM users WHERE age > 30",
-      "L": 7,
-      "dest": " >",
-      "z": 3.5,
-      "sink": 0.54,
-      "heads": [
-        {
-          "head": 11,
-          "sources": "' >'(5.0), ' name'(0.2), ' WHERE'(0.0)",
-          "ov_top": "neurotransmit, lawsu, RecipeSteps, caterpill, sorption"
-        },
-        {
-          "head": 14,
-          "sources": "' age'(4.5), ' name'(0.4), ' users'(0.2)",
-          "ov_top": "cryptocur, ancip, ControlPlane, istice, bilt"
-        }
-      ]
-    },
-    {
-      "cat": "code",
-      "text": "SELECT name FROM users WHERE age > 30",
-      "L": 3,
-      "dest": " age",
-      "z": 3.5,
-      "sink": 0.75,
-      "heads": [
-        {
-          "head": 24,
-          "sources": "' WHERE'(3.3), ' FROM'(0.3), ' users'(0.0)",
-          "ov_top": "Timing, org, hurry, Tim, timing"
-        },
-        {
-          "head": 14,
-          "sources": "' WHERE'(1.9), ' FROM'(1.0), ' users'(0.2)",
-          "ov_top": "practition, RIGHT, Chances, possibility, Treating"
-        }
-      ]
-    },
-    {
-      "cat": "code",
-      "text": "if x > 5 and y < 3: return True",
-      "L": 1,
-      "dest": " >",
-      "z": 3.4,
-      "sink": 0.31,
-      "heads": [
-        {
-          "head": 13,
-          "sources": "' >'(3.2), ' x'(0.6)",
-          "ov_top": "appre, controvers, implying, disadvant, k"
-        },
-        {
-          "head": 28,
-          "sources": "' x'(2.0), ' >'(1.1)",
-          "ov_top": "enfranch, aution, intendent, insic, teasp"
-        }
-      ]
-    },
-    {
-      "cat": "coref",
-      "text": "Sarah gave the book to Emma because she had finished it.",
-      "L": 20,
-      "dest": " because",
-      "z": 3.3,
-      "sink": 0.64,
-      "heads": [
-        {
-          "head": 17,
-          "sources": "' gave'(5.6), ' Emma'(4.6), ' because'(0.1)",
-          "ov_top": "given, given, Given, Given, desc"
-        },
-        {
-          "head": 25,
-          "sources": "' gave'(7.6), ' Emma'(2.0), ' the'(0.0)",
-          "ov_top": "Sarah, Sarah, Gu, gu, hom"
-        }
-      ]
-    },
-    {
-      "cat": "code",
-      "text": "SELECT name FROM users WHERE age > 30",
-      "L": 4,
-      "dest": " WHERE",
-      "z": 3.3,
-      "sink": 0.69,
-      "heads": [
-        {
-          "head": 7,
-          "sources": "' users'(2.6), ' WHERE'(1.5), ' FROM'(0.7)",
-          "ov_top": "hygi, ilical, then, uthors, np"
-        },
-        {
-          "head": 17,
-          "sources": "' WHERE'(1.6), ' FROM'(1.4), ' users'(0.6)",
-          "ov_top": "neurotransmit, chimpan, caterpill, dprinting, Ishma"
-        }
-      ]
-    },
-    {
-      "cat": "multiling",
-      "text": "Le train arrive \u00e0 la gare.",
-      "L": 1,
-      "dest": " la",
-      "z": 3.3,
-      "sink": 0.07,
-      "heads": [
-        {
-          "head": 28,
-          "sources": "' arrive'(1.2), ' train'(0.9), ' \u00e0'(0.9)",
-          "ov_top": "enfranch, intendent, aution, insic, teasp"
-        },
-        {
-          "head": 19,
-          "sources": "' \u00e0'(1.9), ' la'(0.7), ' arrive'(0.2)",
-          "ov_top": "uddenly, ecause, outheastern, embrance, ediatrics"
-        }
-      ]
-    },
-    {
-      "cat": "coref",
-      "text": "Anna told Maria that her car was blocking the driveway.",
-      "L": 21,
-      "dest": ".",
-      "z": 3.2,
-      "sink": 0.52,
-      "heads": [
-        {
-          "head": 2,
-          "sources": "' told'(8.8), ' Maria'(5.5), '.'(0.0)",
-          "ov_top": "ann, ann, Ann, Ann, mar"
-        },
-        {
-          "head": 18,
-          "sources": "' told'(7.9), ' Maria'(4.0), '.'(0.1)",
-          "ov_top": "Anna, Anna, Ana, AMA, AN"
-        }
-      ]
-    },
-    {
-      "cat": "logic",
-      "text": "All cats are animals. Whiskers is a cat, so Whiskers is",
-      "L": 21,
-      "dest": " so",
-      "z": 3.2,
-      "sink": 0.59,
-      "heads": [
-        {
-          "head": 6,
-          "sources": "'isk'(10.8), ' Wh'(4.0), 'ers'(0.8)",
-          "ov_top": "Wh, Wh, Sm, Sp, Bl"
-        },
-        {
-          "head": 22,
-          "sources": "'isk'(9.7), ' Wh'(2.5), 'ers'(0.4)",
-          "ov_top": "|'\\, sorption, faiss, Wick, wick"
-        }
-      ]
-    },
+  "v2_head_event_counts": {
+    "0": 142,
+    "1": 232,
+    "2": 322,
+    "3": 314,
+    "4": 305,
+    "5": 288,
+    "6": 327,
+    "7": 206,
+    "8": 236,
+    "9": 191,
+    "10": 175,
+    "11": 113,
+    "12": 212,
+    "13": 170,
+    "14": 109,
+    "15": 176,
+    "16": 161,
+    "17": 176,
+    "18": 233,
+    "19": 266,
+    "20": 252,
+    "21": 267,
+    "22": 208,
+    "23": 111
+  },
+  "head_events": [
     {
       "cat": "logic",
       "text": "All cats are animals. Whiskers is a cat, so Whiskers is",
       "L": 10,
       "dest": "ers",
-      "z": 3.2,
+      "z": 19.4,
       "sink": 0.46,
-      "heads": [
-        {
-          "head": 19,
-          "sources": "' is'(6.9), 'ers'(0.1), ' Wh'(0.0)",
-          "ov_top": "emeteries, |'\\, pared, otives, rosive"
-        },
-        {
-          "head": 18,
-          "sources": "' so'(6.0), ','(0.6), ' Wh'(0.0)",
-          "ov_top": "numerable, accordingly, ichia, catar, LIED"
-        }
-      ]
+      "head": {
+        "head": 3,
+        "sources": "' is'(2.0), 'ers'(0.0), 'ers'(0.0)",
+        "ov_top": "uckingham, ditionally, OrderedDict, KeyNot, honored"
+      }
     },
     {
       "cat": "code",
-      "text": "SELECT name FROM users WHERE age > 30",
+      "text": "for i in range(10): total = total + i",
+      "L": 20,
+      "dest": " =",
+      "z": 17.3,
+      "sink": 0.8,
+      "head": {
+        "head": 10,
+        "sources": "' total'(15.9), ' ='(0.0), '):'(0.0)",
+        "ov_top": "total, total, Total, Total, totals"
+      }
+    },
+    {
+      "cat": "narrative",
+      "text": "The rain fell softly on the quiet village all night.",
+      "L": 3,
+      "dest": " on",
+      "z": 15.8,
+      "sink": 0.84,
+      "head": {
+        "head": 9,
+        "sources": "' fell'(2.3), ' rain'(1.8), ' on'(0.1)",
+        "ov_top": "specim, enfranch, ratory, oglob, unding"
+      }
+    },
+    {
+      "cat": "code",
+      "text": "for i in range(10): total = total + i",
       "L": 2,
-      "dest": " users",
-      "z": 3.2,
-      "sink": 0.76,
-      "heads": [
-        {
-          "head": 19,
-          "sources": "' FROM'(2.9), ' users'(0.3), ' name'(0.2)",
-          "ov_top": "prene, Preprocess, geoId, romyalgia, xtap"
-        },
-        {
-          "head": 12,
-          "sources": "' users'(2.1), ' FROM'(0.8), ' name'(0.0)",
-          "ov_top": "\u2423, \", (, the, s"
-        }
-      ]
+      "dest": "(",
+      "z": 15.2,
+      "sink": 0.13,
+      "head": {
+        "head": 15,
+        "sources": "' range'(4.8), '('(0.0), ' in'(0.0)",
+        "ov_top": "States, straight, free, \u092f, internal"
+      }
+    },
+    {
+      "cat": "logic",
+      "text": "All cats are animals. Whiskers is a cat, so Whiskers is",
+      "L": 11,
+      "dest": " Wh",
+      "z": 14.4,
+      "sink": 0.45,
+      "head": {
+        "head": 19,
+        "sources": "'isk'(4.6), 'ers'(1.3), ' is'(0.0)",
+        "ov_top": "impul, preprocess, racks, inverte, estock"
+      }
+    },
+    {
+      "cat": "multiling",
+      "text": "Der Hund l\u00e4uft im Park.",
+      "L": 5,
+      "dest": "u",
+      "z": 14.3,
+      "sink": 0.79,
+      "head": {
+        "head": 24,
+        "sources": "'\u00e4'(5.7), ' l'(0.2), 'u'(0.0)",
+        "ov_top": "B, most, this, d, it"
+      }
+    },
+    {
+      "cat": "coref",
+      "text": "Tom called his father, and he was happy to hear from him.",
+      "L": 2,
+      "dest": " called",
+      "z": 14.0,
+      "sink": 0.8,
+      "head": {
+        "head": 1,
+        "sources": "' called'(1.3)",
+        "ov_top": "uary, exception, quo, watts, subject"
+      }
+    },
+    {
+      "cat": "logic",
+      "text": "All cats are animals. Whiskers is a cat, so Whiskers is",
+      "L": 12,
+      "dest": "isk",
+      "z": 13.9,
+      "sink": 0.55,
+      "head": {
+        "head": 2,
+        "sources": "'ers'(6.8), ' is'(0.1), 'isk'(0.0)",
+        "ov_top": "atius, ,,,,,,,,,,,,,,,,, ArticleGoogle, ):**, ecd"
+      }
+    },
+    {
+      "cat": "dates",
+      "text": "Christmas falls on December 25th every year.",
+      "L": 6,
+      "dest": "2",
+      "z": 13.7,
+      "sink": 0.08,
+      "head": {
+        "head": 10,
+        "sources": "' December'(6.5), ' falls'(0.0), ' on'(0.0)",
+        "ov_top": "heumat, outheastern, outheast, ultz, wid"
+      }
     },
     {
       "cat": "code",
       "text": "SELECT name FROM users WHERE age > 30",
       "L": 6,
-      "dest": " >",
-      "z": 3.1,
-      "sink": 0.69,
-      "heads": [
-        {
-          "head": 5,
-          "sources": "' WHERE'(4.6), ' FROM'(0.1), ' users'(0.0)",
-          "ov_top": "ush, atus, pylint, ountain, princip"
-        },
-        {
-          "head": 1,
-          "sources": "' age'(4.1), ' >'(0.3), ' users'(0.2)",
-          "ov_top": "neurotransmit, |'\\, lawsu, ibar, entreprene"
-        }
-      ]
+      "dest": " users",
+      "z": 13.7,
+      "sink": 0.77,
+      "head": {
+        "head": 18,
+        "sources": "' FROM'(6.9), ' name'(0.0), ' users'(0.0)",
+        "ov_top": "ippings, meticul, nose, careg, Subthreshold"
+      }
+    },
+    {
+      "cat": "compare",
+      "text": "A whale is bigger than a dolphin, which is bigger than a fish.",
+      "L": 19,
+      "dest": " is",
+      "z": 13.6,
+      "sink": 0.65,
+      "head": {
+        "head": 26,
+        "sources": "' bigger'(9.0), ' than'(0.2), ','(0.1)",
+        "ov_top": "bigger, big, biggest, big, BIG"
+      }
+    },
+    {
+      "cat": "narrative",
+      "text": "He opened the door and stepped into the cold morning air.",
+      "L": 10,
+      "dest": " and",
+      "z": 13.1,
+      "sink": 0.81,
+      "head": {
+        "head": 28,
+        "sources": "' and'(0.0), ' opened'(0.0), ' door'(0.0)",
+        "ov_top": "\u2423, pay, paid, her, ucaly"
+      }
+    },
+    {
+      "cat": "dates",
+      "text": "Today is Tuesday. Tomorrow will be",
+      "L": 4,
+      "dest": " be",
+      "z": 12.6,
+      "sink": 0.05,
+      "head": {
+        "head": 14,
+        "sources": "' will'(3.2), ' be'(0.9), ' Tomorrow'(0.5)",
+        "ov_top": "miah, ourselves, araoh, future, supers"
+      }
+    },
+    {
+      "cat": "compare",
+      "text": "A whale is bigger than a dolphin, which is bigger than a fish.",
+      "L": 20,
+      "dest": " is",
+      "z": 12.5,
+      "sink": 0.76,
+      "head": {
+        "head": 6,
+        "sources": "' bigger'(9.6), ' than'(0.1), ','(0.1)",
+        "ov_top": "guy, guys, stuff, somebody, size"
+      }
+    },
+    {
+      "cat": "logic",
+      "text": "All cats are animals. Whiskers is a cat, so Whiskers is",
+      "L": 11,
+      "dest": "isk",
+      "z": 12.4,
+      "sink": 0.5,
+      "head": {
+        "head": 19,
+        "sources": "'ers'(5.1), 'isk'(0.0), 'isk'(0.0)",
+        "ov_top": "preprocess, les, SWORD, impul, reat"
+      }
+    },
+    {
+      "cat": "logic",
+      "text": "All cats are animals. Whiskers is a cat, so Whiskers is",
+      "L": 12,
+      "dest": " Wh",
+      "z": 12.3,
+      "sink": 0.48,
+      "head": {
+        "head": 2,
+        "sources": "'isk'(5.9), 'ers'(0.3), ' cats'(0.0)",
+        "ov_top": "<filename>, [(', veston, uggage, ...')"
+      }
     },
     {
       "cat": "code",
       "text": "SELECT name FROM users WHERE age > 30",
       "L": 5,
       "dest": " >",
-      "z": 3.1,
+      "z": 12.2,
       "sink": 0.73,
-      "heads": [
-        {
-          "head": 27,
-          "sources": "' WHERE'(7.0), ' FROM'(0.2), ' age'(0.1)",
-          "ov_top": "returning, XI, Returning, gate, ction"
-        },
-        {
-          "head": 13,
-          "sources": "' age'(4.2), ' >'(0.3), ' WHERE'(0.1)",
-          "ov_top": "caterpill, opio, ancip, unanim, cytok"
-        }
-      ]
-    },
-    {
-      "cat": "logic",
-      "text": "All cats are animals. Whiskers is a cat, so Whiskers is",
-      "L": 4,
-      "dest": "isk",
-      "z": 3.1,
-      "sink": 0.02,
-      "heads": [
-        {
-          "head": 2,
-          "sources": "' cat'(3.2), ' cats'(0.9), ' is'(0.4)",
-          "ov_top": "neurotransmit, chimpan, caterpill, careg, cryptocur"
-        },
-        {
-          "head": 17,
-          "sources": "' cat'(3.0), 'ers'(0.5), ' cats'(0.3)",
-          "ov_top": "cryptocur, neurotransmit, geoId, ControlPlane, careg"
-        }
-      ]
-    },
-    {
-      "cat": "logic",
-      "text": "If it rains, the ground gets wet. It rained, therefore",
-      "L": 12,
-      "dest": "ined",
-      "z": 3.0,
-      "sink": 0.43,
-      "heads": [
-        {
-          "head": 15,
-          "sources": "'ined'(6.8), ' ra'(0.9), ','(0.0)",
-          "ov_top": "honours, ioned, noqa, esophageal, hru"
-        },
-        {
-          "head": 25,
-          "sources": "' wet'(6.3), ' gets'(0.4), ' rains'(0.2)",
-          "ov_top": "ceeds, illus, eered, ertiary, rosclerosis"
-        }
-      ]
+      "head": {
+        "head": 27,
+        "sources": "' WHERE'(7.0), ' FROM'(0.2), ' age'(0.1)",
+        "ov_top": "returning, XI, Returning, gate, ction"
+      }
     },
     {
       "cat": "count",
-      "text": "The basket held three apples, two pears, and one lemon.",
+      "text": "The list contains red, blue, green, and yellow items.",
+      "L": 7,
+      "dest": ",",
+      "z": 12.1,
+      "sink": 0.14,
+      "head": {
+        "head": 16,
+        "sources": "','(6.0), ' green'(0.1), ' blue'(0.0)",
+        "ov_top": "rust, Ter, cast, Someone, St"
+      }
+    },
+    {
+      "cat": "coref",
+      "text": "The dog chased the cat until it climbed a tree.",
+      "L": 6,
+      "dest": " tree",
+      "z": 11.9,
+      "sink": 0.14,
+      "head": {
+        "head": 13,
+        "sources": "' cat'(4.9), ' climbed'(0.5), ' dog'(0.4)",
+        "ov_top": "iriam, ikhail, prem, raltar, Tok"
+      }
+    },
+    {
+      "cat": "coref",
+      "text": "Tom called his father, and he was happy to hear from him.",
       "L": 4,
-      "dest": " lemon",
-      "z": 3.0,
-      "sink": 0.17,
-      "heads": [
-        {
-          "head": 16,
-          "sources": "' apples'(4.5), ' pears'(2.6), ' basket'(0.2)",
-          "ov_top": "numerable, hemisp, soriasis, ,,,,,,,,, rowsiness"
-        },
-        {
-          "head": 24,
-          "sources": "' apples'(2.3), ' pears'(1.3), ' lemon'(0.3)",
-          "ov_top": "neurotransmit, cryptocur, olicies, earthqu, soriasis"
-        }
-      ]
+      "dest": " hear",
+      "z": 11.4,
+      "sink": 0.03,
+      "head": {
+        "head": 14,
+        "sources": "' happy'(3.2), ' to'(0.9), ' hear'(0.0)",
+        "ov_top": "ss, context, ducive, eph, OrderedDict"
+      }
+    },
+    {
+      "cat": "coref",
+      "text": "Tom called his father, and he was happy to hear from him.",
+      "L": 3,
+      "dest": " to",
+      "z": 11.2,
+      "sink": 0.02,
+      "head": {
+        "head": 1,
+        "sources": "' happy'(5.2), ' was'(0.0), ' to'(0.0)",
+        "ov_top": "ilot, ivol, nurse, pity, pilot"
+      }
+    },
+    {
+      "cat": "narrative",
+      "text": "The children laughed as the kite rose above the trees.",
+      "L": 3,
+      "dest": " the",
+      "z": 11.0,
+      "sink": 0.2,
+      "head": {
+        "head": 21,
+        "sources": "' above'(2.7), ' rose'(0.7), ' the'(0.1)",
+        "ov_top": "bab, eria, series, bands, whole"
+      }
+    },
+    {
+      "cat": "arith",
+      "text": "What is four plus seven? The answer is",
+      "L": 7,
+      "dest": " is",
+      "z": 11.0,
+      "sink": 0.1,
+      "head": {
+        "head": 29,
+        "sources": "' is'(3.3), ' is'(0.1), ' answer'(0.0)",
+        "ov_top": "opio, dprinting, chimpan, RecipeSteps, meticul"
+      }
+    },
+    {
+      "cat": "coref",
+      "text": "The dog chased the cat until it climbed a tree.",
+      "L": 6,
+      "dest": " cat",
+      "z": 10.9,
+      "sink": 0.18,
+      "head": {
+        "head": 13,
+        "sources": "' dog'(5.4), ' chased'(0.4), ' cat'(0.0)",
+        "ov_top": "raltar, iriam, earthqu, cipline, ikhail"
+      }
+    },
+    {
+      "cat": "coref",
+      "text": "Tom called his father, and he was happy to hear from him.",
+      "L": 3,
+      "dest": " called",
+      "z": 10.8,
+      "sink": 0.76,
+      "head": {
+        "head": 30,
+        "sources": "' called'(3.4)",
+        "ov_top": "ControlPlane, KeyNot, orgetown, timedelta, aphyloc"
+      }
+    },
+    {
+      "cat": "multiling",
+      "text": "Der Hund l\u00e4uft im Park.",
+      "L": 3,
+      "dest": " Park",
+      "z": 10.6,
+      "sink": 0.9,
+      "head": {
+        "head": 6,
+        "sources": "' im'(1.7), 'ft'(0.4), ' Park'(0.3)",
+        "ov_top": "\u00b5g, arbonate, aris, ologne, \u03bcg"
+      }
+    },
+    {
+      "cat": "code",
+      "text": "if x > 5 and y < 3: return True",
+      "L": 9,
+      "dest": " y",
+      "z": 10.6,
+      "sink": 0.74,
+      "head": {
+        "head": 9,
+        "sources": "' x'(3.0), ' y'(0.7), '5'(0.0)",
+        "ov_top": "pitu, backends, endogenous, IMPLIED, yst"
+      }
+    },
+    {
+      "cat": "code",
+      "text": "SELECT name FROM users WHERE age > 30",
+      "L": 5,
+      "dest": " users",
+      "z": 10.6,
+      "sink": 0.81,
+      "head": {
+        "head": 23,
+        "sources": "' FROM'(3.8), ' name'(0.0), ' users'(0.0)",
+        "ov_top": "rowsiness, KeyNot, nucleotides, nering, juven"
+      }
+    },
+    {
+      "cat": "count",
+      "text": "The list contains red, blue, green, and yellow items.",
+      "L": 2,
+      "dest": " contains",
+      "z": 10.5,
+      "sink": 0.89,
+      "head": {
+        "head": 16,
+        "sources": "' list'(1.1), ' contains'(0.0)",
+        "ov_top": "\u043e\u0440, olia, numeric, ellig, offering"
+      }
+    },
+    {
+      "cat": "code",
+      "text": "for i in range(10): total = total + i",
+      "L": 3,
+      "dest": "):",
+      "z": 10.5,
+      "sink": 0.14,
+      "head": {
+        "head": 7,
+        "sources": "'):'(1.9), ' in'(0.1), '('(0.1)",
+        "ov_top": "Ishma, irres, estyle, PLOS, rion"
+      }
+    }
+  ],
+  "arith_validation": [
+    {
+      "z": 9.6,
+      "L": 19,
+      "head": 23,
+      "dest": " is",
+      "text": "What is four plus seven? The answer is"
+    },
+    {
+      "z": 8.5,
+      "L": 17,
+      "head": 26,
+      "dest": " equals",
+      "text": "Nine minus two equals"
+    },
+    {
+      "z": 8.2,
+      "L": 19,
+      "head": 20,
+      "dest": " is",
+      "text": "Twelve divided by four is"
+    },
+    {
+      "z": 7.9,
+      "L": 19,
+      "head": 23,
+      "dest": " and",
+      "text": "The sum of eight and eight is"
+    },
+    {
+      "z": 7.9,
+      "L": 20,
+      "head": 0,
+      "dest": " The",
+      "text": "What is six times three? The answer is"
     }
   ]
 }
