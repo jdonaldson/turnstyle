@@ -227,5 +227,27 @@ def fit_negation_detector(model, tokenizer, device, library, *,
               "neg_z_mean": round(float(neg_z.mean()), 3)})
 
 
+# ── fingerprint-addressed store (user cache, alongside the frame libraries) ───
+
+def _store_path(model_or_fp) -> Path:
+    from turnstyle.frame_library import _fingerprint, _USER_FRAMES
+    return _USER_FRAMES / f"{_fingerprint(model_or_fp)}.negation.json"
+
+
+def save_detector(det: NegationDetector, model_or_fp) -> Path:
+    p = _store_path(model_or_fp)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(det.to_dict()))
+    return p
+
+
+def load_detector(model_or_fp) -> NegationDetector | None:
+    p = _store_path(model_or_fp)
+    if not p.exists():
+        return None
+    return NegationDetector.from_dict(json.loads(p.read_text()))
+
+
 __all__ = ["NegationDetector", "OperatorTable", "fit_negation_detector",
+           "save_detector", "load_detector",
            "PREDICATIVE_TEMPLATES", "DEFAULT_LAYER", "Z_NEGATED", "Z_CLEAR"]

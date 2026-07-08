@@ -103,6 +103,14 @@ class DispatchTurnstyle(Turnstyle):
             from turnstyle.frame_library import load_library
             self.frames = load_library(model)
         self.ctx.frame_library = self.frames      # enables the FrameOrdering solve path
+        # Hedge-probe negation detector (turnstyle.operators) — makes FrameOrdering
+        # negation-aware (symbolic complement). Auto-loads from the user cache by
+        # fingerprint; fit one with calibrate_negation().
+        self.negation = None
+        if load_profile_on_init:
+            from turnstyle.operators import load_detector
+            self.negation = load_detector(model)
+        self.ctx.negation_detector = self.negation
 
     @property
     def profile_tasks(self) -> list[str]:
@@ -239,6 +247,27 @@ class DispatchTurnstyle(Turnstyle):
         elif task is not None and self.profile is not None:
             self.profile.remove_probe(task)
         return result
+
+    def calibrate_negation(self, verbose: bool = False):
+        """Fit the hedge-probe negation detector (turnstyle.operators) from the
+        loaded frame library's lexicons, activate it for the FrameOrdering path,
+        and persist it to the user cache (fingerprint-addressed). Frames project
+        the BARE word — negation is applied symbolically via the detector verdict
+        (complement / abstain), never read from frame geometry."""
+        if self.frames is None:
+            raise RuntimeError("no frame library loaded for this model — "
+                               "negation calibration needs the frame lexicons")
+        from turnstyle.operators import fit_negation_detector, save_detector
+        det = fit_negation_detector(self.model, self.tokenizer, self.device,
+                                    self.frames)
+        self.negation = det
+        self.ctx.negation_detector = det
+        path = save_detector(det, self.model)
+        if verbose:
+            print(f"[negation] L{det.layer} n_pairs={det.meta['n_pairs']} "
+                  f"bands clear<{det.z_clear:.2f} negated>={det.z_negated:.2f} "
+                  f"-> {path}")
+        return det
 
     def calibrate_polarity(self, verbose: bool = False):
         """Calibrate the model-level adjective-polarity primitive (detect_polarity),

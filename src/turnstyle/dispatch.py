@@ -242,6 +242,8 @@ class Ctx:
     ordering_classifier: Any = None  # OrderingClassifier for AdjectiveOrder (lazy-fit, cached)
     sql_turnstyle: Any = None        # cached SQLTurnstyle for the TableQuery (penguins) path
     frame_library: Any = None        # FrameLibrary for the FrameOrdering implicit-attribute path
+    negation_detector: Any = None    # NegationDetector: hedge-probe negation for FrameOrdering
+                                     # (symbolic complement; mid-band verdicts abstain)
     # Position-marginalized choice scoring: score each option over every slot it can
     # occupy (cyclic shifts) and average, so the per-option probe's POSITION component
     # cancels. The probe reads a contextualized last-token hidden state, so its score
@@ -458,7 +460,8 @@ def parse(prompt: str, ctx: Ctx) -> Task:
     if ctx.frame_library is not None and ctx.model is not None:
         from turnstyle.frame_ordering import solve_frame_ordering
         letter = solve_frame_ordering(prompt, ctx.frame_library,
-                                      ctx.model, ctx.tokenizer, ctx.device)
+                                      ctx.model, ctx.tokenizer, ctx.device,
+                                      detector=ctx.negation_detector)
         if letter is not None:
             return FrameOrdering(answer=letter)
 

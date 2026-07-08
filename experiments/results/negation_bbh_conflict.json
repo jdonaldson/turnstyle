@@ -1,0 +1,211 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "tasks": {
+    "boolean_expressions": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "causal_judgement": {
+      "n": 187,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "date_understanding": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "disambiguation_qa": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "dyck_languages": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "formal_fallacies": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "geometric_shapes": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "hyperbaton": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "logical_deduction_five_objects": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "logical_deduction_seven_objects": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "logical_deduction_three_objects": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "movie_recommendation": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "multistep_arithmetic_two": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "navigate": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "object_counting": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "penguins_in_a_table": {
+      "n": 146,
+      "gate_fired": 11,
+      "verdicts": {
+        "True": 0,
+        "False": 8,
+        "None": 3
+      }
+    },
+    "reasoning_about_colored_objects": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "ruin_names": {
+      "n": 250,
+      "gate_fired": 2,
+      "verdicts": {
+        "True": 0,
+        "False": 2,
+        "None": 0
+      }
+    },
+    "salient_translation_error_detection": {
+      "n": 250,
+      "gate_fired": 2,
+      "verdicts": {
+        "True": 0,
+        "False": 0,
+        "None": 2
+      }
+    },
+    "snarks": {
+      "n": 178,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "sports_understanding": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "temporal_sequences": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "tracking_shuffled_objects_five_objects": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "tracking_shuffled_objects_seven_objects": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "tracking_shuffled_objects_three_objects": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "web_of_lies": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    },
+    "word_sorting": {
+      "n": 250,
+      "gate_fired": 0,
+      "verdicts": {}
+    }
+  },
+  "diffs": [
+    {
+      "task": "penguins_in_a_table",
+      "i": 72,
+      "attr": "youngest",
+      "z": 2.87,
+      "verdict": "None",
+      "old": "(D)",
+      "new": null,
+      "target": "(A)",
+      "q": "Which is the second youngest penguin?"
+    },
+    {
+      "task": "penguins_in_a_table",
+      "i": 97,
+      "attr": "heaviest",
+      "z": 3.03,
+      "verdict": "None",
+      "old": "(C)",
+      "new": null,
+      "target": "(B)",
+      "q": "Which is the second heaviest penguin?"
+    },
+    {
+      "task": "penguins_in_a_table",
+      "i": 138,
+      "attr": "heaviest",
+      "z": 1.98,
+      "verdict": "None",
+      "old": "(C)",
+      "new": null,
+      "target": "(D)",
+      "q": "Which is the heaviest penguin?"
+    },
+    {
+      "task": "salient_translation_error_detection",
+      "i": 41,
+      "attr": "narrowest",
+      "z": 2.59,
+      "verdict": "None",
+      "old": "(E)",
+      "new": null,
+      "target": "(F)",
+      "q": "The following translations from German to English contain a particular error. That error w"
+    },
+    {
+      "task": "salient_translation_error_detection",
+      "i": 103,
+      "attr": "smallest",
+      "z": 3.2,
+      "verdict": "None",
+      "old": "(C)",
+      "new": null,
+      "target": "(C)",
+      "q": "The following translations from German to English contain a particular error. That error w"
+    }
+  ],
+  "production_diffs": 2,
+  "production_fired": 15
+}

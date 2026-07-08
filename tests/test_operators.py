@@ -72,6 +72,21 @@ def test_double_negation_composes_in_code():
     assert twice != once
 
 
+def test_store_round_trip(tmp_path, monkeypatch):
+    from turnstyle import operators
+
+    monkeypatch.setattr(operators, "_store_path",
+                        lambda fp: tmp_path / f"{fp}.negation.json")
+    det = _detector()
+    p = operators.save_detector(det, "fp123")
+    assert p.exists()
+    back = operators.load_detector("fp123")
+    assert back is not None and back.layer == det.layer
+    state = np.ones(8); state[0] += 4.0
+    assert back.score(state) == pytest.approx(det.score(state))
+    assert operators.load_detector("missing-fp") is None
+
+
 def test_from_results_json(tmp_path):
     payload = {"frames": {"size": {"ops": {"not": {"slope": 0.75,
                                                    "intercept": -0.07,
