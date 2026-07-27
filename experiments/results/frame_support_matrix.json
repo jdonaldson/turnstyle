@@ -1,0 +1,69 @@
+{
+  "z_gate": 2.0,
+  "models": [
+    "Smol360M",
+    "Qwen1.5B",
+    "Smol1.7B",
+    "Gemma3n",
+    "Phi4mini",
+    "Mistral7B"
+  ],
+  "frames": {
+    "age": {
+      "n_words": 12,
+      "n_models_supported": 5
+    },
+    "animacy": {
+      "n_words": 37,
+      "n_models_supported": 6
+    },
+    "certainty": {
+      "n_words": 22,
+      "n_models_supported": 6
+    },
+    "competence": {
+      "n_words": 19,
+      "n_models_supported": 6
+    },
+    "concreteness": {
+      "n_words": 80,
+      "n_models_supported": 6
+    },
+    "material": {
+      "n_words": 15,
+      "n_models_supported": 6
+    },
+    "number": {
+      "n_words": 16,
+      "n_models_supported": 6
+    },
+    "opinion": {
+      "n_words": 14,
+      "n_models_supported": 6
+    },
+    "potency": {
+      "n_words": 12,
+      "n_models_supported": 6
+    },
+    "shape": {
+      "n_words": 13,
+      "n_models_supported": 6
+    },
+    "size": {
+      "n_words": 12,
+      "n_models_supported": 6
+    },
+    "time": {
+      "n_words": 11,
+      "n_models_supported": 5
+    },
+    "warmth": {
+      "n_words": 15,
+      "n_models_supported": 6
+    },
+    "weight": {
+      "n_words": 12,
+      "n_models_supported": 4
+    }
+  }
+}
