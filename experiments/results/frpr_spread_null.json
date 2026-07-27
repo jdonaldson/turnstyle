@@ -1,0 +1,136 @@
+{
+  "n_perm": 40,
+  "null": [
+    {
+      "frame": "age",
+      "n": 12,
+      "real": 0.3389089674750769,
+      "null_mean": 0.6890796616583847,
+      "null_p95": 1.1984724847995065,
+      "z": -1.3852514462573007,
+      "verdict": "INDISTINGUISHABLE from null"
+    },
+    {
+      "frame": "animacy",
+      "n": 37,
+      "real": 0.14438896762664633,
+      "null_mean": 0.4705896725713651,
+      "null_p95": 0.6288869509412168,
+      "z": -3.1229374144504862,
+      "verdict": "INDISTINGUISHABLE from null"
+    },
+    {
+      "frame": "certainty",
+      "n": 22,
+      "real": 0.266974971597264,
+      "null_mean": 0.5115840144408764,
+      "null_p95": 0.7017303078857994,
+      "z": -2.008314231570954,
+      "verdict": "INDISTINGUISHABLE from null"
+    },
+    {
+      "frame": "competence",
+      "n": 19,
+      "real": 0.18987477571476163,
+      "null_mean": 0.5808083658730131,
+      "null_p95": 0.7902012276432724,
+      "z": -2.6710089268460715,
+      "verdict": "INDISTINGUISHABLE from null"
+    },
+    {
+      "frame": "concreteness",
+      "n": 80,
+      "real": 0.08304422794845445,
+      "null_mean": 0.3726770940467588,
+      "null_p95": 0.5091578490416193,
+      "z": -3.3518436337078175,
+      "verdict": "INDISTINGUISHABLE from null"
+    },
+    {
+      "frame": "material",
+      "n": 15,
+      "real": 0.2808147222395021,
+      "null_mean": 0.7147332143621741,
+      "null_p95": 1.0491906004519524,
+      "z": -1.8981050037129943,
+      "verdict": "INDISTINGUISHABLE from null"
+    },
+    {
+      "frame": "number",
+      "n": 16,
+      "real": 0.13872114589060724,
+      "null_mean": 0.41874111595548,
+      "null_p95": 0.8317785213618634,
+      "z": -1.4460698439217652,
+      "verdict": "INDISTINGUISHABLE from null"
+    },
+    {
+      "frame": "opinion",
+      "n": 14,
+      "real": 0.3655353010004494,
+      "null_mean": 0.5429417272239343,
+      "null_p95": 0.8206659313369882,
+      "z": -1.1303909846556692,
+      "verdict": "INDISTINGUISHABLE from null"
+    },
+    {
+      "frame": "potency",
+      "n": 12,
+      "real": 0.43777263031655766,
+      "null_mean": 0.6074880574702067,
+      "null_p95": 0.840661098375351,
+      "z": -0.8227863793207217,
+      "verdict": "INDISTINGUISHABLE from null"
+    },
+    {
+      "frame": "shape",
+      "n": 13,
+      "real": 0.49204793904542515,
+      "null_mean": 0.6568073747682199,
+      "null_p95": 1.0710810139865936,
+      "z": -0.8295785640471651,
+      "verdict": "INDISTINGUISHABLE from null"
+    },
+    {
+      "frame": "size",
+      "n": 12,
+      "real": 0.33909519715402003,
+      "null_mean": 0.6247967997354789,
+      "null_p95": 0.9477310207414044,
+      "z": -1.4506315397847271,
+      "verdict": "INDISTINGUISHABLE from null"
+    },
+    {
+      "frame": "time",
+      "n": 11,
+      "real": 0.6210733605571767,
+      "null_mean": 0.6588264710987882,
+      "null_p95": 1.0090215516443672,
+      "z": -0.15661059845939754,
+      "verdict": "INDISTINGUISHABLE from null"
+    },
+    {
+      "frame": "warmth",
+      "n": 15,
+      "real": 0.7737465411922725,
+      "null_mean": 0.5763544804822066,
+      "null_p95": 0.788832503940126,
+      "z": 1.3772657900202878,
+      "verdict": "INDISTINGUISHABLE from null"
+    },
+    {
+      "frame": "weight",
+      "n": 12,
+      "real": 0.7684429165677908,
+      "null_mean": 0.7826453243186927,
+      "null_p95": 1.089319401815929,
+      "z": -0.06868375963661863,
+      "verdict": "INDISTINGUISHABLE from null"
+    }
+  ],
+  "l0_check": {
+    "corr_l0": -0.5870135540532366,
+    "corr_min": -0.9935284333276467,
+    "partial_l0_given_min": 0.7737725825210736
+  }
+}
