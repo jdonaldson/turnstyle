@@ -112,6 +112,13 @@ class Frame:
     cv_r: float | None = None
     data: dict | None = None        # training word→value, kept for refit/orthogonality
     coord_scale: float = 1.0        # std of training-word projections (cross-frame compare)
+    # STANDING CONTROL: subwords each training word occupies in this model's
+    # tokenizer, in template context. A multi-subword word's meaning has to be
+    # ASSEMBLED across the stack, so its readout depth is partly a tokenizer fact
+    # rather than a fact about the concept — recorded on every frame so no depth or
+    # localization claim can be made without it. See `single_token_frac`.
+    frag: dict | None = None
+    single_token_only: bool = False  # was the fit restricted to 1-subword words?
 
     @property
     def name(self) -> str:
@@ -120,6 +127,34 @@ class Frame:
     @property
     def layer(self) -> int:
         return self.axis.layer
+
+    # -- tokenization control --
+    @property
+    def frag_mean(self) -> float | None:
+        """Mean subwords per training word. 1.0 = every word is a single token."""
+        return float(np.mean(list(self.frag.values()))) if self.frag else None
+
+    @property
+    def single_token_frac(self) -> float | None:
+        """Fraction of training words that are one token. Low values mean this
+        frame's depth profile is confounded with subword assembly."""
+        if not self.frag:
+            return None
+        return float(np.mean([n == 1 for n in self.frag.values()]))
+
+    @property
+    def single_token_words(self) -> list:
+        return [w for w, n in (self.frag or {}).items() if n == 1]
+
+    def depth_claim_is_safe(self, min_single: float = 0.9) -> bool:
+        """Whether a depth/localization claim from this frame is tokenization-clean.
+
+        A frame whose words mostly fragment will read as 'localizing' simply because
+        meaning must be composed across subwords — the confound that made per-model
+        localization non-replicable across lexicons.
+        """
+        f = self.single_token_frac
+        return f is not None and f >= min_single
 
     def project(self, vec) -> float:
         return self.axis.project(vec)
@@ -134,13 +169,56 @@ class Frame:
             ax[k] = [round(float(x), 6) for x in ax[k]]     # ample for unit dirs / z-stats)
         ax["center"] = round(float(ax["center"]), 6)
         return {"axis": ax, "template": self.template, "pool": self.pool,
-                "cv_r": self.cv_r, "data": self.data, "coord_scale": self.coord_scale}
+                "cv_r": self.cv_r, "data": self.data, "coord_scale": self.coord_scale,
+                "frag": self.frag, "single_token_only": self.single_token_only}
 
     @classmethod
     def from_dict(cls, d: dict) -> "Frame":
+        # frag absent => artifact predates the tokenization control; None (not {})
+        # so `single_token_frac` reports unknown rather than claiming 0.
         return cls(axis=BipolarAxis.from_dict(d["axis"]), template=d["template"],
                    pool=d.get("pool", "last"), cv_r=d.get("cv_r"), data=d.get("data"),
-                   coord_scale=d.get("coord_scale", 1.0))
+                   coord_scale=d.get("coord_scale", 1.0), frag=d.get("frag"),
+                   single_token_only=d.get("single_token_only", False))
+
+
+# ── tokenization control (no model, no torch) ─────────────────────────────────
+
+def fragmentation(tokenizer, words, template: str = _DEFAULT_TEMPLATE) -> dict:
+    """{word: subwords it occupies IN TEMPLATE CONTEXT}.
+
+    Measured through the same template + offset-mapping path `_collect` uses, not
+    by tokenizing the bare word: the readout pools over the in-context span, and
+    the two can differ.
+
+    Why this is first-class: a word costing 2-3 subwords has to have its meaning
+    ASSEMBLED across layers, so it reads as "localizing" for a reason that is about
+    the tokenizer, not the concept. Mistral fragments the frame lexicon at 1.47
+    subwords/word against ~1.11 elsewhere and is the most "localized" model —
+    plausibly for that reason alone.
+    """
+    out = {}
+    for w in words:
+        sent = template.format(w=w)
+        cs = sent.rfind(w)
+        ce = cs + len(w)
+        offs = tokenizer(sent, return_offsets_mapping=True)["offset_mapping"]
+        out[w] = len([1 for s, e in offs if e > cs and s < ce]) or 1
+    return out
+
+
+def shared_single_token_words(tokenizers, words, template: str = _DEFAULT_TEMPLATE) -> list:
+    """Words that are ONE subword under every tokenizer given.
+
+    The controlled basis for cross-model depth comparison: without it, models are
+    compared on lexicons their tokenizers chop differently, so "which model
+    localizes more" is confounded with "whose tokenizer fragments more".
+    """
+    keep = None
+    for tk in tokenizers:
+        ok = {w for w, n in fragmentation(tk, words, template).items() if n == 1}
+        keep = ok if keep is None else (keep & ok)
+    return sorted(keep or [])
 
 
 # ── model-touching collection (last-subword across all layers) ────────────────
@@ -192,13 +270,43 @@ class FrameLibrary:
     def recoverability(self) -> dict:
         return {n: f.cv_r for n, f in self.frames.items()}
 
+    def tokenization_report(self) -> dict:
+        """{frame: {frag_mean, single_token_frac, depth_safe}} — the standing control.
+
+        Consult before making any depth or cross-model localization claim. A frame
+        with a low `single_token_frac` will look like it "localizes" partly because
+        its words must be assembled from subwords, which is a tokenizer property and
+        not a property of the concept. `None` means the frame predates the control
+        and its fragmentation was never recorded — treat as unknown, not as clean.
+        """
+        return {n: {"frag_mean": f.frag_mean,
+                    "single_token_frac": f.single_token_frac,
+                    "depth_safe": f.depth_claim_is_safe() if f.frag else None,
+                    "single_token_only": f.single_token_only}
+                for n, f in self.frames.items()}
+
     # -- fitting --
     def fit_scalar(self, name, model, tokenizer, device, data: dict, *,
                    layer: int | None = None, template: str = _DEFAULT_TEMPLATE,
                    pool: str = "last", low_label: str | None = None,
-                   high_label: str | None = None) -> Frame:
+                   high_label: str | None = None,
+                   single_token_only: bool = False) -> Frame:
         """Fit a scalar frame from {word: value}. If layer is None, sweep all layers and
-        keep the one with the best held-out CV r. Returns the Frame (also registered)."""
+        keep the one with the best held-out CV r. Returns the Frame (also registered).
+
+        Fragmentation is ALWAYS recorded on the resulting Frame (see `Frame.frag`);
+        `single_token_only=True` additionally restricts the fit to one-subword words,
+        which is what makes a depth or cross-model localization claim clean.
+        """
+        frag_all = fragmentation(tokenizer, list(data), template)
+        if single_token_only:
+            kept = {w: v for w, v in data.items() if frag_all[w] == 1}
+            if len(kept) < 6:
+                raise ValueError(
+                    f"{name}: only {len(kept)}/{len(data)} words are single-token under "
+                    f"this tokenizer — too few to fit. Drop single_token_only, or use a "
+                    f"lexicon this model does not fragment.")
+            data = kept
         words = list(data)
         y = np.asarray([data[w] for w in words], float)
         acts = _collect(model, tokenizer, device, words, template, pool)
@@ -218,17 +326,27 @@ class FrameLibrary:
         projs = np.array([axis.project(X[i]) for i in range(len(X))])
         coord_scale = float(projs.std()) or 1.0
         frame = Frame(axis=axis, template=template, pool=pool, cv_r=r, data=data,
-                      coord_scale=coord_scale)
+                      coord_scale=coord_scale,
+                      frag={w: frag_all[w] for w in words},
+                      single_token_only=single_token_only)
         self.add(frame)
         return frame
 
-    def fit_canonical(self, model, tokenizer, device, which=None) -> "FrameLibrary":
-        """Fit the standard frame family (adjective-ordering rungs + number + time)."""
+    def fit_canonical(self, model, tokenizer, device, which=None, *,
+                      single_token_only: bool = False) -> "FrameLibrary":
+        """Fit the standard frame family (adjective-ordering rungs + number + time).
+
+        `single_token_only=True` restricts every frame to words this tokenizer does
+        not split — the controlled basis for comparing depth across models. Leave it
+        off for the deployed library (throwing away words costs recoverability); turn
+        it on when the output is a depth or localization claim.
+        """
         for name, spec in CANONICAL_FRAMES.items():
             if which is not None and name not in which:
                 continue
             self.fit_scalar(name, model, tokenizer, device, spec["data"],
-                            template=spec.get("template", _DEFAULT_TEMPLATE))
+                            template=spec.get("template", _DEFAULT_TEMPLATE),
+                            single_token_only=single_token_only)
         return self
 
     # -- projection --
@@ -345,7 +463,8 @@ class FrameLibrary:
                 "low_label": ax.low_label, "high_label": ax.high_label,
                 "layer": int(ax.layer), "center": float(ax.center),
                 "template": f.template, "pool": f.pool, "cv_r": f.cv_r, "data": f.data,
-                "coord_scale": f.coord_scale}
+                "coord_scale": f.coord_scale, "frag": f.frag,
+                "single_token_only": f.single_token_only}
         arrays["__meta__"] = np.frombuffer(json.dumps(meta).encode(), dtype=np.uint8)
         np.savez_compressed(p, **arrays)
         return p if p.suffix == ".npz" else Path(str(p) + ".npz")
@@ -362,7 +481,9 @@ class FrameLibrary:
                              np.asarray(z[f"{name}|direction"], float), float(m["center"]))
             frames[name] = Frame(ax, template=m["template"], pool=m["pool"],
                                  cv_r=m["cv_r"], data=m["data"],
-                                 coord_scale=m.get("coord_scale", 1.0))
+                                 coord_scale=m.get("coord_scale", 1.0),
+                                 frag=m.get("frag"),          # absent in pre-control npz
+                                 single_token_only=m.get("single_token_only", False))
         return cls(frames=frames, fingerprint=meta.get("fingerprint", ""),
                    model_id=meta.get("model_id", ""))
 
