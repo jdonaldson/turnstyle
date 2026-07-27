@@ -72,6 +72,10 @@ def main():
     # bf16 (not fp16) is the safe downgrade: same exponent range, so none of the
     # deep-layer overflow NaNs that bit the steering work.
     ap.add_argument("--dtype", default="float32", choices=("float32", "bfloat16"))
+    # Override the output path when re-running a model under a DIFFERENT condition, so
+    # the new file does not clobber the canonical one and is not picked up by
+    # depth_crossmodel's `depth_stability_*.json` glob as a separate model.
+    ap.add_argument("--out", default="")
     args = ap.parse_args()
 
     from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -116,7 +120,7 @@ def main():
     print(f"  FLAT (peak is noise): {len(flat)}/{len(out)} — {sorted(flat)}")
 
     tag = args.model.split("/")[-1]
-    p = RESULTS / f"depth_stability_{tag}.json"
+    p = Path(args.out) if args.out else RESULTS / f"depth_stability_{tag}.json"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps({"model": args.model, "dtype": args.dtype,
                              "n_layers": len(out[next(iter(out))]["curve"]),
