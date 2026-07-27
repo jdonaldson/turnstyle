@@ -1,0 +1,55 @@
+{
+  "lexicon": {
+    "opinion": 0.9413157156475285,
+    "size": null,
+    "age": null,
+    "shape": null,
+    "material": null,
+    "number": null,
+    "time": null,
+    "concreteness": null,
+    "animacy": null,
+    "warmth": 0.9606380575824967,
+    "competence": 0.9376545235224603,
+    "potency": 0.9108221457479367,
+    "weight": null,
+    "certainty": null
+  },
+  "direction": {
+    "size": 0.027836024234648878,
+    "age": 0.022067218017475312,
+    "shape": 0.017950003644390866,
+    "material": 0.01224318419745761,
+    "number": 0.014526934948864995,
+    "time": 0.016822250996314937,
+    "concreteness": 0.032166571607845834,
+    "animacy": 0.020027193109055767,
+    "warmth": 0.1641798505382498,
+    "competence": 0.1509438095102265,
+    "potency": 0.057695491486924516,
+    "weight": 0.04707023660001868,
+    "certainty": 0.0840411002852943
+  },
+  "gates": {
+    "label": 0.5,
+    "cos": 0.3
+  },
+  "confounded_both_levels": [],
+  "lexicon_only": [
+    "warmth",
+    "competence",
+    "potency"
+  ],
+  "unknown": [
+    "size",
+    "age",
+    "shape",
+    "material",
+    "number",
+    "time",
+    "concreteness",
+    "animacy",
+    "weight",
+    "certainty"
+  ]
+}
