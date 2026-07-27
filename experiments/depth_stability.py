@@ -91,6 +91,11 @@ def main():
     # the new file does not clobber the canonical one and is not picked up by
     # depth_crossmodel's `depth_stability_*.json` glob as a separate model.
     ap.add_argument("--out", default="")
+    ap.add_argument("--extra-lexicon", default="",
+                    help="path to a built lexicon JSON ({frame, template, data}) to "
+                         "test alongside/instead of the canonical family")
+    ap.add_argument("--only-extra", action="store_true",
+                    help="test ONLY the extra lexicon")
     ap.add_argument("--single-token", default="off", choices=("off", "self", "shared"),
                     help="tokenization control: 'self' = words this model does not "
                          "split; 'shared' = words NO panel model splits (the "
@@ -109,6 +114,12 @@ def main():
     if args.frames:
         want = [f.strip() for f in args.frames.split(",")]
         specs = {k: v for k, v in specs.items() if k in want}
+    if args.extra_lexicon:
+        d = json.loads(Path(args.extra_lexicon).read_text())
+        extra = {d["frame"]: {"data": d["data"], "template": d["template"]}}
+        specs = extra if args.only_extra else {**specs, **extra}
+        print(f"  + extra lexicon '{d['frame']}' ({len(d['data'])} words) "
+              f"gates={d.get('gates')}", flush=True)
 
     ctrl_toks = None
     if args.single_token == "shared":
