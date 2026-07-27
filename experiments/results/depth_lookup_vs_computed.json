@@ -1,0 +1,115 @@
+{
+  "frame_level": [
+    {
+      "frame": "number",
+      "l0_over_peak": 0.9323642998493948,
+      "spread": 0.09806032225842165
+    },
+    {
+      "frame": "size",
+      "l0_over_peak": 0.8810521247803986,
+      "spread": 0.1698065439163615
+    },
+    {
+      "frame": "material",
+      "l0_over_peak": 0.8721936339857544,
+      "spread": 0.20693847730670112
+    },
+    {
+      "frame": "animacy",
+      "l0_over_peak": 0.8481201021254049,
+      "spread": 0.12394361595444146
+    },
+    {
+      "frame": "opinion",
+      "l0_over_peak": 0.8182378391477675,
+      "spread": 0.20277218274863554
+    },
+    {
+      "frame": "concreteness",
+      "l0_over_peak": 0.7504409410776911,
+      "spread": 0.10175677104812586
+    },
+    {
+      "frame": "shape",
+      "l0_over_peak": 0.7433647296037704,
+      "spread": 0.3130423979398878
+    },
+    {
+      "frame": "age",
+      "l0_over_peak": 0.7424020389319812,
+      "spread": 0.27560242388032824
+    },
+    {
+      "frame": "certainty",
+      "l0_over_peak": 0.6057501120383997,
+      "spread": 0.3553429839338495
+    },
+    {
+      "frame": "warmth",
+      "l0_over_peak": 0.5045598679661428,
+      "spread": 0.5520520950161609
+    },
+    {
+      "frame": "potency",
+      "l0_over_peak": 0.45412151570143683,
+      "spread": 0.47807458313516155
+    },
+    {
+      "frame": "competence",
+      "l0_over_peak": 0.45341798274262485,
+      "spread": 0.4583581493349511
+    },
+    {
+      "frame": "time",
+      "l0_over_peak": 0.4272838594777235,
+      "spread": 0.44809259624027015
+    },
+    {
+      "frame": "weight",
+      "l0_over_peak": 0.21528319096584794,
+      "spread": 0.7123304341842331
+    }
+  ],
+  "corr_frame": -0.9454421716646414,
+  "model_level": [
+    {
+      "model": "Mistral-7B-Instruct-v0.3",
+      "frame_loc": 0.469,
+      "l0_over_peak": 0.28380360656668263,
+      "tok_per_word": 1.47
+    },
+    {
+      "model": "gemma-3n-E2B",
+      "frame_loc": 0.373,
+      "l0_over_peak": 0.84629040049783,
+      "tok_per_word": 1.04
+    },
+    {
+      "model": "Qwen2.5-1.5B-Instruct",
+      "frame_loc": 0.339,
+      "l0_over_peak": 0.7422527997335882,
+      "tok_per_word": 1.11
+    },
+    {
+      "model": "SmolLM2-360M-Instruct",
+      "frame_loc": 0.275,
+      "l0_over_peak": 0.6838821244723478,
+      "tok_per_word": 1.12
+    },
+    {
+      "model": "SmolLM2-1.7B-Instruct",
+      "frame_loc": 0.249,
+      "l0_over_peak": 0.6894599069809066,
+      "tok_per_word": 1.12
+    },
+    {
+      "model": "Phi-4-mini-instruct",
+      "frame_loc": 0.221,
+      "l0_over_peak": 0.7114146963036087,
+      "tok_per_word": 1.11
+    }
+  ],
+  "corr_model": -0.5948217943068773,
+  "corr_model_ex_mistral": 0.8251828573518558
+}
