@@ -1,0 +1,1455 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "layer": 16,
+  "n": 200,
+  "auc": {
+    "margin (cheap baseline)": 0.5436785099706448,
+    "certainty pre-answer": 0.5599757060431217,
+    "certainty post-answer": 0.6530013159226642
+  },
+  "p": {
+    "margin (cheap baseline)": 0.3125,
+    "certainty pre-answer": 0.1325,
+    "certainty post-answer": 0.0025
+  },
+  "curve": [
+    {
+      "coverage": 1.0,
+      "random": 0.44500000000000006,
+      "margin": 0.445,
+      "certainty": 0.445
+    },
+    {
+      "coverage": 0.9,
+      "random": 0.4460555555555557,
+      "margin": 0.4388888888888889,
+      "certainty": 0.45555555555555555
+    },
+    {
+      "coverage": 0.8,
+      "random": 0.4447812499999999,
+      "margin": 0.46875,
+      "certainty": 0.475
+    },
+    {
+      "coverage": 0.7,
+      "random": 0.44492857142857145,
+      "margin": 0.4785714285714286,
+      "certainty": 0.5142857142857142
+    },
+    {
+      "coverage": 0.6,
+      "random": 0.44329166666666664,
+      "margin": 0.4666666666666667,
+      "certainty": 0.55
+    },
+    {
+      "coverage": 0.5,
+      "random": 0.45045,
+      "margin": 0.45,
+      "certainty": 0.57
+    }
+  ],
+  "rows": [
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.07596880197525024,
+      "cert_pre": 0.09670675388730429,
+      "cert_post": 0.11079609768355764
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.0510406494140625,
+      "cert_pre": 0.14342415094432523,
+      "cert_post": 0.1970104495600588
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.1214292049407959,
+      "cert_pre": -0.021354204802844126,
+      "cert_post": 0.18638316709981623
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.125727117061615,
+      "cert_pre": 0.08189518601461736,
+      "cert_post": 0.13515111630998403
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.20186853408813477,
+      "cert_pre": 0.11952072283536937,
+      "cert_post": 0.09429341934321582
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.21881705522537231,
+      "cert_pre": -0.03320048794776342,
+      "cert_post": 0.0549135685621033
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.2284027338027954,
+      "cert_pre": 0.004716536858163891,
+      "cert_post": 0.0703437029125516
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.05444622039794922,
+      "cert_pre": 0.004871605862401597,
+      "cert_post": 0.04303281388546895
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.18352556228637695,
+      "cert_pre": 0.138705770982644,
+      "cert_post": 0.1680312309562956
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.005276799201965332,
+      "cert_pre": 0.07242269387789789,
+      "cert_post": 0.2565929002190174
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.12742376327514648,
+      "cert_pre": 0.09099968693936089,
+      "cert_post": 0.2021609810843265
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.011277198791503906,
+      "cert_pre": 0.06732414585518184,
+      "cert_post": 0.10838963092425065
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.28391075134277344,
+      "cert_pre": 0.11025907356745311,
+      "cert_post": 0.12494119698279314
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.06469130516052246,
+      "cert_pre": 0.08840634349333898,
+      "cert_post": 0.1872591755398246
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.05980634689331055,
+      "cert_pre": 0.09181650058972282,
+      "cert_post": 0.14709503588541317
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.03080350160598755,
+      "cert_pre": 0.09805213594923029,
+      "cert_post": 0.15132627271846769
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.02925264835357666,
+      "cert_pre": -0.10553977090124679,
+      "cert_post": 0.06407029979878652
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.048886775970458984,
+      "cert_pre": 0.08291341043477304,
+      "cert_post": 0.1151445120936504
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.080538809299469,
+      "cert_pre": 0.10371349545541494,
+      "cert_post": 0.21562806403513876
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.16551673412322998,
+      "cert_pre": -0.09220698186185931,
+      "cert_post": 0.04123575203802672
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.46709930896759033,
+      "cert_pre": -0.0027336953916923135,
+      "cert_post": 0.09499500650911986
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.06397968530654907,
+      "cert_pre": 0.009440913606565493,
+      "cert_post": 0.07049889439615943
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.03207588195800781,
+      "cert_pre": -0.09682812794842291,
+      "cert_post": 0.09567992043110503
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.013842374086380005,
+      "cert_pre": 0.08350395233561668,
+      "cert_post": 0.0951059277821906
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.06752246618270874,
+      "cert_pre": 0.01755245258237063,
+      "cert_post": 0.06436058994935162
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.10455316305160522,
+      "cert_pre": 0.05185820137701634,
+      "cert_post": 0.036241591254847626
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.012872040271759033,
+      "cert_pre": 0.16645746865959843,
+      "cert_post": 0.1552514490510559
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.012140214443206787,
+      "cert_pre": -0.03810916183222983,
+      "cert_post": 0.11795806564204937
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.2074441909790039,
+      "cert_pre": 0.0813450217433779,
+      "cert_post": 0.1339200836078486
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.10813021659851074,
+      "cert_pre": 0.07922287700800332,
+      "cert_post": 0.11440965909056734
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.08161836862564087,
+      "cert_pre": 0.12198282406983758,
+      "cert_post": 0.12495973193448343
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.22450649738311768,
+      "cert_pre": -0.03175057163498392,
+      "cert_post": 0.1932900243959423
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.19800055027008057,
+      "cert_pre": 0.20418027963055788,
+      "cert_post": 0.1570586516402862
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.10691326856613159,
+      "cert_pre": 0.18009194723518193,
+      "cert_post": 0.12100195008665875
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.041775524616241455,
+      "cert_pre": 0.020220901947000568,
+      "cert_post": 0.0901171085471226
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.07556498050689697,
+      "cert_pre": -0.02616419824357986,
+      "cert_post": 0.15365918369971387
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.4382753372192383,
+      "cert_pre": 0.08766265234426793,
+      "cert_post": 0.21028283121290522
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.1158524751663208,
+      "cert_pre": 0.02391532712754093,
+      "cert_post": 0.12089987557012576
+    },
+    {
+      "task": "snarks",
+      "correct": 0,
+      "margin": 0.055477142333984375,
+      "cert_pre": 0.01699116956576725,
+      "cert_post": 0.06840756988019943
+    },
+    {
+      "task": "snarks",
+      "correct": 1,
+      "margin": 0.04970753192901611,
+      "cert_pre": -0.06569558465347045,
+      "cert_post": 0.21552797730730622
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.38472235202789307,
+      "cert_pre": -0.30850908835314067,
+      "cert_post": 0.11259319356547451
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.4421316385269165,
+      "cert_pre": -0.29674935247042616,
+      "cert_post": 0.07180935988125539
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.2889828681945801,
+      "cert_pre": -0.2806594240745604,
+      "cert_post": 0.09321611372036342
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.41500425338745117,
+      "cert_pre": -0.2766777674962075,
+      "cert_post": 0.08019457028641472
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.36694836616516113,
+      "cert_pre": -0.3315780668735003,
+      "cert_post": 0.18673454130009298
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.6720173358917236,
+      "cert_pre": -0.30682207319408095,
+      "cert_post": 0.12822406132507932
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.34152042865753174,
+      "cert_pre": -0.31858220231151796,
+      "cert_post": -0.12456546363846065
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.3341522216796875,
+      "cert_pre": -0.3711505249485008,
+      "cert_post": 0.015018020548794201
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.43520474433898926,
+      "cert_pre": -0.28918631250358734,
+      "cert_post": 0.07929231272996563
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.29414844512939453,
+      "cert_pre": -0.3472921532399227,
+      "cert_post": 0.011604835791656436
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.692582368850708,
+      "cert_pre": -0.3239896493350029,
+      "cert_post": 0.10996667519955265
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.3978685140609741,
+      "cert_pre": -0.33315865653611326,
+      "cert_post": 0.17769881265523985
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.11832714080810547,
+      "cert_pre": -0.3102543795496399,
+      "cert_post": -0.03908777917701111
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.15216588973999023,
+      "cert_pre": -0.31915734046036776,
+      "cert_post": 0.14284335944205176
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.04358375072479248,
+      "cert_pre": -0.28741399152861047,
+      "cert_post": -0.0035635785194741898
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.639423131942749,
+      "cert_pre": -0.31848572038491835,
+      "cert_post": 0.11667492737419927
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.37004804611206055,
+      "cert_pre": -0.2768211374204956,
+      "cert_post": 0.1160828670321151
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.04317188262939453,
+      "cert_pre": -0.34710208469137593,
+      "cert_post": 0.08677125301030449
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.11027348041534424,
+      "cert_pre": -0.3048216957955101,
+      "cert_post": 0.0621466583757135
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.29509830474853516,
+      "cert_pre": -0.34817034079573633,
+      "cert_post": -0.012302318666767002
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.5756826400756836,
+      "cert_pre": -0.3257532027887051,
+      "cert_post": 0.20515427273757503
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.4397568702697754,
+      "cert_pre": -0.2968619750663536,
+      "cert_post": 0.10162569192566394
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.8062306642532349,
+      "cert_pre": -0.3023709189307877,
+      "cert_post": 0.13652393973334423
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.7988121509552002,
+      "cert_pre": -0.299218460856424,
+      "cert_post": 0.20966860587178593
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.43655574321746826,
+      "cert_pre": -0.32999480492351446,
+      "cert_post": 0.10958977775470062
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.2184755802154541,
+      "cert_pre": -0.3193640563787223,
+      "cert_post": 0.10795501514722006
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.1138458251953125,
+      "cert_pre": -0.2973658314436245,
+      "cert_post": 0.06846705389026193
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.2357635498046875,
+      "cert_pre": -0.31400048557834037,
+      "cert_post": 0.1095376267004105
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.3120567798614502,
+      "cert_pre": -0.3009006365003021,
+      "cert_post": 0.100450603475422
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.04658079147338867,
+      "cert_pre": -0.34287368834749155,
+      "cert_post": 0.08414217579555144
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.38405895233154297,
+      "cert_pre": -0.3099678554848552,
+      "cert_post": 0.09738762998137337
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.6542961597442627,
+      "cert_pre": -0.31465465877544546,
+      "cert_post": 0.1300475910042119
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.020939111709594727,
+      "cert_pre": -0.3167896586380746,
+      "cert_post": 0.13903038591143702
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.38724052906036377,
+      "cert_pre": -0.2795802820143339,
+      "cert_post": 0.0663861243137995
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 0,
+      "margin": 0.026962757110595703,
+      "cert_pre": -0.3605984648043373,
+      "cert_post": 0.03902892343986639
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.35429179668426514,
+      "cert_pre": -0.33793599365128313,
+      "cert_post": 0.1012578474349888
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.14784228801727295,
+      "cert_pre": -0.31830542421149177,
+      "cert_post": 0.169645700081824
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.275620698928833,
+      "cert_pre": -0.28263077827123834,
+      "cert_post": 0.1069807436561468
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.0159912109375,
+      "cert_pre": -0.31813011626308557,
+      "cert_post": 0.1341189317684557
+    },
+    {
+      "task": "disambiguation_qa",
+      "correct": 1,
+      "margin": 0.13939714431762695,
+      "cert_pre": -0.322458289193362,
+      "cert_post": 0.14351307649891606
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 0.6872472763061523,
+      "cert_pre": 0.0858577209226171,
+      "cert_post": 0.08200860994223357
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 0.6585965156555176,
+      "cert_pre": 0.1427963878546052,
+      "cert_post": 0.18480418188739206
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 1.5783405303955078,
+      "cert_pre": 0.11264704592873878,
+      "cert_post": 0.11568728173750181
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 0.9761695861816406,
+      "cert_pre": 0.08469683240664198,
+      "cert_post": 0.16814426599548507
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 0.6495254039764404,
+      "cert_pre": 0.1451978052516583,
+      "cert_post": -0.025360126418422196
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 0.41791772842407227,
+      "cert_pre": 0.023347821347679897,
+      "cert_post": 0.049744080750272035
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 0.9130873680114746,
+      "cert_pre": 0.02916312750243183,
+      "cert_post": 0.03605159548780364
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 1,
+      "margin": 0.6399387121200562,
+      "cert_pre": 0.21274848747655406,
+      "cert_post": 0.11874055853984501
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 1.3427071571350098,
+      "cert_pre": 0.09466598248816725,
+      "cert_post": 0.2102174532819791
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 1.0783140659332275,
+      "cert_pre": 0.210628593439076,
+      "cert_post": 0.18611226749351376
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 0.2451380491256714,
+      "cert_pre": 0.165630432616006,
+      "cert_post": 0.10095594745417742
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 0.05838298797607422,
+      "cert_pre": -0.014499808665987787,
+      "cert_post": 0.16309237214531777
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 3.3103325366973877,
+      "cert_pre": 0.19191764629710584,
+      "cert_post": 0.01626581628327335
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 1,
+      "margin": 0.35121917724609375,
+      "cert_pre": 0.1394338569904946,
+      "cert_post": 0.01492578522248881
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 1.6805522441864014,
+      "cert_pre": 0.1516182793718299,
+      "cert_post": 0.10005976859535227
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 1,
+      "margin": 1.1492676734924316,
+      "cert_pre": 0.07892117339249305,
+      "cert_post": 0.17959237339157177
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 0.5135377645492554,
+      "cert_pre": 0.3255235812644824,
+      "cert_post": 0.16380499607282661
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 0.043904781341552734,
+      "cert_pre": 0.051626828774240324,
+      "cert_post": 0.18120229688539538
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 0.9231125116348267,
+      "cert_pre": -0.054968764326053215,
+      "cert_post": 0.08342111310382135
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 1,
+      "margin": 4.637310743331909,
+      "cert_pre": 0.050439188286461066,
+      "cert_post": 0.03404368360774001
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 1.1665339469909668,
+      "cert_pre": 0.12305308757396503,
+      "cert_post": 0.042880698810803156
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 1.2523919343948364,
+      "cert_pre": -0.037030285637160244,
+      "cert_post": 0.1952999604716769
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 3.4022027254104614,
+      "cert_pre": -0.0010594541970324453,
+      "cert_post": -0.0337316735483658
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 0.5960314273834229,
+      "cert_pre": 0.016083300129421992,
+      "cert_post": 0.1874420634153927
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 1,
+      "margin": 2.576315402984619,
+      "cert_pre": 0.07212202972805343,
+      "cert_post": 0.09730920872821636
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 1.161388874053955,
+      "cert_pre": 0.15491397286273742,
+      "cert_post": 0.07367280946011653
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 2.5044002532958984,
+      "cert_pre": 0.03629941676574026,
+      "cert_post": 0.02918660367546355
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 1,
+      "margin": 0.6011132001876831,
+      "cert_pre": 0.22288034270971419,
+      "cert_post": 0.131619498291396
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 1.9977748394012451,
+      "cert_pre": 0.14117810358719537,
+      "cert_post": 0.1427805947897067
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 1,
+      "margin": 0.6973040103912354,
+      "cert_pre": 0.20426333891364196,
+      "cert_post": 0.043455726837770374
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 1.8258733749389648,
+      "cert_pre": -0.041046628046536124,
+      "cert_post": 0.14980580271661773
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 3.544416666030884,
+      "cert_pre": 0.04548032957712063,
+      "cert_post": 0.05303261053857936
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 1,
+      "margin": 0.3829991817474365,
+      "cert_pre": 0.2943767539210857,
+      "cert_post": 0.1767245687024487
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 1,
+      "margin": 1.2702703475952148,
+      "cert_pre": 0.1417869909329666,
+      "cert_post": 0.07024258516213787
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 1,
+      "margin": 1.5856177806854248,
+      "cert_pre": 0.17662984180086336,
+      "cert_post": 0.09938008291414091
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 1,
+      "margin": 1.002638816833496,
+      "cert_pre": 0.14656992088404272,
+      "cert_post": 0.11922361335073174
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 1.1223788261413574,
+      "cert_pre": 0.15203180840810052,
+      "cert_post": -0.042849096782823476
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 0.7005448341369629,
+      "cert_pre": 0.15058656050122493,
+      "cert_post": 0.15890825040677878
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 1,
+      "margin": 0.6896483898162842,
+      "cert_pre": 0.13235963859187166,
+      "cert_post": 0.11335690925233222
+    },
+    {
+      "task": "movie_recommendation",
+      "correct": 0,
+      "margin": 0.44889163970947266,
+      "cert_pre": 0.08580813408535197,
+      "cert_post": 0.05186203673491807
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.04187130928039551,
+      "cert_pre": 0.05521094295644114,
+      "cert_post": 0.0709084644328215
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.02060413360595703,
+      "cert_pre": 0.10012011215355292,
+      "cert_post": 0.005249536403145992
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.0695960521697998,
+      "cert_pre": 0.16161596292116934,
+      "cert_post": 0.08792212433085243
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.0679863691329956,
+      "cert_pre": 0.045060965331082656,
+      "cert_post": 0.08529341330562333
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.1563372015953064,
+      "cert_pre": 0.03325028342604667,
+      "cert_post": 0.10638702892316271
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.02257484197616577,
+      "cert_pre": 0.01912162557204312,
+      "cert_post": -0.0019622722733344537
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.011867046356201172,
+      "cert_pre": -0.016562586659994466,
+      "cert_post": 0.04624116073832358
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.01765495538711548,
+      "cert_pre": 0.0015004521804398467,
+      "cert_post": 0.06985344442584349
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.03593099117279053,
+      "cert_pre": -0.0014602407991823952,
+      "cert_post": 0.06001002991572935
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.09329980611801147,
+      "cert_pre": -0.0323861281190403,
+      "cert_post": 0.03952457417418515
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.0001195669174194336,
+      "cert_pre": 0.0794379833260215,
+      "cert_post": 0.11514119829525642
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.025755643844604492,
+      "cert_pre": 0.12986066850599015,
+      "cert_post": 0.09782603416695702
+    },
+    {
+      "task": "date_understanding",
+      "correct": 1,
+      "margin": 0.04976451396942139,
+      "cert_pre": 0.03829437083381736,
+      "cert_post": 0.0588250167732198
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.019278407096862793,
+      "cert_pre": 0.09633314676656157,
+      "cert_post": 0.07942415203557186
+    },
+    {
+      "task": "date_understanding",
+      "correct": 1,
+      "margin": 0.08656394481658936,
+      "cert_pre": 0.0631192880681655,
+      "cert_post": 0.025571535818218364
+    },
+    {
+      "task": "date_understanding",
+      "correct": 1,
+      "margin": 0.05456745624542236,
+      "cert_pre": 0.07793730057507915,
+      "cert_post": 0.03984938465643237
+    },
+    {
+      "task": "date_understanding",
+      "correct": 1,
+      "margin": 0.01316070556640625,
+      "cert_pre": 0.1653548634997514,
+      "cert_post": 0.07502203982497978
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.015361189842224121,
+      "cert_pre": 0.024232096608438412,
+      "cert_post": 0.07896668545079844
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.04674220085144043,
+      "cert_pre": 0.05442171574556024,
+      "cert_post": 0.06775334065126988
+    },
+    {
+      "task": "date_understanding",
+      "correct": 1,
+      "margin": 0.14502549171447754,
+      "cert_pre": 0.00939925501221026,
+      "cert_post": 0.07370249637075428
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.1577455997467041,
+      "cert_pre": 0.10848974161276158,
+      "cert_post": 0.10221628292928725
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.006449699401855469,
+      "cert_pre": 0.058166103664362284,
+      "cert_post": 0.12958432434415998
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.03377187252044678,
+      "cert_pre": 0.031193123641510903,
+      "cert_post": 0.028037361923226447
+    },
+    {
+      "task": "date_understanding",
+      "correct": 1,
+      "margin": 0.0037668943405151367,
+      "cert_pre": 0.08021057697042466,
+      "cert_post": 0.17448077571680964
+    },
+    {
+      "task": "date_understanding",
+      "correct": 1,
+      "margin": 0.11623090505599976,
+      "cert_pre": 0.06682598542427651,
+      "cert_post": 0.10322612884058932
+    },
+    {
+      "task": "date_understanding",
+      "correct": 1,
+      "margin": 0.05970358848571777,
+      "cert_pre": 0.10974013961583691,
+      "cert_post": 0.16426425623850366
+    },
+    {
+      "task": "date_understanding",
+      "correct": 1,
+      "margin": 0.09441953897476196,
+      "cert_pre": 0.12423665870243719,
+      "cert_post": 0.1385684479532451
+    },
+    {
+      "task": "date_understanding",
+      "correct": 1,
+      "margin": 0.032953858375549316,
+      "cert_pre": 0.06603762562140547,
+      "cert_post": 0.15442694436078191
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.03652966022491455,
+      "cert_pre": 0.037787282814722635,
+      "cert_post": 0.1102749103397192
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.03922700881958008,
+      "cert_pre": 0.092921964102248,
+      "cert_post": 0.14268715518325556
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.0738760232925415,
+      "cert_pre": 0.0731447229043461,
+      "cert_post": 0.06536006855462859
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.09594404697418213,
+      "cert_pre": 0.09601079968225812,
+      "cert_post": 0.06698005640816916
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.08461737632751465,
+      "cert_pre": 0.1499294876477687,
+      "cert_post": 0.061114184500083775
+    },
+    {
+      "task": "date_understanding",
+      "correct": 1,
+      "margin": 0.0027865171432495117,
+      "cert_pre": 0.14769725048190294,
+      "cert_post": 0.10320505228663154
+    },
+    {
+      "task": "date_understanding",
+      "correct": 1,
+      "margin": 0.009050369262695312,
+      "cert_pre": 0.03405186233295205,
+      "cert_post": 0.048575274564304084
+    },
+    {
+      "task": "date_understanding",
+      "correct": 1,
+      "margin": 0.02807033061981201,
+      "cert_pre": 0.2018046895631804,
+      "cert_post": 0.17247345175940007
+    },
+    {
+      "task": "date_understanding",
+      "correct": 1,
+      "margin": 0.0017952919006347656,
+      "cert_pre": 0.07587101394678293,
+      "cert_post": 0.09976663714531826
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.08399784564971924,
+      "cert_pre": 0.04975934504172837,
+      "cert_post": 0.05115085405048915
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.03568899631500244,
+      "cert_pre": 0.027002302483775987,
+      "cert_post": 0.05793686058212558
+    },
+    {
+      "task": "date_understanding",
+      "correct": 0,
+      "margin": 0.016782045364379883,
+      "cert_pre": 0.02322308014519303,
+      "cert_post": 0.07089505687681272
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 0,
+      "margin": 0.4055042266845703,
+      "cert_pre": 0.10798668651299478,
+      "cert_post": 0.27161920725688243
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 0.09881973266601562,
+      "cert_pre": 0.15124007326913003,
+      "cert_post": 0.30849899106758477
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 0.42825841903686523,
+      "cert_pre": 0.13157966773867213,
+      "cert_post": 0.1918526531524295
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 0.1181039810180664,
+      "cert_pre": 0.09332552021779654,
+      "cert_post": 0.23997359754694558
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 1.555314064025879,
+      "cert_pre": 0.06608092584770092,
+      "cert_post": 0.1843672985569964
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 0.15893268585205078,
+      "cert_pre": 0.08840870742895707,
+      "cert_post": 0.20679046503229678
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 0,
+      "margin": 0.49015378952026367,
+      "cert_pre": 0.13179062690225776,
+      "cert_post": 0.21956576526447238
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 0.5792737007141113,
+      "cert_pre": 0.09645433088993624,
+      "cert_post": 0.21517785076388415
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 2.1147875785827637,
+      "cert_pre": 0.04249876173116341,
+      "cert_post": 0.16700229777291864
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 0,
+      "margin": 0.18434619903564453,
+      "cert_pre": 0.136674020486514,
+      "cert_post": 0.2030047610156415
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 0.508354663848877,
+      "cert_pre": 0.10152599249516987,
+      "cert_post": 0.19150934453462284
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 1.7417962551116943,
+      "cert_pre": 0.1323550161586814,
+      "cert_post": 0.2184816978339053
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 0,
+      "margin": 0.9930617809295654,
+      "cert_pre": 0.06008706656132595,
+      "cert_post": 0.16428540804409084
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 0,
+      "margin": 0.3195333480834961,
+      "cert_pre": 0.13474614521597725,
+      "cert_post": 0.18964808104782413
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 1.6912884712219238,
+      "cert_pre": 0.0678261932463218,
+      "cert_post": 0.18156601572441733
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 0,
+      "margin": 0.7009201049804688,
+      "cert_pre": 0.10668825520903646,
+      "cert_post": 0.21618100999204334
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 1.0479135513305664,
+      "cert_pre": 0.08361188224338477,
+      "cert_post": 0.2266609232775246
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 0.7761507034301758,
+      "cert_pre": 0.11720487837503939,
+      "cert_post": 0.23322949972637447
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 0.7235398292541504,
+      "cert_pre": 0.057889516980866564,
+      "cert_post": 0.20439678366455524
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 0.873666524887085,
+      "cert_pre": 0.13952412901768935,
+      "cert_post": 0.172972356101715
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 1.9583165645599365,
+      "cert_pre": 0.09798621661151796,
+      "cert_post": 0.20744056294225635
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 1.300647497177124,
+      "cert_pre": 0.1274324857284098,
+      "cert_post": 0.24576615033511584
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 0.20505523681640625,
+      "cert_pre": 0.1179680781073635,
+      "cert_post": 0.18461457907615816
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 2.937573194503784,
+      "cert_pre": 0.1414206269301353,
+      "cert_post": 0.25126536821301093
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 1.2341804504394531,
+      "cert_pre": 0.13005999943552624,
+      "cert_post": 0.2654081218150805
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 0,
+      "margin": 0.5252394676208496,
+      "cert_pre": 0.09739253980806109,
+      "cert_post": 0.1890669076364465
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 1.0123963356018066,
+      "cert_pre": 0.07815223494991884,
+      "cert_post": 0.24831240236218718
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 1.4413645267486572,
+      "cert_pre": 0.15868379003031308,
+      "cert_post": 0.24912509609944988
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 0.9583306312561035,
+      "cert_pre": 0.15175964525307456,
+      "cert_post": 0.1906717117025162
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 0.6162922382354736,
+      "cert_pre": 0.09679799225225395,
+      "cert_post": 0.26209134464850553
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 0,
+      "margin": 0.19353675842285156,
+      "cert_pre": 0.0824504871271643,
+      "cert_post": 0.1694485933833468
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 0,
+      "margin": 0.7285234928131104,
+      "cert_pre": 0.05524612623186848,
+      "cert_post": 0.18701645254117152
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 0,
+      "margin": 0.5064401626586914,
+      "cert_pre": 0.07424100294477065,
+      "cert_post": 0.21750748574622092
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 0.5502026081085205,
+      "cert_pre": 0.03957280216701068,
+      "cert_post": 0.21734528750259174
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 0,
+      "margin": 0.40568065643310547,
+      "cert_pre": 0.09435610271296345,
+      "cert_post": 0.12522089857297541
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 0,
+      "margin": 0.2146015167236328,
+      "cert_pre": 0.1046579093961157,
+      "cert_post": 0.212759362349936
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 0,
+      "margin": 0.488602876663208,
+      "cert_pre": 0.07890147984200155,
+      "cert_post": 0.1583863106488136
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 1.3728744983673096,
+      "cert_pre": 0.07996708317666935,
+      "cert_post": 0.2232560821153568
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 1,
+      "margin": 0.7065801620483398,
+      "cert_pre": 0.16792837394366733,
+      "cert_post": 0.2391039866122881
+    },
+    {
+      "task": "hyperbaton",
+      "correct": 0,
+      "margin": 0.32703065872192383,
+      "cert_pre": 0.12157499176966609,
+      "cert_post": 0.14645862354008607
+    }
+  ]
+}

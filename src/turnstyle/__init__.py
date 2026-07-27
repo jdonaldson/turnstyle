@@ -214,4 +214,11 @@ __all__ = [
     "SweepResult",
     "IntentSweepResult",
     "DispatchTurnstyle",
+    "CertaintyGate",
+    "accuracy_at_coverage",
 ]
+
+# Certainty-gated abstention — the frame family's first control-surface consumer.
+# Imported last and kept dependency-light (numpy only) so it does not pull torch
+# into the package import path.
+from turnstyle.certainty_gate import CertaintyGate, accuracy_at_coverage  # noqa: E402

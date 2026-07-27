@@ -289,11 +289,54 @@ class DispatchTurnstyle(Turnstyle):
             raise ValueError("no profile to persist — fit a probe with a task first")
         return save_profile(self.profile)
 
+    # Sources the certainty gate may veto: answers the model GUESSED. A symbolic
+    # solver that produced a proof is not second-guessed by a confidence reading —
+    # arithmetic does not become wrong because the residual stream looks unsure.
+    GATED_SOURCES = frozenset({"choice_probe", "pmi_floor"})
+
+    def install_certainty_gate(self, gate) -> None:
+        """Attach a calibrated `CertaintyGate` (see turnstyle.certainty_gate).
+
+        Opt-in: the gate costs one extra forward pass per gated answer, and its
+        measured AUC is 0.653 on one backbone — a modest signal, worth having only
+        where an abstention is cheaper than a wrong answer.
+        """
+        self._certainty_gate = gate
+
+    def _certainty_veto(self, prompt: str, ans) -> bool:
+        """True if the gate says the model is not confident in THIS answer.
+
+        Reads the certainty coordinate with the answer appended, because that is the
+        position the calibration used: pre-answer scored AUC 0.560 (n.s.) against
+        0.653 post-answer. The useful question is "unsure about this answer", not
+        "hard prompt".
+        """
+        gate = getattr(self, "_certainty_gate", None)
+        if gate is None or ans.source not in self.GATED_SOURCES:
+            return False
+        import torch
+
+        enc = self.tokenizer(f"{prompt} {ans.text}", return_tensors="pt",
+                             truncation=True, max_length=1024).to(self.device)
+        with torch.no_grad():
+            hs = self.model(**enc, output_hidden_states=True).hidden_states
+        h = hs[gate.layer][0, -1].float().cpu().numpy()
+        return gate.should_abstain(h)
+
     def parse(self, prompt: str):
         """Route+solve via the ADT. Returns the Answer, or None on abstain so the
-        base class falls back to plain generation."""
+        base class falls back to plain generation.
+
+        With a certainty gate installed, a low-confidence GUESSED answer is
+        downgraded to an abstain here — the frame family's one path that changes a
+        decision rather than measuring one.
+        """
         ans = dispatch_run(prompt, self.ctx)
-        return ans if isinstance(ans, Answer) else None
+        if not isinstance(ans, Answer):
+            return None
+        if self._certainty_veto(prompt, ans):
+            return None
+        return ans
 
     def generate(self, prompt: str, max_new_tokens: int = 50):
         """Canonicalize option markers before generation so the model sees the same
