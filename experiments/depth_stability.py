@@ -34,9 +34,24 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from turnstyle.frame_library import (  # noqa: E402
     CANONICAL_FRAMES, _collect, _cv_r, _DEFAULT_TEMPLATE,
+    fragmentation, shared_single_token_words,
 )
 
 RESULTS = Path(__file__).parent / "results"
+
+# The audited panel. `--single-token shared` restricts every lexicon to words NO
+# panel tokenizer splits, so all six models are measured on an identical word set --
+# the only basis on which "which model localizes more" is not confounded with
+# "whose tokenizer fragments more".
+PANEL = [
+    "mistralai/Mistral-7B-Instruct-v0.3",
+    "microsoft/Phi-4-mini-instruct",
+    "Qwen/Qwen2.5-1.5B-Instruct",
+    "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "HuggingFaceTB/SmolLM2-360M-Instruct",
+    "google/gemma-3n-E2B-it",
+]
+MIN_WORDS = 8       # below this a 5-fold CV is not worth reading
 
 
 def stability(curve: list[float]) -> dict:
@@ -76,6 +91,10 @@ def main():
     # the new file does not clobber the canonical one and is not picked up by
     # depth_crossmodel's `depth_stability_*.json` glob as a separate model.
     ap.add_argument("--out", default="")
+    ap.add_argument("--single-token", default="off", choices=("off", "self", "shared"),
+                    help="tokenization control: 'self' = words this model does not "
+                         "split; 'shared' = words NO panel model splits (the "
+                         "cross-model-comparable basis)")
     args = ap.parse_args()
 
     from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -91,17 +110,32 @@ def main():
         want = [f.strip() for f in args.frames.split(",")]
         specs = {k: v for k, v in specs.items() if k in want}
 
-    out = {}
+    ctrl_toks = None
+    if args.single_token == "shared":
+        ctrl_toks = [AutoTokenizer.from_pretrained(m) for m in PANEL]
+    elif args.single_token == "self":
+        ctrl_toks = [tok]
+
+    out, skipped = {}, {}
     for name, spec in specs.items():
         data = spec["data"]
+        template = spec.get("template", _DEFAULT_TEMPLATE)
+        if ctrl_toks is not None:
+            keep = shared_single_token_words(ctrl_toks, list(data), template)
+            if len(keep) < MIN_WORDS:
+                skipped[name] = f"{len(keep)}/{len(data)} words survive"
+                print(f"  {name:14s} SKIPPED — only {len(keep)}/{len(data)} words are "
+                      f"single-token across the control set", flush=True)
+                continue
+            data = {w: data[w] for w in keep}
         words = list(data)
         y = np.asarray([data[w] for w in words], float)
-        acts = _collect(model, tok, dev, words,
-                        spec.get("template", _DEFAULT_TEMPLATE), "last")
+        acts = _collect(model, tok, dev, words, template, "last")
         n_layers = acts[words[0]].shape[0]
         curve = [_cv_r(np.array([acts[w][L] for w in words]), y) for L in range(n_layers)]
         curve = [(-9.0 if c != c else c) for c in curve]
         s = stability(curve)
+        s["n_words"] = len(words)
         out[name] = s
         print(f"  {name:14s} r={s['r']:+.3f} @L{s['layer']:<2d} "
               f"({s['depth_frac']:.0%})  plateau≤.02={s['within_02']:<2d} "
@@ -119,11 +153,20 @@ def main():
     print(f"\n  citable (real peak): {len(real)}/{len(out)} — {sorted(real)}")
     print(f"  FLAT (peak is noise): {len(flat)}/{len(out)} — {sorted(flat)}")
 
+    print(f"\n  LOCALIZATION (mean spread over {len(out)} frames) = "
+          f"{np.mean([s['spread'] for s in out.values()]):.3f}"
+          f"   single_token={args.single_token}")
+    if skipped:
+        print(f"  skipped for too few surviving words: {skipped}")
+
     tag = args.model.split("/")[-1]
     p = Path(args.out) if args.out else RESULTS / f"depth_stability_{tag}.json"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps({"model": args.model, "dtype": args.dtype,
+                             "single_token": args.single_token,
                              "n_layers": len(out[next(iter(out))]["curve"]),
+                             "mean_spread": float(np.mean([s["spread"] for s in out.values()])),
+                             "skipped": skipped,
                              "frames": out}, indent=2))
     print(f"\nwrote {p}")
 

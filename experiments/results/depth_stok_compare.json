@@ -1,0 +1,47 @@
+{
+  "tested_frames": [
+    "age",
+    "animacy",
+    "certainty",
+    "concreteness",
+    "material",
+    "number",
+    "opinion",
+    "size",
+    "time",
+    "warmth"
+  ],
+  "untestable": [
+    "competence",
+    "potency",
+    "shape",
+    "weight"
+  ],
+  "rows": [
+    {
+      "model": "Qwen2.5-1.5B-Instruct",
+      "before": 0.28988544862645815,
+      "after": 0.26964437903697086
+    },
+    {
+      "model": "SmolLM2-360M-Instruct",
+      "before": 0.19381466151168544,
+      "after": 0.21713112112005267
+    },
+    {
+      "model": "SmolLM2-1.7B-Instruct",
+      "before": 0.16864135831374458,
+      "after": 0.19260973516432658
+    },
+    {
+      "model": "Phi-4-mini-instruct",
+      "before": 0.16027935436246152,
+      "after": 0.1919664755184179
+    },
+    {
+      "model": "Mistral-7B-Instruct-v0.3",
+      "before": 0.3755680274200757,
+      "after": 0.17009833637970162
+    }
+  ]
+}
