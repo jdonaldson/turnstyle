@@ -1,0 +1,12 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "fingerprint": "19362c6c441afb0e",
+  "coverage": 0.8,
+  "threshold": 0.0651603942582749,
+  "auc": 0.6530013159226642,
+  "n": 200,
+  "calibration_slice": [
+    0,
+    40
+  ]
+}

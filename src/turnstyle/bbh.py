@@ -95,12 +95,17 @@ def answer_matches(generated: str, target: str) -> bool:
 
 
 def evaluate(dt, tasks=None, cache_dir=None, limit=40, max_new_tokens=50,
-             verbose_first=3, progress=True, perturbations=None, seed=0):
+             verbose_first=3, progress=True, perturbations=None, seed=0, offset=0):
     """Run DispatchTurnstyle end-to-end over BBH tasks.
 
     limit: examples per task (0 = all). Returns {task: stats} with an
     '_aggregate' entry. Inspectable: prints the first `verbose_first` examples of
     each task verbosely, then a per-task summary line.
+
+    offset: skip this many examples per task first. Exists so a component
+    calibrated on BBH (e.g. a CertaintyGate threshold) can be evaluated on a
+    DISJOINT slice — calibrate on [0:limit], evaluate with offset=limit. Without
+    it any reported number is leaked.
 
     perturbations: optional list of `turnstyle.perturb.Perturbation`. When given, each
     example is re-scored under every applicable answer-preserving variant; the report
@@ -116,6 +121,8 @@ def evaluate(dt, tasks=None, cache_dir=None, limit=40, max_new_tokens=50,
 
     for name in names:
         examples = load_task(name, cache_dir)
+        if offset:
+            examples = examples[offset:]
         if limit:
             examples = examples[:limit]
         # Activate this task's calibrated MC probe from the profile, if any

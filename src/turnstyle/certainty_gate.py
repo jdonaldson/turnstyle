@@ -27,15 +27,49 @@ Two design facts that matter:
     did not, and the difference is that it was never fit on success — it is an
     external semantic direction that transfers.
 
-HONEST SCOPE: AUC 0.653 is a modest gate, not a dramatic one, measured on ONE model
-over five tasks. It is opt-in for that reason. End-to-end BBH impact has NOT been
-measured — abstaining costs coverage, and whether that trade pays depends on what
-the caller does with an abstention.
+🚨 DO NOT ENABLE THIS AS CALIBRATED. End-to-end measurement (`certainty_gate_e2e.py`,
+held-out examples [40:80]) says it HURTS:
+
+    OVERALL accuracy        0.930 -> 0.710   (-0.220)
+    coverage                1.000 -> 0.650
+    accuracy on committed   0.930 -> 0.915   (did NOT rise)
+
+The `committed_acc` line is the diagnosis. It should have risen almost by
+construction — removing the least-confident commits — and it did not, meaning the
+gate vetoes answers just as likely to be right as the ones it keeps.
+
+WHY, and it is not "certainty doesn't work": CALIBRATION/DEPLOYMENT MISMATCH. The
+AUC 0.653 above was measured against PER-OPTION LOGPROB scoring, whose base accuracy
+on those tasks is 0.445. The deployed pipeline does not use per-option scoring
+there — it uses calibrated probes and runs at 0.930. So the gate learned to predict
+failures of a solver that is not in the loop.
+
+A second problem compounds it: on veto, DispatchTurnstyle falls back to plain
+generation, which is far worse than the probe answer being vetoed (snarks .900 ->
+.400, disambiguation_qa 1.000 -> .575).
+
+STRUCTURAL LESSON, worth more than the gate: **abstention only helps when the
+FALLBACK is better than the PRIMARY.** Here the primary is the good path (93%) and
+the fallback is the weak one, so there is almost no headroom for abstention to buy
+anything on these tasks. A confidence signal being real is not sufficient; the
+escalation path has to be better at the cases you escalate.
+
+The carve-out did hold — the symbolic control came out untouched, so proofs were
+never overridden.
+
+WHAT WOULD MAKE IT SHIPPABLE: recalibrate against the DEPLOYED pipeline's
+correctness rather than per-option scoring, and apply it only where the fallback
+actually beats the primary (a genuinely weak solver, or a caller that escalates to
+something stronger than plain generation). Until then the machinery stays here,
+opt-in and off.
 """
 
 from __future__ import annotations
 
+import json
+import os
 from dataclasses import dataclass
+from pathlib import Path
 
 import numpy as np
 
@@ -109,6 +143,35 @@ class CertaintyGate:
                    coord_scale=float(d.get("coord_scale", 1.0)),
                    model_fingerprint=d.get("model_fingerprint", ""),
                    auc=d.get("auc"), n_calibration=int(d.get("n_calibration", 0)))
+
+
+# ── fingerprint-addressed store (mirrors ModelProfile / FrameLibrary) ─────────
+
+_USER_CACHE = Path(
+    os.environ.get("XDG_CACHE_HOME", str(Path.home() / ".cache"))
+) / "turnstyle" / "gates"
+_BUNDLED = Path(__file__).parent / "data" / "gates"
+
+
+def save_gate(gate: CertaintyGate, fingerprint: str | None = None) -> Path:
+    fp = fingerprint or gate.model_fingerprint
+    if not fp:
+        raise ValueError("a gate needs a model fingerprint — thresholds are in the "
+                         "frame's normalized units and do NOT transfer across models")
+    gate.model_fingerprint = fp
+    _USER_CACHE.mkdir(parents=True, exist_ok=True)
+    p = _USER_CACHE / f"{fp}.json"
+    p.write_text(json.dumps(gate.to_dict()))
+    return p
+
+
+def load_gate(fingerprint: str) -> "CertaintyGate | None":
+    """User cache wins over bundled, same two-tier rule as profiles and frames."""
+    for base in (_USER_CACHE, _BUNDLED):
+        p = base / f"{fingerprint}.json"
+        if p.exists():
+            return CertaintyGate.from_dict(json.loads(p.read_text()))
+    return None
 
 
 def accuracy_at_coverage(coords, correct, coverage: float) -> float:

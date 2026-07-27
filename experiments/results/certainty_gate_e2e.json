@@ -1,0 +1,157 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "offset": 40,
+  "limit": 40,
+  "summary": {
+    "baseline": {
+      "acc": 0.93,
+      "n": 200,
+      "coverage": 1.0,
+      "committed_acc": 0.93
+    },
+    "gated": {
+      "acc": 0.71,
+      "n": 200,
+      "coverage": 0.65,
+      "committed_acc": 0.9153846153846154
+    }
+  },
+  "reports": {
+    "baseline": {
+      "snarks": {
+        "accuracy": 0.9,
+        "correct": 36,
+        "n": 40,
+        "committed": 40,
+        "committed_acc": 0.9,
+        "abstained": 0,
+        "used_probe": true,
+        "elapsed": 22.798349857330322
+      },
+      "disambiguation_qa": {
+        "accuracy": 1.0,
+        "correct": 40,
+        "n": 40,
+        "committed": 40,
+        "committed_acc": 1.0,
+        "abstained": 0,
+        "used_probe": true,
+        "elapsed": 28.038882732391357
+      },
+      "movie_recommendation": {
+        "accuracy": 0.95,
+        "correct": 38,
+        "n": 40,
+        "committed": 40,
+        "committed_acc": 0.95,
+        "abstained": 0,
+        "used_probe": true,
+        "elapsed": 30.724735975265503
+      },
+      "date_understanding": {
+        "accuracy": 0.825,
+        "correct": 33,
+        "n": 40,
+        "committed": 40,
+        "committed_acc": 0.825,
+        "abstained": 0,
+        "used_probe": true,
+        "elapsed": 40.75060510635376
+      },
+      "hyperbaton": {
+        "accuracy": 0.975,
+        "correct": 39,
+        "n": 40,
+        "committed": 40,
+        "committed_acc": 0.975,
+        "abstained": 0,
+        "used_probe": false,
+        "elapsed": 30.613273859024048
+      },
+      "boolean_expressions": {
+        "accuracy": 1.0,
+        "correct": 40,
+        "n": 40,
+        "committed": 40,
+        "committed_acc": 1.0,
+        "abstained": 0,
+        "used_probe": false,
+        "elapsed": 3.0508761405944824
+      },
+      "_aggregate": {
+        "accuracy": 0.9416666666666667,
+        "correct": 226,
+        "n": 240,
+        "n_tasks": 6
+      }
+    },
+    "gated": {
+      "snarks": {
+        "accuracy": 0.4,
+        "correct": 16,
+        "n": 40,
+        "committed": 13,
+        "committed_acc": 0.7692307692307693,
+        "abstained": 27,
+        "used_probe": true,
+        "elapsed": 47.65267014503479
+      },
+      "disambiguation_qa": {
+        "accuracy": 0.575,
+        "correct": 23,
+        "n": 40,
+        "committed": 7,
+        "committed_acc": 1.0,
+        "abstained": 33,
+        "used_probe": true,
+        "elapsed": 71.57207489013672
+      },
+      "movie_recommendation": {
+        "accuracy": 0.95,
+        "correct": 38,
+        "n": 40,
+        "committed": 40,
+        "committed_acc": 0.95,
+        "abstained": 0,
+        "used_probe": true,
+        "elapsed": 45.56835198402405
+      },
+      "date_understanding": {
+        "accuracy": 0.65,
+        "correct": 26,
+        "n": 40,
+        "committed": 30,
+        "committed_acc": 0.8333333333333334,
+        "abstained": 10,
+        "used_probe": true,
+        "elapsed": 67.73439621925354
+      },
+      "hyperbaton": {
+        "accuracy": 0.975,
+        "correct": 39,
+        "n": 40,
+        "committed": 40,
+        "committed_acc": 0.975,
+        "abstained": 0,
+        "used_probe": false,
+        "elapsed": 36.72540903091431
+      },
+      "boolean_expressions": {
+        "accuracy": 1.0,
+        "correct": 40,
+        "n": 40,
+        "committed": 40,
+        "committed_acc": 1.0,
+        "abstained": 0,
+        "used_probe": false,
+        "elapsed": 3.0742568969726562
+      },
+      "_aggregate": {
+        "accuracy": 0.7583333333333333,
+        "correct": 182,
+        "n": 240,
+        "n_tasks": 6
+      }
+    }
+  }
+}
