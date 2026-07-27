@@ -12,3 +12,4 @@ src/turnstyle/data/bbh_cache/
 docs/bbh_frontier.png
 
 .resume/
+experiments/results/_*/
