@@ -46,6 +46,70 @@ CACHE = Path(__file__).parent / "results" / "_gemma3n_acts"
 RESULTS = Path(__file__).parent / "results"
 N_PERM = 40
 Z_GATE = 2.0
+GEMMA = "google/gemma-3n-E2B-it"
+
+
+def load_frames(model_id, dtype="float32"):
+    """{frame: (words, [X per layer], y)} for any backbone.
+
+    Gemma 3n reads the cached 4D stream-0 activations from the readout sweep; every
+    other model collects through the ordinary 3D path and caches per model, so the
+    permutation nulls (which refit thousands of times) never pay for a second
+    collection.
+    """
+    import numpy as _np
+
+    tag = model_id.split("/")[-1]
+    if model_id == GEMMA:
+        out = {}
+        for f in sorted(glob.glob(str(CACHE / "*.npz"))):
+            name = Path(f).stem
+            if name not in CANONICAL_FRAMES:
+                continue
+            z = _np.load(f)
+            words = list(z["words"])
+            n_layers = z[f"raw::{words[0]}"].shape[0]
+            X = [_np.array([z[f"raw::{w}"][L, 0, :] for w in words])
+                 for L in range(n_layers)]
+            y = _np.array([CANONICAL_FRAMES[name]["data"][w] for w in words], float)
+            out[name] = (words, X, y)
+        return out
+
+    cdir = RESULTS / f"_acts_{tag}"
+    out, need = {}, []
+    for name, spec in CANONICAL_FRAMES.items():
+        p = cdir / f"{name}.npz"
+        if p.exists():
+            z = _np.load(p)
+            words = list(z["words"])
+            A = _np.stack([z[f"a::{w}"] for w in words])        # (N, L+1, H)
+            X = [A[:, L, :] for L in range(A.shape[1])]
+            y = _np.array([spec["data"][w] for w in words], float)
+            out[name] = (words, X, y)
+        else:
+            need.append(name)
+    if need:
+        import torch
+        from transformers import AutoModelForCausalLM, AutoTokenizer
+        from turnstyle.frame_library import _collect, _DEFAULT_TEMPLATE
+
+        dev = "mps" if torch.backends.mps.is_available() else "cpu"
+        tok = AutoTokenizer.from_pretrained(model_id)
+        mdl = AutoModelForCausalLM.from_pretrained(
+            model_id, dtype=getattr(torch, dtype)).to(dev).eval()
+        cdir.mkdir(parents=True, exist_ok=True)
+        for name in need:
+            spec = CANONICAL_FRAMES[name]
+            words = list(spec["data"])
+            acts = _collect(mdl, tok, dev, words,
+                            spec.get("template", _DEFAULT_TEMPLATE), "last")
+            _np.savez_compressed(cdir / f"{name}.npz", words=_np.array(words),
+                                 **{f"a::{w}": acts[w] for w in words})
+            A = _np.stack([acts[w] for w in words])
+            out[name] = (words, [A[:, L, :] for L in range(A.shape[1])],
+                         _np.array([spec["data"][w] for w in words], float))
+        del mdl
+    return out
 
 
 # ── the statistics ────────────────────────────────────────────────────────────
@@ -122,31 +186,32 @@ def synthetic_gate(rng, n_layers=31):
 # ── real frames ───────────────────────────────────────────────────────────────
 
 def main():
+    import argparse
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--model", default=GEMMA)
+    ap.add_argument("--dtype", default="float32", choices=("float32", "bfloat16"))
+    args = ap.parse_args()
+
     rng = np.random.default_rng(0)
     synthetic_gate(rng)
 
-    files = sorted(glob.glob(str(CACHE / "*.npz")))
-    if not files:
-        raise SystemExit("no cached activations — run gemma3n_readout_sweep.py first")
+    frames = load_frames(args.model, args.dtype)
+    if not frames:
+        raise SystemExit("no activations available for this model")
 
     print("=" * 80)
-    print(f"REAL FRAMES — z against {N_PERM} label permutations (Gemma 3n, stream0)")
+    print(f"REAL FRAMES — z against {N_PERM} label permutations")
+    print(f"model: {args.model}")
     print("=" * 80)
     print(f"  {'frame':14s} {'peak_r':>7s} {'peak_z':>7s} {'shape':>7s} {'shape_z':>8s} "
           f"{'smooth':>7s}   verdict")
     out = {}
-    for f in files:
-        name = Path(f).stem
-        if name not in CANONICAL_FRAMES:
-            continue
-        z = np.load(f)
-        words = list(z["words"])
-        y = np.array([CANONICAL_FRAMES[name]["data"][w] for w in words], float)
-        n_layers = z[f"raw::{words[0]}"].shape[0]
-        X = [np.array([z[f"raw::{w}"][L, 0, :] for w in words]) for L in range(n_layers)]
+    for name in sorted(frames):
+        words, X, y = frames[name]
 
-        def curve(yy):
-            c = np.array([_cv_r(Xi, yy) for Xi in X], float)
+        def curve(yy, _X=X):
+            c = np.array([_cv_r(Xi, yy) for Xi in _X], float)
             return np.nan_to_num(c, nan=0.0)
 
         real = stats_of(curve(y))
@@ -173,8 +238,11 @@ def main():
     print(f"  no signal above null:                   "
           f"{sorted(k for k, v in out.items() if v['peak_z'] < Z_GATE) or 'none'}")
 
-    p = RESULTS / "localization_v2.json"
-    p.write_text(json.dumps({"n_perm": N_PERM, "z_gate": Z_GATE, "frames": out}, indent=2))
+    tag = args.model.split("/")[-1]
+    p = RESULTS / f"localization_v2_{tag}.json"
+    p.write_text(json.dumps({"model": args.model, "dtype": args.dtype,
+                             "n_perm": N_PERM, "z_gate": Z_GATE,
+                             "n_localizes": len(loc), "frames": out}, indent=2))
     print(f"\nwrote {p}")
 
 

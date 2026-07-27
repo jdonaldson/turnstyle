@@ -1,0 +1,29 @@
+{
+  "hits": {
+    "Mistral-7B-Instruct-v0.3": [
+      "concreteness"
+    ],
+    "Phi-4-mini-instruct": [],
+    "Qwen2.5-1.5B-Instruct": [
+      "concreteness"
+    ],
+    "SmolLM2-1.7B-Instruct": [
+      "time"
+    ],
+    "SmolLM2-360M-Instruct": [
+      "concreteness"
+    ],
+    "gemma-3n-E2B-it": [
+      "number"
+    ]
+  },
+  "total": 5,
+  "tests": 84,
+  "rate": 0.05952380952380952,
+  "repeat_counts": {
+    "concreteness": 3,
+    "time": 1,
+    "number": 1
+  },
+  "p_repeat": 0.04755
+}
