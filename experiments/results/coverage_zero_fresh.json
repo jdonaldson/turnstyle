@@ -1,0 +1,118 @@
+{
+  "object_counting": {
+    "accuracy": 0.95,
+    "correct": 38,
+    "n": 40,
+    "committed": 40,
+    "committed_acc": 0.95,
+    "abstained": 0,
+    "used_probe": false,
+    "elapsed": 22.034992218017578
+  },
+  "reasoning_about_colored_objects": {
+    "accuracy": 1.0,
+    "correct": 40,
+    "n": 40,
+    "committed": 40,
+    "committed_acc": 1.0,
+    "abstained": 0,
+    "used_probe": false,
+    "elapsed": 8.260586977005005
+  },
+  "penguins_in_a_table": {
+    "accuracy": 0.95,
+    "correct": 38,
+    "n": 40,
+    "committed": 40,
+    "committed_acc": 0.95,
+    "abstained": 0,
+    "used_probe": false,
+    "elapsed": 172.49231600761414
+  },
+  "tracking_shuffled_objects_three_objects": {
+    "accuracy": 1.0,
+    "correct": 40,
+    "n": 40,
+    "committed": 40,
+    "committed_acc": 1.0,
+    "abstained": 0,
+    "used_probe": false,
+    "elapsed": 12.177510976791382
+  },
+  "tracking_shuffled_objects_five_objects": {
+    "accuracy": 1.0,
+    "correct": 40,
+    "n": 40,
+    "committed": 40,
+    "committed_acc": 1.0,
+    "abstained": 0,
+    "used_probe": false,
+    "elapsed": 14.615753173828125
+  },
+  "tracking_shuffled_objects_seven_objects": {
+    "accuracy": 1.0,
+    "correct": 40,
+    "n": 40,
+    "committed": 40,
+    "committed_acc": 1.0,
+    "abstained": 0,
+    "used_probe": false,
+    "elapsed": 15.982735872268677
+  },
+  "geometric_shapes": {
+    "accuracy": 1.0,
+    "correct": 40,
+    "n": 40,
+    "committed": 40,
+    "committed_acc": 1.0,
+    "abstained": 0,
+    "used_probe": false,
+    "elapsed": 12.281573295593262
+  },
+  "movie_recommendation": {
+    "accuracy": 0.975,
+    "correct": 39,
+    "n": 40,
+    "committed": 40,
+    "committed_acc": 0.975,
+    "abstained": 0,
+    "used_probe": true,
+    "elapsed": 48.535470724105835
+  },
+  "salient_translation_error_detection": {
+    "accuracy": 0.475,
+    "correct": 19,
+    "n": 40,
+    "committed": 40,
+    "committed_acc": 0.475,
+    "abstained": 0,
+    "used_probe": true,
+    "elapsed": 118.98596119880676
+  },
+  "causal_judgement": {
+    "accuracy": 0.525,
+    "correct": 21,
+    "n": 40,
+    "committed": 0,
+    "committed_acc": null,
+    "abstained": 40,
+    "used_probe": false,
+    "elapsed": 12.71153974533081
+  },
+  "sports_understanding": {
+    "accuracy": 0.35,
+    "correct": 14,
+    "n": 40,
+    "committed": 0,
+    "committed_acc": null,
+    "abstained": 40,
+    "used_probe": false,
+    "elapsed": 62.903183698654175
+  },
+  "_aggregate": {
+    "accuracy": 0.8386363636363636,
+    "correct": 369,
+    "n": 440,
+    "n_tasks": 11
+  }
+}

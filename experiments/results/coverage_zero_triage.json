@@ -1,0 +1,117 @@
+{
+  "object_counting": {
+    "variants": {
+      "ObjectCount": 10
+    },
+    "outcomes": {
+      "answer": 10
+    },
+    "reasons": {},
+    "class": "ANSWERS (so the e2e abstain is elsewhere)"
+  },
+  "reasoning_about_colored_objects": {
+    "variants": {
+      "SceneQuery": 10
+    },
+    "outcomes": {
+      "answer": 10
+    },
+    "reasons": {},
+    "class": "ANSWERS (so the e2e abstain is elsewhere)"
+  },
+  "penguins_in_a_table": {
+    "variants": {
+      "TableQuery": 8,
+      "MultipleChoice": 2
+    },
+    "outcomes": {
+      "answer": 10
+    },
+    "reasons": {},
+    "class": "ANSWERS (so the e2e abstain is elsewhere)"
+  },
+  "tracking_shuffled_objects_three_objects": {
+    "variants": {
+      "StateTracking": 10
+    },
+    "outcomes": {
+      "answer": 10
+    },
+    "reasons": {},
+    "class": "ANSWERS (so the e2e abstain is elsewhere)"
+  },
+  "tracking_shuffled_objects_five_objects": {
+    "variants": {
+      "StateTracking": 10
+    },
+    "outcomes": {
+      "answer": 10
+    },
+    "reasons": {},
+    "class": "ANSWERS (so the e2e abstain is elsewhere)"
+  },
+  "tracking_shuffled_objects_seven_objects": {
+    "variants": {
+      "StateTracking": 10
+    },
+    "outcomes": {
+      "answer": 10
+    },
+    "reasons": {},
+    "class": "ANSWERS (so the e2e abstain is elsewhere)"
+  },
+  "geometric_shapes": {
+    "variants": {
+      "SvgPath": 10
+    },
+    "outcomes": {
+      "answer": 10
+    },
+    "reasons": {},
+    "class": "ANSWERS (so the e2e abstain is elsewhere)"
+  },
+  "movie_recommendation": {
+    "variants": {
+      "MultipleChoice": 10
+    },
+    "outcomes": {
+      "answer": 10
+    },
+    "reasons": {},
+    "class": "ANSWERS (so the e2e abstain is elsewhere)"
+  },
+  "salient_translation_error_detection": {
+    "variants": {
+      "MultipleChoice": 10
+    },
+    "outcomes": {
+      "answer": 10
+    },
+    "reasons": {},
+    "class": "ANSWERS (so the e2e abstain is elsewhere)"
+  },
+  "causal_judgement": {
+    "variants": {
+      "FreeForm": 10
+    },
+    "outcomes": {
+      "abstain": 10
+    },
+    "reasons": {
+      "no_handler": 10
+    },
+    "class": "ROUTING \u2014 lands in FreeForm, solver never reached"
+  },
+  "sports_understanding": {
+    "variants": {
+      "FreeForm": 10
+    },
+    "outcomes": {
+      "abstain": 10
+    },
+    "reasons": {
+      "no_handler": 10
+    },
+    "class": "ROUTING \u2014 lands in FreeForm, solver never reached"
+  }
+}
