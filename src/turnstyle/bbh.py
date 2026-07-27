@@ -258,7 +258,10 @@ def main(argv=None):
             print(f"  {name:16s} n={v['n']:4d}  base={v['base_acc']*100:5.1f}%  "
                   f"pert={v['pert_acc']*100:5.1f}%  Δ={v['delta']*100:+5.1f}pp")
     if args.output:
-        Path(args.output).write_text(json.dumps(report, indent=2))
+        # stamped, so a future reader can see the age instead of assuming it is
+        # current (a five-week-old report was cited as current once already)
+        from turnstyle.provenance import write_json
+        write_json(args.output, report)
         print(f"wrote {args.output}")
     return 0
 
