@@ -1,0 +1,236 @@
+{
+  "rows": [
+    {
+      "task": "boolean_expressions",
+      "n": 40,
+      "coverage": 1.0,
+      "committed_acc": 1.0,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "causal_judgement",
+      "n": 40,
+      "coverage": 0.0,
+      "committed_acc": null,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "date_understanding",
+      "n": 40,
+      "coverage": 0.8,
+      "committed_acc": 0.96875,
+      "abstained_acc": 0.25,
+      "headroom": -0.71875
+    },
+    {
+      "task": "disambiguation_qa",
+      "n": 40,
+      "coverage": 1.0,
+      "committed_acc": 1.0,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "dyck_languages",
+      "n": 40,
+      "coverage": 1.0,
+      "committed_acc": 1.0,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "formal_fallacies",
+      "n": 40,
+      "coverage": 1.0,
+      "committed_acc": 1.0,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "geometric_shapes",
+      "n": 40,
+      "coverage": 0.0,
+      "committed_acc": null,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "hyperbaton",
+      "n": 40,
+      "coverage": 0.9,
+      "committed_acc": 0.8888888888888888,
+      "abstained_acc": 0.5,
+      "headroom": -0.38888888888888884
+    },
+    {
+      "task": "logical_deduction_five_objects",
+      "n": 40,
+      "coverage": 1.0,
+      "committed_acc": 1.0,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "logical_deduction_seven_objects",
+      "n": 40,
+      "coverage": 1.0,
+      "committed_acc": 1.0,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "logical_deduction_three_objects",
+      "n": 40,
+      "coverage": 1.0,
+      "committed_acc": 1.0,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "movie_recommendation",
+      "n": 40,
+      "coverage": 0.0,
+      "committed_acc": null,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "multistep_arithmetic_two",
+      "n": 40,
+      "coverage": 1.0,
+      "committed_acc": 1.0,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "navigate",
+      "n": 40,
+      "coverage": 0.9,
+      "committed_acc": 1.0,
+      "abstained_acc": 0.0,
+      "headroom": -1.0
+    },
+    {
+      "task": "object_counting",
+      "n": 40,
+      "coverage": 0.0,
+      "committed_acc": null,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "penguins_in_a_table",
+      "n": 40,
+      "coverage": 0.0,
+      "committed_acc": null,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "reasoning_about_colored_objects",
+      "n": 40,
+      "coverage": 0.0,
+      "committed_acc": null,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "ruin_names",
+      "n": 40,
+      "coverage": 1.0,
+      "committed_acc": 1.0,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "salient_translation_error_detection",
+      "n": 40,
+      "coverage": 0.0,
+      "committed_acc": null,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "snarks",
+      "n": 40,
+      "coverage": 1.0,
+      "committed_acc": 1.0,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "sports_understanding",
+      "n": 40,
+      "coverage": 0.0,
+      "committed_acc": null,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "temporal_sequences",
+      "n": 40,
+      "coverage": 1.0,
+      "committed_acc": 1.0,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "tracking_shuffled_objects_five_objects",
+      "n": 40,
+      "coverage": 0.0,
+      "committed_acc": null,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "tracking_shuffled_objects_seven_objects",
+      "n": 40,
+      "coverage": 0.0,
+      "committed_acc": null,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "tracking_shuffled_objects_three_objects",
+      "n": 40,
+      "coverage": 0.0,
+      "committed_acc": null,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "web_of_lies",
+      "n": 40,
+      "coverage": 1.0,
+      "committed_acc": 1.0,
+      "abstained_acc": null,
+      "headroom": null
+    },
+    {
+      "task": "word_sorting",
+      "n": 40,
+      "coverage": 1.0,
+      "committed_acc": 0.95,
+      "abstained_acc": null,
+      "headroom": null
+    }
+  ],
+  "n_headroom": 0,
+  "n_solved": 13,
+  "n_no_coverage": 11,
+  "no_solver_tasks": [
+    "causal_judgement",
+    "geometric_shapes",
+    "movie_recommendation",
+    "object_counting",
+    "penguins_in_a_table",
+    "reasoning_about_colored_objects",
+    "salient_translation_error_detection",
+    "sports_understanding",
+    "tracking_shuffled_objects_five_objects",
+    "tracking_shuffled_objects_seven_objects",
+    "tracking_shuffled_objects_three_objects"
+  ]
+}
