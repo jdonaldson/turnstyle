@@ -8,7 +8,9 @@ build/
 experiments/data/
 experiments/*.npz
 experiments/_*.py
-src/turnstyle/data/bbh_cache/
+src/turnstyle/data/bbh_cache/*
+!src/turnstyle/data/bbh_cache/dyck_languages.json
+!src/turnstyle/data/bbh_cache/tracking_shuffled_objects_three_objects.json
 docs/bbh_frontier.png
 
 .resume/
