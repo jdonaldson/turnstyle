@@ -351,13 +351,23 @@ class WasmtimeBackend:
             wasi.stdout_file = str(stdout_path)
             wasi.stderr_file = str(stderr_path)
 
-            # Preopen stdlib as read-only
-            wasi.preopen_dir(
-                str(self._preopen_host),
-                self._preopen_guest,
-                wasmtime.DirPerms.READ_ONLY,
-                wasmtime.FilePerms.READ_ONLY,
-            )
+            # Preopen stdlib as read-only. wasmtime-py <= 45 takes DirPerms/FilePerms
+            # enums; 48+ replaced both with a single `fs_mutable` flag (measured: 42 and
+            # 45 have DirPerms, 48 and 49 do not). Detect rather than pin so the
+            # `wasmtime>=42` floor stays honest.
+            if hasattr(wasmtime, "DirPerms"):
+                wasi.preopen_dir(
+                    str(self._preopen_host),
+                    self._preopen_guest,
+                    wasmtime.DirPerms.READ_ONLY,
+                    wasmtime.FilePerms.READ_ONLY,
+                )
+            else:
+                wasi.preopen_dir(
+                    str(self._preopen_host),
+                    self._preopen_guest,
+                    fs_mutable=False,
+                )
 
             store.set_wasi(wasi)
             linker = wasmtime.Linker(store.engine)
